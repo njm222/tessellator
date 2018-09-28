@@ -1,6 +1,10 @@
+//Constants
+const width = window.innerWidth;
+const height = window.innerHeight;
+
 //Setup
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight, 0.1, 1000);
+var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer();
 var listener = new THREE.AudioListener();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -30,7 +34,6 @@ scene.add(shape);
 
 //scene.add(shape1);
 
-
 //Sound
 camera.add(listener);
 //Create audio source
@@ -48,7 +51,15 @@ var analyser = new THREE.AudioAnalyser(sound, 32);
 var data = analyser.getAverageFrequency();
 
 
-//Add screenResizer helper function
+//Variable width/height canvas
+window.addEventListener('resize', re => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    renderer.setSize(width, height);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+});
 
 function rgbToHexHelper(num){
     var hex = Math.ceil(num).toString(16);
@@ -77,8 +88,8 @@ var play = function(){
     var spin5 = 0.0025;
     var spin6 = 0.001;
 
-    if(currFreq[0] > 150) {
-        if (currFreq[0] > 200) {
+    if(currFreq[3] > 150) {
+        if (currFreq[3] > 200) {
             shape.rotation.x += spin3;
             shape.rotation.y += spin2;
             shape.rotation.z += spin3;
@@ -88,7 +99,7 @@ var play = function(){
             shape.rotation.z += spin4;
         }
     } else {
-        if (currFreq[0] > 100) {
+        if (currFreq[3] > 100) {
             shape.rotation.x += spin5;
             shape.rotation.y -= spin3;
             shape.rotation.z += spin6;

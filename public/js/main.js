@@ -34,6 +34,8 @@ scene.add(shape);
 
 //scene.add(shape1);
 
+var currKey = 1;
+
 //Sound
 camera.add(listener);
 //Create audio source
@@ -41,7 +43,7 @@ var sound = new THREE.Audio(listener);
 //Load a sound from a source and set it as the
 //audio object's buffer
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sounds/song2.mp3', function (buffer) {
+audioLoader.load('sounds/song5.mp3', function (buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(true);
     sound.setVolume(0.8);
@@ -74,8 +76,6 @@ function changeColor(currShape, currColour) {
     currShape.material.color.setHex(currColour);
 }
 
-var currKey = 1;
-
 //Rendering
 var play = function(){
     requestAnimationFrame(play);
@@ -87,9 +87,9 @@ var play = function(){
     var spin4 = 0.075;
     var spin5 = 0.0025;
     var spin6 = 0.001;
-
-    if(currFreq[3] > 150) {
-        if (currFreq[3] > 200) {
+    var spinf = currFreq[10];
+    if(spinf > 150) {
+        if (spinf > 200) {
             shape.rotation.x += spin3;
             shape.rotation.y += spin2;
             shape.rotation.z += spin3;
@@ -99,7 +99,7 @@ var play = function(){
             shape.rotation.z += spin4;
         }
     } else {
-        if (currFreq[3] > 100) {
+        if (spinf > 100) {
             shape.rotation.x += spin5;
             shape.rotation.y -= spin3;
             shape.rotation.z += spin6;
@@ -158,3 +158,8 @@ var play = function(){
     renderer.render(scene, camera);
 }
 play();
+
+/* Idea:
+    use spotify audio analysis to change the spin of the camera
+    based on a switch case that randomize when the section changes
+ */

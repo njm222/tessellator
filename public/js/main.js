@@ -34,20 +34,21 @@ scene.add(shape);
 
 //scene.add(shape1);
 
-var currKey = 1;
+var currKey = 6;
 
 //Sound
 camera.add(listener);
 //Create audio source
 var sound = new THREE.Audio(listener);
 //Load a sound from a source and set it as the
+
 //audio object's buffer
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sounds/song5.mp3', function (buffer) {
+audioLoader.load('sounds/song4.mp3', function (buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(true);
     sound.setVolume(0.8);
-    sound.play();
+    // sound.play();
 })
 var analyser = new THREE.AudioAnalyser(sound, 32);
 var data = analyser.getAverageFrequency();
@@ -77,8 +78,8 @@ function changeColor(currShape, currColour) {
 }
 
 //Rendering
-var play = function(){
-    requestAnimationFrame(play);
+var run = function(){
+    requestAnimationFrame(run);
     currFreq = analyser.getFrequencyData();
     avFreq = analyser.getAverageFrequency();
 
@@ -157,7 +158,7 @@ var play = function(){
     }
     renderer.render(scene, camera);
 }
-play();
+run();
 
 /* Idea:
     use spotify audio analysis to change the spin of the camera

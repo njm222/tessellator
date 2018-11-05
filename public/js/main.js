@@ -34,12 +34,9 @@ var l1 = new THREE.PointLight(0x123124);
 l1.position.set(300, 200);
 scene.add(l1);
 
+//Cube Grid
 var shapeArr = [];
-for(var i = 0; i < 1; i++) {
-    shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } )));
-    scene.add(shapeArr[i]);
-}
-for(var i = 1; i < 25; i++) {
+for(var i = 0; i < 25; i++) {
     shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000, } )));
     scene.add(shapeArr[i]);
 }
@@ -111,22 +108,19 @@ shapeArr[24].position.y = 20;
 shapeArr[24].position.x = -40;
 //end layer 2
 
-
-//key = 9 song4 freq = 10
-//key = 7 song3 freq = 9
-//key = 1 song2 freq = 7
-var currKey = 1;
-var freqKey = 7;
-
 //Sound
 camera.add(listener);
 //Create audio source
 var sound = new THREE.Audio(listener);
-//Load a sound from a source and set it as the
 
+//key = 9 song4 freq = 10
+//key = 7 song3 freq = 9
+//key = 1 song2 freq = 7
+var currKey = 9;
+var freqKey = 10;
 //audio object's buffer
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sounds/song2.mp3', function (buffer) {
+audioLoader.load('sounds/song4.mp3', function (buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(true);
     sound.setVolume(0.8);
@@ -155,7 +149,7 @@ function rgbToHex(r,g,b) {
     return ("0x" + rgbToHexHelper(r) + rgbToHexHelper(g) + rgbToHexHelper(b));
 }
 
-function changeColor(currShape, currColour) {
+function changeColour(currShape, currColour) {
     currShape.material.color.setHex(currColour);
 }
 
@@ -210,21 +204,24 @@ function rotateShape(shape) {
 
 function randomWireframeLayerChange() {
     if(wireframeCounter < 5 && wireframeCounter < 10) {
-        shapeArr[0].material.wireframe = true;
+        shapeArr[0].material.wireframe = false;
     }
     if(wireframeCounter > 10) {
-        shapeArr[0].material.wireframe = false;
+        shapeArr[0].material.wireframe = true;
     }
     if (wireframeCounter > 15)
         wireframeCounter = 0;
 
-    shapeArr[recentWireframe1].material.wireframe = false;
-    recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
-    shapeArr[recentWireframe1].material.wireframe = true;
-
-    shapeArr[recentWireframe2].material.wireframe = false;
-    recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
-    shapeArr[recentWireframe2].material.wireframe = true;
+    if(wireframeCounter % 2) {
+        shapeArr[recentWireframe1].material.wireframe = false;
+        recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
+        shapeArr[recentWireframe1].material.wireframe = true;
+    }
+    else {
+        shapeArr[recentWireframe2].material.wireframe = false;
+        recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
+        shapeArr[recentWireframe2].material.wireframe = true;
+    }
 }
 
 function randomWireframeChange() {
@@ -266,22 +263,46 @@ function wireframeLayerChange() {
 * Layer 1 = [1-8]
 * Layer 2 = [9-24]
 */
-function changeColourLayer() {
-    if(layerCounter < 50){
-        changeColor(shapeArr[0], colour);
+function changeColourLayer1() {
+    if(layerCounter > 0){
+        changeColour(shapeArr[0], colour);
     }
-    if(50 < layerCounter && layerCounter < 100) {
+    if(layerCounter > 60) {
         for(var i = 1; i < 9; i++){
-            changeColor(shapeArr[i], colour);
+            changeColour(shapeArr[i], colour);
         }
     }
-    if(100 < layerCounter && layerCounter < 150) {
+    if(layerCounter > 120) {
         for(var i = 9; i < 25; i++){
-            changeColor(shapeArr[i], colour);
+            changeColour(shapeArr[i], colour);
         }
     }
     layerCounter++;
-    if(layerCounter > 150){
+    if(layerCounter > 180){
+        layerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
+
+function changeColourLayer2() {
+    if(layerCounter < 60){
+        changeColour(shapeArr[0], colour);
+    }
+    if(60 < layerCounter && layerCounter < 120) {
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(120 < layerCounter && layerCounter < 180) {
+        for(var i = 9; i < 25; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    layerCounter++;
+    if(layerCounter > 180){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
@@ -305,7 +326,8 @@ var run = function(){
             //changeColor(shapeArr[i], colour);
         }
 
-        changeColourLayer();
+        //changeColourLayer1();
+        changeColourLayer2();
 
         /*document.onkeydown = function (e) {
             currKey = e.key;
@@ -341,7 +363,6 @@ var run = function(){
             default:
                 colour = rgbToHex(currFreq[1], currFreq[3], currFreq[5]);
         }
-        //changeColor(shape1, colour);
         /*console.log(currKey + " || " + avFreq);
         console.log(currFreq.toString());*/
 

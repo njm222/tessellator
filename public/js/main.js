@@ -2,14 +2,6 @@
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-//Variables
-var colourCounter = 0;
-var freqCounter = 0;
-var layerCounter = 0;
-var wireframeCounter = 0;
-var recentWireframe = 0;
-var recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
-var recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
 //Setup Variables
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
@@ -22,7 +14,6 @@ var controls = new THREE.OrbitControls(camera);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 camera.position.z = 90;
-
 
 var colour = new THREE.Color("rgb(256,256,256)");
 var basicMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
@@ -44,26 +35,35 @@ for(var i = 0; i < 25; i++) {
     scene.add(shapeArr[i]);
 }
 //shapeArr[0] is the center (layer 0)
+shapeArr[0].position.z = -40;
 //layer 1
 shapeArr[1].position.y = 20
 shapeArr[1].position.x = -20;
+shapeArr[1].position.z = -20;
 
 shapeArr[2].position.y = 20;
+shapeArr[2].position.z = -20;
 
 shapeArr[3].position.y = 20;
 shapeArr[3].position.x = 20;
+shapeArr[3].position.z = -20;
 
 shapeArr[4].position.x = 20;
+shapeArr[4].position.z = -20;
 
 shapeArr[5].position.y = -20;
 shapeArr[5].position.x = 20;
+shapeArr[5].position.z = -20;
 
 shapeArr[6].position.y = -20;
+shapeArr[6].position.z = -20;
 
 shapeArr[7].position.y = -20;
 shapeArr[7].position.x = -20;
+shapeArr[7].position.z = -20;
 
 shapeArr[8].position.x = -20;
+shapeArr[8].position.z = -20;
 //end layer 1
 //layer 2
 shapeArr[9].position.y = 40;
@@ -116,14 +116,18 @@ camera.add(listener);
 //Create audio source
 var sound = new THREE.Audio(listener);
 
-//key = 9 song4 freq = 10
+
+//key = 6 song5 freq = 10 Layer4
+//key = 8 song4 freq = 8 Layer1
 //key = 7 song3 freq = 9 Layer3
 //key = 1 song2 freq = 7
+//key = 8 song7 freq = 9 Layer2
+var layerKey = 1;
 var currKey = 7;
-var freqKey = 9;
+var freqKey = 10;
 //audio object's buffer
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sounds/song3.mp3', function (buffer) {
+audioLoader.load('sounds/song10.mp3', function (buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(true);
     sound.setVolume(0.8);
@@ -131,7 +135,6 @@ audioLoader.load('sounds/song3.mp3', function (buffer) {
 })
 var analyser = new THREE.AudioAnalyser(sound, 32);
 var data = analyser.getAverageFrequency();
-
 
 //Variable width/height canvas
 window.addEventListener('resize', re => {
@@ -154,25 +157,6 @@ function rgbToHex(r,g,b) {
 
 function changeColour(currShape, currColour) {
     currShape.material.color.setHex(currColour);
-}
-
-function changeMode() {
-    colourCounter++;
-    freqCounter++;
-
-    if (colourCounter == 10000){
-        colourCounter = 0;
-        currKey++;
-        if (currKey == 10)
-            currKey = 1;
-    }
-    if(freqCounter == 1000) {
-        freqCounter = 0;
-        freqKey++;
-        if(freqKey == 15) {
-            freqKey = 4;
-        }
-    }
 }
 
 function rotateShape(shape) {
@@ -205,143 +189,6 @@ function rotateShape(shape) {
     }
 }
 
-function randomWireframeLayerChange() {
-    if(wireframeCounter < 5 && wireframeCounter < 10) {
-        shapeArr[0].material.wireframe = false;
-    }
-    if(wireframeCounter > 10) {
-        shapeArr[0].material.wireframe = true;
-    }
-    if (wireframeCounter > 15)
-        wireframeCounter = 0;
-
-    if(wireframeCounter % 2) {
-        shapeArr[recentWireframe1].material.wireframe = false;
-        recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
-        shapeArr[recentWireframe1].material.wireframe = true;
-    }
-    else {
-        shapeArr[recentWireframe2].material.wireframe = false;
-        recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
-        shapeArr[recentWireframe2].material.wireframe = true;
-    }
-}
-
-function randomWireframeChange() {
-    shapeArr[recentWireframe].material.wireframe = false;
-    recentWireframe = Math.floor(Math.random() * 25);
-    shapeArr[recentWireframe].material.wireframe = true;
-}
-
-function wireframeLayerChange() {
-
-    if(wireframeCounter == 0) {
-        shapeArr[0].material.wireframe = false;
-        for(var i = 1; i < 9; i++){
-            shapeArr[i].material.wireframe = true;
-        }
-    }
-    if(wireframeCounter == 1) {
-        for(var i = 1; i < 9; i++){
-            shapeArr[i].material.wireframe = false;
-        }
-        for(var i = 9; i < 25; i++){
-            shapeArr[i].material.wireframe = true;
-        }
-    }
-    if(wireframeCounter == 2) {
-        for(var i = 9; i < 25; i++){
-            shapeArr[i].material.wireframe = false;
-        }
-        shapeArr[0].material.wireframe = true;
-    }
-
-    if(wireframeCounter > 2) {
-        wireframeCounter = 0;
-    }
-}
-
-/*
-* Layer 0 = 0
-* Layer 1 = [1-8]
-* Layer 2 = [9-24]
-*/
-function changeColourLayer1() {
-    if(layerCounter > 0){
-        changeColour(shapeArr[0], colour);
-    }
-    if(layerCounter > 60) {
-        for(var i = 1; i < 9; i++){
-            changeColour(shapeArr[i], colour);
-        }
-    }
-    if(layerCounter > 120) {
-        for(var i = 9; i < 25; i++){
-            changeColour(shapeArr[i], colour);
-        }
-    }
-    layerCounter++;
-    if(layerCounter > 180){
-        layerCounter = 0;
-        //wireframeLayerChange();
-        //randomWireframeChange();
-        randomWireframeLayerChange();
-        wireframeCounter++;
-    }
-}
-
-function changeColourLayer2() {
-    if(layerCounter > 0){
-        changeColour(shapeArr[0], colour);
-    }
-    if(layerCounter > 180) {
-        for(var i = 1; i < 9; i++){
-            changeColour(shapeArr[i], colour);
-        }
-    }
-    if(layerCounter > 300) {
-        for(var i = 9; i < 25; i++){
-            changeColour(shapeArr[i], colour);
-        }
-    }
-    layerCounter++;
-    if(layerCounter > 360){
-        layerCounter = 0;
-        //wireframeLayerChange();
-        //randomWireframeChange();
-        randomWireframeLayerChange();
-        wireframeCounter++;
-    }
-}
-
-function changeColourLayer3() {
-    if(layerCounter < 60){
-        changeColour(shapeArr[0], colour);
-    }
-    if(60 < layerCounter && layerCounter < 120) {
-        for(var i = 1; i < 9; i++){
-            changeColour(shapeArr[i], colour);
-        }
-    }
-    if(120 < layerCounter && layerCounter < 180) {
-        for(var i = 9; i < 25; i++){
-            changeColour(shapeArr[i], colour);
-        }
-    }
-    layerCounter++;
-    if(layerCounter > 180){
-        layerCounter = 0;
-        //wireframeLayerChange();
-        //randomWireframeChange();
-        randomWireframeLayerChange();
-        wireframeCounter++;
-    }
-}
-
-//colour change mode 3 = go middle out then back to middle
-
-//colour change mode 4 - go middle out then repeat
-
 //Rendering
 var run = function(){
     requestAnimationFrame(run);
@@ -350,18 +197,44 @@ var run = function(){
     currFreq = analyser.getFrequencyData();
     avFreq = analyser.getAverageFrequency();
 
-    //changeMode();
+    changeFreqMode();
+    changeColourMode();
+    changeLayerMode();
 
     if (sound.isPlaying) {
 
         for(var i = 0; i < 25; i++) {
             rotateShape(shapeArr[i]);
-            //changeColor(shapeArr[i], colour);
         }
 
-        //changeColourLayer1();
-        //changeColourLayer2();
-        changeColourLayer3();
+        switch (layerKey) {
+            case 1:
+                changeColourLayer1();
+                break;
+            case 2:
+                changeColourLayer2();
+                break;
+            case 3:
+                changeColourLayer3();
+                break;
+            case 4:
+                changeColourLayer4();
+                break;
+            case 5:
+                changeColourLayer5();
+                break;
+            case 6:
+                changeColourLayer6();
+                break;
+            case 7:
+                changeColourLayer7();
+                break;
+            case 8:
+                changeColourLayer8();
+                break;
+            default:
+                changeColourLayer1();
+        }
 
         /*document.onkeydown = function (e) {
             currKey = e.key;

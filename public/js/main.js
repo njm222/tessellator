@@ -15,6 +15,9 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer();
 var listener = new THREE.AudioListener();
+var controls = new THREE.OrbitControls(camera);
+
+//controls.autoRotate = true;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -114,13 +117,13 @@ camera.add(listener);
 var sound = new THREE.Audio(listener);
 
 //key = 9 song4 freq = 10
-//key = 7 song3 freq = 9
+//key = 7 song3 freq = 9 Layer3
 //key = 1 song2 freq = 7
-var currKey = 9;
-var freqKey = 10;
+var currKey = 7;
+var freqKey = 9;
 //audio object's buffer
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sounds/song4.mp3', function (buffer) {
+audioLoader.load('sounds/song3.mp3', function (buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(true);
     sound.setVolume(0.8);
@@ -288,6 +291,30 @@ function changeColourLayer1() {
 }
 
 function changeColourLayer2() {
+    if(layerCounter > 0){
+        changeColour(shapeArr[0], colour);
+    }
+    if(layerCounter > 180) {
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(layerCounter > 300) {
+        for(var i = 9; i < 25; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    layerCounter++;
+    if(layerCounter > 360){
+        layerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
+
+function changeColourLayer3() {
     if(layerCounter < 60){
         changeColour(shapeArr[0], colour);
     }
@@ -311,9 +338,15 @@ function changeColourLayer2() {
     }
 }
 
+//colour change mode 3 = go middle out then back to middle
+
+//colour change mode 4 - go middle out then repeat
+
 //Rendering
 var run = function(){
     requestAnimationFrame(run);
+
+    controls.update();
     currFreq = analyser.getFrequencyData();
     avFreq = analyser.getAverageFrequency();
 
@@ -327,7 +360,8 @@ var run = function(){
         }
 
         //changeColourLayer1();
-        changeColourLayer2();
+        //changeColourLayer2();
+        changeColourLayer3();
 
         /*document.onkeydown = function (e) {
             currKey = e.key;

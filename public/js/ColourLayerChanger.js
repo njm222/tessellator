@@ -1,4 +1,5 @@
 //Variables
+var wait8 = 0;
 var reverse = false;
 var cubeCounter = 0;
 var layerCounter = 0;
@@ -256,10 +257,12 @@ function changeColourLayer8() {
     if(layerCounter > 5) {
         if(reverse == false) {
             cubeCounter++;
+            wait8 = 0;
         } else {
-            cubeCounter--;
+            wait8++;
+            if (wait8 > 20)
+                cubeCounter--;
         }
-
         if(cubeCounter > 25) {
             reverse = true;
         }
@@ -267,12 +270,19 @@ function changeColourLayer8() {
             reverse = false;
         }
     }
+
     if(reverse == false) {
         for(var i = 0; i < cubeCounter; i++)
             changeColour(shapeArr[i], colour);
     } else {
-        changeColour(shapeArr[cubeCounter-1], 0x00000);
+        if (wait8 > 20)
+            changeColour(shapeArr[cubeCounter-1], 0x00000);
+        else {
+            for(var i = 0; i < cubeCounter-1; i++)
+                changeColour(shapeArr[i], colour);
+        }
     }
+
     layerCounter++;
     if(layerCounter > 6){
         layerCounter = 0;

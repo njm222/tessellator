@@ -117,17 +117,17 @@ camera.add(listener);
 var sound = new THREE.Audio(listener);
 
 
-//key = 6 song5 freq = 10 Layer4
-//key = 8 song4 freq = 8 Layer1
-//key = 7 song3 freq = 9 Layer3
-//key = 1 song2 freq = 7
-//key = 8 song7 freq = 9 Layer2
-var layerKey = 1;
-var currKey = 7;
+//colour = 6 song5 freq = 10 Layer4
+//colour = 8 song4 freq = 8 Layer1
+//colour = 7 song3 freq = 9 Layer3
+//colour = 1 song2 freq = 7
+//colour = 8 song7 freq = 9 Layer2
+var layerKey = 6;
+var colourKey = 7;
 var freqKey = 10;
 //audio object's buffer
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sounds/song10.mp3', function (buffer) {
+audioLoader.load('sounds/song7.mp3', function (buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(true);
     sound.setVolume(0.8);
@@ -198,8 +198,8 @@ var run = function(){
     avFreq = analyser.getAverageFrequency();
 
     changeFreqMode();
-    changeColourMode();
-    changeLayerMode();
+    //changeColourMode();
+    //changeLayerMode();
 
     if (sound.isPlaying) {
 
@@ -239,7 +239,7 @@ var run = function(){
         /*document.onkeydown = function (e) {
             currKey = e.key;
         };*/
-        switch (currKey) {
+        switch (colourKey) {
             case 1:
                 colour = rgbToHex(avFreq, avFreq, avFreq*2);
                 break;

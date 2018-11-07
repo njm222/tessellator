@@ -6,7 +6,7 @@ var layerModeCounter = 0;
 function changeLayerMode() {
     layerModeCounter++;
 
-    if(layerModeCounter == 10000) {
+    if(layerModeCounter == 5000) {
         layerModeCounter = 0;
         layerKey++;
         if(layerKey == 9) {

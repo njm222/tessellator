@@ -92,32 +92,7 @@ function changeColourLayer1() {
     }
 }
 
-//Middle out scattered
 function changeColourLayer2() {
-    if(layerCounter > 0){
-        changeColour(shapeArr[0], colour);
-    }
-    if(layerCounter > 180) {
-        for(var i = 1; i < 9; i++){
-            changeColour(shapeArr[i], colour);
-        }
-    }
-    if(layerCounter > 300) {
-        for(var i = 9; i < 25; i++){
-            changeColour(shapeArr[i], colour);
-        }
-    }
-    layerCounter++;
-    if(layerCounter > 360){
-        layerCounter = 0;
-        //wireframeLayerChange();
-        //randomWireframeChange();
-        randomWireframeLayerChange();
-        wireframeCounter++;
-    }
-}
-
-function changeColourLayer3() {
     if(layerCounter < 60){
         changeColour(shapeArr[0], colour);
     }
@@ -133,6 +108,30 @@ function changeColourLayer3() {
     }
     layerCounter++;
     if(layerCounter > 180){
+        layerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
+
+function changeColourLayer3() {
+    if(layerCounter > 0){
+        changeColour(shapeArr[0], colour);
+    }
+    if(layerCounter > 180) {
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(layerCounter > 300) {
+        for(var i = 9; i < 25; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    layerCounter++;
+    if(layerCounter > 360){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
@@ -253,12 +252,6 @@ function changeColourLayer7() {
 }
 
 function changeColourLayer8() {
-    if(reverse == false) {
-        for(var i = 0; i <= cubeCounter; i++)
-            changeColour(shapeArr[i], colour);
-    } else {
-        changeColour(shapeArr[cubeCounter-1], 0x00000);
-    }
 
     if(layerCounter > 5) {
         if(reverse == false) {
@@ -267,12 +260,18 @@ function changeColourLayer8() {
             cubeCounter--;
         }
 
-        if(cubeCounter > 24) {
+        if(cubeCounter > 25) {
             reverse = true;
         }
         if(cubeCounter == 0) {
             reverse = false;
         }
+    }
+    if(reverse == false) {
+        for(var i = 0; i < cubeCounter; i++)
+            changeColour(shapeArr[i], colour);
+    } else {
+        changeColour(shapeArr[cubeCounter-1], 0x00000);
     }
     layerCounter++;
     if(layerCounter > 6){

@@ -143,25 +143,30 @@ function changeColourLayer3() {
 
 //go middle out then repeat
 function changeColourLayer4() {
-    if(layerCounter < 60){
+    if (layerCounter < 30) {
+        for(var i = 0; i < 25; i++) {
+            changeColour(shapeArr[i], 0x000000)
+        }
+    }
+    if(30 < layerCounter && layerCounter < 120){
         for(var i = 1; i < 25; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         changeColour(shapeArr[0], colour);
     }
-    if(60 < layerCounter) {
+    if(120 < layerCounter && layerCounter < 210) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(150 < layerCounter) {
+    if(210 < layerCounter) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
 
     layerCounter++;
-    if(layerCounter > 300){
+    if(layerCounter > 360){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();

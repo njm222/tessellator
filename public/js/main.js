@@ -6,7 +6,6 @@ const height = window.innerHeight;
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer();
-var listener = new THREE.AudioListener();
 var controls = new THREE.OrbitControls(camera);
 
 //controls.autoRotate = true;
@@ -112,6 +111,7 @@ shapeArr[24].position.x = -40;
 //end layer 2
 
 //Sound
+var listener = new THREE.AudioListener();
 camera.add(listener);
 //Create audio source
 var sound = new THREE.Audio(listener);
@@ -127,11 +127,11 @@ var colourKey = 7;
 var freqKey = 10;
 //audio object's buffer
 var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sounds/song7.mp3', function (buffer) {
+audioLoader.load('sounds/song4.mp3', function (buffer) {
     sound.setBuffer(buffer);
     sound.setLoop(true);
     sound.setVolume(0.8);
-    sound.play();
+    //sound.play();
 })
 var analyser = new THREE.AudioAnalyser(sound, 32);
 var data = analyser.getAverageFrequency();
@@ -192,7 +192,6 @@ function rotateShape(shape) {
 //Rendering
 var run = function(){
     requestAnimationFrame(run);
-
     controls.update();
     currFreq = analyser.getFrequencyData();
     avFreq = analyser.getAverageFrequency();
@@ -201,6 +200,10 @@ var run = function(){
     //changeColourMode();
     //changeLayerMode();
 
+
+    /*if(analyser) {
+        renderAudio();
+    }*/
     if (sound.isPlaying) {
 
         for(var i = 0; i < 25; i++) {

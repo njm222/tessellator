@@ -1,5 +1,5 @@
 window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = 'BQAM5VyEr_hkm_7jgF4IcaWGkGmF_O1B413f5CXPXIA3LxwIZZFIrvKpHDavaOHh2cWEnFXwRIgOLw0bioSRJU0rf15hYbWNHw4pisDhv6e7ItKEOdOuh997ffsiTcqqreubhnBvSv2l8DHyfAYZ9oKt3WKaEpcD1Fg\n';
+    const token = 'BQD4hrMBpO5rDMXza2ObCHi3Xj_qEsc6_3d2PIQfIkPCnj0dDEphn4cezktnBnqvyBb0J57diblxAOhdmwoTaiWgxyDOJKx6ITSlTOsv2uzIoMnmU6Tpp1M0hITi_I737Tuk_gDeZRwFguAqrp9tsSSqzqbrO5T1drA\n';
     const player = new Spotify.Player({
         name: 'Web Playback Player',
         getOAuthToken: cb => { cb(token); }
@@ -18,7 +18,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
         play({
-            spotify_uri: 'spotify:track:798mI116dJdZ12n9CkdflI',
+            spotify_uri: 'spotify:track:5dWHtjiNIQqsLfkNfQbrI9',
             playerInstance: (player),
         });
     });

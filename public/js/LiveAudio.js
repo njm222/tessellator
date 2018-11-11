@@ -3,6 +3,8 @@ var global_count = 0;
 
 var context,
     analyser,
+    frequencyData,
+    bufferLength,
     source;        // the audio source
 
 if (navigator.mediaDevices.getUserMedia === undefined) {
@@ -24,27 +26,38 @@ if (navigator.mediaDevices.getUserMedia === undefined) {
     }
 }
 
-//Creates the context
-if(typeof AudioContext !== "undefined"){
-    context = new AudioContext();
-}
-else if (typeof webkitAudioContext !== "undefined"){
-    context = new webkitAudioContext();
-}
-else {
-    console.log('AudioContext is not supported! Please view this with Chrome')
-}
-
 if (navigator.mediaDevices.getUserMedia) {
     console.log('getUserMedia supported.');
-    var constraints = {audio: true}
-    navigator.mediaDevices.getUserMedia (constraints)
-        .then(
-            function(stream) {
-                source = context.createMediaStreamSource(stream);
-                source.connect(analyser);
-            })
-        .catch( function(err) { console.log('The following gUM error occured: ' + err);})
+    navigator.mediaDevices.enumerateDevices().then(function(devices){
+        var constraints = {audio: {deviceId: "default"}};
+        navigator.mediaDevices.getUserMedia (constraints)
+            .then(
+                function(stream) { console.log(stream);
+                    //Creates the context
+                    if(typeof AudioContext !== "undefined"){
+                        context = new AudioContext();
+                    }
+                    else if (typeof webkitAudioContext !== "undefined"){
+                        context = new webkitAudioContext();
+                    }
+                    else {
+                        console.log('AudioContext is not supported! Please view this with Chrome')
+                    }
+                    //create analyser
+                    analyser = context.createAnalyser();
+                    analyser.fftSize = 64;
+                    /*analyser.maxDecibels = 0;
+                    analyser.maxDecibels = 0;*/
+                    analyser.smoothingTimeConstant = .9;
+                    frequencyData = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(frequencyData);
+                    bufferLength = analyser.frequencyBinCount;
+                    //attach source to the mic
+                    source = context.createMediaStreamSource(stream);
+                    //connect source to the analyser
+                    source.connect(analyser);
+                }).catch( function(err) { console.log('The following gUM error occured: ' + err);})
+    }).catch( function(err) { console.log('The following error occured: ' + err);})
 } else {
     console.log('getUserMedia not supported on your browser!');
 }

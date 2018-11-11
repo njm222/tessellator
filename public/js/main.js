@@ -8,6 +8,9 @@ var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer();
 var controls = new THREE.OrbitControls(camera);
 
+var currFreq = 0;
+var avFreq = 0;
+
 //controls.autoRotate = true;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -193,8 +196,20 @@ function rotateShape(shape) {
 var run = function(){
     requestAnimationFrame(run);
     controls.update();
-    currFreq = analyser.getFrequencyData();
-    avFreq = analyser.getAverageFrequency();
+    /*currFreq = analyser.getFrequencyData();
+    avFreq = analyser.getAverageFrequency();*/
+
+    analyser.getByteFrequencyData(frequencyData);
+    /*navigator.mediaDevices.enumerateDevices().then(function (devices) { console.log(devices)
+    });*/
+    console.log(frequencyData);
+
+
+    currFreq = frequencyData;
+    for(var i = 0; i < bufferLength; i++){
+        avFreq = avFreq + frequencyData[i];
+    }
+    avFreq = avFreq/bufferLength;
 
     changeFreqMode();
     //changeColourMode();
@@ -204,7 +219,7 @@ var run = function(){
     /*if(analyser) {
         renderAudio();
     }*/
-    if (sound.isPlaying) {
+    if (true) {
 
         for(var i = 0; i < 25; i++) {
             rotateShape(shapeArr[i]);
@@ -238,10 +253,6 @@ var run = function(){
             default:
                 changeColourLayer1();
         }
-
-        /*document.onkeydown = function (e) {
-            currKey = e.key;
-        };*/
         switch (colourKey) {
             case 1:
                 colour = rgbToHex(avFreq, avFreq, avFreq*2);
@@ -256,7 +267,7 @@ var run = function(){
                 colour = rgbToHex(avFreq, avFreq, avFreq);
                 break;
             case 5:
-                colour = rgbToHex(currFreq[1], currFreq[3], currFreq[5]);
+                colour = rgbToHex(currFreq[4], currFreq[8], currFreq[12]);
                 break;
             case 6:
                 colour = rgbToHex(avFreq*2, avFreq*2, avFreq);
@@ -268,10 +279,10 @@ var run = function(){
                 colour = rgbToHex(avFreq, avFreq*2, avFreq*2);
                 break;
             case 9:
-                colour = rgbToHex(currFreq[10], currFreq[9], currFreq[8]);
+                colour = rgbToHex(currFreq[13], currFreq[9], currFreq[5]);
                 break;
             default:
-                colour = rgbToHex(currFreq[1], currFreq[3], currFreq[5]);
+                colour = rgbToHex(currFreq[4], currFreq[8], currFreq[12]);
         }
         /*console.log(currKey + " || " + avFreq);
         console.log(currFreq.toString());*/

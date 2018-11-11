@@ -35,7 +35,7 @@ function changeFreqMode() {
     if(freqModeCounter == 500) {
         freqModeCounter = 0;
         freqKey++;
-        if(freqKey == 15) {
+        if(freqKey == bufferLength-4) {
             freqKey = 4;
         }
         console.log("freq mode: " + freqKey);

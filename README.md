@@ -1,4 +1,5 @@
 Spotify_Visualizer
 
-1.  npm install
-2.  npm start
+1.  install node.js
+2.  npm install
+3.  npm start

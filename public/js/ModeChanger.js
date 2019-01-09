@@ -6,10 +6,10 @@ var layerModeCounter = 0;
 function changeLayerMode() {
     layerModeCounter++;
 
-    if(layerModeCounter == 20000) {
+    if(layerModeCounter == 1500) {
         layerModeCounter = 0;
         layerKey = Math.floor(Math.random() * 9);
-        console.log("layer mode: " + layerKey);
+        //console.log("layer mode: " + layerKey);
     }
 }
 
@@ -19,7 +19,7 @@ function changeColourMode() {
     if (colourModeCounter == 360){
         colourModeCounter = 0;
         colourKey = Math.floor(Math.random() * 22);
-        console.log("colour mode: " + colourKey);
+        //console.log("colour mode: " + colourKey);
     }
 }
 
@@ -28,7 +28,7 @@ function changeFreqMode() {
 
     if(freqModeCounter == 500) {
         freqModeCounter = 0;
-        freqKey = Math.floor(Math.random() * (bufferLength-4));
+        freqKey = Math.floor(Math.random() * (11 - 2)) + 2;
         console.log("freq mode: " + freqKey);
     }
 }

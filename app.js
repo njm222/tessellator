@@ -37,7 +37,7 @@ app.get('/login', function(req, res) {
     res.cookie(stateKey, state);
 
     // your application requests authorization
-    var scope = 'user-read-private user-read-email user-read-birthdate user-read-recently-played ' +
+    var scope = 'user-read-private user-read-email user-read-birthdate user-top-read user-read-recently-played ' +
         'user-modify-playback-state user-read-playback-state user-read-currently-playing streaming';
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
@@ -109,6 +109,11 @@ app.get('/callback', function(req, res) {
             }
         });
     }
+});
+
+app.get('/visual', function(req, res) {
+   var access_token = req.query.refresh_token;
+
 });
 
 app.get('/refresh_token', function(req, res) {

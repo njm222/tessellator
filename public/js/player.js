@@ -1,5 +1,5 @@
 window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = 'BQCMQGhgUoR7fCvpVBPvEupsCW41W4u6WrtNO5Sr5ds5Ac0PoojeFA3u8up_mMuPJ-tuB4hLwoI4UK5_XckvZblJDsK42FFle9IS9TGkOQMF9fmrWs1DrjiI_d9hfPnaUvFZq1a3tu3NUgkHuR9gZh4z1TQcEMWfw8W1U9kAnVj2YA\n';
+    const token = 'BQDg_yfV9CUxwhJulqjnvXYI3BUpzJ4riO05wrK53jENJjgo0Xm0Q8cBeP3p3tuyKS63Ndc1N3wt2JpIk7NyHulB4iri84q8rvPTln9bw0n9zg0iikQqmS43MRQdp7zdBP8rLPmdcRSW4hqyUB-Gx4pGSPXQ2pmPNeBXfqA8zn1WJw';
     const player = new Spotify.Player({
         name: 'Visualizer Player',
         getOAuthToken: cb => { cb(token); }
@@ -12,7 +12,9 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     player.addListener('playback_error', ({ message }) => { console.error(message); });
 
     // Playback status updates
-    player.addListener('player_state_changed', state => { console.log(state); });
+    player.addListener('player_state_changed', state => {
+        console.log(state);
+    });
 
     // Ready
     player.addListener('ready', ({ device_id }) => {

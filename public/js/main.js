@@ -3,18 +3,16 @@ const width = window.innerWidth;
 const height = window.innerHeight;
 
 //Setup Variables
+var currFreq = 0;
+var avFreq = 0;
+
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer();
 var controls = new THREE.OrbitControls(camera);
 
-var currFreq = 0;
-var avFreq = 0;
-
-//controls.autoRotate = true;
-
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+document.getElementById("visualizer-main").appendChild(renderer.domElement);
 camera.position.z = 90;
 
 var colour = new THREE.Color("rgb(256,256,256)");
@@ -113,31 +111,10 @@ shapeArr[24].position.y = 20;
 shapeArr[24].position.x = -40;
 //end layer 2
 
-//Sound
-var listener = new THREE.AudioListener();
-camera.add(listener);
-//Create audio source
-var sound = new THREE.Audio(listener);
-
-
-//colour = 6 song5 freq = 10 Layer4
-//colour = 8 song4 freq = 8 Layer1
-//colour = 7 song3 freq = 9 Layer3
-//colour = 1 song2 freq = 7
-//colour = 8 song7 freq = 9 Layer2
 var layerKey = 6;
 var colourKey = 7;
 var freqKey = 10;
-//audio object's buffer
-var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sounds/song4.mp3', function (buffer) {
-    sound.setBuffer(buffer);
-    sound.setLoop(true);
-    sound.setVolume(0.8);
-    //sound.play();
-})
-var analyser = new THREE.AudioAnalyser(sound, 32);
-var data = analyser.getAverageFrequency();
+
 
 //Variable width/height canvas
 window.addEventListener('resize', re => {
@@ -196,13 +173,11 @@ function rotateShape(shape) {
 var run = function(){
     requestAnimationFrame(run);
     controls.update();
-    /*currFreq = analyser.getFrequencyData();
-    avFreq = analyser.getAverageFrequency();*/
 
     analyser.getByteFrequencyData(frequencyData);
     /*navigator.mediaDevices.enumerateDevices().then(function (devices) { console.log(devices)
     });*/
-    console.log(frequencyData);
+    //console.log(frequencyData);
 
 
     currFreq = frequencyData;
@@ -212,13 +187,9 @@ var run = function(){
     avFreq = avFreq/bufferLength;
 
     changeFreqMode();
-    //changeColourMode();
-    //changeLayerMode();
+    changeColourMode();
+    changeLayerMode();
 
-
-    /*if(analyser) {
-        renderAudio();
-    }*/
     if (true) {
 
         for(var i = 0; i < 25; i++) {
@@ -284,9 +255,6 @@ var run = function(){
             default:
                 colour = rgbToHex(currFreq[4], currFreq[8], currFreq[12]);
         }
-        /*console.log(currKey + " || " + avFreq);
-        console.log(currFreq.toString());*/
-
     }
     renderer.render(scene, camera);
 }

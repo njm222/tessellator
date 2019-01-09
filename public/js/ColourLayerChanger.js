@@ -73,18 +73,18 @@ function changeColourLayer1() {
     if(layerCounter > 0){
         changeColour(shapeArr[0], colour);
     }
-    if(layerCounter > 60) {
+    if(layerCounter > g_tempo) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(layerCounter > 120) {
+    if(layerCounter > g_tempo*2) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
     layerCounter++;
-    if(layerCounter > 180){
+    if(layerCounter > g_tempo*4){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
@@ -94,21 +94,21 @@ function changeColourLayer1() {
 }
 
 function changeColourLayer2() {
-    if(layerCounter < 60){
+    if(layerCounter < g_tempo){
         changeColour(shapeArr[0], colour);
     }
-    if(60 < layerCounter && layerCounter < 120) {
+    if(g_tempo < layerCounter && layerCounter < g_tempo*2) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(120 < layerCounter && layerCounter < 180) {
+    if(g_tempo*2 < layerCounter && layerCounter < g_tempo*4) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
     layerCounter++;
-    if(layerCounter > 180){
+    if(layerCounter > g_tempo*4){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
@@ -121,18 +121,18 @@ function changeColourLayer3() {
     if(layerCounter > 0){
         changeColour(shapeArr[0], colour);
     }
-    if(layerCounter > 180) {
+    if(layerCounter > g_tempo*2) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(layerCounter > 300) {
+    if(layerCounter > g_tempo*4) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
     layerCounter++;
-    if(layerCounter > 360){
+    if(layerCounter > g_tempo*8){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
@@ -143,30 +143,30 @@ function changeColourLayer3() {
 
 //go middle out then repeat
 function changeColourLayer4() {
-    if (layerCounter < 30) {
+    if (layerCounter < g_tempo/2) {
         for(var i = 0; i < 25; i++) {
             changeColour(shapeArr[i], 0x000000)
         }
     }
-    if(30 < layerCounter && layerCounter < 120){
+    if(g_tempo/2 < layerCounter && layerCounter < g_tempo){
         for(var i = 1; i < 25; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         changeColour(shapeArr[0], colour);
     }
-    if(120 < layerCounter && layerCounter < 210) {
+    if(g_tempo < layerCounter && layerCounter < g_tempo*2.5) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(210 < layerCounter) {
+    if(g_tempo*2.5 < layerCounter) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
 
     layerCounter++;
-    if(layerCounter > 360){
+    if(layerCounter > g_tempo*4){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
@@ -177,20 +177,20 @@ function changeColourLayer4() {
 
 //colour change mode 5 = go middle out then back to middle
 function changeColourLayer5() {
-    if(layerCounter < 60){
+    if(layerCounter < g_tempo){
         changeColour(shapeArr[0], colour);
     }
-    if(60 < layerCounter && layerCounter < 120) {
+    if(g_tempo < layerCounter && layerCounter < g_tempo*2) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(120 < layerCounter && layerCounter < 210) {
+    if(g_tempo*2 < layerCounter && layerCounter < g_tempo*2.5) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(210 < layerCounter && layerCounter < 300) {
+    if(g_tempo*2.5 < layerCounter && layerCounter < g_tempo*3) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], 0x000000);
         }
@@ -198,17 +198,17 @@ function changeColourLayer5() {
             changeColour(shapeArr[i], colour);
         }
     }
-    if(300 < layerCounter && layerCounter < 360) {
+    if(g_tempo*3 < layerCounter && layerCounter < g_tempo*4) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], 0x000000);
         }
         changeColour(shapeArr[0], colour);
     }
-    if(360 < layerCounter) {
+    if(g_tempo*4 < layerCounter) {
         changeColour(shapeArr[0], 0x000000);
     }
     layerCounter++;
-    if(layerCounter > 390){
+    if(layerCounter > g_tempo*4.5){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
@@ -218,7 +218,7 @@ function changeColourLayer5() {
 }
 
 function changeColourLayer6() {
-    if(layerCounter > 5) {
+    if(layerCounter > g_tempo/25) {
         cubeCounter++;
         if(cubeCounter > 24)
             cubeCounter = 0;
@@ -227,7 +227,7 @@ function changeColourLayer6() {
     changeColour(shapeArr[cubeCounter], colour);
 
     layerCounter++;
-    if(layerCounter > 6){
+    if(layerCounter > g_tempo/25){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
@@ -237,7 +237,7 @@ function changeColourLayer6() {
 }
 
 function changeColourLayer7() {
-    if(layerCounter > 60) {
+    if(layerCounter > g_tempo) {
         cubeCounter++;
         if(cubeCounter > 25)
             cubeCounter = 0;
@@ -248,7 +248,7 @@ function changeColourLayer7() {
     }
 
     layerCounter++;
-    if(layerCounter > 61){
+    if(layerCounter > g_tempo+1){
         layerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();

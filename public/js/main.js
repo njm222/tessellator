@@ -19,21 +19,26 @@ var colour = new THREE.Color("rgb(256,256,256)");
 var basicMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
 var depthMaterial = new THREE.MeshDepthMaterial( { wireframe: true } );
 
-//Cube Shape
+//Geometry
 var cubeGeo = new THREE.BoxGeometry(10,10,10);
-var shape = new THREE.Mesh(cubeGeo, basicMaterial);
+var sphereGeo = new THREE.SphereGeometry(5, 32, 32);
+var torusGeo = new THREE.TorusGeometry(10, 3, 16, 100);
 
 //Light
 var l1 = new THREE.PointLight(0x123124);
 l1.position.set(300, 200);
 scene.add(l1);
 
-//Cube Grid
 var shapeArr = [];
+//Cube Grid
 for(var i = 0; i < 25; i++) {
     shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000, } )));
     scene.add(shapeArr[i]);
 }
+/*for(var i = 0; i < 25; i++) {
+    shapeArr.push(new THREE.Points(torusGeo, new THREE.PointsMaterial({size: 20, color: 0x000000})));
+    scene.add(shapeArr[i]);
+}*/
 //shapeArr[0] is the center (layer 0)
 shapeArr[0].position.z = -40;
 //layer 1
@@ -139,6 +144,10 @@ function changeColour(currShape, currColour) {
     currShape.material.color.setHex(currColour);
 }
 
+function changePoints(currShape, currPoints) {
+    currShape.material.size = currPoints;
+}
+
 function rotateShape(shape) {
     var spin2 = 0.03;
     var spin3 = 0.015;
@@ -174,23 +183,26 @@ var run = function(){
     requestAnimationFrame(run);
     controls.update();
 
-    analyser.getByteFrequencyData(frequencyData);
+
     /*navigator.mediaDevices.enumerateDevices().then(function (devices) { console.log(devices)
     });*/
     //console.log(frequencyData);
 
 
-    currFreq = frequencyData;
-    for(var i = 0; i < bufferLength; i++){
-        avFreq = avFreq + frequencyData[i];
-    }
-    avFreq = avFreq/bufferLength;
+    if (!isPaused && gotVisualizerScripts) {
 
-    changeFreqMode();
-    changeColourMode();
-    changeLayerMode();
+        analyser.getByteFrequencyData(frequencyData);
+        currFreq = frequencyData;
+        for(var i = 0; i < bufferLength; i++){
+            avFreq = avFreq + frequencyData[i];
+        }
+        avFreq = avFreq/bufferLength;
 
-    if (true) {
+        changeLayer();
+
+        changeFreqMode();
+        changeColourMode();
+        changeLayerMode();
 
         for(var i = 0; i < 25; i++) {
             rotateShape(shapeArr[i]);

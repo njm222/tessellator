@@ -4,7 +4,7 @@
   <title>Example of the Authorization Code flow with Spotify</title>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <style type="text/css">
-    #login, #loggedin, #visualizer-main {
+    #login, #loggedin, #visualizer-main, #paused {
       display: none;
     }
     .text-overflow {
@@ -27,8 +27,9 @@
     #visualizer-main .container .row .media .media-body {
         padding: 0 3%;
     }
-    #visualizer-main #visualizer {
-        width: 100%;
+    #visualizer-main #player-info,
+    #visualizer-main #analysis-info {
+        width: 50%;
     }
   </style>
 </head>
@@ -59,15 +60,24 @@
         <div class="row">
             <div class="media">
                 <button class="btn btn-secondary" id="toLoggedIn">Back</button>
-                <div id="visualizer"></div>
+                <div id="player-info"></div>
+                <div id="analysis-info"></div>
             </div>
         </div>
     </div>
 </div>
 
-<script id="visualizer-template" type="text/x-handlebars-template">
+<script id="analysis-info-template" type="text/x-handlebars-template">
     <div class="media-body">
-        <div>Currently Playing <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong></div>
+        <div>Tempo:<strong>{{tempo}}</strong></div>
+        <div>Loudness:<strong>{{loudness}}</strong></div>
+    </div>
+</script>
+
+<script id="player-info-template" type="text/x-handlebars-template">
+    <div class="media-body">
+        <div id="playing">Playing <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong></div>
+        <div id="paused">Paused with <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong> queued</div>
     </div>
 </script>
 
@@ -105,8 +115,23 @@
 <script src="js/OrbitControls.js"></script>
 <script>
     //Visualizer stuff below
+    var gotVisualizerScripts = false;
     var g_tempo = 0;
-    var layer1_tempo, layer2_tempo, layer3_tempo;
+    var g_section = 0;
+    var g_sections = 0;
+    var g_bar = 0;
+    var g_bars = 0;
+    var g_beat = 0;
+    var g_beats = 0;
+    var trackCounter = 0;
+    var trackEnd = 999999;
+    var isPaused = true;
+
+    function incrementTrackCounter() {
+        trackCounter+= 10;
+    }
+
+    var doIncrementTrackCounter = setInterval(incrementTrackCounter, 10);
 
     (function() {
         /**
@@ -122,16 +147,18 @@
             }
             return hashParams;
         }
-        var gotVisualizerScripts = false;
         var userProfileSource = document.getElementById('user-profile-template').innerHTML,
             userProfileTemplate = Handlebars.compile(userProfileSource),
             userProfilePlaceholder = document.getElementById('user-profile');
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
             oauthPlaceholder = document.getElementById('oauth');
-        var visualizerSource = document.getElementById('visualizer-template').innerHTML,
-            visualizerTemplate = Handlebars.compile(visualizerSource),
-            visualizerPlaceholder = document.getElementById('visualizer');
+        var playerInfoSource = document.getElementById('player-info-template').innerHTML,
+            playerInfoTemplate = Handlebars.compile(playerInfoSource),
+            playerInfoPlaceholder = document.getElementById('player-info');
+        var analysisInfoSource = document.getElementById('analysis-info-template').innerHTML,
+            analysisInfoTemplate = Handlebars.compile(analysisInfoSource),
+            analysisInfoPlaceholder = document.getElementById('analysis-info');
         var params = getHashParams();
         var access_token = params.access_token,
             refresh_token = params.refresh_token,
@@ -173,21 +200,53 @@
                             // Playback status updates
                             player.addListener('player_state_changed', state => {
                                 console.log(state);
+                                trackCounter = state.position;
+                                isPaused = state.paused;
+
+                                if (trackCounter < 100){
+                                    g_section = 0;
+                                    g_bar = 0;
+                                    g_beat = 0;
+                                }
+                                trackEnd = state.duration;
+
                                 $.ajax({
                                     url: 'https://api.spotify.com/v1/me/player',
                                     headers: {
                                         'Authorization': 'Bearer ' + access_token
                                     },
                                     success: function(response) {
-                                        visualizerPlaceholder.innerHTML = visualizerTemplate(response);
+                                        console.log('player response');
+                                        console.log(response);
+
+                                        playerInfoPlaceholder.innerHTML = playerInfoTemplate(response);
                                         $.ajax({
                                             url: 'https://api.spotify.com/v1/audio-features/' + response.item.id,
                                             headers: {
                                                 'Authorization': 'Bearer ' + access_token
                                             },
                                             success: function(response) {
+                                                console.log('features response');
                                                 console.log(response);
-                                                g_tempo = response.tempo;
+
+                                                analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);
+                                                g_tempo = response.tempo/60;
+                                                $.ajax({
+                                                    url: response.analysis_url,
+                                                    headers: {
+                                                        'Authorization': 'Bearer ' + access_token
+                                                    },
+                                                    success: function (response) {
+                                                        console.log('analysis response');
+
+                                                        g_bars = response.bars;
+                                                        g_beats = response.beats;
+                                                        g_sections = response.sections;
+
+                                                        console.log(g_bars);
+                                                        console.log(g_beats);
+                                                    }
+                                                });
                                             }
                                         });
                                     }
@@ -258,13 +317,12 @@
                         'Authorization': 'Bearer ' + access_token
                     },
                     success: function(response) {
-                        visualizerPlaceholder.innerHTML = visualizerTemplate(response);
+                        playerInfoPlaceholder.innerHTML = playerInfoTemplate(response);
                     }
                 });
 
 
                 if(!gotVisualizerScripts) {
-                    gotVisualizerScripts = true;
                     $.getScript("js/LiveAudio.js");
                     $.getScript("js/ColourLayerChanger.js");
                     $.getScript("js/ModeChanger.js");

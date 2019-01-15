@@ -56,6 +56,7 @@ if (navigator.mediaDevices.getUserMedia) {
                     source = context.createMediaStreamSource(stream);
                     //connect source to the analyser
                     source.connect(analyser);
+                    gotVisualizerScripts = true;
                 }).catch( function(err) { console.log('The following gUM error occured: ' + err);})
     }).catch( function(err) { console.log('The following error occured: ' + err);})
 } else {

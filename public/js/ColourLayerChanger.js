@@ -2,11 +2,20 @@
 var wait8 = 0;
 var reverse = false;
 var cubeCounter = 0;
-var layerCounter = 0;
+var tempoLayerCounter = 0;
 var wireframeCounter = 0;
 var recentWireframe = 0;
 var recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
 var recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
+
+var beatEnd = 0;
+var beatLayerCounter = 0;
+
+function incrementLayerCounter() {
+    tempoLayerCounter+= 0.01;
+}
+
+var doIncrementLayerCounter = setInterval(incrementLayerCounter, 10);
 
 function randomWireframeLayerChange() {
     if(wireframeCounter < 5 && wireframeCounter < 10) {
@@ -69,23 +78,57 @@ function wireframeLayerChange() {
 * Layer 1 = [1-8]
 * Layer 2 = [9-24]
 */
+
+function changeLayer() {
+    beatEnd = (g_beats[g_beat]["start"] + g_beats[g_beat]["duration"])*1000;
+
+    if(trackCounter > beatEnd) {
+        g_beat++;
+        beatLayerCounter++;
+    }
+}
+
 function changeColourLayer1() {
-    if(layerCounter > 0){
+    if(beatLayerCounter > 0){
         changeColour(shapeArr[0], colour);
     }
-    if(layerCounter > 60) {
+
+    if(beatLayerCounter > 1) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(layerCounter > 120) {
+    if(beatLayerCounter > 2) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    layerCounter++;
-    if(layerCounter > 180){
-        layerCounter = 0;
+    if(beatLayerCounter > 3){
+        beatLayerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
+
+function changeColourLayer11() {
+    if(tempoLayerCounter > 0){
+        changeColour(shapeArr[0], colour);
+    }
+
+    if(tempoLayerCounter > g_tempo) {
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(tempoLayerCounter > g_tempo*2) {
+        for(var i = 9; i < 25; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(tempoLayerCounter > g_tempo*4){
+        tempoLayerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -94,22 +137,44 @@ function changeColourLayer1() {
 }
 
 function changeColourLayer2() {
-    if(layerCounter < 60){
+    if(beatLayerCounter <= 1){
         changeColour(shapeArr[0], colour);
     }
-    if(60 < layerCounter && layerCounter < 120) {
+    if(1 < beatLayerCounter && beatLayerCounter <= 3) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(120 < layerCounter && layerCounter < 180) {
+    if(3 < beatLayerCounter && beatLayerCounter <= 6) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    layerCounter++;
-    if(layerCounter > 180){
-        layerCounter = 0;
+    if(beatLayerCounter > 8){
+        beatLayerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
+
+function changeColourLayer22() {
+    if(tempoLayerCounter < g_tempo){
+        changeColour(shapeArr[0], colour);
+    }
+    if(g_tempo < tempoLayerCounter && tempoLayerCounter < g_tempo*2) {
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(g_tempo*2 < tempoLayerCounter && tempoLayerCounter < g_tempo*4) {
+        for(var i = 9; i < 25; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(tempoLayerCounter > g_tempo*4){
+        tempoLayerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -118,22 +183,44 @@ function changeColourLayer2() {
 }
 
 function changeColourLayer3() {
-    if(layerCounter > 0){
+    if(beatLayerCounter >= 0){
         changeColour(shapeArr[0], colour);
     }
-    if(layerCounter > 180) {
+    if(beatLayerCounter >= 1) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(layerCounter > 300) {
+    if(beatLayerCounter >= 2) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    layerCounter++;
-    if(layerCounter > 360){
-        layerCounter = 0;
+    if(beatLayerCounter >= 3){
+        beatLayerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
+
+function changeColourLayer33() {
+    if(tempoLayerCounter > 0){
+        changeColour(shapeArr[0], colour);
+    }
+    if(tempoLayerCounter > g_tempo*2) {
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(tempoLayerCounter > g_tempo*4) {
+        for(var i = 9; i < 25; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(tempoLayerCounter > g_tempo*8){
+        tempoLayerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -143,31 +230,60 @@ function changeColourLayer3() {
 
 //go middle out then repeat
 function changeColourLayer4() {
-    if (layerCounter < 30) {
+    if (beatLayerCounter <= 2) {
         for(var i = 0; i < 25; i++) {
             changeColour(shapeArr[i], 0x000000)
         }
     }
-    if(30 < layerCounter && layerCounter < 120){
+    if(2 <= beatLayerCounter && beatLayerCounter < 4){
         for(var i = 1; i < 25; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         changeColour(shapeArr[0], colour);
     }
-    if(120 < layerCounter && layerCounter < 210) {
+    if(4 <= beatLayerCounter && beatLayerCounter < 7) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(210 < layerCounter) {
+    if(7 <= beatLayerCounter) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
+    if(10 < beatLayerCounter){
+        beatLayerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
 
-    layerCounter++;
-    if(layerCounter > 360){
-        layerCounter = 0;
+function changeColourLayer44() {
+    if (tempoLayerCounter < g_tempo/2) {
+        for(var i = 0; i < 25; i++) {
+            changeColour(shapeArr[i], 0x000000)
+        }
+    }
+    if(g_tempo/2 < tempoLayerCounter && tempoLayerCounter < g_tempo){
+        for(var i = 1; i < 25; i++) {
+            changeColour(shapeArr[i], 0x000000);
+        }
+        changeColour(shapeArr[0], colour);
+    }
+    if(g_tempo < tempoLayerCounter && tempoLayerCounter < g_tempo*2.5) {
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(g_tempo*2.5 < tempoLayerCounter) {
+        for(var i = 9; i < 25; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(tempoLayerCounter > g_tempo*4){
+        tempoLayerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -177,20 +293,20 @@ function changeColourLayer4() {
 
 //colour change mode 5 = go middle out then back to middle
 function changeColourLayer5() {
-    if(layerCounter < 60){
+    if(beatLayerCounter <= 2){
         changeColour(shapeArr[0], colour);
     }
-    if(60 < layerCounter && layerCounter < 120) {
+    if(2 <= beatLayerCounter && beatLayerCounter <= 5) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(120 < layerCounter && layerCounter < 210) {
+    if(5 <= beatLayerCounter && beatLayerCounter <= 8) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(210 < layerCounter && layerCounter < 300) {
+    if(8 < beatLayerCounter && beatLayerCounter <= 10) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], 0x000000);
         }
@@ -198,18 +314,57 @@ function changeColourLayer5() {
             changeColour(shapeArr[i], colour);
         }
     }
-    if(300 < layerCounter && layerCounter < 360) {
+    if(10 < beatLayerCounter && beatLayerCounter <= 12) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], 0x000000);
         }
         changeColour(shapeArr[0], colour);
     }
-    if(360 < layerCounter) {
+    if(12 < beatLayerCounter) {
         changeColour(shapeArr[0], 0x000000);
     }
-    layerCounter++;
-    if(layerCounter > 390){
-        layerCounter = 0;
+    if(beatLayerCounter > 14){
+        beatLayerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
+
+function changeColourLayer55() {
+    if(tempoLayerCounter < g_tempo){
+        changeColour(shapeArr[0], colour);
+    }
+    if(g_tempo < tempoLayerCounter && tempoLayerCounter < g_tempo*2) {
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(g_tempo*2 < tempoLayerCounter && tempoLayerCounter < g_tempo*2.5) {
+        for(var i = 9; i < 25; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(g_tempo*2.5 < tempoLayerCounter && tempoLayerCounter < g_tempo*3) {
+        for(var i = 9; i < 25; i++){
+            changeColour(shapeArr[i], 0x000000);
+        }
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(g_tempo*3 < tempoLayerCounter && tempoLayerCounter < g_tempo*4) {
+        for(var i = 1; i < 9; i++){
+            changeColour(shapeArr[i], 0x000000);
+        }
+        changeColour(shapeArr[0], colour);
+    }
+    if(g_tempo*4 < tempoLayerCounter) {
+        changeColour(shapeArr[0], 0x000000);
+    }
+    if(tempoLayerCounter > g_tempo*4.5){
+        tempoLayerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -218,7 +373,7 @@ function changeColourLayer5() {
 }
 
 function changeColourLayer6() {
-    if(layerCounter > 5) {
+    if(beatLayerCounter == 2) {
         cubeCounter++;
         if(cubeCounter > 24)
             cubeCounter = 0;
@@ -226,9 +381,26 @@ function changeColourLayer6() {
 
     changeColour(shapeArr[cubeCounter], colour);
 
-    layerCounter++;
-    if(layerCounter > 6){
-        layerCounter = 0;
+    if(beatLayerCounter > 1){
+        beatLayerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
+
+function changeColourLayer66() {
+    if(tempoLayerCounter > g_tempo/25) {
+        cubeCounter++;
+        if(cubeCounter > 24)
+            cubeCounter = 0;
+    }
+
+    changeColour(shapeArr[cubeCounter], colour);
+
+    if(tempoLayerCounter > g_tempo/25){
+        tempoLayerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -237,7 +409,7 @@ function changeColourLayer6() {
 }
 
 function changeColourLayer7() {
-    if(layerCounter > 60) {
+    if(beatLayerCounter > 1) {
         cubeCounter++;
         if(cubeCounter > 25)
             cubeCounter = 0;
@@ -246,10 +418,27 @@ function changeColourLayer7() {
     for(var i = 0; i < cubeCounter; i++) {
         changeColour(shapeArr[i], colour);
     }
+    if(beatLayerCounter > 2){
+        beatLayerCounter = 0;
+        //wireframeLayerChange();
+        //randomWireframeChange();
+        randomWireframeLayerChange();
+        wireframeCounter++;
+    }
+}
 
-    layerCounter++;
-    if(layerCounter > 61){
-        layerCounter = 0;
+function changeColourLayer77() {
+    if(tempoLayerCounter > g_tempo) {
+        cubeCounter++;
+        if(cubeCounter > 25)
+            cubeCounter = 0;
+    }
+
+    for(var i = 0; i < cubeCounter; i++) {
+        changeColour(shapeArr[i], colour);
+    }
+    if(tempoLayerCounter > g_tempo+1){
+        tempoLayerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -259,7 +448,7 @@ function changeColourLayer7() {
 
 function changeColourLayer8() {
 
-    if(layerCounter > 5) {
+    if(tempoLayerCounter > 5) {
         if(reverse == false) {
             cubeCounter++;
             wait8 = 0;
@@ -287,10 +476,8 @@ function changeColourLayer8() {
                 changeColour(shapeArr[i], colour);
         }
     }
-
-    layerCounter++;
-    if(layerCounter > 6){
-        layerCounter = 0;
+    if(tempoLayerCounter > 6){
+        tempoLayerCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();

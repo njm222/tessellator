@@ -4,7 +4,7 @@
   <title>Example of the Authorization Code flow with Spotify</title>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <style type="text/css">
-    #login, #loggedin {
+    #login, #loggedin, #visualizer-main, #paused {
       display: none;
     }
     .text-overflow {
@@ -13,11 +13,29 @@
       white-space: nowrap;
       width: 500px;
     }
+    canvas {
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
+    #visualizer-main .container {
+        height: 4%;
+    }
+    #visualizer-main .container .row .media {
+        display: flex;
+    }
+    #visualizer-main .container .row .media .media-body {
+        padding: 0 3%;
+    }
+    #visualizer-main #player-info,
+    #visualizer-main #analysis-info {
+        width: 50%;
+    }
   </style>
 </head>
 
 <body>
-<div class="container">
+<div id="main-container" class="container">
   <div id="login">
     <h1>This is an example of the Authorization Code flow</h1>
     <a href="/login" class="btn btn-primary">Log in with Spotify</a>
@@ -32,11 +50,36 @@
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
       </div>
       <div class="col-md-6">
-        <a href="/visual-main.html" class="btn btn-primary" id="toVisualizer">Get to the good stuff!!!</a>
+        <button class="btn btn-primary" id="toVisualizer">Get to the good stuff!!!</button>
       </div>
     </div>
   </div>
 </div>
+<div id="visualizer-main">
+    <div class="container">
+        <div class="row">
+            <div class="media">
+                <button class="btn btn-secondary" id="toLoggedIn">Back</button>
+                <div id="player-info"></div>
+                <div id="analysis-info"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="analysis-info-template" type="text/x-handlebars-template">
+    <div class="media-body">
+        <div>Tempo:<strong>{{tempo}}</strong></div>
+        <div>Loudness:<strong>{{loudness}}</strong></div>
+    </div>
+</script>
+
+<script id="player-info-template" type="text/x-handlebars-template">
+    <div class="media-body">
+        <div id="playing">Playing <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong></div>
+        <div id="paused">Paused with <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong> queued</div>
+    </div>
+</script>
 
 <script id="user-profile-template" type="text/x-handlebars-template">
   <h1>Logged in as {{display_name}}</h1>
@@ -68,7 +111,28 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/three.js"></script>
+<script src="js/OrbitControls.js"></script>
 <script>
+    //Visualizer stuff below
+    var gotVisualizerScripts = false;
+    var g_tempo = 0;
+    var g_section = 0;
+    var g_sections = 0;
+    var g_bar = 0;
+    var g_bars = 0;
+    var g_beat = 0;
+    var g_beats = 0;
+    var trackCounter = 0;
+    var trackEnd = 999999;
+    var isPaused = true;
+
+    function incrementTrackCounter() {
+        trackCounter+= 10;
+    }
+
+    var doIncrementTrackCounter = setInterval(incrementTrackCounter, 10);
+
     (function() {
         /**
          * Obtains parameters from the hash of the URL
@@ -89,6 +153,12 @@
         var oauthSource = document.getElementById('oauth-template').innerHTML,
             oauthTemplate = Handlebars.compile(oauthSource),
             oauthPlaceholder = document.getElementById('oauth');
+        var playerInfoSource = document.getElementById('player-info-template').innerHTML,
+            playerInfoTemplate = Handlebars.compile(playerInfoSource),
+            playerInfoPlaceholder = document.getElementById('player-info');
+        var analysisInfoSource = document.getElementById('analysis-info-template').innerHTML,
+            analysisInfoTemplate = Handlebars.compile(analysisInfoSource),
+            analysisInfoPlaceholder = document.getElementById('analysis-info');
         var params = getHashParams();
         var access_token = params.access_token,
             refresh_token = params.refresh_token,
@@ -110,14 +180,162 @@
                     success: function(response) {
                         userProfilePlaceholder.innerHTML = userProfileTemplate(response);
                         $('#login').hide();
+                        $('#visualizer-main').hide();
                         $('#loggedin').show();
+                        $.getScript("https://sdk.scdn.co/spotify-player.js");
+
+                        window.onSpotifyWebPlaybackSDKReady = () => {
+                            const token = access_token;
+                            const player = new Spotify.Player({
+                                name: 'Visualizer Player',
+                                getOAuthToken: cb => { cb(token); }
+                            });
+
+                            // Error handling
+                            player.addListener('initialization_error', ({ message }) => { console.error(message); });
+                            player.addListener('authentication_error', ({ message }) => { console.error(message); });
+                            player.addListener('account_error', ({ message }) => { console.error(message); });
+                            player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+                            // Playback status updates
+                            player.addListener('player_state_changed', state => {
+                                console.log(state);
+                                trackCounter = state.position;
+                                isPaused = state.paused;
+
+                                if (trackCounter < 100){
+                                    g_section = 0;
+                                    g_bar = 0;
+                                    g_beat = 0;
+                                }
+                                trackEnd = state.duration;
+
+                                $.ajax({
+                                    url: 'https://api.spotify.com/v1/me/player',
+                                    headers: {
+                                        'Authorization': 'Bearer ' + access_token
+                                    },
+                                    success: function(response) {
+                                        console.log('player response');
+                                        console.log(response);
+
+                                        playerInfoPlaceholder.innerHTML = playerInfoTemplate(response);
+                                        $.ajax({
+                                            url: 'https://api.spotify.com/v1/audio-features/' + response.item.id,
+                                            headers: {
+                                                'Authorization': 'Bearer ' + access_token
+                                            },
+                                            success: function(response) {
+                                                console.log('features response');
+                                                console.log(response);
+
+                                                analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);
+                                                g_tempo = response.tempo/60;
+                                                $.ajax({
+                                                    url: response.analysis_url,
+                                                    headers: {
+                                                        'Authorization': 'Bearer ' + access_token
+                                                    },
+                                                    success: function (response) {
+                                                        console.log('analysis response');
+
+                                                        g_bars = response.bars;
+                                                        g_beats = response.beats;
+                                                        g_sections = response.sections;
+
+                                                        console.log(g_bars);
+                                                        console.log(g_beats);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+
+                            // Ready
+                            player.addListener('ready', ({ device_id }) => {
+                                console.log('Ready with Device ID', device_id);
+                                $.ajax({
+                                    url: 'https://api.spotify.com/v1/me/top/tracks',
+                                    headers: {
+                                        'Authorization': 'Bearer ' + access_token
+                                    },
+                                    success: function(response) {
+                                        play({
+                                            spotify_uri: response.items[Math.floor(Math.random() * 10)].uri,
+                                            playerInstance: (player),
+                                        });
+                                    }
+                                });
+                            });
+
+                            // Not Ready
+                            player.addListener('not_ready', ({ device_id }) => {
+                                console.log('Device ID has gone offline', device_id);
+                            });
+
+                            // Connect to the player!
+                            player.connect();
+                            const play = ({
+                                              spotify_uri,
+                                              playerInstance: {
+                                                  _options: {
+                                                      getOAuthToken,
+                                                      id
+                                                  }
+                                              }
+                                          }) => {
+                                getOAuthToken(access_token => {
+                                    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+                                        method: 'PUT',
+                                        body: JSON.stringify({ uris: [spotify_uri] }),
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${access_token}`
+                                        },
+                                    });
+                                });
+                            };
+                        };
+
                     }
                 });
             } else {
                 // render initial screen
                 $('#login').show();
+                $('#visualizer-main').hide();
                 $('#loggedin').hide();
             }
+            document.getElementById('toVisualizer').addEventListener('click', function () {
+                $('#loggedin').hide();
+                $('#main-container').hide();
+                $('#visualizer-main').show();
+                $.ajax({
+                    url: 'https://api.spotify.com/v1/me',
+                    headers: {
+                        'Authorization': 'Bearer ' + access_token
+                    },
+                    success: function(response) {
+                        playerInfoPlaceholder.innerHTML = playerInfoTemplate(response);
+                    }
+                });
+
+
+                if(!gotVisualizerScripts) {
+                    $.getScript("js/LiveAudio.js");
+                    $.getScript("js/ColourLayerChanger.js");
+                    $.getScript("js/ModeChanger.js");
+                    $.getScript("js/main.js");
+                    $.getScript("js/KeyboardInput.js");
+                }
+            });
+            document.getElementById('toLoggedIn').addEventListener('click', function () {
+                $('#login').hide();
+                $('#visualizer-main').hide();
+                $('#main-container').show();
+                $('#loggedin').show();
+            });
             document.getElementById('obtain-new-token').addEventListener('click', function() {
                 $.ajax({
                     url: '/refresh_token',

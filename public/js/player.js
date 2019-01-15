@@ -1,7 +1,7 @@
 window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = 'BQAM5VyEr_hkm_7jgF4IcaWGkGmF_O1B413f5CXPXIA3LxwIZZFIrvKpHDavaOHh2cWEnFXwRIgOLw0bioSRJU0rf15hYbWNHw4pisDhv6e7ItKEOdOuh997ffsiTcqqreubhnBvSv2l8DHyfAYZ9oKt3WKaEpcD1Fg\n';
+    const token = 'BQDg_yfV9CUxwhJulqjnvXYI3BUpzJ4riO05wrK53jENJjgo0Xm0Q8cBeP3p3tuyKS63Ndc1N3wt2JpIk7NyHulB4iri84q8rvPTln9bw0n9zg0iikQqmS43MRQdp7zdBP8rLPmdcRSW4hqyUB-Gx4pGSPXQ2pmPNeBXfqA8zn1WJw';
     const player = new Spotify.Player({
-        name: 'Web Playback Player',
+        name: 'Visualizer Player',
         getOAuthToken: cb => { cb(token); }
     });
 
@@ -12,13 +12,15 @@ window.onSpotifyWebPlaybackSDKReady = () => {
     player.addListener('playback_error', ({ message }) => { console.error(message); });
 
     // Playback status updates
-    player.addListener('player_state_changed', state => { console.log(state); });
+    player.addListener('player_state_changed', state => {
+        console.log(state);
+    });
 
     // Ready
     player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
         play({
-            spotify_uri: 'spotify:track:798mI116dJdZ12n9CkdflI',
+            spotify_uri: 'spotify:track:0GMAjrdGex5LHbLBzexcpa',
             playerInstance: (player),
         });
     });

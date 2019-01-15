@@ -3,37 +3,42 @@ const width = window.innerWidth;
 const height = window.innerHeight;
 
 //Setup Variables
+var currFreq = 0;
+var avFreq = 0;
+
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer();
-var listener = new THREE.AudioListener();
 var controls = new THREE.OrbitControls(camera);
 
-//controls.autoRotate = true;
-
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+document.getElementById("visualizer-main").appendChild(renderer.domElement);
 camera.position.z = 90;
 
 var colour = new THREE.Color("rgb(256,256,256)");
 var basicMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
 var depthMaterial = new THREE.MeshDepthMaterial( { wireframe: true } );
 
-//Cube Shape
+//Geometry
 var cubeGeo = new THREE.BoxGeometry(10,10,10);
-var shape = new THREE.Mesh(cubeGeo, basicMaterial);
+var sphereGeo = new THREE.SphereGeometry(5, 32, 32);
+var torusGeo = new THREE.TorusGeometry(10, 3, 16, 100);
 
 //Light
 var l1 = new THREE.PointLight(0x123124);
 l1.position.set(300, 200);
 scene.add(l1);
 
-//Cube Grid
 var shapeArr = [];
+//Cube Grid
 for(var i = 0; i < 25; i++) {
     shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000, } )));
     scene.add(shapeArr[i]);
 }
+/*for(var i = 0; i < 25; i++) {
+    shapeArr.push(new THREE.Points(torusGeo, new THREE.PointsMaterial({size: 20, color: 0x000000})));
+    scene.add(shapeArr[i]);
+}*/
 //shapeArr[0] is the center (layer 0)
 shapeArr[0].position.z = -40;
 //layer 1
@@ -111,30 +116,10 @@ shapeArr[24].position.y = 20;
 shapeArr[24].position.x = -40;
 //end layer 2
 
-//Sound
-camera.add(listener);
-//Create audio source
-var sound = new THREE.Audio(listener);
-
-
-//colour = 6 song5 freq = 10 Layer4
-//colour = 8 song4 freq = 8 Layer1
-//colour = 7 song3 freq = 9 Layer3
-//colour = 1 song2 freq = 7
-//colour = 8 song7 freq = 9 Layer2
 var layerKey = 6;
 var colourKey = 7;
 var freqKey = 10;
-//audio object's buffer
-var audioLoader = new THREE.AudioLoader();
-audioLoader.load('sounds/song7.mp3', function (buffer) {
-    sound.setBuffer(buffer);
-    sound.setLoop(true);
-    sound.setVolume(0.8);
-    sound.play();
-})
-var analyser = new THREE.AudioAnalyser(sound, 32);
-var data = analyser.getAverageFrequency();
+
 
 //Variable width/height canvas
 window.addEventListener('resize', re => {
@@ -157,6 +142,10 @@ function rgbToHex(r,g,b) {
 
 function changeColour(currShape, currColour) {
     currShape.material.color.setHex(currColour);
+}
+
+function changePoints(currShape, currPoints) {
+    currShape.material.size = currPoints;
 }
 
 function rotateShape(shape) {
@@ -192,16 +181,28 @@ function rotateShape(shape) {
 //Rendering
 var run = function(){
     requestAnimationFrame(run);
-
     controls.update();
-    currFreq = analyser.getFrequencyData();
-    avFreq = analyser.getAverageFrequency();
 
-    changeFreqMode();
-    //changeColourMode();
-    //changeLayerMode();
 
-    if (sound.isPlaying) {
+    /*navigator.mediaDevices.enumerateDevices().then(function (devices) { console.log(devices)
+    });*/
+    //console.log(frequencyData);
+
+
+    if (!isPaused && gotVisualizerScripts) {
+
+        analyser.getByteFrequencyData(frequencyData);
+        currFreq = frequencyData;
+        for(var i = 0; i < bufferLength; i++){
+            avFreq = avFreq + frequencyData[i];
+        }
+        avFreq = avFreq/bufferLength;
+
+        changeLayer();
+
+        changeFreqMode();
+        changeColourMode();
+        changeLayerMode();
 
         for(var i = 0; i < 25; i++) {
             rotateShape(shapeArr[i]);
@@ -235,10 +236,6 @@ var run = function(){
             default:
                 changeColourLayer1();
         }
-
-        /*document.onkeydown = function (e) {
-            currKey = e.key;
-        };*/
         switch (colourKey) {
             case 1:
                 colour = rgbToHex(avFreq, avFreq, avFreq*2);
@@ -253,7 +250,7 @@ var run = function(){
                 colour = rgbToHex(avFreq, avFreq, avFreq);
                 break;
             case 5:
-                colour = rgbToHex(currFreq[1], currFreq[3], currFreq[5]);
+                colour = rgbToHex(currFreq[4], currFreq[8], currFreq[12]);
                 break;
             case 6:
                 colour = rgbToHex(avFreq*2, avFreq*2, avFreq);
@@ -265,14 +262,11 @@ var run = function(){
                 colour = rgbToHex(avFreq, avFreq*2, avFreq*2);
                 break;
             case 9:
-                colour = rgbToHex(currFreq[10], currFreq[9], currFreq[8]);
+                colour = rgbToHex(currFreq[13], currFreq[9], currFreq[5]);
                 break;
             default:
-                colour = rgbToHex(currFreq[1], currFreq[3], currFreq[5]);
+                colour = rgbToHex(currFreq[4], currFreq[8], currFreq[12]);
         }
-        /*console.log(currKey + " || " + avFreq);
-        console.log(currFreq.toString());*/
-
     }
     renderer.render(scene, camera);
 }

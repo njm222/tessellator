@@ -38,7 +38,7 @@
     #user-profile {
         margin-bottom: 30px;
     }
-    #main-container #login {
+    #main-container{
         text-align: center;
     }
   </style>
@@ -62,6 +62,9 @@
       <!--<div class="col-md-6">
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
       </div>-->
+        <div class="col-md-12">
+            <p>Use an external speaker or microphone for best results</p>
+        </div>
       <div class="col-md-12">
         <button class="btn btn-primary" id="toVisualizer">Get to the good stuff!!!</button>
       </div>
@@ -95,7 +98,7 @@
 </script>
 
 <script id="user-profile-template" type="text/x-handlebars-template">
-  <h1>Welcome {{display_name}}</h1>
+  <h1>Hello {{display_name}}</h1>
   <div class="media">
     <div class="pull-left">
       <img class="media-object" width="150" src="{{images.0.url}}" />

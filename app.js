@@ -7,7 +7,7 @@ var port = (process.env.PORT || 5000);
 
 var client_id = 'a4b15d285e5348be8d635b1235d3dde1'; // Your client id
 var client_secret = 'b4eb8a6eb0094c1aa9517dd61b132ca1'; // Your secret
-var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
+var redirect_uri = 'https://tessellator.herokuapp.com/callback'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters

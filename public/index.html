@@ -59,10 +59,10 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
+      <!--<div class="col-md-6">
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
-      </div>
-      <div class="col-md-6">
+      </div>-->
+      <div class="col-md-12">
         <button class="btn btn-primary" id="toVisualizer">Get to the good stuff!!!</button>
       </div>
         <div class="col-md-12">
@@ -345,12 +345,12 @@
                     $.getScript("js/KeyboardInput.js");
                 }
             });
-            document.getElementById('toLoggedIn').addEventListener('click', function () {
+            /*document.getElementById('toLoggedIn').addEventListener('click', function () {
                 $('#login').hide();
                 $('#visualizer-main').hide();
                 $('#main-container').show();
                 $('#loggedin').show();
-            });
+            });*/
             document.getElementById('obtain-new-token').addEventListener('click', function() {
                 $.ajax({
                     url: '/refresh_token',

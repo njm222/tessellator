@@ -1,7 +1,9 @@
 document.addEventListener("keydown", function (event) {
     var keypress = event.key.toUpperCase();
 
-    if(keypress == 1)
+    if(keypress == 0)
+        layerKey = 0;
+    else if(keypress == 1)
         layerKey = 1;
     else if(keypress == 2)
         layerKey = 2;
@@ -36,5 +38,6 @@ document.addEventListener("keydown", function (event) {
     else if(keypress == "C")
         colourKey = 9;
 
-    console.log("colour mode: " + colourKey + "     layer mode: " + layerKey);
+    console.log("colour mode: " + colourKey + "\nlayer mode: " + layerKey);
 })
+

@@ -23,6 +23,15 @@ var depthMaterial = new THREE.MeshDepthMaterial( { wireframe: true } );
 var cubeGeo = new THREE.BoxGeometry(10,10,10);
 var sphereGeo = new THREE.SphereGeometry(5, 32, 32);
 var torusGeo = new THREE.TorusGeometry(10, 3, 16, 100);
+var circleGeo = new THREE.CircleGeometry( 5, 32 );
+var octaGeo = new THREE.OctahedronGeometry(10, 0);
+var octaGeo1 = new THREE.OctahedronGeometry(10, 1);
+var octaGeo2 = new THREE.OctahedronGeometry(10, 2);
+var octaGeo3 = new THREE.OctahedronGeometry(10, 3);
+var octaGeo4 = new THREE.OctahedronGeometry(10, 4);
+
+
+
 
 //Light
 var l1 = new THREE.PointLight(0x123124);
@@ -35,88 +44,95 @@ for(var i = 0; i < 25; i++) {
     shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000, } )));
     scene.add(shapeArr[i]);
 }
+
 /*for(var i = 0; i < 25; i++) {
-    shapeArr.push(new THREE.Points(torusGeo, new THREE.PointsMaterial({size: 20, color: 0x000000})));
+    shapeArr.push(new THREE.Points(octaGeo, new THREE.PointsMaterial({size: 1, color: 0x000000})));
     scene.add(shapeArr[i]);
 }*/
-//shapeArr[0] is the center (layer 0)
-shapeArr[0].position.z = -40;
+
+function positionShape() {
+    //shapeArr[0] is the center (layer 0)
+    shapeArr[0].position.z = -40;
+
 //layer 1
-shapeArr[1].position.y = 20
-shapeArr[1].position.x = -20;
-shapeArr[1].position.z = -20;
+    shapeArr[1].position.y = 20
+    shapeArr[1].position.x = -20;
+    shapeArr[1].position.z = -20;
 
-shapeArr[2].position.y = 20;
-shapeArr[2].position.z = -20;
+    shapeArr[2].position.y = 20;
+    shapeArr[2].position.z = -20;
 
-shapeArr[3].position.y = 20;
-shapeArr[3].position.x = 20;
-shapeArr[3].position.z = -20;
+    shapeArr[3].position.y = 20;
+    shapeArr[3].position.x = 20;
+    shapeArr[3].position.z = -20;
 
-shapeArr[4].position.x = 20;
-shapeArr[4].position.z = -20;
+    shapeArr[4].position.x = 20;
+    shapeArr[4].position.z = -20;
 
-shapeArr[5].position.y = -20;
-shapeArr[5].position.x = 20;
-shapeArr[5].position.z = -20;
+    shapeArr[5].position.y = -20;
+    shapeArr[5].position.x = 20;
+    shapeArr[5].position.z = -20;
 
-shapeArr[6].position.y = -20;
-shapeArr[6].position.z = -20;
+    shapeArr[6].position.y = -20;
+    shapeArr[6].position.z = -20;
 
-shapeArr[7].position.y = -20;
-shapeArr[7].position.x = -20;
-shapeArr[7].position.z = -20;
+    shapeArr[7].position.y = -20;
+    shapeArr[7].position.x = -20;
+    shapeArr[7].position.z = -20;
 
-shapeArr[8].position.x = -20;
-shapeArr[8].position.z = -20;
+    shapeArr[8].position.x = -20;
+    shapeArr[8].position.z = -20;
 //end layer 1
 //layer 2
-shapeArr[9].position.y = 40;
-shapeArr[9].position.x = -40;
+    shapeArr[9].position.y = 40;
+    shapeArr[9].position.x = -40;
 
-shapeArr[10].position.y = 40;
-shapeArr[10].position.x = -20;
+    shapeArr[10].position.y = 40;
+    shapeArr[10].position.x = -20;
 
-shapeArr[11].position.y = 40;
+    shapeArr[11].position.y = 40;
 
-shapeArr[12].position.y = 40;
-shapeArr[12].position.x = 20;
+    shapeArr[12].position.y = 40;
+    shapeArr[12].position.x = 20;
 
-shapeArr[13].position.y = 40;
-shapeArr[13].position.x = 40;
+    shapeArr[13].position.y = 40;
+    shapeArr[13].position.x = 40;
 
-shapeArr[14].position.y = 20;
-shapeArr[14].position.x = 40;
+    shapeArr[14].position.y = 20;
+    shapeArr[14].position.x = 40;
 
-shapeArr[15].position.x = 40;
+    shapeArr[15].position.x = 40;
 
-shapeArr[16].position.y = -20;
-shapeArr[16].position.x = 40;
+    shapeArr[16].position.y = -20;
+    shapeArr[16].position.x = 40;
 
-shapeArr[17].position.y = -40;
-shapeArr[17].position.x = 40;
+    shapeArr[17].position.y = -40;
+    shapeArr[17].position.x = 40;
 
-shapeArr[18].position.y = -40;
-shapeArr[18].position.x = 20;
+    shapeArr[18].position.y = -40;
+    shapeArr[18].position.x = 20;
 
-shapeArr[19].position.y = -40;
+    shapeArr[19].position.y = -40;
 
-shapeArr[20].position.y = -40;
-shapeArr[20].position.x = -20;
+    shapeArr[20].position.y = -40;
+    shapeArr[20].position.x = -20;
 
-shapeArr[21].position.y = -40;
-shapeArr[21].position.x = -40;
+    shapeArr[21].position.y = -40;
+    shapeArr[21].position.x = -40;
 
-shapeArr[22].position.y = -20;
-shapeArr[22].position.x = -40;
+    shapeArr[22].position.y = -20;
+    shapeArr[22].position.x = -40;
 
-shapeArr[23].position.x = -40;
+    shapeArr[23].position.x = -40;
 
-shapeArr[24].position.y = 20;
-shapeArr[24].position.x = -40;
+    shapeArr[24].position.y = 20;
+    shapeArr[24].position.x = -40;
 //end layer 2
+}
 
-var layerKey = 6;
+positionShape();
+
+var layerKey = 444;
 var colourKey = 7;
 var freqKey = 10;
 
@@ -146,6 +162,12 @@ function changeColour(currShape, currColour) {
 
 function changePoints(currShape, currPoints) {
     currShape.material.size = currPoints;
+}
+
+function changeDetail(currDetail, currShape) {
+    scene.remove(shapeArr[currShape]);
+    shapeArr[currShape] = new THREE.Points(new THREE.OctahedronGeometry(10, currDetail), new THREE.PointsMaterial({size: 1, color: 0x000000}));
+    scene.add(shapeArr[currShape]);
 }
 
 function rotateShape(shape) {
@@ -193,12 +215,13 @@ var run = function(){
 
         analyser.getByteFrequencyData(frequencyData);
         currFreq = frequencyData;
-        for(var i = 0; i < bufferLength; i++){
+        for(let i = 0; i < bufferLength; i++){
             avFreq = avFreq + frequencyData[i];
         }
         avFreq = avFreq/bufferLength;
 
-        changeLayer();
+        changeBeat();
+        changeTatum();
 
         changeFreqMode();
         changeColourMode();
@@ -209,6 +232,9 @@ var run = function(){
         }
 
         switch (layerKey) {
+            /*case 0:
+                changeColourLayer000();
+                break;*/
             case 1:
                 changeColourLayer1();
                 break;
@@ -269,7 +295,7 @@ var run = function(){
         }
     }
     renderer.render(scene, camera);
-}
+};
 run();
 
 /* Idea:

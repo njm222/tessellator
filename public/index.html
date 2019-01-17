@@ -4,7 +4,7 @@
   <title>Example of the Authorization Code flow with Spotify</title>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <style type="text/css">
-    #login, #loggedin, #visualizer-main, #paused {
+    #login, #loggedin, #visualizer-main, #paused, #oauth {
       display: none;
     }
     .text-overflow {
@@ -12,6 +12,9 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       width: 500px;
+    }
+    a:hover, a:focus {
+        text-decoration: none;
     }
     canvas {
         width: 100%;
@@ -31,6 +34,10 @@
     #visualizer-main #analysis-info {
         width: 50%;
     }
+
+    #user-profile {
+        margin-bottom: 30px;
+    }
   </style>
 </head>
 
@@ -43,8 +50,11 @@
   <div id="loggedin">
     <div id="user-profile">
     </div>
+    <div id="player-info">
+    </div>
     <div id="oauth">
     </div>
+
     <div class="row">
       <div class="col-md-6">
         <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
@@ -82,21 +92,13 @@
 </script>
 
 <script id="user-profile-template" type="text/x-handlebars-template">
-  <h1>Logged in as {{display_name}}</h1>
+  <h1>Welcome {{display_name}}</h1>
   <div class="media">
     <div class="pull-left">
       <img class="media-object" width="150" src="{{images.0.url}}" />
     </div>
     <div class="media-body">
-      <dl class="dl-horizontal">
-        <dt>Display name</dt><dd class="clearfix">{{display_name}}</dd>
-        <dt>Id</dt><dd>{{id}}</dd>
-        <dt>Email</dt><dd>{{email}}</dd>
-        <dt>Spotify URI</dt><dd><a href="{{external_urls.spotify}}">{{external_urls.spotify}}</a></dd>
-        <dt>Link</dt><dd><a href="{{href}}">{{href}}</a></dd>
-        <dt>Profile Image</dt><dd class="clearfix"><a href="{{images.0.url}}">{{images.0.url}}</a></dd>
-        <dt>Country</dt><dd>{{country}}</dd>
-      </dl>
+        <button class="btn btn-secondary"><a target="_blank" href="{{external_urls.spotify}}">Open Web Player in a new tab</a></button>
     </div>
   </div>
 </script>
@@ -110,7 +112,7 @@
 </script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" src="js/three.js"></script>
 <script src="js/OrbitControls.js"></script>
 <script>
@@ -123,6 +125,10 @@
     var g_bars = 0;
     var g_beat = 0;
     var g_beats = 0;
+    var g_tatum = 0;
+    var g_tatums = 0;
+    var g_segment = 0;
+    var g_segments = 0;
     var trackCounter = 0;
     var trackEnd = 999999;
     var isPaused = true;
@@ -199,14 +205,16 @@
 
                             // Playback status updates
                             player.addListener('player_state_changed', state => {
-                                console.log(state);
+                                //console.log(state);
                                 trackCounter = state.position;
                                 isPaused = state.paused;
 
-                                if (trackCounter < 100){
+                                if (trackCounter < 10){
                                     g_section = 0;
                                     g_bar = 0;
                                     g_beat = 0;
+                                    g_tatum = 0;
+                                    g_segment = 0;
                                 }
                                 trackEnd = state.duration;
 
@@ -216,8 +224,8 @@
                                         'Authorization': 'Bearer ' + access_token
                                     },
                                     success: function(response) {
-                                        console.log('player response');
-                                        console.log(response);
+                                        //console.log('player response');
+                                        //console.log(response);
 
                                         playerInfoPlaceholder.innerHTML = playerInfoTemplate(response);
                                         $.ajax({
@@ -226,8 +234,8 @@
                                                 'Authorization': 'Bearer ' + access_token
                                             },
                                             success: function(response) {
-                                                console.log('features response');
-                                                console.log(response);
+                                                //console.log('features response');
+                                                //console.log(response);
 
                                                 analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);
                                                 g_tempo = response.tempo/60;
@@ -237,14 +245,15 @@
                                                         'Authorization': 'Bearer ' + access_token
                                                     },
                                                     success: function (response) {
-                                                        console.log('analysis response');
+                                                        //console.log('analysis response');
 
+                                                        g_sections = response.sections;
                                                         g_bars = response.bars;
                                                         g_beats = response.beats;
-                                                        g_sections = response.sections;
+                                                        g_tatums = response.tatums;
+                                                        g_segments = response.segments;
 
-                                                        console.log(g_bars);
-                                                        console.log(g_beats);
+                                                        //console.log(response);
                                                     }
                                                 });
                                             }
@@ -263,7 +272,7 @@
                                     },
                                     success: function(response) {
                                         play({
-                                            spotify_uri: response.items[Math.floor(Math.random() * 10)].uri,
+                                            spotify_uri: response.items[Math.floor(Math.random() * 20)].uri,
                                             playerInstance: (player),
                                         });
                                     }

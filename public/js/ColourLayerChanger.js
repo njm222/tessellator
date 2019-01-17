@@ -9,7 +9,14 @@ var recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
 var recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
 
 var beatEnd = 0;
-var beatLayerCounter = 0;
+var beatCounter = 0;
+
+var tatumEnd = 0;
+var tatumCounter = 0;
+
+var points = 1;
+var detail;
+var detailShape;
 
 function incrementLayerCounter() {
     tempoLayerCounter+= 0.01;
@@ -79,32 +86,134 @@ function wireframeLayerChange() {
 * Layer 2 = [9-24]
 */
 
-function changeLayer() {
-    beatEnd = (g_beats[g_beat]["start"] + g_beats[g_beat]["duration"])*1000;
+function changeBeat() {
+    beatEnd = (g_beats[g_beat]["start"] + g_beats[g_beat]["duration"]) * 1000;
 
     if(trackCounter > beatEnd) {
         g_beat++;
-        beatLayerCounter++;
+        beatCounter++;
+        //console.log("Beat increased: " + g_beat);
+    }
+}
+
+function changeTatum() {
+    tatumEnd = (g_tatums[g_tatum]["start"] + g_tatums[g_tatum]["duration"]) * 1000;
+
+    if(trackCounter > tatumEnd) {
+        g_tatum++;
+        tatumCounter++;
+        //console.log("Tatum increased: " + g_tatum);
+    }
+}
+
+function changeColourLayer001() {
+
+    if(beatCounter == 1){
+        changeColour(shapeArr[0], colour);
+    }
+    if(beatCounter == 2) {
+        for(var i = 1; i < 9; i++) {
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(beatCounter == 3) {
+        for(var i = 9; i < 25; i++) {
+            changeColour(shapeArr[i], colour);
+        }
+    }
+
+    if(beatCounter == 4) {
+        beatCounter = 0;
+    }
+
+    if(tatumCounter % 3 == 0) {
+        points = Math.floor(Math.random() * (13 - 1)) + 1;
+        detail = Math.floor(Math.random() * 3);
+        detailShape = Math.floor(Math.random() * 25);
+    }
+
+    if(tatumCounter == 4) {
+        //Morphing time
+        changeColour(shapeArr[0], 0x000000);
+        changeDetail(detail, 0);
+        positionShape();
+    }
+    if(tatumCounter == 8) {
+        //Morphing time
+        for (let i = 1; i < 9; i++) {
+            changeColour(shapeArr[i], 0x000000);
+            changeDetail(detail, i);
+        }
+        positionShape();
+    }
+    if(tatumCounter == 12) {
+        //Morphing time
+        for (let i = 9; i < 25; i++) {
+            changeColour(shapeArr[i], 0x000000);
+            changeDetail(detail, i);
+        }
+        positionShape();
+    }
+
+    if(tatumCounter > 15) {
+        tatumCounter = 0;
+        for(var i = 0; i < 25; i++) {
+            changePoints(shapeArr[i], points);
+        }
+    }
+}
+
+function changeColourLayer000() {
+    if(beatCounter == 4) {
+        beatCounter = 0;
+    }
+
+    if(beatCounter == 1){
+        changeColour(shapeArr[0], colour);
+    }
+    if(beatCounter == 2) {
+        for(var i = 1; i < 9; i++) {
+            changeColour(shapeArr[i], colour);
+        }
+    }
+    if(beatCounter == 3) {
+        for(var i = 9; i < 25; i++) {
+            changeColour(shapeArr[i], colour);
+        }
+    }
+
+    if(tatumCounter == 2) {
+        detail = Math.floor(Math.random() * (5 - 1)) + 1;
+        detailShape = Math.floor(Math.random() * 25);
+    }
+
+    if(tatumCounter > 3) {
+        //Morphing time
+        tatumCounter = 0;
+        points = Math.floor(Math.random() * (16 - 1)) + 1;
+        for(var i = 0; i < 25; i++) {
+            changePoints(shapeArr[i], points);
+        }
     }
 }
 
 function changeColourLayer1() {
-    if(beatLayerCounter > 0){
+    if(beatCounter > 0){
         changeColour(shapeArr[0], colour);
     }
 
-    if(beatLayerCounter > 1) {
+    if(beatCounter > 1) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(beatLayerCounter > 2) {
+    if(beatCounter > 2) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(beatLayerCounter > 3){
-        beatLayerCounter = 0;
+    if(beatCounter > 3){
+        beatCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -137,21 +246,21 @@ function changeColourLayer11() {
 }
 
 function changeColourLayer2() {
-    if(beatLayerCounter <= 1){
+    if(beatCounter <= 1){
         changeColour(shapeArr[0], colour);
     }
-    if(1 < beatLayerCounter && beatLayerCounter <= 3) {
+    if(1 < beatCounter && beatCounter <= 3) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(3 < beatLayerCounter && beatLayerCounter <= 6) {
+    if(3 < beatCounter && beatCounter <= 6) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(beatLayerCounter > 8){
-        beatLayerCounter = 0;
+    if(beatCounter > 8){
+        beatCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -183,21 +292,21 @@ function changeColourLayer22() {
 }
 
 function changeColourLayer3() {
-    if(beatLayerCounter >= 0){
+    if(beatCounter >= 0){
         changeColour(shapeArr[0], colour);
     }
-    if(beatLayerCounter >= 1) {
+    if(beatCounter >= 1) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(beatLayerCounter >= 2) {
+    if(beatCounter >= 2) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(beatLayerCounter >= 3){
-        beatLayerCounter = 0;
+    if(beatCounter >= 3){
+        beatCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -230,29 +339,29 @@ function changeColourLayer33() {
 
 //go middle out then repeat
 function changeColourLayer4() {
-    if (beatLayerCounter <= 2) {
+    if (beatCounter <= 2) {
         for(var i = 0; i < 25; i++) {
             changeColour(shapeArr[i], 0x000000)
         }
     }
-    if(2 <= beatLayerCounter && beatLayerCounter < 4){
+    if(2 <= beatCounter && beatCounter < 4){
         for(var i = 1; i < 25; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         changeColour(shapeArr[0], colour);
     }
-    if(4 <= beatLayerCounter && beatLayerCounter < 7) {
+    if(4 <= beatCounter && beatCounter < 7) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(7 <= beatLayerCounter) {
+    if(7 <= beatCounter) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(10 < beatLayerCounter){
-        beatLayerCounter = 0;
+    if(10 < beatCounter){
+        beatCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -293,20 +402,20 @@ function changeColourLayer44() {
 
 //colour change mode 5 = go middle out then back to middle
 function changeColourLayer5() {
-    if(beatLayerCounter <= 2){
+    if(beatCounter <= 2){
         changeColour(shapeArr[0], colour);
     }
-    if(2 <= beatLayerCounter && beatLayerCounter <= 5) {
+    if(2 <= beatCounter && beatCounter <= 5) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(5 <= beatLayerCounter && beatLayerCounter <= 8) {
+    if(5 <= beatCounter && beatCounter <= 8) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(8 < beatLayerCounter && beatLayerCounter <= 10) {
+    if(8 < beatCounter && beatCounter <= 10) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], 0x000000);
         }
@@ -314,17 +423,17 @@ function changeColourLayer5() {
             changeColour(shapeArr[i], colour);
         }
     }
-    if(10 < beatLayerCounter && beatLayerCounter <= 12) {
+    if(10 < beatCounter && beatCounter <= 12) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], 0x000000);
         }
         changeColour(shapeArr[0], colour);
     }
-    if(12 < beatLayerCounter) {
+    if(12 < beatCounter) {
         changeColour(shapeArr[0], 0x000000);
     }
-    if(beatLayerCounter > 14){
-        beatLayerCounter = 0;
+    if(beatCounter > 14){
+        beatCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -373,7 +482,7 @@ function changeColourLayer55() {
 }
 
 function changeColourLayer6() {
-    if(beatLayerCounter == 2) {
+    if(beatCounter == 2) {
         cubeCounter++;
         if(cubeCounter > 24)
             cubeCounter = 0;
@@ -381,8 +490,8 @@ function changeColourLayer6() {
 
     changeColour(shapeArr[cubeCounter], colour);
 
-    if(beatLayerCounter > 1){
-        beatLayerCounter = 0;
+    if(beatCounter > 1){
+        beatCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -409,7 +518,7 @@ function changeColourLayer66() {
 }
 
 function changeColourLayer7() {
-    if(beatLayerCounter > 1) {
+    if(beatCounter > 1) {
         cubeCounter++;
         if(cubeCounter > 25)
             cubeCounter = 0;
@@ -418,8 +527,8 @@ function changeColourLayer7() {
     for(var i = 0; i < cubeCounter; i++) {
         changeColour(shapeArr[i], colour);
     }
-    if(beatLayerCounter > 2){
-        beatLayerCounter = 0;
+    if(beatCounter > 2){
+        beatCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();

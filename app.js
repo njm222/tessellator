@@ -3,6 +3,7 @@ var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+var port = (process.env.PORT || 5000);
 
 var client_id = 'a4b15d285e5348be8d635b1235d3dde1'; // Your client id
 var client_secret = 'b4eb8a6eb0094c1aa9517dd61b132ca1'; // Your secret
@@ -141,5 +142,5 @@ app.get('/refresh_token', function(req, res) {
 });
 
 module.exports = app;
-console.log('Listening on 8080');
-app.listen(8080);
+console.log('Listening on ' + port);
+app.listen(5000);

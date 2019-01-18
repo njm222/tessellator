@@ -6,14 +6,14 @@ var cookieParser = require('cookie-parser');
 var port = (process.env.PORT || 5000);
 
 //local
-var client_id = '95d690a7b1ce48da9ba8fe7042a953d3'; // Your client id
+/*var client_id = '95d690a7b1ce48da9ba8fe7042a953d3'; // Your client id
 var client_secret = '9bcb3d57b4294fa987b40fc9461deb9a'; // Your secret
-var redirect_uri = 'http://localhost:5000/callback'; // Your redirect uri
+var redirect_uri = 'http://localhost:5000/callback'; // Your redirect uri*/
 
 //live
-/*var client_id = 'a4b15d285e5348be8d635b1235d3dde1'; // Your client id
+var client_id = 'a4b15d285e5348be8d635b1235d3dde1'; // Your client id
 var client_secret = 'b4eb8a6eb0094c1aa9517dd61b132ca1'; // Your secret
-var redirect_uri = 'https://tessellator.herokuapp.com/callback'; // Your redirect uri*/
+var redirect_uri = 'https://tessellator.herokuapp.com/callback'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters

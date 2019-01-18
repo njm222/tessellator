@@ -512,8 +512,18 @@ function changeColourLayer55() {
 function changeColourLayer6() {
     if(beatCounter == 2) {
         cubeCounter++;
-        if(cubeCounter > 24)
+        if(cubeCounter > 24) {
             cubeCounter = 0;
+            for (let i = 9; i < 25; i++) {
+                changeColour(shapeArr[i], 0x000000);
+            }
+        } else if(cubeCounter > 8) {
+            for (let i = 1; i < 9; i++){
+                changeColour(shapeArr[i], 0x000000);
+            }
+        } else if(cubeCounter > 0) {
+            changeColour(shapeArr[0], 0x000000);
+        }
     }
 
     changeColour(shapeArr[cubeCounter], colour);

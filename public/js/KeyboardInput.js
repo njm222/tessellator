@@ -19,6 +19,8 @@ document.addEventListener("keydown", function (event) {
         layerKey = 7;
     else if(keypress == 8)
         layerKey = 8;
+    else if(keypress == 9)
+        layerKey = 9;
     else if(keypress == "Q")
         colourKey = 1;
     else if(keypress == "A")

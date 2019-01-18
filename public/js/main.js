@@ -21,7 +21,6 @@ var depthMaterial = new THREE.MeshDepthMaterial( { wireframe: true } );
 
 //Geometry
 var cubeGeo = new THREE.BoxGeometry(10,10,10);
-var sphereGeo = new THREE.SphereGeometry(5, 32, 32);
 var torusGeo = new THREE.TorusGeometry(10, 3, 16, 100);
 var circleGeo = new THREE.CircleGeometry( 5, 32 );
 var octaGeo = new THREE.OctahedronGeometry(10, 0);
@@ -40,15 +39,17 @@ scene.add(l1);
 
 var shapeArr = [];
 //Cube Grid
-for(var i = 0; i < 25; i++) {
-    shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000, } )));
-    scene.add(shapeArr[i]);
+if((Math.random() * 3) > 1) {
+    for(var i = 0; i < 25; i++) {
+        shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000 } )));
+        scene.add(shapeArr[i]);
+    }
+} else {
+    for(var i = 0; i < 25; i++) {
+        shapeArr.push(new THREE.Points(octaGeo, new THREE.PointsMaterial({size: 1, color: 0x000000})));
+        scene.add(shapeArr[i]);
+    }
 }
-
-/*for(var i = 0; i < 25; i++) {
-    shapeArr.push(new THREE.Points(octaGeo, new THREE.PointsMaterial({size: 1, color: 0x000000})));
-    scene.add(shapeArr[i]);
-}*/
 
 function positionShape() {
     //shapeArr[0] is the center (layer 0)
@@ -164,9 +165,13 @@ function changePoints(currShape, currPoints) {
     currShape.material.size = currPoints;
 }
 
-function changeDetail(currDetail, currShape) {
+function changeDetail(currDetail, currShape, shapeType) {
     scene.remove(shapeArr[currShape]);
-    shapeArr[currShape] = new THREE.Points(new THREE.OctahedronGeometry(10, currDetail), new THREE.PointsMaterial({size: 1, color: 0x000000}));
+    if(shapeType > 2) {
+        shapeArr[currShape] = new THREE.Points(new THREE.OctahedronGeometry(10, currDetail), new THREE.PointsMaterial({size: 1, color: 0x000000}));
+    } else {
+        shapeArr[currShape] = new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000 } ));
+    }
     scene.add(shapeArr[currShape]);
 }
 
@@ -258,6 +263,9 @@ var run = function(){
                 break;
             case 8:
                 changeColourLayer8();
+                break;
+            case 9:
+                changeColourLayer001();
                 break;
             default:
                 changeColourLayer1();

@@ -56,7 +56,7 @@ function positionShape() {
     shapeArr[0].position.z = -40;
 
 //layer 1
-    shapeArr[1].position.y = 20
+    shapeArr[1].position.y = 20;
     shapeArr[1].position.x = -20;
     shapeArr[1].position.z = -20;
 

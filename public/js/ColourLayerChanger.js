@@ -123,7 +123,7 @@ function changeColourLayer001() {
         }
     }
 
-    if(beatCounter == 4) {
+    if(beatCounter > 4) {
         beatCounter = 0;
     }
 
@@ -157,10 +157,10 @@ function changeColourLayer001() {
     }
 
     if(tatumCounter > 15) {
-        tatumCounter = 0;
         for(var i = 0; i < 25; i++) {
             changePoints(shapeArr[i], points);
         }
+        tatumCounter = 0;
     }
 }
 
@@ -418,9 +418,6 @@ function changeColourLayer44() {
 //colour change mode 5 = go middle out then back to middle
 function changeColourLayer5() {
 
-    if (beatCounter < 2) {
-        positionShape();
-    }
     if(beatCounter <= 2){
         changeColour(shapeArr[0], colour);
     }
@@ -440,6 +437,7 @@ function changeColourLayer5() {
             changePoints(shapeArr[i], points);
             changeDetail(detail, i, shapeType);
         }
+        positionShape();
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
@@ -450,14 +448,16 @@ function changeColourLayer5() {
             changePoints(shapeArr[i], points);
             changeDetail(detail, i, shapeType);
         }
+        positionShape();
         changeColour(shapeArr[0], colour);
     }
     if(12 < beatCounter) {
         changeColour(shapeArr[0], 0x000000);
         changePoints(shapeArr[0], points);
         changeDetail(detail, 0, shapeType);
+        positionShape();
     }
-    if(beatCounter > 14){
+    if(14 < beatCounter){
         points = Math.floor(Math.random() * (13 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
         shapeType = Math.random()*4;

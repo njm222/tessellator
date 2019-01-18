@@ -7,7 +7,7 @@ function changeLayerMode() {
     if(trackCounter > sectionEnd){
         g_section++;
 
-        layerKey = Math.floor(Math.random() * (10 - 1)) + 1;
+        layerKey = Math.floor(Math.random() * (12 - 1)) + 1;
         console.log("layer mode: " + layerKey);
     }
 }

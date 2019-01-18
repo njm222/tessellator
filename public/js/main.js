@@ -268,7 +268,7 @@ var run = function(){
                 changeColourLayer001();
                 break;
             default:
-                changeColourLayer1();
+                changeColourLayer001();
         }
         switch (colourKey) {
             case 1:

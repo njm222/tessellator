@@ -418,7 +418,7 @@ function changeColourLayer44() {
 //colour change mode 5 = go middle out then back to middle
 function changeColourLayer5() {
 
-    if (beatCounter == 0) {
+    if (beatCounter < 2) {
         positionShape();
     }
     if(beatCounter <= 2){
@@ -514,15 +514,21 @@ function changeColourLayer6() {
         cubeCounter++;
         if(cubeCounter > 24) {
             cubeCounter = 0;
-            for (let i = 9; i < 25; i++) {
+            for (let i = 0; i < 25; i++) {
                 changeColour(shapeArr[i], 0x000000);
             }
         } else if(cubeCounter > 8) {
-            for (let i = 1; i < 9; i++){
+            for (let i = 0; i < 9; i++){
                 changeColour(shapeArr[i], 0x000000);
+            }
+            for (let j = 9; j < cubeCounter; j++) {
+                changeColour(shapeArr[j], colour);
             }
         } else if(cubeCounter > 0) {
             changeColour(shapeArr[0], 0x000000);
+            for (let j = 1; j < cubeCounter; j++) {
+                changeColour(shapeArr[j], colour);
+            }
         }
     }
 

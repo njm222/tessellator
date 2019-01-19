@@ -2,46 +2,65 @@
 <html>
 <head>
   <title>Tessellator - A Spotify Music Visualizer</title>
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <style type="text/css">
-    #login, #loggedin, #visualizer-main, #paused, #oauth {
-      display: none;
-    }
-    .text-overflow {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      width: 500px;
-    }
-    a:hover, a:focus {
-        text-decoration: none;
-    }
-    canvas {
-        width: 100%;
-        height: 100%;
-        display: flex;
-    }
-    #visualizer-main .container {
-        height: 4%;
-        display: none;
-    }
-    #visualizer-main .container .row .media {
-        display: flex;
-    }
-    #visualizer-main .container .row .media .media-body {
-        padding: 0 3%;
-    }
-    #visualizer-main #player-info,
-    #visualizer-main #analysis-info {
-        width: 50%;
-    }
+      body {
+          color: #FFF;
+          background-color: rgba(0,0,0,.8);
+      }
+      #login, #loggedin, #visualizer-main, #paused, #oauth {
+          display: none;
+      }
+      .text-overflow {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 500px;
+      }
+      a {
+          color: #FFF;
 
-    #user-profile {
-        margin-bottom: 30px;
-    }
-    #main-container{
-        text-align: center;
-    }
+      }
+      a:hover, a:focus {
+          color: #FFF;
+          text-decoration: none;
+      }
+      .btn {
+          margin: 1%;
+      }
+      canvas {
+          width: 100%;
+          height: 100%;
+          display: flex;
+      }
+      #visualizer-main {
+          color: #b3b3b3;
+          background-color: #272727;
+      }
+      #visualizer-main .btn {
+          margin: 0.5%;
+      }
+      #visualizer-container {
+          position: absolute;
+          top: -45px;
+      }
+      #visualizer-main .container .row .media {
+          display: flex;
+          width: 100%;
+      }
+      #visualizer-main .container .row .media .media-body {
+          padding: 0 3%;
+      }
+      #visualizer-main #player-info-visualizer,
+      #visualizer-main #analysis-info {
+          width: 50%;
+      }
+      #user-profile {
+          margin-bottom: 30px;
+      }
+      #main-container{
+          text-align: center;
+      }
   </style>
 </head>
 
@@ -59,11 +78,8 @@
     <div id="oauth">
     </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <button class="btn btn-default" id="obtain-new-token">Obtain new token using the refresh token</button>
-      </div>
-      <div class="col-md-6">
+    <div class="row button-container">
+      <div class="col-md-12">
         <button class="btn btn-primary" id="toVisualizer">Get to the good stuff!!!</button>
       </div>
         <div class="col-md-12">
@@ -73,11 +89,11 @@
   </div>
 </div>
 <div id="visualizer-main">
-    <div class="container">
+    <div id="visualizer-container" class="container">
         <div class="row">
             <div class="media">
-                <button class="btn btn-secondary" id="toLoggedIn">Back</button>
-                <div id="player-info"></div>
+                <button class="btn btn-outline-light" id="toLoggedIn">Back</button>
+                <div id="player-info-visualizer"></div>
                 <div id="analysis-info"></div>
             </div>
         </div>
@@ -105,7 +121,7 @@
       <img class="media-object" width="150" src="{{images.0.url}}" />
     </div>
     <div class="media-body">
-        <button class="btn btn-secondary"><a target="_blank" href="{{external_urls.spotify}}">Open Web Player in a new tab</a></button>
+        <button class="btn btn-info"><a target="_blank" href="{{external_urls.spotify}}">Open Web Player in a new tab</a></button>
     </div>
   </div>
 </script>
@@ -168,7 +184,8 @@
             oauthPlaceholder = document.getElementById('oauth');
         var playerInfoSource = document.getElementById('player-info-template').innerHTML,
             playerInfoTemplate = Handlebars.compile(playerInfoSource),
-            playerInfoPlaceholder = document.getElementById('player-info');
+            playerInfoPlaceholder = document.getElementById('player-info'),
+            playerInfoVisualizerPlaceholder = document.getElementById('player-info-visualizer');
         var analysisInfoSource = document.getElementById('analysis-info-template').innerHTML,
             analysisInfoTemplate = Handlebars.compile(analysisInfoSource),
             analysisInfoPlaceholder = document.getElementById('analysis-info');
@@ -235,6 +252,7 @@
                                         //console.log(response);
 
                                         playerInfoPlaceholder.innerHTML = playerInfoTemplate(response);
+                                        playerInfoVisualizerPlaceholder.innerHTML = playerInfoTemplate(response);
                                         $.ajax({
                                             url: 'https://api.spotify.com/v1/audio-features/' + response.item.id,
                                             headers: {
@@ -345,29 +363,40 @@
                     $.getScript("js/main.js");
                     $.getScript("js/KeyboardInput.js");
                 }
+                let refreshID = setInterval(getRefreshToken, 1800000);
             });
             document.getElementById('toLoggedIn').addEventListener('click', function () {
                 $('#login').hide();
                 $('#visualizer-main').hide();
                 $('#main-container').show();
                 $('#loggedin').show();
+                clearTimeout(refreshID);
             });
-            document.getElementById('obtain-new-token').addEventListener('click', function() {
-                $.ajax({
-                    url: '/refresh_token',
-                    data: {
-                        'refresh_token': refresh_token
-                    }
-                }).done(function(data) {
-                    access_token = data.access_token;
-                    oauthPlaceholder.innerHTML = oauthTemplate({
-                        access_token: access_token,
-                        refresh_token: refresh_token
-                    });
-                });
-            }, false);
+            $('#visualizer-main').on('mousemove', function(event) {
+                if(45 - event.clientY < 0) {
+                    $('#visualizer-container').css({top: 45 - event.clientY});
+                } else {
+                    $('#visualizer-container').css({top: 0});
+                }
+            }).on('mouseout', function() {
+                $('#visualizer-container').css({top: -45});
+            });
         }
     })();
+    function getRefreshToken() {
+        $.ajax({
+            url: '/refresh_token',
+            data: {
+                'refresh_token': refresh_token
+            }
+        }).done(function(data) {
+            access_token = data.access_token;
+            oauthPlaceholder.innerHTML = oauthTemplate({
+                access_token: access_token,
+                refresh_token: refresh_token
+            });
+        });
+    }
 </script>
 </body>
 </html>

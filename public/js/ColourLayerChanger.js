@@ -532,7 +532,7 @@ function changeColourLayer6() {
             for (let j = 1; j < cubeCounter; j++) {
                 changeColour(shapeArr[j], colour);
             }
-            for (let k = cubeCounter+1; k < 9; k++){
+            for (let k = cubeCounter+1; k < 25; k++){
                 changeColour(shapeArr[k], 0x000000);
             }
         }

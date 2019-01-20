@@ -568,17 +568,22 @@ function changeColourLayer66() {
 }
 
 function changeColourLayer7() {
-    if(beatCounter > 1) {
+
+    if(tatumCounter % 4 == 0) {
         cubeCounter++;
         if(cubeCounter > 25)
             cubeCounter = 0;
+        for(var i = 0; i < cubeCounter; i++) {
+            changeColour(shapeArr[i], colour);
+        }
+    } else {
+        for(var i = 0; i < cubeCounter; i++) {
+            changeColour(shapeArr[i], 0x000000);
+        }
     }
 
-    for(var i = 0; i < cubeCounter; i++) {
-        changeColour(shapeArr[i], colour);
-    }
-    if(beatCounter > 2){
-        beatCounter = 0;
+    if(tatumCounter > 32){
+        tatumCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();

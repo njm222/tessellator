@@ -19,7 +19,6 @@
       }
       a {
           color: #FFF;
-
       }
       a:hover, a:focus {
           color: #FFF;
@@ -37,8 +36,8 @@
           color: #b3b3b3;
           background-color: #272727;
       }
-      #visualizer-main .btn {
-          margin: 0.5%;
+      #visualizer-container .btn {
+          margin: 0.5% 2%;
       }
       #visualizer-container {
           position: absolute;
@@ -46,14 +45,17 @@
       }
       #visualizer-main .container .row .media {
           display: flex;
-          width: 100%;
-      }
-      #visualizer-main .container .row .media .media-body {
-          padding: 0 3%;
+          width: 90%;
+          margin: 0 5%;
       }
       #visualizer-main #player-info-visualizer,
       #visualizer-main #analysis-info {
           width: 50%;
+          margin: 1% auto;
+      }
+      #visualizer-main #analysis-info .media-body{
+          display: inline-flex;
+          margin: 0 2%;
       }
       #user-profile {
           margin-bottom: 30px;
@@ -102,8 +104,10 @@
 
 <script id="analysis-info-template" type="text/x-handlebars-template">
     <div class="media-body">
-        <div>Tempo:<strong>{{tempo}}</strong></div>
-        <div>Loudness:<strong>{{loudness}}</strong></div>
+        Tempo:  <strong>{{tempo}}</strong>
+    </div>
+    <div class="media-body">
+        Loudness:  <strong>{{loudness}}</strong>
     </div>
 </script>
 
@@ -161,6 +165,21 @@
     }
 
     var doIncrementTrackCounter = setInterval(incrementTrackCounter, 10);
+
+    function getRefreshToken() {
+        $.ajax({
+            url: '/refresh_token',
+            data: {
+                'refresh_token': refresh_token
+            }
+        }).done(function(data) {
+            access_token = data.access_token;
+            oauthPlaceholder.innerHTML = oauthTemplate({
+                access_token: access_token,
+                refresh_token: refresh_token
+            });
+        });
+    }
 
     (function() {
         /**
@@ -355,7 +374,6 @@
                     }
                 });
 
-
                 if(!gotVisualizerScripts) {
                     $.getScript("js/LiveAudio.js");
                     $.getScript("js/ColourLayerChanger.js");
@@ -383,20 +401,6 @@
             });
         }
     })();
-    function getRefreshToken() {
-        $.ajax({
-            url: '/refresh_token',
-            data: {
-                'refresh_token': refresh_token
-            }
-        }).done(function(data) {
-            access_token = data.access_token;
-            oauthPlaceholder.innerHTML = oauthTemplate({
-                access_token: access_token,
-                refresh_token: refresh_token
-            });
-        });
-    }
 </script>
 </body>
 </html>

@@ -154,7 +154,7 @@ function rgbToHexHelper(num){
 }
 
 function rgbToHex(r,g,b) {
-    return ("0x" + rgbToHexHelper(r) + rgbToHexHelper(g) + rgbToHexHelper(b));
+    return ("0x" + rgbToHexHelper(r%256) + rgbToHexHelper(g%256) + rgbToHexHelper(b%256));
 }
 
 function changeColour(currShape, currColour) {
@@ -281,21 +281,24 @@ var run = function(){
                 colour = rgbToHex(avFreq*2, avFreq, avFreq);
                 break;
             case 4:
-                colour = rgbToHex(avFreq, avFreq, avFreq);
+                colour = rgbToHex(avFreq, avFreq*3, avFreq*2);
                 break;
             case 5:
-                colour = rgbToHex(currFreq[4], currFreq[8], currFreq[12]);
+                colour = rgbToHex(avFreq*3, avFreq, avFreq*2);
                 break;
             case 6:
-                colour = rgbToHex(avFreq*2, avFreq*2, avFreq);
+                colour = rgbToHex(avFreq*3, avFreq*2, avFreq);
                 break;
             case 7:
-                colour = rgbToHex(avFreq*2, avFreq, avFreq*2);
+                colour = rgbToHex(avFreq, avFreq*2, avFreq*3);
                 break;
             case 8:
-                colour = rgbToHex(avFreq, avFreq*2, avFreq*2);
+                colour = rgbToHex(avFreq*2, avFreq*3, avFreq);
                 break;
             case 9:
+                colour = rgbToHex(avFreq*2, avFreq, avFreq*3);
+                break;
+            case 10:
                 colour = rgbToHex(currFreq[13], currFreq[9], currFreq[5]);
                 break;
             default:

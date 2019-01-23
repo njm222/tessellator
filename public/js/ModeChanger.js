@@ -14,8 +14,8 @@ function changeLayerMode() {
 
 function changeColourMode() {
 
-    if (g_beat % 16 == 0){
-        colourKey = Math.floor(Math.random() * 22);
+    if (g_beat % 32 == 0){
+        colourKey = Math.floor(Math.random() * 10);
         //console.log("colour mode: " + colourKey);
     }
 }

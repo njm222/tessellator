@@ -166,7 +166,7 @@
     }
 
     var doIncrementTrackCounter = setInterval(incrementTrackCounter, 10);
-
+    var refreshID;
     function getRefreshToken() {
         $.ajax({
             url: '/refresh_token',
@@ -382,7 +382,7 @@
                     $.getScript("js/main.js");
                     $.getScript("js/KeyboardInput.js");
                 }
-                let refreshID = setInterval(getRefreshToken, 1800000);
+                refreshID = setInterval(getRefreshToken, 1800000);
             });
             document.getElementById('toLoggedIn').addEventListener('click', function () {
                 $('#login').hide();

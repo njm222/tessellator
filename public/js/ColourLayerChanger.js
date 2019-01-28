@@ -128,9 +128,8 @@ function changeColourLayer001() {
     }
 
     if(tatumCounter % 3 == 0) {
-        points = Math.floor(Math.random() * (13 - 1)) + 1;
+        points = Math.floor(Math.random() * (8 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
-        detailShape = Math.floor(Math.random() * 25);
     }
 
     if(tatumCounter == 4) {

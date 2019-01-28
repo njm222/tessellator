@@ -28,8 +28,9 @@ if (navigator.mediaDevices.getUserMedia === undefined) {
 
 if (navigator.mediaDevices.getUserMedia) {
     console.log('getUserMedia supported.');
-    navigator.mediaDevices.enumerateDevices().then(function(devices){
-        var constraints = {audio: {deviceId: "default"}};
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+        devices = devices.filter((d) => d.kind === 'audioinput');
+        var constraints = {audio: {deviceId: devices[0].deviceId}};
         navigator.mediaDevices.getUserMedia (constraints)
             .then(
                 function(stream) { console.log(stream);
@@ -48,7 +49,7 @@ if (navigator.mediaDevices.getUserMedia) {
                     analyser.fftSize = 64;
                     /*analyser.maxDecibels = 0;
                     analyser.maxDecibels = 0;*/
-                    analyser.smoothingTimeConstant = .9;
+                    analyser.smoothingTimeConstant = .95;
                     frequencyData = new Uint8Array(analyser.frequencyBinCount);
                     analyser.getByteFrequencyData(frequencyData);
                     bufferLength = analyser.frequencyBinCount;

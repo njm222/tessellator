@@ -220,10 +220,11 @@ var run = function(){
 
         analyser.getByteFrequencyData(frequencyData);
         currFreq = frequencyData;
+        let totalFreq = 0;
         for(let i = 0; i < bufferLength; i++){
-            avFreq = avFreq + frequencyData[i];
+            totalFreq += frequencyData[i];
         }
-        avFreq = avFreq/bufferLength;
+        avFreq = totalFreq/bufferLength;
 
         changeBeat();
         changeTatum();

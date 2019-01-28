@@ -49,7 +49,7 @@ if (navigator.mediaDevices.getUserMedia) {
                     analyser.fftSize = 64;
                     /*analyser.maxDecibels = 0;
                     analyser.maxDecibels = 0;*/
-                    analyser.smoothingTimeConstant = .95;
+                    analyser.smoothingTimeConstant = .75;
                     frequencyData = new Uint8Array(analyser.frequencyBinCount);
                     analyser.getByteFrequencyData(frequencyData);
                     bufferLength = analyser.frequencyBinCount;

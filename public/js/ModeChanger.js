@@ -1,14 +1,21 @@
 //Variables
 var sectionEnd = 0;
+var cameraRandomCount = 1;
 
 function changeLayerMode() {
     sectionEnd = (g_sections[g_section]["start"] + g_sections[g_section]["duration"])*1000;
     //if(trackCounter > currSection.endtime) increment section and change layer
     if(trackCounter > sectionEnd){
+        cameraRandomCount = 1;
         g_section++;
 
         layerKey = Math.floor(Math.random() * (13 - 1)) + 1;
         console.log("layer mode: " + layerKey);
+    } else if(trackCounter > (sectionEnd / 4)*cameraRandomCount){
+        console.log(cameraRandomCount);
+        cameraRandom = Math.floor(Math.random() * 7);
+        positionCamera(cameraRandom);
+        cameraRandomCount++;
     }
 }
 

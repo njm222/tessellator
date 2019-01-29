@@ -92,10 +92,6 @@ function changeBeat() {
     beatEnd = (g_beats[g_beat]["start"] + g_beats[g_beat]["duration"]) * 1000;
 
     if(trackCounter > beatEnd) {
-        if(g_beat % 16 == 0){
-            cameraRandom = Math.floor(Math.random() * 7);
-            positionCamera(cameraRandom);
-        }
         g_beat++;
         beatCounter++;
         //console.log("Beat increased: " + g_beat);

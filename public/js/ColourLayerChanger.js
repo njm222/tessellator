@@ -16,6 +16,7 @@ var tatumCounter = 0;
 
 var points = 1;
 var detail = 1;
+var cameraRandom = Math.floor(Math.random() * 7);
 var shapeType;
 var detailShape = Math.random()*4;
 
@@ -91,6 +92,10 @@ function changeBeat() {
     beatEnd = (g_beats[g_beat]["start"] + g_beats[g_beat]["duration"]) * 1000;
 
     if(trackCounter > beatEnd) {
+        if(g_beat % 16 == 0){
+            cameraRandom = Math.floor(Math.random() * 7);
+            positionCamera(cameraRandom);
+        }
         g_beat++;
         beatCounter++;
         //console.log("Beat increased: " + g_beat);
@@ -151,7 +156,7 @@ function changeColourLayer001() {
     }
 
     if(tatumCounter % 13 == 0) {
-        points = Math.floor(Math.random() * (7 - 1)) + 1;
+        points = Math.floor(Math.random() * (6 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
     }
 
@@ -340,7 +345,7 @@ function changeColourLayer33() {
 //go middle out then repeat
 function changeColourLayer4() {
     if(beatCounter < 1) {
-        points = Math.floor(Math.random() * (7 - 1)) + 1;
+        points = Math.floor(Math.random() * (6 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
         shapeType = Math.random()*4;
     }
@@ -457,7 +462,7 @@ function changeColourLayer5() {
         positionShape();
     }
     if(14 < beatCounter){
-        points = Math.floor(Math.random() * (7 - 1)) + 1;
+        points = Math.floor(Math.random() * (6 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
         shapeType = Math.random()*4;
         beatCounter = 0;

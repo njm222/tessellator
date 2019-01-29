@@ -130,8 +130,47 @@ function positionShape() {
     shapeArr[24].position.x = -40;
 //end layer 2
 }
-
 positionShape();
+
+function positionCamera(cameraRandom) {
+
+    switch (cameraRandom) {
+        case 0:
+            camera.position.x = 0;
+            camera.position.y = 0;
+            camera.position.z = 90;
+            break;
+        case 1:
+            camera.position.x = 0;
+            camera.position.y = 0;
+            camera.position.z = -90;
+            break;
+        case 2:
+            camera.position.x = 0;
+            camera.position.y = 90;
+            camera.position.z = 0;
+            break;
+        case 3:
+            camera.position.x = 0;
+            camera.position.y = -90;
+            camera.position.z = 0;
+            break;
+        case 4:
+            camera.position.x = 90;
+            camera.position.y = 0;
+            camera.position.z = 0;
+            break;
+        case 5:
+            camera.position.x = -90;
+            camera.position.y = 0;
+            camera.position.z = 0;
+            break;
+        default:
+            camera.position.x = 0;
+            camera.position.y = 0;
+            camera.position.z = 90;
+    }
+}
 
 var layerKey = 444;
 var colourKey = 7;

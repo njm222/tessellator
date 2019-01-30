@@ -5,7 +5,6 @@ function changeLayerMode() {
     sectionEnd = (g_sections[g_section]["start"] + g_sections[g_section]["duration"])*1000;
     //if(trackCounter > currSection.endtime) increment section and change layer
     if(trackCounter > sectionEnd){
-        cameraRandomCount = 1;
         g_section++;
 
         layerKey = Math.floor(Math.random() * (13 - 1)) + 1;

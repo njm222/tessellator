@@ -86,7 +86,7 @@ function changeBar() {
         barCounter++;
         //console.log("Bar increased: " + g_bar);
         cameraRandom = Math.floor(Math.random() * 7);
-        console.log("cameraRandom: " + cameraRandom);
+        //console.log("cameraRandom: " + cameraRandom);
         positionCamera(cameraRandom);
     }
 }

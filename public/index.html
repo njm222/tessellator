@@ -2,6 +2,24 @@
 <html>
 <head>
   <title>Tessellator - A Spotify Music Visualizer</title>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P3T8H8T');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Google Analytics -->
+    <script>
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-133459521-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459521-1"></script>
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <style type="text/css">
       body {
@@ -64,19 +82,13 @@
           text-align: center;
       }
   </style>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459521-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-133459521-1');
-        gtag('set', {'user_id': 'USER_ID'}); // Set the user ID using signed-in user_id.
-    </script>
 </head>
 
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P3T8H8T"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div id="main-container" class="container">
   <div id="login">
     <h1>Welcome Home</h1>
@@ -253,6 +265,9 @@
                     },
                     success: function(response) {
                         userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+                        //Google Analytics
+                        ga('set', 'userId', response.id);
+                        ga('send', 'event', 'authentication', 'user-id available');
                         $.getScript("https://sdk.scdn.co/spotify-player.js");
                         $.getScript("js/LiveAudio.js");
                         $('#login').hide();
@@ -309,9 +324,11 @@
 
                                                 analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);
                                                 if(0.6/response.energy < 1) {
-                                                    analyser.smoothingTimeConstant = 0.6/response.energy;
-                                                } else {
-                                                    analyser.smoothingTimeConstant = 0.95;
+                                                    analyser.smoothingTimeConstant = 0.6 / response.energy;
+                                                } /*else if (0.65/response.danceability < 1) {
+                                                    analyser.smoothingTimeConstant = 0.65 / response.danceability;
+                                                }*/ else {
+                                                    analyser.smoothingTimeConstant = 0.94;
                                                 }
                                                 console.log("smoothing: " + analyser.smoothingTimeConstant);
                                                 g_tempo = response.tempo/60;

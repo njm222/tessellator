@@ -172,6 +172,7 @@ function positionCamera(cameraRandom) {
     }
 }
 
+
 var layerKey = 444;
 var colourKey = 7;
 var freqKey = 10;
@@ -244,15 +245,25 @@ function rotateShape(shape) {
     }
 }
 
+function changeBackground() {
+    camera.zoom = avFreq/40;
+
+    if(camera.zoom > 4) {
+        camera.zoom = 4;
+    }
+    camera.updateProjectionMatrix();
+    //console.log("zoom: " + camera.zoom);
+    //console.log(scene.background);
+}
+
 //Rendering
 var run = function(){
     requestAnimationFrame(run);
     controls.update();
 
-
     /*navigator.mediaDevices.enumerateDevices().then(function (devices) { console.log(devices)
     });*/
-    //console.log(frequencyData);
+    //console.log("150: " + frequencyData[150] + "       175: " + frequencyData[175]);
 
 
     if (!isPaused && gotVisualizerScripts) {
@@ -265,6 +276,14 @@ var run = function(){
         }
         avFreq = totalFreq/bufferLength;
 
+        if(cameraRandom > 1) {
+            camera.zoom = .65;
+        } else {
+            changeBackground();
+        }
+        //console.log(avFreq);
+
+        changeBar();
         changeBeat();
         changeTatum();
 
@@ -348,6 +367,8 @@ var run = function(){
     renderer.render(scene, camera);
 };
 run();
+
+gotVisualizerScripts = true;
 
 /* Idea:
     use spotify audio analysis to change the spin of the camera

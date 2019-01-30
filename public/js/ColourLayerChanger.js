@@ -8,16 +8,6 @@ var recentWireframe = 0;
 var recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
 var recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
 
-var beatEnd = 0;
-var beatCounter = 0;
-
-var tatumEnd = 0;
-var tatumCounter = 0;
-
-var points = 1;
-var detail = 1;
-var cameraRandom = Math.floor(Math.random() * 7);
-var shapeType;
 var detailShape = Math.random()*4;
 
 function incrementLayerCounter() {
@@ -87,6 +77,19 @@ function wireframeLayerChange() {
 * Layer 1 = [1-8]
 * Layer 2 = [9-24]
 */
+
+function changeBar() {
+    barEnd = (g_bars[g_bar]["start"] + g_bars[g_bar]["duration"]) * 1000;
+
+    if(trackCounter > barEnd) {
+        g_bar++;
+        barCounter++;
+        //console.log("Bar increased: " + g_bar);
+        cameraRandom = Math.floor(Math.random() * 7);
+        console.log("cameraRandom: " + cameraRandom);
+        positionCamera(cameraRandom);
+    }
+}
 
 function changeBeat() {
     beatEnd = (g_beats[g_beat]["start"] + g_beats[g_beat]["duration"]) * 1000;

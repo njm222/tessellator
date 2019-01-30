@@ -161,6 +161,20 @@
     var trackEnd = 999999;
     var isPaused = true;
 
+    var barEnd = 0;
+    var barCounter = 0;
+
+    var beatEnd = 0;
+    var beatCounter = 0;
+
+    var tatumEnd = 0;
+    var tatumCounter = 0;
+
+    var points = 1;
+    var detail = 1;
+    var cameraRandom = Math.floor(Math.random() * 7);
+    var shapeType;
+
     function incrementTrackCounter() {
         trackCounter+= 10;
     }
@@ -217,6 +231,8 @@
             alert('There was an error during the authentication');
         } else {
             if (access_token) {
+                $.getScript("https://sdk.scdn.co/spotify-player.js");
+                $.getScript("js/LiveAudio.js");
                 // render oauth info
                 oauthPlaceholder.innerHTML = oauthTemplate({
                     access_token: access_token,
@@ -232,7 +248,6 @@
                         $('#login').hide();
                         $('#visualizer-main').hide();
                         $('#loggedin').show();
-                        $.getScript("https://sdk.scdn.co/spotify-player.js");
 
                         window.onSpotifyWebPlaybackSDKReady = () => {
                             const token = access_token;
@@ -279,10 +294,16 @@
                                                 'Authorization': 'Bearer ' + access_token
                                             },
                                             success: function(response) {
-                                                //console.log('features response');
-                                                //console.log(response);
+                                                console.log('features response');
+                                                console.log(response);
 
                                                 analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);
+                                                if(0.6/response.energy < 1) {
+                                                    analyser.smoothingTimeConstant = 0.6/response.energy;
+                                                } else {
+                                                    analyser.smoothingTimeConstant = 0.95;
+                                                }
+                                                console.log("smoothing: " + analyser.smoothingTimeConstant);
                                                 g_tempo = response.tempo/60;
                                                 $.ajax({
                                                     url: response.analysis_url,
@@ -291,14 +312,13 @@
                                                     },
                                                     success: function (response) {
                                                         //console.log('analysis response');
+                                                        //console.log(response);
 
                                                         g_sections = response.sections;
                                                         g_bars = response.bars;
                                                         g_beats = response.beats;
                                                         g_tatums = response.tatums;
                                                         g_segments = response.segments;
-
-                                                        //console.log(response);
                                                     }
                                                 });
                                             }
@@ -376,7 +396,6 @@
                 });
 
                 if(!gotVisualizerScripts) {
-                    $.getScript("js/LiveAudio.js");
                     $.getScript("js/ColourLayerChanger.js");
                     $.getScript("js/ModeChanger.js");
                     $.getScript("js/main.js");

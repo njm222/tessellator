@@ -82,12 +82,14 @@ function changeBar() {
     barEnd = (g_bars[g_bar]["start"] + g_bars[g_bar]["duration"]) * 1000;
 
     if(trackCounter > barEnd) {
+        if(g_bar % 4 == 0) {
+            cameraRandom = Math.floor(Math.random() * 7);
+            console.log("cameraRandom: " + cameraRandom);
+            positionCamera(cameraRandom);
+        }
         g_bar++;
         barCounter++;
         //console.log("Bar increased: " + g_bar);
-        cameraRandom = Math.floor(Math.random() * 7);
-        //console.log("cameraRandom: " + cameraRandom);
-        positionCamera(cameraRandom);
     }
 }
 

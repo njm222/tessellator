@@ -72,6 +72,7 @@
         gtag('js', new Date());
 
         gtag('config', 'UA-133459521-1');
+        gtag('set', {'user_id': 'USER_ID'}); // Set the user ID using signed-in user_id.
     </script>
 </head>
 
@@ -240,13 +241,13 @@
             alert('There was an error during the authentication');
         } else {
             if (access_token) {
-                $.getScript("https://sdk.scdn.co/spotify-player.js");
-                $.getScript("js/LiveAudio.js");
                 // render oauth info
                 oauthPlaceholder.innerHTML = oauthTemplate({
                     access_token: access_token,
                     refresh_token: refresh_token
                 });
+                $.getScript("https://sdk.scdn.co/spotify-player.js");
+                $.getScript("js/LiveAudio.js");
                 $.ajax({
                     url: 'https://api.spotify.com/v1/me',
                     headers: {

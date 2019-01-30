@@ -246,8 +246,6 @@
                     access_token: access_token,
                     refresh_token: refresh_token
                 });
-                $.getScript("https://sdk.scdn.co/spotify-player.js");
-                $.getScript("js/LiveAudio.js");
                 $.ajax({
                     url: 'https://api.spotify.com/v1/me',
                     headers: {
@@ -255,6 +253,8 @@
                     },
                     success: function(response) {
                         userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+                        $.getScript("https://sdk.scdn.co/spotify-player.js");
+                        $.getScript("js/LiveAudio.js");
                         $('#login').hide();
                         $('#visualizer-main').hide();
                         $('#loggedin').show();

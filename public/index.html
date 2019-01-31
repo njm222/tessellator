@@ -272,9 +272,6 @@
                         ga('send', 'event', 'authentication', 'user-id available');
                         $.getScript("https://sdk.scdn.co/spotify-player.js");
                         $.getScript("js/LiveAudio.js");
-                        $('#login').hide();
-                        $('#visualizer-main').hide();
-                        $('#loggedin').show();
 
                         window.onSpotifyWebPlaybackSDKReady = () => {
                             const token = access_token;
@@ -401,9 +398,13 @@
                                 });
                             };
                         };
-
+                        $('#login').hide();
+                        $('#visualizer-main').hide();
+                        $('#loggedin').show();
                     }
                 });
+                ga('set', 'page', '/loggedin');
+                ga('send', 'pageview');
             } else {
                 // render initial screen
                 $('#login').show();
@@ -411,9 +412,6 @@
                 $('#loggedin').hide();
             }
             document.getElementById('toVisualizer').addEventListener('click', function () {
-                $('#loggedin').hide();
-                $('#main-container').hide();
-                $('#visualizer-main').show();
                 $.ajax({
                     url: 'https://api.spotify.com/v1/me',
                     headers: {
@@ -431,6 +429,13 @@
                     $.getScript("js/KeyboardInput.js");
                 }
                 refreshID = setInterval(getRefreshToken, 1800000);
+
+                $('#loggedin').hide();
+                $('#main-container').hide();
+                $('#visualizer-main').show();
+
+                ga('set', 'page', '/visualizer');
+                ga('send', 'pageview');
             });
             document.getElementById('toLoggedIn').addEventListener('click', function () {
                 $('#login').hide();

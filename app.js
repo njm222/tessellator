@@ -35,10 +35,12 @@ var stateKey = 'spotify_auth_state';
 
 var app = express()
     , sitemap = sm.createSitemap({
-        hostname: 'https://tessellator.herokuapp.com/',
+        hostname: 'https://tessellator.herokuapp.com',
         cacheTime: 600000,
         urls: [
-            { url: '/', changefreq: 'daily'}
+            { url: '/', changefreq: 'daily'},
+            { url: '/loggedin', changefreq: 'daily'},
+            { url: '/visualizer', changefreq: 'daily'}
         ]
 });
 
@@ -134,11 +136,6 @@ app.get('/callback', function(req, res) {
             }
         });
     }
-});
-
-app.get('/visual', function(req, res) {
-   var access_token = req.query.refresh_token;
-
 });
 
 app.get('/refresh_token', function(req, res) {

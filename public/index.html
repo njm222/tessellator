@@ -401,10 +401,10 @@
                         $('#login').hide();
                         $('#visualizer-main').hide();
                         $('#loggedin').show();
+                        ga('set', 'page', '/loggedin');
+                        ga('send', 'pageview');
                     }
                 });
-                ga('set', 'page', '/loggedin');
-                ga('send', 'pageview');
             } else {
                 // render initial screen
                 $('#login').show();

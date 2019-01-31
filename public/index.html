@@ -401,7 +401,10 @@
                         $('#login').hide();
                         $('#visualizer-main').hide();
                         $('#loggedin').show();
-                        ga('set', 'page', '/loggedin');
+                        ga('set', {
+                            page: '/loggedin',
+                            title: 'User Logged In'
+                        });
                         ga('send', 'pageview');
                     }
                 });
@@ -434,10 +437,18 @@
                 $('#main-container').hide();
                 $('#visualizer-main').show();
 
-                ga('set', 'page', '/visualizer');
+                ga('set', {
+                    page: '/visualizer',
+                    title: 'User started the visualizer'
+                });
                 ga('send', 'pageview');
             });
             document.getElementById('toLoggedIn').addEventListener('click', function () {
+                ga('set', {
+                    page: '/loggedin',
+                    title: 'Back to Logged In'
+                });
+                ga('send', 'pageview');
                 $('#login').hide();
                 $('#visualizer-main').hide();
                 $('#main-container').show();

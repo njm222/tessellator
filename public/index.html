@@ -268,9 +268,14 @@
                     success: function(response) {
                         userProfilePlaceholder.innerHTML = userProfileTemplate(response);
                         //Google Analytics
+                        ga('set', {
+                            page: '/loggedin',
+                            title: 'User Logged In'
+                        });
                         ga('set', 'referrer', 'tessellator.herokuapp.com');
                         ga('set', 'userId', response.id);
                         ga('send', 'event', 'authentication', 'user-id available');
+                        ga('send', 'pageview');
                         $.getScript("https://sdk.scdn.co/spotify-player.js");
                         $.getScript("js/LiveAudio.js");
 
@@ -402,11 +407,6 @@
                         $('#login').hide();
                         $('#visualizer-main').hide();
                         $('#loggedin').show();
-                        ga('set', {
-                            page: '/loggedin',
-                            title: 'User Logged In'
-                        });
-                        ga('send', 'pageview');
                     }
                 });
             } else {

@@ -84,7 +84,7 @@ function changeBar() {
     if(trackCounter > barEnd) {
         if(g_bar % 4 == 0) {
             cameraRandom = Math.floor(Math.random() * 7);
-            console.log("cameraRandom: " + cameraRandom);
+            //console.log("cameraRandom: " + cameraRandom);
             positionCamera(cameraRandom);
         }
         g_bar++;

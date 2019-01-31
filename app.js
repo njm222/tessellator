@@ -1,4 +1,5 @@
 var express = require('express'); // Express web server framework
+var sm = require('sitemap');
 var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
@@ -32,11 +33,28 @@ var generateRandomString = function(length) {
 
 var stateKey = 'spotify_auth_state';
 
-var app = express();
+var app = express()
+    , sitemap = sm.createSitemap({
+        hostname: 'https://tessellator.herokuapp.com/',
+        cacheTime: 600000,
+        urls: [
+            { url: '/', changefreq: 'daily'}
+        ]
+});
 
 app.use(express.static(__dirname + '/public'))
     .use(cors())
     .use(cookieParser());
+
+app.get('/sitemap.xml', function(req, res) {
+    sitemap.toXML( function (err, xml) {
+        if (err) {
+            return res.status(500).end();
+        }
+        res.header('Content-Type', 'application/xml');
+        res.send( xml );
+    });
+});
 
 app.get('/login', function(req, res) {
 

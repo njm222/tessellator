@@ -258,7 +258,7 @@ function rotateShape(shape) {
 }
 
 function changeCameraZoom() {
-    camera.zoom = lowAvFreq/40;
+    camera.zoom = lowAvFreq/80;
 
     if(camera.zoom > 4) {
         camera.zoom = 4;
@@ -293,7 +293,7 @@ var run = function(){
         avFreq = totalFreq/bufferLength;
 
         if(cameraRandom > 3) {
-            camera.zoom = .63;
+            camera.zoom = .6;
         } else {
             changeCameraZoom();
         }

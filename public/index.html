@@ -320,12 +320,12 @@
                                                 console.log(response);
 
                                                 analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);
-                                                if(0.6/response.energy < 1) {
-                                                    analyser.smoothingTimeConstant = 0.6 / response.energy;
-                                                } /*else if (0.65/response.danceability < 1) {
-                                                    analyser.smoothingTimeConstant = 0.65 / response.danceability;
-                                                }*/ else {
-                                                    analyser.smoothingTimeConstant = 0.94;
+                                                if(0.7/response.energy < 0.93) {
+                                                    analyser.smoothingTimeConstant = 0.7 / response.energy;
+                                                } else if (0.7/response.danceability < 0.93) {
+                                                    analyser.smoothingTimeConstant = 0.7 / response.danceability;
+                                                } else {
+                                                    analyser.smoothingTimeConstant = 0.93;
                                                 }
                                                 console.log("smoothing: " + analyser.smoothingTimeConstant);
                                                 g_tempo = response.tempo/60;
@@ -448,6 +448,17 @@
                 $('#loggedin').show();
                 clearTimeout(refreshID);
             });
+            /*document.getElementById('toPlayer').addEventListener('click', function () {
+                ga('set', {
+                    page: '/player',
+                    title: 'User opened Player'
+                });
+                ga('send', 'pageview');
+                ga('set', {
+                    page: '/loggedin',
+                    title: 'Back to Logged In'
+                });
+            });*/
             $('#visualizer-main').on('mousemove', function(event) {
                 if(45 - event.clientY < 0) {
                     $('#visualizer-container').css({top: 45 - event.clientY});

@@ -4,6 +4,8 @@ const height = window.innerHeight;
 
 //Setup Variables
 var currFreq = 0;
+var lowAvFreq = 0;
+var highAvFreq = 0;
 var avFreq = 0;
 
 var scene = new THREE.Scene();
@@ -147,20 +149,30 @@ function positionCamera(cameraRandom) {
             break;
         case 2:
             camera.position.x = 0;
+            camera.position.y = 0;
+            camera.position.z = 90;
+            break;
+        case 3:
+            camera.position.x = 0;
+            camera.position.y = 0;
+            camera.position.z = -90;
+            break;
+        case 4:
+            camera.position.x = 0;
             camera.position.y = 90;
             camera.position.z = 0;
             break;
-        case 3:
+        case 5:
             camera.position.x = 0;
             camera.position.y = -90;
             camera.position.z = 0;
             break;
-        case 4:
+        case 6:
             camera.position.x = 90;
             camera.position.y = 0;
             camera.position.z = 0;
             break;
-        case 5:
+        case 7:
             camera.position.x = -90;
             camera.position.y = 0;
             camera.position.z = 0;
@@ -245,8 +257,8 @@ function rotateShape(shape) {
     }
 }
 
-function changeBackground() {
-    camera.zoom = avFreq/40;
+function changeCameraZoom() {
+    camera.zoom = lowAvFreq/40;
 
     if(camera.zoom > 4) {
         camera.zoom = 4;
@@ -271,15 +283,19 @@ var run = function(){
         analyser.getByteFrequencyData(frequencyData);
         currFreq = frequencyData;
         let totalFreq = 0;
-        for(let i = 0; i < bufferLength; i++){
+        for(let i = 0; i < bufferLength/4; i++){
+            totalFreq += frequencyData[i];
+        }
+        lowAvFreq = totalFreq/(bufferLength/4);
+        for(let i = bufferLength/4; i < bufferLength; i++) {
             totalFreq += frequencyData[i];
         }
         avFreq = totalFreq/bufferLength;
 
-        if(cameraRandom > 1) {
-            camera.zoom = .65;
+        if(cameraRandom > 3) {
+            camera.zoom = .63;
         } else {
-            changeBackground();
+            changeCameraZoom();
         }
         //console.log(avFreq);
 

@@ -293,7 +293,7 @@ var run = function(){
         avFreq = totalFreq/bufferLength;
 
         if(cameraRandom > 3) {
-            camera.zoom = .6;
+            camera.zoom = .63;
         } else {
             changeCameraZoom();
         }

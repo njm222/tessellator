@@ -408,6 +408,11 @@
                 $('#loggedin').hide();
             }
             document.getElementById('toVisualizer').addEventListener('click', function () {
+                ga('set', {
+                    page: '/visualizer',
+                    title: 'User started the visualizer'
+                });
+                ga('send', 'pageview');
                 $.ajax({
                     url: 'https://api.spotify.com/v1/me',
                     headers: {
@@ -429,12 +434,6 @@
                 $('#loggedin').hide();
                 $('#main-container').hide();
                 $('#visualizer-main').show();
-
-                ga('set', {
-                    page: '/visualizer',
-                    title: 'User started the visualizer'
-                });
-                ga('send', 'pageview');
             });
             document.getElementById('toLoggedIn').addEventListener('click', function () {
                 ga('set', {

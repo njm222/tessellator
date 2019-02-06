@@ -36,7 +36,7 @@ var stateKey = 'spotify_auth_state';
 var app = express()
     , sitemap = sm.createSitemap({
         hostname: 'https://tessellator.herokuapp.com',
-        cacheTime: 600000,
+        cacheTime: 600000000,
         urls: [
             { url: '/', changefreq: 'daily'},
             { url: '/loggedin', changefreq: 'daily'},

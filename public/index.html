@@ -20,13 +20,20 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133459521-1"></script>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <style type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style type="text/css">
       body {
           color: #FFF;
           background-color: rgba(0,0,0,.8);
       }
-      #login, #loggedin, #visualizer-main, #paused, #oauth {
+      li {
+          text-align: justify;
+      }
+      ul {
+          padding-left: 0;
+      }
+      #login, #loggedin, #visualizer-main, #oauth, .paused {
           display: none;
       }
       .text-overflow {
@@ -55,10 +62,6 @@
           position: absolute;
           top: -45px;
           width: 100%;
-      }
-      #visualizer-main #analysis-info .media-body{
-          display: inline-flex;
-          margin: 0 2%;
       }
       #main-container {
           text-align: center;
@@ -105,6 +108,17 @@
         <p>Use an external speaker or microphone for best results</p>
         <h5>Any comments / suggestions may be sent to <a href="mailto:tessellator.space@gmail.com"> tessellator.space@gmail.com</a></h5>
     </div>
+    <div class="row d-flex justify-content-center m-2">
+        <h4>Coming Soon :</h4>
+    </div>
+    <div class="row d-flex justify-content-center m-2">
+        <ul>
+            <li>Player Controls</li>
+            <li>Visualizer Controls</li>
+            <li>More Modes</li>
+            <li>More Settings</li>
+        </ul>
+    </div>
   </div>
 </div>
 <div id="visualizer-main">
@@ -128,8 +142,23 @@
 
 <script id="player-info-template" type="text/x-handlebars-template">
     <div class="my-3">
-        <div id="playing">Playing <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong></div>
-        <div id="paused">Paused with <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong> queued</div>
+        <div class="playing">Playing <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong></div>
+        <div class="paused">Paused with <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong> queued</div>
+
+        <!--<div class="d-flex justify-content-around my-2 controls">
+            <button class="btn"><i class="material-icons md-20 md-light">skip_previous</i></button>
+            <div class="paused">
+                <button class="btn"><i class="material-icons md-20 md-light">play_circle_outline</i></button>
+            </div>
+            <div class="playing">
+                <button class="btn"><i class="material-icons md-20 md-light">pause_circle_outline</i></button>
+            </div>
+            <button class="btn"><i class="material-icons md-20 md-light">skip_next</i></button>
+
+            &lt;!&ndash;<i class="material-icons md-20 md-light">high_quality</i>
+            <i class="material-icons md-20 md-light">check_box</i>
+            <i class="material-icons md-20 md-light">check_box_outline_blank</i>&ndash;&gt;
+        </div>-->
     </div>
 </script>
 
@@ -156,7 +185,7 @@
 </script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
 <script src="js/OrbitControls.js"></script>
 <script>

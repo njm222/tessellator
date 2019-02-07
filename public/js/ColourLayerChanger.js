@@ -157,7 +157,7 @@ function changeColourLayer001() {
     }
 
     if(tatumCounter % 13 == 0) {
-        points = Math.floor(Math.random() * (6 - 1)) + 1;
+        points = Math.floor(Math.random() * (5 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
     }
 
@@ -346,7 +346,7 @@ function changeColourLayer33() {
 //go middle out then repeat
 function changeColourLayer4() {
     if(beatCounter < 1) {
-        points = Math.floor(Math.random() * (6 - 1)) + 1;
+        points = Math.floor(Math.random() * (5 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
         shapeType = Math.random()*4;
     }
@@ -463,7 +463,7 @@ function changeColourLayer5() {
         positionShape();
     }
     if(14 < beatCounter){
-        points = Math.floor(Math.random() * (6 - 1)) + 1;
+        points = Math.floor(Math.random() * (5 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
         shapeType = Math.random()*4;
         beatCounter = 0;

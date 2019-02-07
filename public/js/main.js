@@ -258,12 +258,11 @@ function rotateShape(shape) {
 }
 
 function changeCameraZoom() {
-    camera.zoom = lowAvFreq/80;
+    camera.zoom = highAvFreq/80;
 
     if(camera.zoom > 4) {
         camera.zoom = 4;
     }
-    camera.updateProjectionMatrix();
     //console.log("zoom: " + camera.zoom);
     //console.log(scene.background);
 }
@@ -283,11 +282,17 @@ var run = function(){
         analyser.getByteFrequencyData(frequencyData);
         currFreq = frequencyData;
         let totalFreq = 0;
-        for(let i = 0; i < bufferLength/4; i++){
+        highAvFreq = 0;
+        for(let i = 0; i < (bufferLength/32)*2; i++){
             totalFreq += frequencyData[i];
         }
-        lowAvFreq = totalFreq/(bufferLength/4);
-        for(let i = bufferLength/4; i < bufferLength; i++) {
+        lowAvFreq = totalFreq/((bufferLength/32)*2);
+        for(let i = (bufferLength/32)*2; i < (bufferLength/32)*4; i++) {
+            totalFreq += frequencyData[i];
+            highAvFreq += frequencyData[i];
+        }
+        highAvFreq = highAvFreq/((bufferLength/32)*2);
+        for(let i = (bufferLength/32)*4; i < bufferLength; i++) {
             totalFreq += frequencyData[i];
         }
         avFreq = totalFreq/bufferLength;
@@ -306,6 +311,8 @@ var run = function(){
         changeFreqMode();
         changeColourMode();
         changeLayerMode();
+
+        camera.updateProjectionMatrix();
 
         for(var i = 0; i < 25; i++) {
             rotateShape(shapeArr[i]);

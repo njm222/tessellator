@@ -352,12 +352,12 @@
                                                 console.log(response);
 
                                                 analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);
-                                                if(0.7/response.energy < 0.93) {
-                                                    analyser.smoothingTimeConstant = 0.7 / response.energy;
-                                                } else if (0.7/response.danceability < 0.93) {
-                                                    analyser.smoothingTimeConstant = 0.7 / response.danceability;
+                                                if(0.75/response.energy < 0.94) {
+                                                    analyser.smoothingTimeConstant = 0.75 / response.energy;
+                                                } else if (0.75/response.danceability < 0.94) {
+                                                    analyser.smoothingTimeConstant = 0.75 / response.danceability;
                                                 } else {
-                                                    analyser.smoothingTimeConstant = 0.93;
+                                                    analyser.smoothingTimeConstant = 0.94;
                                                 }
                                                 console.log("smoothing: " + analyser.smoothingTimeConstant);
                                                 g_tempo = response.tempo/60;

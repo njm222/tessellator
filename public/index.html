@@ -375,6 +375,35 @@
                                                         g_beats = response.beats;
                                                         g_tatums = response.tatums;
                                                         g_segments = response.segments;
+
+                                                        document.getElementById('toVisualizer').addEventListener('click', function () {
+                                                            ga('set', {
+                                                                page: '/visualizer',
+                                                                title: 'User started the visualizer'
+                                                            });
+                                                            ga('send', 'pageview');
+                                                            $.ajax({
+                                                                url: 'https://api.spotify.com/v1/me',
+                                                                headers: {
+                                                                    'Authorization': 'Bearer ' + access_token
+                                                                },
+                                                                success: function(response) {
+                                                                    playerInfoPlaceholder.innerHTML = playerInfoTemplate(response);
+                                                                }
+                                                            });
+
+                                                            if(!gotVisualizerScripts) {
+                                                                $.getScript("js/ColourLayerChanger.js");
+                                                                $.getScript("js/ModeChanger.js");
+                                                                $.getScript("js/main.js");
+                                                                $.getScript("js/KeyboardInput.js");
+                                                            }
+                                                            refreshID = setInterval(getRefreshToken, 1800000);
+
+                                                            $('#loggedin').hide();
+                                                            $('#main-container').hide();
+                                                            $('#visualizer-main').show();
+                                                        });
                                                     }
                                                 });
                                             }
@@ -439,34 +468,7 @@
                 $('#visualizer-main').hide();
                 $('#loggedin').hide();
             }
-            document.getElementById('toVisualizer').addEventListener('click', function () {
-                ga('set', {
-                    page: '/visualizer',
-                    title: 'User started the visualizer'
-                });
-                ga('send', 'pageview');
-                $.ajax({
-                    url: 'https://api.spotify.com/v1/me',
-                    headers: {
-                        'Authorization': 'Bearer ' + access_token
-                    },
-                    success: function(response) {
-                        playerInfoPlaceholder.innerHTML = playerInfoTemplate(response);
-                    }
-                });
 
-                if(!gotVisualizerScripts) {
-                    $.getScript("js/ColourLayerChanger.js");
-                    $.getScript("js/ModeChanger.js");
-                    $.getScript("js/main.js");
-                    $.getScript("js/KeyboardInput.js");
-                }
-                refreshID = setInterval(getRefreshToken, 1800000);
-
-                $('#loggedin').hide();
-                $('#main-container').hide();
-                $('#visualizer-main').show();
-            });
             document.getElementById('toLoggedIn').addEventListener('click', function () {
                 ga('set', {
                     page: '/loggedin',

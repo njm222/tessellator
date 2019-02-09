@@ -298,11 +298,12 @@ var run = function(){
         avFreq = totalFreq/bufferLength;
 
         if(cameraRandom > 3) {
-            camera.zoom = .63;
+            camera.zoom = .65;
         } else {
             changeCameraZoom();
         }
-        //console.log(avFreq);
+
+        //console.log("freq = " + avFreq);
 
         changeBar();
         changeBeat();

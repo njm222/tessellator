@@ -376,6 +376,13 @@
                                                         g_tatums = response.tatums;
                                                         g_segments = response.segments;
 
+                                                        if(!gotVisualizerScripts) {
+                                                            $.getScript("js/ColourLayerChanger.js");
+                                                            $.getScript("js/ModeChanger.js");
+                                                            $.getScript("js/main.js");
+                                                            $.getScript("js/KeyboardInput.js");
+                                                        }
+
                                                         document.getElementById('toVisualizer').addEventListener('click', function () {
                                                             ga('set', {
                                                                 page: '/visualizer',
@@ -392,12 +399,6 @@
                                                                 }
                                                             });
 
-                                                            if(!gotVisualizerScripts) {
-                                                                $.getScript("js/ColourLayerChanger.js");
-                                                                $.getScript("js/ModeChanger.js");
-                                                                $.getScript("js/main.js");
-                                                                $.getScript("js/KeyboardInput.js");
-                                                            }
                                                             refreshID = setInterval(getRefreshToken, 1800000);
 
                                                             $('#loggedin').hide();

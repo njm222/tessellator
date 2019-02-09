@@ -426,12 +426,12 @@ function changeColourLayer5() {
     if(beatCounter <= 2){
         changeColour(shapeArr[0], colour);
     }
-    if(2 <= beatCounter && beatCounter <= 5) {
+    if(2 <= beatCounter && beatCounter <= 4) {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], colour);
         }
     }
-    if(5 <= beatCounter && beatCounter <= 8) {
+    if(4 <= beatCounter && beatCounter <= 8) {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], colour);
         }

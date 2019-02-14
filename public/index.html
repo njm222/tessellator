@@ -89,6 +89,7 @@
         <h4>A real time 3D audio visualizer made with WebGl and the Spotify Web API</h4>
     </div>
   </div>
+
   <div id="loggedin">
     <div class="row d-flex justify-content-center m-4">
         <h4>A real time 3D audio visualizer made with WebGl and the Spotify Web API</h4>
@@ -120,7 +121,9 @@
         </ul>
     </div>
   </div>
+
 </div>
+
 <div id="visualizer-main">
     <div id="visualizer-container">
         <div class="d-flex justify-content-around">
@@ -209,19 +212,28 @@
     var trackEnd = 999999;
     var isPaused = true;
 
+    var barStart = 0;
     var barEnd = 0;
     var barCounter = 0;
+    var barConfidence = 0;
 
+    var beatStart = 0;
     var beatEnd = 0;
     var beatCounter = 0;
+    var beatConfidence = 0;
 
+    var tatumStart = 0;
     var tatumEnd = 0;
     var tatumCounter = 0;
+    var tatumConfidence = 0;
 
     var points = 1;
     var detail = 1;
     var cameraRandom = Math.floor(Math.random() * 7);
     var shapeType;
+
+    var zoomIntensity = 1.1;
+    var zoomSwing = 0.9;
 
     function incrementTrackCounter() {
         trackCounter+= 10;
@@ -279,6 +291,8 @@
             alert('There was an error during the authentication');
         } else {
             if (access_token) {
+                //change url
+                window.history.pushState("loggedin", "Logged In", "/loggedin");
                 // render oauth info
                 oauthPlaceholder.innerHTML = oauthTemplate({
                     access_token: access_token,
@@ -361,6 +375,14 @@
                                                 }
                                                 console.log("smoothing: " + analyser.smoothingTimeConstant);
                                                 g_tempo = response.tempo/60;
+
+                                                // zoomIntensity = 1 + (response.valence/6)*2;
+                                                // console.log(zoomIntensity);
+
+                                                zoomIntensity = 1 + (response.valence/4.5);
+
+                                                zoomSwing = response.energy;
+
                                                 $.ajax({
                                                     url: response.analysis_url,
                                                     headers: {
@@ -384,6 +406,8 @@
                                                         }
 
                                                         document.getElementById('toVisualizer').addEventListener('click', function () {
+                                                            //change url
+                                                            window.history.pushState("visualizer", "Visualizer", "/visualizer");
                                                             ga('set', {
                                                                 page: '/visualizer',
                                                                 title: 'User started the visualizer'
@@ -471,6 +495,8 @@
             }
 
             document.getElementById('toLoggedIn').addEventListener('click', function () {
+                //change url
+                window.history.pushState("loggedin", "Logged In", "/loggedin");
                 ga('set', {
                     page: '/loggedin',
                     title: 'Back to Logged In'

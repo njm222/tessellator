@@ -90,26 +90,66 @@ function changeBar() {
         g_bar++;
         barCounter++;
         //console.log("Bar increased: " + g_bar);
-    }
+    } /*else if(barConfidence > 0.6 && barStart +(((barEnd - barStart)/10)*4) < trackCounter < barEnd - (((barEnd - barStart)/10)*4)) {
+        if(cameraRandom > 3) {
+            camera.zoom = .65;
+        } else {
+            changeCameraZoomBeat();
+        }
+    }*/
+
+    /*if(true/!*barConfidence > 0.4 && (trackCounter + 200 > barEnd - 250 && trackCounter < tatumEnd)*!/) {
+        if(cameraRandom > 3) {
+            camera.zoom = .65;
+        } else {
+            changeCameraZoom();
+        }
+        //console.log("zooming");
+    } else {
+        barConfidence = g_bars[g_bar]["confidence"];
+        //console.log(barConfidence);
+    }*/
 }
 
 function changeBeat() {
-    beatEnd = (g_beats[g_beat]["start"] + g_beats[g_beat]["duration"]) * 1000;
+    beatStart = g_beats[g_beat]["start"] * 1000;
+    beatEnd = beatStart + (g_beats[g_beat]["duration"] * 1000);
 
     if(trackCounter > beatEnd) {
         g_beat++;
         beatCounter++;
         //console.log("Beat increased: " + g_beat);
-    }
+
+        beatConfidence = g_beats[g_beat]["confidence"];
+        //console.log("beat " + beatConfidence);
+
+    } else if(beatConfidence > 0.86 && beatStart /*+(((beatEnd - beatStart)/10)*2)*/ < trackCounter < beatEnd - (((beatEnd - beatStart)/10)*3)) {
+        if(cameraRandom > 3) {
+            camera.zoom = .65;
+        } else {
+            changeCameraZoomBeat();
+        }
+    } /*else if(tatumConfidence > 0.78 && tatumStart /!*+(((tatumEnd - tatumStart)/10)*2)*!/ < trackCounter < tatumEnd - (((tatumEnd - tatumStart)/10)*3)) {
+        if(cameraRandom > 3) {
+            camera.zoom = .65;
+        } else {
+            changeCameraZoomTatum();
+        }
+    }*/
 }
 
 function changeTatum() {
-    tatumEnd = (g_tatums[g_tatum]["start"] + g_tatums[g_tatum]["duration"]) * 1000;
+    tatumStart = g_tatums[g_tatum]["start"] * 1000;
+    tatumEnd =  tatumStart + (g_tatums[g_tatum]["duration"] * 1000);
 
     if(trackCounter > tatumEnd) {
         g_tatum++;
         tatumCounter++;
         //console.log("Tatum increased: " + g_tatum);
+
+        tatumConfidence = g_tatums[g_tatum]["confidence"];
+        //console.log("tatum " + tatumConfidence);
+
     }
 }
 

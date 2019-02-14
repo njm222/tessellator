@@ -296,10 +296,6 @@ function changeCameraZoomBeat() {
     camera.zoom = Math.sin(highAvFreq/100) * ( Math.acos((beatEnd - trackCounter)/500)) * Math.sin(highAvFreq/75);
 
     //console.log("b");
-
-    if(camera.zoom > 4) {
-        camera.zoom = 4;
-    }
 }
 
 //Rendering

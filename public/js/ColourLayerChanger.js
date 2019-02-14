@@ -123,13 +123,19 @@ function changeBeat() {
         beatConfidence = g_beats[g_beat]["confidence"];
         //console.log("beat " + beatConfidence);
 
-    } else if(beatConfidence > 0.86 && beatStart /*+(((beatEnd - beatStart)/10)*2)*/ < trackCounter < beatEnd - (((beatEnd - beatStart)/10)*3)) {
+    } else if(beatConfidence > yy && beatStart /*+(((beatEnd - beatStart)/10)*2)*/ < trackCounter < beatEnd - (((beatEnd - beatStart)/10)*xx)) {
         if(cameraRandom > 3) {
             camera.zoom = .65;
         } else {
             changeCameraZoomBeat();
         }
-    } /*else if(tatumConfidence > 0.78 && tatumStart /!*+(((tatumEnd - tatumStart)/10)*2)*!/ < trackCounter < tatumEnd - (((tatumEnd - tatumStart)/10)*3)) {
+    } else {
+        if(cameraRandom > 3) {
+            camera.zoom = .65;
+        } else {
+            changeCameraZoom();
+        }
+    }/*else if(tatumConfidence > 0.78 && tatumStart /!*+(((tatumEnd - tatumStart)/10)*2)*!/ < trackCounter < tatumEnd - (((tatumEnd - tatumStart)/10)*3)) {
         if(cameraRandom > 3) {
             camera.zoom = .65;
         } else {

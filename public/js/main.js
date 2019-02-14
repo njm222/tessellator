@@ -258,9 +258,12 @@ function rotateShape(shape) {
 }
 
 function changeCameraZoom() {
+
+    camera.zoom = Math.pow(Math.sin((lowAvFreq + highAvFreq)/zoomIntensity), bb);
+
     //camera.zoom = Math.sin(highAvFreq/100) * Math.sin(highAvFreq/75);
 
-    camera.zoom = Math.sin(highAvFreq/100) * Math.sin(lowAvFreq / 50); //good
+    //camera.zoom = Math.sin(highAvFreq/100) * Math.sin(lowAvFreq / 50); //good
 
     if(camera.zoom > 4) {
         camera.zoom = 4;
@@ -292,7 +295,7 @@ function changeCameraZoomBeat() {
 
     camera.zoom = Math.sin(highAvFreq/100) * ( Math.acos((beatEnd - trackCounter)/500)) * Math.sin(highAvFreq/75);
 
-    console.log("b");
+    //console.log("b");
 
     if(camera.zoom > 4) {
         camera.zoom = 4;
@@ -328,12 +331,6 @@ var run = function(){
             totalFreq += frequencyData[i];
         }
         avFreq = totalFreq/bufferLength;
-
-        if(cameraRandom > 3) {
-            camera.zoom = .65;
-        } else {
-            changeCameraZoom();
-        }
 
         //console.log("freq = " + avFreq);
 

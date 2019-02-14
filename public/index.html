@@ -198,7 +198,10 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
 <script src="js/OrbitControls.js"></script>
 <script>
-    var yy = 12;
+    var zoomIntensity = 30;
+    var bb = 1;
+    var yy = 0.865;
+    var xx = 4;
     //Visualizer stuff below
     var gotVisualizerScripts = false;
     var g_tempo = 0;
@@ -235,9 +238,6 @@
     var detail = 1;
     var cameraRandom = Math.floor(Math.random() * 7);
     var shapeType;
-
-    var zoomIntensity = 1.1;
-    var zoomSwing = 0.9;
 
     function incrementTrackCounter() {
         trackCounter+= 10;
@@ -391,14 +391,8 @@
                                                     analyser.smoothingTimeConstant = 0.94;
                                                 }
                                                 console.log("smoothing: " + analyser.smoothingTimeConstant);
+                                                zoomIntensity = 300 - response.tempo;
                                                 g_tempo = response.tempo/60;
-
-                                                // zoomIntensity = 1 + (response.valence/6)*2;
-                                                // console.log(zoomIntensity);
-
-                                                zoomIntensity = 1 + (response.valence/4.5);
-
-                                                zoomSwing = response.energy;
 
                                                 $.ajax({
                                                     url: response.analysis_url,

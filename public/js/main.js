@@ -389,22 +389,22 @@ var run = function(){
                 colour = rgbToHex(avFreq*2, avFreq, avFreq);
                 break;
             case 4:
-                colour = rgbToHex(avFreq, avFreq*3, avFreq*2);
+                colour = rgbToHex(avFreq/10, avFreq*3, avFreq*2);
                 break;
             case 5:
-                colour = rgbToHex(avFreq*3, avFreq, avFreq*2);
+                colour = rgbToHex(avFreq*3, avFreq/10, avFreq*2);
                 break;
             case 6:
-                colour = rgbToHex(avFreq*3, avFreq*2, avFreq);
+                colour = rgbToHex(avFreq*3, avFreq*2, avFreq/10);
                 break;
             case 7:
-                colour = rgbToHex(avFreq, avFreq*2, avFreq*3);
+                colour = rgbToHex(avFreq/10, avFreq*2, avFreq*3);
                 break;
             case 8:
-                colour = rgbToHex(avFreq*2, avFreq*3, avFreq);
+                colour = rgbToHex(avFreq*2, avFreq*3, avFreq/10);
                 break;
             case 9:
-                colour = rgbToHex(avFreq*2, avFreq, avFreq*3);
+                colour = rgbToHex(avFreq*2, avFreq/10, avFreq*3);
                 break;
             case 10:
                 colour = rgbToHex(currFreq[13], currFreq[9], currFreq[5]);

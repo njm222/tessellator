@@ -258,15 +258,9 @@ function rotateShape(shape) {
 }
 
 function changeCameraZoom() {
-    //camera.zoom = Math.cos(highAvFreq/100) * Math.sin(highAvFreq/100);
-
-    //camera.zoom = Math.sin(Math.exp(Math.cos((highAvFreq/200)*zoomSwing))*zoomIntensity)*2; //sin(exp(cos(t*0.8))*2)
+    //camera.zoom = Math.sin(highAvFreq/100) * Math.sin(highAvFreq/75);
 
     camera.zoom = Math.sin(highAvFreq/100) * Math.sin(lowAvFreq / 50); //good
-
-    //camera.zoom = Math.pow(Math.sin((highAvFreq/200)*Math.PI), 0.5); //pow(sin(t*PI),12) no good
-
-    //camera.zoom = Math.pow(Math.abs(Math.sin(highAvFreq/100))*0.6, Math.sin(highAvFreq/100))*0.6 //pow(abs(sin(t*2))*0.6,sin(t*2))*0.6 no good
 
     if(camera.zoom > 4) {
         camera.zoom = 4;
@@ -294,15 +288,11 @@ function changeCameraZoomTatum() {
 }
 
 function changeCameraZoomBeat() {
-    //camera.zoom = Math.sin(Math.exp(Math.cos((highAvFreq/200)*zoomSwing))*zoomIntensity)*2; //sin(exp(cos(t*0.8))*2)
+    //camera.zoom = Math.sin(highAvFreq/200) * Math.acos((beatEnd - trackCounter)/400);
 
-    //camera.zoom = Math.pow(Math.sin((highAvFreq/100)*Math.PI), 2); //pow(sin(t*PI),12)
+    camera.zoom = Math.sin(highAvFreq/100) * ( Math.acos((beatEnd - trackCounter)/500)) * Math.sin(highAvFreq/75);
 
-    // console.log(Math.acos((beatEnd - trackCounter)/800));
-
-    camera.zoom = Math.sin(highAvFreq/200) * ( Math.acos((beatEnd - trackCounter)/400)) * Math.sin(highAvFreq/75);
-
-    //console.log("b");
+    console.log("b");
 
     if(camera.zoom > 4) {
         camera.zoom = 4;

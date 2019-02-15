@@ -39,6 +39,7 @@ var app = express()
         cacheTime: 600000000,
         urls: [
             { url: '/', changefreq: 'daily'},
+            { url: '/login', changefreq: 'daily'},
             { url: '/loggedin', changefreq: 'daily'},
             { url: '/visualizer', changefreq: 'daily'}
         ]

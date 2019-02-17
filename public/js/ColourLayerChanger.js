@@ -21,20 +21,25 @@ function randomWireframeLayerChange() {
         shapeArr[0].material.wireframe = false;
     }
     if(wireframeCounter > 10) {
-        shapeArr[0].material.wireframe = true;
+        if(shapeArr[0].material.wireframe)
+            shapeArr[0].material.wireframe = true;
     }
     if (wireframeCounter > 15)
         wireframeCounter = 0;
 
     if(wireframeCounter % 2) {
-        shapeArr[recentWireframe1].material.wireframe = false;
-        recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
-        shapeArr[recentWireframe1].material.wireframe = true;
+        if(shapeArr[recentWireframe1].material.wireframe) {
+            shapeArr[recentWireframe1].material.wireframe = false;
+            recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
+            shapeArr[recentWireframe1].material.wireframe = true;
+        }
     }
     else {
-        shapeArr[recentWireframe2].material.wireframe = false;
-        recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
-        shapeArr[recentWireframe2].material.wireframe = true;
+        if(shapeArr[recentWireframe2].material.wireframe) {
+            shapeArr[recentWireframe2].material.wireframe = false;
+            recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
+            shapeArr[recentWireframe2].material.wireframe = true;
+        }
     }
 }
 
@@ -79,83 +84,78 @@ function wireframeLayerChange() {
 */
 
 function changeBar() {
-    barEnd = (g_bars[g_bar]["start"] + g_bars[g_bar]["duration"]) * 1000;
+    if(g_bars[g_bar]) {
+        barEnd = (g_bars[g_bar]["start"] + g_bars[g_bar]["duration"]) * 1000;
 
-    if(trackCounter > barEnd) {
-        if(g_bar % 8 == 0) {
-            cameraRandom = Math.floor(Math.random() * 9);
-            //console.log("cameraRandom: " + cameraRandom);
-            positionCamera(cameraRandom);
+        if (trackCounter > barEnd) {
+            if (g_bar % 8 == 0) {
+                cameraRandom = Math.floor(Math.random() * 9);
+                //console.log("cameraRandom: " + cameraRandom);
+                positionCamera(cameraRandom);
+            }
+            g_bar++;
+            barCounter++;
+            //console.log("Bar increased: " + g_bar);
         }
-        g_bar++;
-        barCounter++;
-        //console.log("Bar increased: " + g_bar);
-    } /*else if(barConfidence > 0.6 && barStart +(((barEnd - barStart)/10)*4) < trackCounter < barEnd - (((barEnd - barStart)/10)*4)) {
-        if(cameraRandom > 3) {
-            camera.zoom = .65;
-        } else {
-            changeCameraZoomBeat();
-        }
-    }*/
-
-    /*if(true/!*barConfidence > 0.4 && (trackCounter + 200 > barEnd - 250 && trackCounter < tatumEnd)*!/) {
-        if(cameraRandom > 3) {
-            camera.zoom = .65;
-        } else {
-            changeCameraZoom();
-        }
-        //console.log("zooming");
-    } else {
-        barConfidence = g_bars[g_bar]["confidence"];
-        //console.log(barConfidence);
-    }*/
+    }
 }
 
 function changeBeat() {
-    beatStart = g_beats[g_beat]["start"] * 1000;
-    beatEnd = beatStart + (g_beats[g_beat]["duration"] * 1000);
+    if(g_beats[g_beat]) {
+        beatStart = g_beats[g_beat]["start"] * 1000;
+        beatEnd = beatStart + (g_beats[g_beat]["duration"] * 1000);
 
-    if(trackCounter > beatEnd) {
-        g_beat++;
-        beatCounter++;
-        //console.log("Beat increased: " + g_beat);
+        if (trackCounter > beatEnd) {
+            g_beat++;
+            if(g_beats[g_beat]) {
+                beatConfidence = g_beats[g_beat]["confidence"];
+            }
 
-        beatConfidence = g_beats[g_beat]["confidence"];
-        //console.log("beat " + beatConfidence);
+            if (beatConfidence > yy)
+                beatCounter++;
+            //console.log("Beat increased: " + g_beat);
 
-    } else if(beatConfidence > yy && beatStart /*+(((beatEnd - beatStart)/10)*2)*/ < trackCounter < beatEnd - (((beatEnd - beatStart)/10)*xx)) {
-        if(cameraRandom > 3) {
-            camera.zoom = .65;
+            //console.log("beat " + beatConfidence);
+
+        } else if (beatConfidence > 0.865 && beatStart /*+(((beatEnd - beatStart)/10)*2)*/ < trackCounter < beatEnd - (((beatEnd - beatStart) / 10) * xx)) {
+            if (cameraRandom > 3) {
+                camera.zoom = .65;
+            } else {
+                changeCameraZoomBeat();
+            }
         } else {
-            changeCameraZoomBeat();
-        }
-    } else {
-        if(cameraRandom > 3) {
-            camera.zoom = .65;
-        } else {
-            changeCameraZoom();
-        }
-    }/*else if(tatumConfidence > 0.78 && tatumStart /!*+(((tatumEnd - tatumStart)/10)*2)*!/ < trackCounter < tatumEnd - (((tatumEnd - tatumStart)/10)*3)) {
-        if(cameraRandom > 3) {
-            camera.zoom = .65;
-        } else {
-            changeCameraZoomTatum();
-        }
-    }*/
+            if (cameraRandom > 3) {
+                camera.zoom = .65;
+            } else {
+                changeCameraZoom();
+            }
+        }/*else if(tatumConfidence > 0.78 && tatumStart /!*+(((tatumEnd - tatumStart)/10)*2)*!/ < trackCounter < tatumEnd - (((tatumEnd - tatumStart)/10)*3)) {
+            if(cameraRandom > 3) {
+                camera.zoom = .65;
+            } else {
+                changeCameraZoomTatum();
+            }
+        }*/
+    }
 }
 
 function changeTatum() {
-    tatumStart = g_tatums[g_tatum]["start"] * 1000;
-    tatumEnd =  tatumStart + (g_tatums[g_tatum]["duration"] * 1000);
+    if(g_tatums[g_tatum]) {
+        tatumStart = g_tatums[g_tatum]["start"] * 1000;
+        tatumEnd = tatumStart + (g_tatums[g_tatum]["duration"] * 1000);
 
-    if(trackCounter > tatumEnd) {
-        g_tatum++;
-        tatumCounter++;
-        //console.log("Tatum increased: " + g_tatum);
+        if (trackCounter > tatumEnd) {
+            g_tatum++;
+            tatumCounter++;
+            //console.log("Tatum increased: " + g_tatum);
 
-        tatumConfidence = g_tatums[g_tatum]["confidence"];
-        //console.log("tatum " + tatumConfidence);
+            if(g_tatums[g_tatum]) {
+                tatumConfidence = g_tatums[g_tatum]["confidence"];
+            }
 
+            //console.log("tatum " + tatumConfidence);
+
+        }
     }
 }
 
@@ -182,14 +182,14 @@ function changeColourLayer001() {
     if(tatumCounter == 4) {
         //Morphing time
         changeColour(shapeArr[0], 0x000000);
-        changeDetail(detail, 0, 4);
+        changeShapeType(detail, 0, 4);
         positionShape();
     }
     if(tatumCounter == 8) {
         //Morphing time
         for (let i = 1; i < 9; i++) {
             changeColour(shapeArr[i], 0x000000);
-            changeDetail(detail, i, 4);
+            changeShapeType(detail, i, 4);
         }
         positionShape();
     }
@@ -197,7 +197,7 @@ function changeColourLayer001() {
         //Morphing time
         for (let i = 9; i < 25; i++) {
             changeColour(shapeArr[i], 0x000000);
-            changeDetail(detail, i, 4);
+            changeShapeType(detail, i, 4);
         }
         positionShape();
     }
@@ -401,7 +401,7 @@ function changeColourLayer4() {
         for(var i = 0; i < 25; i++) {
             changeColour(shapeArr[i], 0x000000);
             changePoints(shapeArr[i], points);
-            changeDetail(detail, i, shapeType);
+            changeShapeType(detail, i, shapeType);
         }
         positionShape();
     }
@@ -486,7 +486,7 @@ function changeColourLayer5() {
         for(var i = 9; i < 25; i++){
             changeColour(shapeArr[i], 0x000000);
             changePoints(shapeArr[i], points);
-            changeDetail(detail, i, shapeType);
+            changeShapeType(detail, i, shapeType);
         }
         positionShape();
         for(var i = 1; i < 9; i++){
@@ -497,7 +497,7 @@ function changeColourLayer5() {
         for(var i = 1; i < 9; i++){
             changeColour(shapeArr[i], 0x000000);
             changePoints(shapeArr[i], points);
-            changeDetail(detail, i, shapeType);
+            changeShapeType(detail, i, shapeType);
         }
         positionShape();
         changeColour(shapeArr[0], colour);
@@ -505,7 +505,7 @@ function changeColourLayer5() {
     if(12 < beatCounter) {
         changeColour(shapeArr[0], 0x000000);
         changePoints(shapeArr[0], points);
-        changeDetail(detail, 0, shapeType);
+        changeShapeType(detail, 0, shapeType);
         positionShape();
     }
     if(14 < beatCounter){

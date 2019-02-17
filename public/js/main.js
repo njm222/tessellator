@@ -35,7 +35,7 @@ var octaGeo4 = new THREE.OctahedronGeometry(10, 4);
 
 
 //Light
-var l1 = new THREE.PointLight(0x123124);
+var l1 = new THREE.PointLight(0xffffff);
 l1.position.set(300, 200);
 scene.add(l1);
 
@@ -217,7 +217,7 @@ function changePoints(currShape, currPoints) {
     currShape.material.size = currPoints;
 }
 
-function changeDetail(currDetail, currShape, shapeType) {
+function changeShapeType(currDetail, currShape, shapeType) {
     scene.remove(shapeArr[currShape]);
     if(shapeType > 2) {
         shapeArr[currShape] = new THREE.Points(new THREE.OctahedronGeometry(10, currDetail), new THREE.PointsMaterial({size: 1, color: 0x000000}));

@@ -38,10 +38,7 @@ var app = express()
         hostname: 'https://tessellator.herokuapp.com',
         cacheTime: 600000000,
         urls: [
-            { url: '/', changefreq: 'daily'},
-            { url: '/login', changefreq: 'daily'},
-            { url: '/loggedin', changefreq: 'daily'},
-            { url: '/visualizer', changefreq: 'daily'}
+            { url: '/', changefreq: 'daily'}
         ]
 });
 

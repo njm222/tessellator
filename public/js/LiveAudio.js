@@ -53,6 +53,8 @@ if (navigator.mediaDevices.getUserMedia) {
                     frequencyData = new Uint8Array(analyser.frequencyBinCount);
                     analyser.getByteFrequencyData(frequencyData);
                     bufferLength = analyser.frequencyBinCount;
+                    analyser.minDecibels = -95;
+                    analyser.maxDecibels = -35;
                     //attach source to the mic
                     source = context.createMediaStreamSource(stream);
                     //connect source to the analyser

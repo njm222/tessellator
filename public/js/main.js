@@ -206,7 +206,7 @@ function rgbToHexHelper(num){
 }
 
 function rgbToHex(r,g,b) {
-    return ("0x" + rgbToHexHelper(r%256) + rgbToHexHelper(g%256) + rgbToHexHelper(b%256));
+    return ("0x" + rgbToHexHelper(r) + rgbToHexHelper(g) + rgbToHexHelper(b));
 }
 
 function changeColour(currShape, currColour) {
@@ -328,6 +328,7 @@ var run = function(){
         }
         avFreq = totalFreq/bufferLength;
 
+        //console.log(frequencyData);
         //console.log("freq = " + avFreq);
 
         changeBar();

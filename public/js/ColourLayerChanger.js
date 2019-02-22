@@ -86,15 +86,20 @@ function wireframeLayerChange() {
 function changeBar() {
     if(g_bars[g_bar]) {
         barEnd = (g_bars[g_bar]["start"] + g_bars[g_bar]["duration"]) * 1000;
-
         if (trackCounter > barEnd) {
-            if (g_bar % 8 == 0) {
+            g_bar++;
+            barCounter++;
+            if(g_bars[g_bar]) {
+                barConfidence = g_bars[g_bar]["confidence"];
+            }
+            //console.log(barConfidence);
+
+            if(barConfidence > yy && barCounter % 2 == 0) {
                 cameraRandom = Math.floor(Math.random() * 9);
                 //console.log("cameraRandom: " + cameraRandom);
                 positionCamera(cameraRandom);
             }
-            g_bar++;
-            barCounter++;
+
             //console.log("Bar increased: " + g_bar);
         }
     }
@@ -111,7 +116,7 @@ function changeBeat() {
                 beatConfidence = g_beats[g_beat]["confidence"];
             }
 
-            if (beatConfidence > yy)
+            if (beatConfidence > 0.34)
                 beatCounter++;
             //console.log("Beat increased: " + g_beat);
 
@@ -203,7 +208,7 @@ function changeColourLayer001() {
     }
 
     if(tatumCounter % 13 == 0) {
-        points = Math.floor(Math.random() * (5 - 1)) + 1;
+        points = Math.floor(Math.random() * (4 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
     }
 
@@ -242,7 +247,7 @@ function changeColourLayer000() {
     if(tatumCounter > 3) {
         //Morphing time
         tatumCounter = 0;
-        points = Math.floor(Math.random() * (16 - 1)) + 1;
+        points = Math.floor(Math.random() * (4 - 1)) + 1;
         for(var i = 0; i < 25; i++) {
             changePoints(shapeArr[i], points);
         }
@@ -392,7 +397,7 @@ function changeColourLayer33() {
 //go middle out then repeat
 function changeColourLayer4() {
     if(beatCounter < 1) {
-        points = Math.floor(Math.random() * (5 - 1)) + 1;
+        points = Math.floor(Math.random() * (4 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
         shapeType = Math.random()*4;
     }
@@ -509,7 +514,7 @@ function changeColourLayer5() {
         positionShape();
     }
     if(14 < beatCounter){
-        points = Math.floor(Math.random() * (5 - 1)) + 1;
+        points = Math.floor(Math.random() * (4 - 1)) + 1;
         detail = Math.floor(Math.random() * 3);
         shapeType = Math.random()*4;
         beatCounter = 0;

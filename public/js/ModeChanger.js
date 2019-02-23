@@ -2,13 +2,18 @@
 var sectionEnd = 0;
 
 function changeLayerMode() {
-    sectionEnd = (g_sections[g_section]["start"] + g_sections[g_section]["duration"])*1000;
-    //if(trackCounter > currSection.endtime) increment section and change layer
-    if(trackCounter > sectionEnd){
-        g_section++;
+    if(g_sections[g_section]){
+        sectionEnd = (g_sections[g_section]["start"] + g_sections[g_section]["duration"])*1000;
+        g_tempo = (g_sections[g_section]["tempo"]);
+        //if(trackCounter > currSection.endtime) increment section and change layer
+        if(trackCounter > sectionEnd){
+            g_section++;
 
-        layerKey = Math.floor(Math.random() * (13 - 1)) + 1;
-        console.log("layer mode: " + layerKey);
+            //console.log(g_tempo);
+
+            layerKey = Math.floor(Math.random() * (10 - 1)) + 1;
+            console.log("layer mode: " + layerKey);
+        }
     }
 }
 

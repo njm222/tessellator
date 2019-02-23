@@ -207,12 +207,16 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
 <script src="js/OrbitControls.js"></script>
 <script>
+
+    var rmslow = 20;
+    var rmshigh = 80;
     var zoomIntensity = 30;
-    var bb = 1;
-    var yy = 0.5;
-    var xx = 1.5;
+    var xx = 0.4;
+    var zz = 0.5;
+    var cc = 7500;
     //Visualizer stuff below
     var gotVisualizerScripts = false;
+    var g_valence = 0;
     var g_tempo = 0;
     var g_section = 0;
     var g_sections = 0;
@@ -227,6 +231,7 @@
     var trackCounter = 0;
     var trackEnd = 999999;
     var isPaused = true;
+    var isVisualizer = false;
 
     var barStart = 0;
     var barEnd = 0;
@@ -355,6 +360,9 @@
                                     g_beat = 0;
                                     g_tatum = 0;
                                     g_segment = 0;
+                                    cameraRandom = 2;
+                                    analyser.minDecibels = -90;
+                                    analyser.maxDecibels = -25;
                                 }
                                 trackEnd = state.duration;
 
@@ -391,6 +399,8 @@
                                                 console.log('features response');
                                                 console.log(response);
 
+                                                g_valence = response.valence;
+
                                                 analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);
                                                 if(0.75/response.energy < 0.94) {
                                                     analyser.smoothingTimeConstant = 0.75 / response.energy;
@@ -401,7 +411,7 @@
                                                 }
                                                 console.log("smoothing: " + analyser.smoothingTimeConstant);
                                                 zoomIntensity = 300 - response.tempo;
-                                                g_tempo = response.tempo/60;
+                                                g_tempo = response.tempo;
 
                                                 $.ajax({
                                                     url: response.analysis_url,
@@ -448,6 +458,7 @@
                                                             $('#loggedin').hide();
                                                             $('#main-container').hide();
                                                             $('#visualizer-main').show();
+                                                            isVisualizer = true;
                                                         });
                                                     }
                                                 });
@@ -527,6 +538,7 @@
                 $('#main-container').show();
                 $('#loggedin').show();
                 clearTimeout(refreshID);
+                isVisualizer = false;
             });
             /*document.getElementById('toPlayer').addEventListener('click', function () {
                 ga('set', {

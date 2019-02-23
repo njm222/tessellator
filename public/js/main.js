@@ -8,6 +8,9 @@ var lowAvFreq = 0;
 var highAvFreq = 0;
 var avFreq = 0;
 
+var peak = 0;
+var rms = 0;
+
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer();
@@ -257,9 +260,58 @@ function rotateShape(shape) {
     }
 }
 
+function getData() {
+    rms = 0
+    analyser.getByteFrequencyData(frequencyData);
+    currFreq = frequencyData;
+    let totalFreq = 0;
+    highAvFreq = 0;
+
+    for(let i = 0; i < (bufferLength/32)*2; i++){
+        totalFreq += frequencyData[i];
+        rms += frequencyData[i] * frequencyData[i];
+    }
+
+    lowAvFreq = totalFreq/((bufferLength/32)*2);
+
+    for(let i = (bufferLength/32)*2; i < (bufferLength/32)*4; i++) {
+        totalFreq += frequencyData[i];
+        highAvFreq += frequencyData[i];
+        rms += frequencyData[i] * frequencyData[i];
+    }
+
+    highAvFreq = highAvFreq/((bufferLength/32)*2);
+
+    for(let i = (bufferLength/32)*4; i < bufferLength; i++) {
+        totalFreq += frequencyData[i];
+        rms += frequencyData[i] * frequencyData[i];
+    }
+
+    avFreq = totalFreq/bufferLength;
+    rms /= bufferLength;
+    rms = Math.sqrt(rms);
+
+    if(rms < rmslow) {
+        //console.log(rms);
+        analyser.minDecibels -= 1;
+        rmslow--;
+        rmshigh = 80;
+        analyser.maxDecibels = -30;
+    } else if(rms > rmshigh) {
+        //console.log(rms);
+        analyser.maxDecibels += 1;
+        rmshigh++;
+        rmslow = 20;
+        analyser.minDecibels = -85;
+    }
+
+    //console.log(frequencyData);
+    //console.log("freq = " + avFreq);
+}
+
 function changeCameraZoom() {
 
-    camera.zoom = Math.pow(Math.sin((lowAvFreq + highAvFreq)/zoomIntensity), bb);
+    camera.zoom = Math.pow(Math.sin((lowAvFreq + highAvFreq)/zoomIntensity), 1);
 
     //camera.zoom = Math.sin(highAvFreq/100) * Math.sin(highAvFreq/75);
 
@@ -295,7 +347,7 @@ function changeCameraZoomBeat() {
 
     camera.zoom = Math.sin(highAvFreq/100) * ( Math.acos((beatEnd - trackCounter)/500)) * Math.sin(highAvFreq/75);
 
-    //console.log("b");
+    //console.log("b zoooooooooom");
 }
 
 //Rendering
@@ -308,28 +360,9 @@ var run = function(){
     //console.log("150: " + frequencyData[150] + "       175: " + frequencyData[175]);
 
 
-    if (!isPaused && gotVisualizerScripts) {
+    if (!isPaused && isVisualizer && gotVisualizerScripts) {
 
-        analyser.getByteFrequencyData(frequencyData);
-        currFreq = frequencyData;
-        let totalFreq = 0;
-        highAvFreq = 0;
-        for(let i = 0; i < (bufferLength/32)*2; i++){
-            totalFreq += frequencyData[i];
-        }
-        lowAvFreq = totalFreq/((bufferLength/32)*2);
-        for(let i = (bufferLength/32)*2; i < (bufferLength/32)*4; i++) {
-            totalFreq += frequencyData[i];
-            highAvFreq += frequencyData[i];
-        }
-        highAvFreq = highAvFreq/((bufferLength/32)*2);
-        for(let i = (bufferLength/32)*4; i < bufferLength; i++) {
-            totalFreq += frequencyData[i];
-        }
-        avFreq = totalFreq/bufferLength;
-
-        //console.log(frequencyData);
-        //console.log("freq = " + avFreq);
+        getData();
 
         changeBar();
         changeBeat();
@@ -381,31 +414,31 @@ var run = function(){
         }
         switch (colourKey) {
             case 1:
-                colour = rgbToHex(avFreq, avFreq, avFreq*2);
+                colour = rgbToHex(avFreq, avFreq, Math.pow(avFreq, 1.3)*2);
                 break;
             case 2:
-                colour = rgbToHex(avFreq, avFreq*2, avFreq);
+                colour = rgbToHex(avFreq, Math.pow(avFreq, 1.3)*2, avFreq);
                 break;
             case 3:
-                colour = rgbToHex(avFreq*2, avFreq, avFreq);
+                colour = rgbToHex(Math.pow(avFreq, 1.3)*2, avFreq, avFreq);
                 break;
             case 4:
-                colour = rgbToHex(avFreq/10, avFreq*3, avFreq*2);
+                colour = rgbToHex(avFreq/10, Math.pow(avFreq, 1.5)*3, avFreq*2);
                 break;
             case 5:
                 colour = rgbToHex(avFreq*3, avFreq/10, avFreq*2);
                 break;
             case 6:
-                colour = rgbToHex(avFreq*3, avFreq*2, avFreq/10);
+                colour = rgbToHex(Math.pow(avFreq, 1.5)*3, avFreq*2, avFreq/10);
                 break;
             case 7:
                 colour = rgbToHex(avFreq/10, avFreq*2, avFreq*3);
                 break;
             case 8:
-                colour = rgbToHex(avFreq*2, avFreq*3, avFreq/10);
+                colour = rgbToHex(avFreq*2, Math.pow(avFreq, 1.5)*3, avFreq/10);
                 break;
             case 9:
-                colour = rgbToHex(avFreq*2, avFreq/10, avFreq*3);
+                colour = rgbToHex(avFreq*2, avFreq/10, avFreq*3);Math.pow(avFreq, 1.5)
                 break;
             case 10:
                 colour = rgbToHex(currFreq[13], currFreq[9], currFreq[5]);

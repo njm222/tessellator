@@ -249,23 +249,22 @@ function changeColourLayer000() {
 
 function changeColourLayer1() {
 
-    if(beatCounter < 1 || tatumConfidence > taaaa) {
+    if(beatCounter < 1 || tatumConfidence > (tatumAv+tatumVar)) {
         beatCounter = 1;
         for (let i = 1; i < shapeMax; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
-        console.log("tatumConfidence:     " + tatumConfidence);
 
         if(setLargeShape = true) {
             shapeArr[0].scale.set(5,5,5);
             setLargeShape = false;
         }
 
-        if(shapeArr[0].scale.x < 30 && tatumConfidence > taaaa && cameraRandom % 2 == 0) {
+        if(shapeArr[0].scale.x < 30 && tatumConfidence > (tatumAv+tatumVar) && cameraRandom % 2 == 0) {
             let tmp = shapeArr[0].scale.x + 0.05;
             shapeArr[0].scale.set(tmp, tmp, tmp);
             changeColour(shapeArr[0], colour);
-        } else if(tatumConfidence > taaaa && shapeArr[0].scale.x > 0.05) {
+        } else if(tatumConfidence > (tatumAv+tatumVar) && shapeArr[0].scale.x > 0.05) {
             let tmp = shapeArr[0].scale.x - 0.05;
             shapeArr[0].scale.set(tmp, tmp, tmp);
             changeColour(shapeArr[0], colour);
@@ -314,23 +313,22 @@ function changeColourLayer11() {
 
 function changeColourLayer2() {
 
-    if(beatCounter < 1 || tatumConfidence > taaaa) {
+    if(beatCounter < 1 || tatumConfidence > (tatumAv+tatumVar)) {
         beatCounter = 1;
         for (let i = 1; i < shapeMax; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
-        console.log("tatumConfidence:     " + tatumConfidence);
 
         if(setLargeShape = true) {
             shapeArr[0].scale.set(5,5,5);
             setLargeShape = false;
         }
 
-        if(shapeArr[0].scale.x < 30 && tatumConfidence > taaaa && cameraRandom % 2 == 0) {
+        if(shapeArr[0].scale.x < 30 && tatumConfidence > (tatumAv+tatumVar) && cameraRandom % 2 == 0) {
             let tmp = shapeArr[0].scale.x + 0.05;
             shapeArr[0].scale.set(tmp, tmp, tmp);
             changeColour(shapeArr[0], colour);
-        } else if(tatumConfidence > taaaa && shapeArr[0].scale.x > 0.05) {
+        } else if(tatumConfidence > (tatumAv+tatumVar) && shapeArr[0].scale.x > 0.05) {
             let tmp = shapeArr[0].scale.x - 0.05;
             shapeArr[0].scale.set(tmp, tmp, tmp);
             changeColour(shapeArr[0], colour);
@@ -377,23 +375,22 @@ function changeColourLayer22() {
 
 function changeColourLayer3() {
 
-    if(beatCounter < 1 || tatumConfidence > taaaa) {
+    if(beatCounter < 1 || tatumConfidence > (tatumAv+tatumVar)) {
         beatCounter = 1;
         for (let i = 1; i < shapeMax; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
-        console.log("tatumConfidence:     " + tatumConfidence);
 
         if(setLargeShape = true) {
             shapeArr[0].scale.set(5,5,5);
             setLargeShape = false;
         }
 
-        if(shapeArr[0].scale.x < 30 && tatumConfidence > taaaa && cameraRandom % 2 == 0) {
+        if(shapeArr[0].scale.x < 30 && tatumConfidence > (tatumAv+tatumVar) && cameraRandom % 2 == 0) {
             let tmp = shapeArr[0].scale.x + 0.05;
             shapeArr[0].scale.set(tmp, tmp, tmp);
             changeColour(shapeArr[0], colour);
-        } else if(tatumConfidence > taaaa && shapeArr[0].scale.x > 0.05) {
+        } else if(tatumConfidence > (tatumAv+tatumVar) && shapeArr[0].scale.x > 0.05) {
             let tmp = shapeArr[0].scale.x - 0.05;
             shapeArr[0].scale.set(tmp, tmp, tmp);
             changeColour(shapeArr[0], colour);

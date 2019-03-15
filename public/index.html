@@ -290,7 +290,8 @@
     var shapeMax = 961;
     var layerMarker = [];
 
-    var taaaa = 0.93;
+    var tatumAv = 0.93;
+    var tatumVar = 0;
     var baaaa = 0.97;
     var beatZoom = 0;
 
@@ -515,14 +516,19 @@
                                                         g_tatums = response.tatums;
                                                         g_segments = response.segments;
 
-                                                        taaaa = 0;
-                                                        for (let i = 0; i < g_tatums.length; i++) {
-                                                            taaaa = taaaa + g_tatums[i]["confidence"];
+                                                        tatumVar = 0;
+                                                        tatumAv = g_tatums[0]["confidence"];
+                                                        let d = 0;
+                                                        for(let i = 1; i < g_tatums.length; i++) {
+                                                            d = g_tatums[i]["confidence"] - tatumAv;
+                                                            tatumAv += d/g_tatums.length;
+                                                            tatumVar += d*(g_tatums[i]["confidence"] - tatumAv);
                                                         }
-                                                        taaaa = taaaa/g_tatums.length;
-                                                        console.log("taaaa = " + taaaa);
-                                                        taaaa = taaaa + g_energy/(3+g_danceability/g_valence);
-                                                        console.log("taaaa = " + taaaa);
+
+                                                        console.log("tatumAv = " + tatumAv);
+                                                        tatumVar = tatumVar/(g_tatums.length-1);
+                                                        tatumVar = tatumVar*2;
+                                                        console.log("tatumVar = " + tatumVar);
 
 
                                                         document.getElementById('toVisualizer').addEventListener('click', function () {

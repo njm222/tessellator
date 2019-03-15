@@ -12,7 +12,7 @@ var peak = 0;
 var rms = 0;
 
 var scene = new THREE.Scene();
-var camera = new THREE.StereoCamera.PerspectiveCamera(75,width/height, 0.1, 1000);
+var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
 //camera.focalLength = -90;
 var renderer = new THREE.WebGLRenderer();
 //renderer.setPixelRatio( window.devicePixelRatio );

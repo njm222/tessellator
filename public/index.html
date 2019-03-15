@@ -63,6 +63,21 @@
           top: -45px;
           width: 100%;
       }
+      .random-icon {
+          background-image: url('images/random-line-off.svg');
+          background-repeat: no-repeat;
+          background-size: contain;
+          width: 50px;
+          height: 50px;
+      }
+      .random-icon.on {
+          background-image: url('images/random-line-on.svg');
+          background-repeat: no-repeat;
+          background-size: contain;
+      }
+      #randomizerToggle:hover {
+          background-color: transparent;
+      }
       #main-container {
           text-align: center;
       }
@@ -157,19 +172,27 @@
         <div class="d-flex justify-content-around">
             <button class="btn btn-outline-light my-2" id="toLoggedIn">Back</button>
             <div id="player-info-visualizer"></div>
-            <div id="analysis-info"></div>
+            <div id="visualizer-controls"></div>
         </div>
     </div>
 </div>
 
-<script id="analysis-info-template" type="text/x-handlebars-template">
+<script id="visualizer-controls-template" type="text/x-handlebars-template">
+    <div class="icon-container">
+       <button class="btn btn-outline-light my-2" id="randomizerToggle">
+           <div id="randomIcon" class="random-icon"></div>
+       </button>
+    </div>
+</script>
+
+<!--<script id="analysis-info-template" type="text/x-handlebars-template">
     <div class="my-1">
         Tempo:  <strong>{{tempo}}</strong>
     </div>
     <div class="my-1">
         Loudness:  <strong>{{loudness}}</strong>
     </div>
-</script>
+</script>-->
 
 <script id="player-info-template" type="text/x-handlebars-template">
     <div class="my-3">
@@ -177,18 +200,18 @@
         <div class="paused">Paused with <strong>{{item.name}}</strong> by <strong>{{item.artists.0.name}}</strong> queued</div>
 
         <!--<div class="d-flex justify-content-around my-2 controls">
-            <button class="btn"><i class="material-icons md-20 md-light">skip_previous</i></button>
+            <button class="btn"><i class="material-images md-20 md-light">skip_previous</i></button>
             <div class="paused">
-                <button class="btn"><i class="material-icons md-20 md-light">play_circle_outline</i></button>
+                <button class="btn"><i class="material-images md-20 md-light">play_circle_outline</i></button>
             </div>
             <div class="playing">
-                <button class="btn"><i class="material-icons md-20 md-light">pause_circle_outline</i></button>
+                <button class="btn"><i class="material-images md-20 md-light">pause_circle_outline</i></button>
             </div>
-            <button class="btn"><i class="material-icons md-20 md-light">skip_next</i></button>
+            <button class="btn"><i class="material-images md-20 md-light">skip_next</i></button>
 
-            &lt;!&ndash;<i class="material-icons md-20 md-light">high_quality</i>
-            <i class="material-icons md-20 md-light">check_box</i>
-            <i class="material-icons md-20 md-light">check_box_outline_blank</i>&ndash;&gt;
+            &lt;!&ndash;<i class="material-images md-20 md-light">high_quality</i>
+            <i class="material-images md-20 md-light">check_box</i>
+            <i class="material-images md-20 md-light">check_box_outline_blank</i>&ndash;&gt;
         </div>-->
     </div>
 </script>
@@ -222,6 +245,7 @@
         crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
 <script src="js/OrbitControls.js"></script>
+<script src="js/AnaglyphEffect.js"></script>
 <script>
 
     var rmslow = 20;
@@ -230,8 +254,17 @@
     var xx = 0.4;
     var zz = 0.5;
     var cc = 7500;
+    var tc = 0.35;
+    var bc = 0.5;
+    var spinr = 0;
+
+    var randomizer = false;
+    var changedColour = true;
+    var setLargeShape = false;
     //Visualizer stuff below
     var gotVisualizerScripts = false;
+    var g_danceability = 0;
+    var g_energy = 0;
     var g_valence = 0;
     var g_tempo = 0;
     var g_section = 0;
@@ -248,6 +281,13 @@
     var trackEnd = 999999;
     var isPaused = true;
     var isVisualizer = false;
+
+    var shapeMax = 961;
+    var layerMarker = [];
+
+    var taaaa = 0.93;
+    var baaaa = 0.97;
+    var beatZoom = 0;
 
     var barStart = 0;
     var barEnd = 0;
@@ -314,9 +354,12 @@
             playerInfoTemplate = Handlebars.compile(playerInfoSource),
             playerInfoPlaceholder = document.getElementById('player-info'),
             playerInfoVisualizerPlaceholder = document.getElementById('player-info-visualizer');
-        var analysisInfoSource = document.getElementById('analysis-info-template').innerHTML,
+        var visualizerControlsSource = document.getElementById('visualizer-controls-template').innerHTML,
+            visualizerControlsTemplate = Handlebars.compile(visualizerControlsSource),
+            visualizerControlsPlaceholder = document.getElementById('visualizer-controls');
+        /*var /!*analysisInfoSource = document.getElementById('analysis-info-template').innerHTML,
             analysisInfoTemplate = Handlebars.compile(analysisInfoSource),
-            analysisInfoPlaceholder = document.getElementById('analysis-info');
+            analysisInfoPlaceholder = document.getElementById('analysis-info');*!/*/
         var params = getHashParams();
         var access_token = params.access_token,
             refresh_token = params.refresh_token,
@@ -377,23 +420,19 @@
                                     g_tatum = 0;
                                     g_segment = 0;
                                     cameraRandom = 2;
+                                    spinr = 0;
+
+                                    /*shapeType = Math.random()*2;*/
+                                    if(isVisualizer) {
+                                        /*for(let i = 0; i < 81; i++) {
+                                            changeShapeType(detail, i, shapeType);
+                                        }
+                                        newShapePosition();*/
+                                    }
                                     analyser.minDecibels = -90;
                                     analyser.maxDecibels = -25;
                                 }
                                 trackEnd = state.duration;
-
-                                // if(isPaused == true) {
-                                //     //$('.playing').css("display", "none");
-                                //     //$('.paused').css("display", "block");
-                                //     $('.paused').addClass("show").removeClass("hide");
-                                //
-                                //     console.log("===========Paused");
-                                // } else {
-                                //     //$('.playing').css("display", "block");
-                                //     //$('.paused').css("display", "none");
-                                //     $('.paused').addClass("hide").removeClass("show");
-                                //     console.log("============Playing");
-                                // }
 
                                 $.ajax({
                                     url: 'https://api.spotify.com/v1/me/player',
@@ -401,11 +440,31 @@
                                         'Authorization': 'Bearer ' + access_token
                                     },
                                     success: function(response) {
+                                        if(!gotVisualizerScripts) {
+                                            $.getScript("js/ColourLayerChanger.js");
+                                            $.getScript("js/ModeChanger.js");
+                                            $.getScript("js/main.js");
+                                            $.getScript("js/KeyboardInput.js");
+                                        }
+
+                                        gotVisualizerScripts = true;
                                         //console.log('player response');
                                         //console.log(response);
 
                                         playerInfoPlaceholder.innerHTML = playerInfoTemplate(response);
                                         playerInfoVisualizerPlaceholder.innerHTML = playerInfoTemplate(response);
+                                        visualizerControlsPlaceholder.innerHTML = visualizerControlsTemplate(response);
+
+                                        $('#randomizerToggle').click(function() {
+                                            randomizer = !randomizer;
+                                            console.log(randomizer);
+                                            if(randomizer == true) {
+                                                $( "#randomIcon" ).addClass( "on" );
+                                            } else {
+                                                $( "#randomIcon" ).removeClass( "on" );
+                                            }
+                                        });
+
                                         $.ajax({
                                             url: 'https://api.spotify.com/v1/audio-features/' + response.item.id,
                                             headers: {
@@ -416,15 +475,22 @@
                                                 console.log(response);
 
                                                 g_valence = response.valence;
+                                                g_energy = response.energy;
+                                                g_danceability = response.danceability;
 
-                                                analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);
+                                                beatZoom = 0.75 + g_danceability/10;
+                                                console.log(beatZoom);
+
+                                                /*analysisInfoPlaceholder.innerHTML = analysisInfoTemplate(response);*/
+
                                                 if(0.75/response.energy < 0.94) {
-                                                    analyser.smoothingTimeConstant = 0.75 / response.energy;
+                                                    analyser.smoothingTimeConstant = 0.75 / g_energy;
                                                 } else if (0.75/response.danceability < 0.94) {
-                                                    analyser.smoothingTimeConstant = 0.75 / response.danceability;
+                                                    analyser.smoothingTimeConstant = 0.75 / g_danceability;
                                                 } else {
                                                     analyser.smoothingTimeConstant = 0.94;
                                                 }
+
                                                 console.log("smoothing: " + analyser.smoothingTimeConstant);
                                                 zoomIntensity = 300 - response.tempo;
                                                 g_tempo = response.tempo;
@@ -444,12 +510,15 @@
                                                         g_tatums = response.tatums;
                                                         g_segments = response.segments;
 
-                                                        if(!gotVisualizerScripts) {
-                                                            $.getScript("js/ColourLayerChanger.js");
-                                                            $.getScript("js/ModeChanger.js");
-                                                            $.getScript("js/main.js");
-                                                            $.getScript("js/KeyboardInput.js");
+                                                        taaaa = 0;
+                                                        for (let i = 0; i < g_tatums.length; i++) {
+                                                            taaaa = taaaa + g_tatums[i]["confidence"];
                                                         }
+                                                        taaaa = taaaa/g_tatums.length;
+                                                        console.log("taaaa = " + taaaa);
+                                                        taaaa = taaaa + g_energy/(3+g_danceability/g_valence);
+                                                        console.log("taaaa = " + taaaa);
+
 
                                                         document.getElementById('toVisualizer').addEventListener('click', function () {
                                                             //change url
@@ -567,6 +636,7 @@
                     title: 'Back to Logged In'
                 });
             });*/
+
             $('#visualizer-main').on('mousemove', function(event) {
                 if(45 - event.clientY < 0) {
                     $('#visualizer-container').css({top: 45 - event.clientY});

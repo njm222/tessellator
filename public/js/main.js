@@ -13,28 +13,30 @@ var rms = 0;
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
+//camera.focalLength = -90;
 var renderer = new THREE.WebGLRenderer();
+//renderer.setPixelRatio( window.devicePixelRatio );
 var controls = new THREE.OrbitControls(camera);
+
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("visualizer-main").appendChild(renderer.domElement);
+//Stats
+javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 camera.position.z = 90;
+
+var effect3d = new THREE.AnaglyphEffect(renderer);
+effect3d.setSize(window.innerWidth, window.innerHeight);
 
 var colour = new THREE.Color("rgb(256,256,256)");
 var basicMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+var lambertMaterial = new THREE.MeshLambertMaterial( { color: 0x000000 } );
+var phongMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } );
 var depthMaterial = new THREE.MeshDepthMaterial( { wireframe: true } );
 
 //Geometry
 var cubeGeo = new THREE.BoxGeometry(10,10,10);
-var torusGeo = new THREE.TorusGeometry(10, 3, 16, 100);
-var circleGeo = new THREE.CircleGeometry( 5, 32 );
 var octaGeo = new THREE.OctahedronGeometry(10, 0);
-var octaGeo1 = new THREE.OctahedronGeometry(10, 1);
-var octaGeo2 = new THREE.OctahedronGeometry(10, 2);
-var octaGeo3 = new THREE.OctahedronGeometry(10, 3);
-var octaGeo4 = new THREE.OctahedronGeometry(10, 4);
-
-
 
 
 //Light
@@ -42,19 +44,74 @@ var l1 = new THREE.PointLight(0xffffff);
 l1.position.set(300, 200);
 scene.add(l1);
 
+var spotLight = new THREE.SpotLight(0xffffff);
+spotLight.position.set(0,0,90);
+spotLight.castShadow = true;
+
+spotLight.shadow.mapSize.width = 1024;
+spotLight.shadow.mapSize.height = 1024;
+
+spotLight.shadow.camera.near = 500;
+spotLight.shadow.camera.far = 4000;
+spotLight.shadow.camera.fov = 30;
+scene.add(spotLight);
+
 var shapeArr = [];
 //Cube Grid
-if((Math.random() * 3) > 1) {
-    for(var i = 0; i < 25; i++) {
-        shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000 } )));
+if(true/*(Math.random() * 3) > 1*/) {
+    for(let i = 0; i < shapeMax; i++) {
+        shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial( { color: 0x000000 } )));
         scene.add(shapeArr[i]);
+        console.log("added new shape");
     }
 } else {
-    for(var i = 0; i < 25; i++) {
+    for(let i = 0; i < 81; i++) {
         shapeArr.push(new THREE.Points(octaGeo, new THREE.PointsMaterial({size: 1, color: 0x000000})));
         scene.add(shapeArr[i]);
     }
 }
+
+function newShapePosition() {
+    //variables
+    let a = 0;
+    let f = 1;
+    let x = 0;
+    let y = 0;
+    let z = 0;
+    let distance = 20;
+    let shapeCount = 0;
+    let lim = 16;
+
+    //layer 0
+    shapeArr[shapeCount++].position.set(x,y,z);
+    x = x + distance;
+
+    layerMarker[0] = 1;
+
+    //layer 1-<lim
+    for(f; f < lim; f++){
+        for(a = 1; a < 2*f; a++) {
+            shapeArr[shapeCount++].position.set(x,y,z);
+            y = y - distance;
+        }
+        for(a = 0; a < 2*f; a++) {
+            shapeArr[shapeCount++].position.set(x,y,z);
+            x = x - distance;
+        }
+        for(a = 0; a < 2*f; a++) {
+            shapeArr[shapeCount++].position.set(x,y,z);
+            y = y + distance;
+        }
+        for(a = -1; a < 2*f; a++) {
+            shapeArr[shapeCount++].position.set(x,y,z);
+            x = x + distance;
+        }
+        layerMarker[f] = shapeCount;
+        console.log(shapeCount);
+        z = z - distance;
+    }
+}
+newShapePosition();
 
 function positionShape() {
     //shapeArr[0] is the center (layer 0)
@@ -135,56 +192,66 @@ function positionShape() {
     shapeArr[24].position.x = -40;
 //end layer 2
 }
-positionShape();
+//positionShape();
 
 function positionCamera(cameraRandom) {
-
     switch (cameraRandom) {
         case 0:
             camera.position.x = 0;
             camera.position.y = 0;
-            camera.position.z = 90;
+            camera.position.z = 300;
+            spotLight.position.set(0, 0, 350);
             break;
         case 1:
             camera.position.x = 0;
             camera.position.y = 0;
-            camera.position.z = -90;
+            camera.position.z = -300;
+            spotLight.position.set(0, 0, -350);
             break;
         case 2:
             camera.position.x = 0;
             camera.position.y = 0;
-            camera.position.z = 90;
+            camera.position.z = -300;
+            spotLight.position.set(0, 0, -350);
             break;
         case 3:
             camera.position.x = 0;
             camera.position.y = 0;
-            camera.position.z = -90;
+            camera.position.z = 300;
+            spotLight.position.set(-peak-300, peak+300, 350);
             break;
         case 4:
             camera.position.x = 0;
             camera.position.y = 90;
             camera.position.z = 0;
+            spotLight.position.set(Math.random() * (180 + 180) -180, 100, Math.random() * (180 + 180) -180);
             break;
         case 5:
             camera.position.x = 0;
             camera.position.y = -90;
             camera.position.z = 0;
+            spotLight.position.set(Math.random() * (180 + 180) -180, -100, Math.random() * (180 + 180) -180);
             break;
         case 6:
             camera.position.x = 90;
             camera.position.y = 0;
             camera.position.z = 0;
+            spotLight.position.set(100, Math.random() * (180 + 180) -180, Math.random() * (180 + 180) -180);
             break;
         case 7:
             camera.position.x = -90;
             camera.position.y = 0;
             camera.position.z = 0;
+            spotLight.position.set(-100, Math.random() * (180 + 180) -180, Math.random() * (180 + 180) -180);
             break;
         default:
             camera.position.x = 0;
             camera.position.y = 0;
             camera.position.z = 90;
+            spotLight.position.set(Math.random() * (180 + 180) -180, Math.random() * (180 + 180) -180, 100);
     }
+    console.log(cameraRandom);
+    console.log(spotLight.position);
 }
 
 
@@ -199,6 +266,7 @@ window.addEventListener('resize', re => {
     const height = window.innerHeight;
 
     renderer.setSize(width, height);
+    effect3d.setSize(width, height);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
 });
@@ -222,10 +290,10 @@ function changePoints(currShape, currPoints) {
 
 function changeShapeType(currDetail, currShape, shapeType) {
     scene.remove(shapeArr[currShape]);
-    if(shapeType > 2) {
+    if(shapeType > 3) {
         shapeArr[currShape] = new THREE.Points(new THREE.OctahedronGeometry(10, currDetail), new THREE.PointsMaterial({size: 1, color: 0x000000}));
     } else {
-        shapeArr[currShape] = new THREE.Mesh(cubeGeo, new THREE.MeshBasicMaterial( { color: 0x000000 } ));
+        shapeArr[currShape] = new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial( { color: 0x000000 } ));
     }
     scene.add(shapeArr[currShape]);
 }
@@ -237,31 +305,57 @@ function rotateShape(shape) {
     var spin5 = 0.0025;
     var spin6 = 0.001;
     var spinf = currFreq[freqKey];
-    if(spinf > 150) {
-        if (spinf > 200) {
-            shape.rotation.x += spin3;
-            shape.rotation.y += spin2;
-            shape.rotation.z += spin3;
+
+    if(spinr % 2 == 0) {
+        if(spinf > 150) {
+            if (spinf > 200) {
+                shape.rotation.x -= spin3;
+                shape.rotation.y -= spin2;
+                shape.rotation.z -= spin3;
+            } else {
+                shape.rotation.x -= spin4;
+                shape.rotation.y -= spin3;
+                shape.rotation.z -= spin4;
+            }
         } else {
-            shape.rotation.x += spin4;
-            shape.rotation.y += spin3;
-            shape.rotation.z += spin4;
+            if (spinf > 100) {
+                shape.rotation.x -= spin5;
+                shape.rotation.y += spin3;
+                shape.rotation.z -= spin6;
+            } else {
+                shape.rotation.x -= spin6;
+                shape.rotation.y += spin4;
+                shape.rotation.z -= spin5;
+            }
         }
     } else {
-        if (spinf > 100) {
-            shape.rotation.x += spin5;
-            shape.rotation.y -= spin3;
-            shape.rotation.z += spin6;
+        if(spinf > 150) {
+            if (spinf > 200) {
+                shape.rotation.x += spin3;
+                shape.rotation.y += spin2;
+                shape.rotation.z += spin3;
+            } else {
+                shape.rotation.x += spin4;
+                shape.rotation.y += spin3;
+                shape.rotation.z += spin4;
+            }
         } else {
-            shape.rotation.x += spin6;
-            shape.rotation.y -= spin4;
-            shape.rotation.z += spin5;
+            if (spinf > 100) {
+                shape.rotation.x += spin5;
+                shape.rotation.y -= spin3;
+                shape.rotation.z += spin6;
+            } else {
+                shape.rotation.x += spin6;
+                shape.rotation.y -= spin4;
+                shape.rotation.z += spin5;
+            }
         }
     }
 }
 
 function getData() {
-    rms = 0
+    rms = 0;
+    peak = 0;
     analyser.getByteFrequencyData(frequencyData);
     currFreq = frequencyData;
     let totalFreq = 0;
@@ -270,26 +364,38 @@ function getData() {
     for(let i = 0; i < (bufferLength/32)*2; i++){
         totalFreq += frequencyData[i];
         rms += frequencyData[i] * frequencyData[i];
+        if(frequencyData[i] > peak){
+            peak = frequencyData[i];
+        }
     }
 
     lowAvFreq = totalFreq/((bufferLength/32)*2);
 
     for(let i = (bufferLength/32)*2; i < (bufferLength/32)*4; i++) {
         totalFreq += frequencyData[i];
-        highAvFreq += frequencyData[i];
+        highAvFreq += frequencyData[i] * frequencyData[i];
         rms += frequencyData[i] * frequencyData[i];
+        if(frequencyData[i] > peak){
+            peak = frequencyData[i];
+        }
     }
 
-    highAvFreq = highAvFreq/((bufferLength/32)*2);
+    highAvFreq = Math.sqrt(highAvFreq/((bufferLength/32)*2));
 
     for(let i = (bufferLength/32)*4; i < bufferLength; i++) {
         totalFreq += frequencyData[i];
         rms += frequencyData[i] * frequencyData[i];
+        if(frequencyData[i] > peak){
+            peak = frequencyData[i];
+        }
     }
 
     avFreq = totalFreq/bufferLength;
     rms /= bufferLength;
     rms = Math.sqrt(rms);
+
+    spotLight.intensity = rms/15;
+
 
     if(rms < rmslow) {
         //console.log(rms);
@@ -297,12 +403,16 @@ function getData() {
         rmslow--;
         rmshigh = 80;
         analyser.maxDecibels = -30;
+        spotLight.intensity -= .5;
+        //decrease light
     } else if(rms > rmshigh) {
         //console.log(rms);
         analyser.maxDecibels += 1;
         rmshigh++;
         rmslow = 20;
         analyser.minDecibels = -85;
+        //increase light
+        spotLight.intensity += .5;
     }
 
     //console.log(frequencyData);
@@ -311,14 +421,16 @@ function getData() {
 
 function changeCameraZoom() {
 
-    camera.zoom = Math.pow(Math.sin((lowAvFreq + highAvFreq)/zoomIntensity), 1);
+    camera.zoom = Math.pow(2*Math.asinh((1.5*rms + highAvFreq)/zoomIntensity), 1+g_valence);
 
     //camera.zoom = Math.sin(highAvFreq/100) * Math.sin(highAvFreq/75);
 
     //camera.zoom = Math.sin(highAvFreq/100) * Math.sin(lowAvFreq / 50); //good
 
-    if(camera.zoom > 4) {
-        camera.zoom = 4;
+    if(camera.zoom > 8) {
+        camera.zoom = 8;
+    } else if(camera.zoom < 1.3) {
+        camera.zoom = 1.3;
     }
     //console.log("zoom: " + camera.zoom);
     //console.log(scene.background);
@@ -344,15 +456,27 @@ function changeCameraZoomTatum() {
 
 function changeCameraZoomBeat() {
     //camera.zoom = Math.sin(highAvFreq/200) * Math.acos((beatEnd - trackCounter)/400);
+    console.log(beatConfidence);
 
-    camera.zoom = Math.sin(highAvFreq/100) * ( Math.acos((beatEnd - trackCounter)/500)) * Math.sin(highAvFreq/75);
+    if(beatConfidence > 0.95) {
+        camera.zoom = 1 + Math.sin((rms + highAvFreq)/100) * ( Math.asin((beatEnd - trackCounter)/500))/* * Math.sin((rms+highAvFreq)/75)*/;
+    } else if(beatConfidence > 0.9) {
+        camera.zoom = 1 + Math.sin(highAvFreq/100) * ( Math.acos((beatEnd - trackCounter)/500))/* * Math.sin(highAvFreq/75)*/;
+    } else if(beatConfidence > 0.85) {
+        camera.zoom = 1 + Math.sin(highAvFreq/200) * ( Math.asin((beatEnd - trackCounter)/500))/* * Math.sin(highAvFreq/150)*/;
+    } else if(beatConfidence > 0.8) {
+        camera.zoom = 1 + Math.sin((rms + highAvFreq)/200) * ( Math.acos((beatEnd - trackCounter)/500))/* * Math.sin((rms+highAvFreq)/150)*/;
+    }
 
-    //console.log("b zoooooooooom");
+}
+
+function scaleShape(shapeToScale) {
+    let sScale = Math.sqrt(lowAvFreq)/10;
+    shapeToScale.scale.set(sScale,sScale,sScale);
 }
 
 //Rendering
 var run = function(){
-    requestAnimationFrame(run);
     controls.update();
 
     /*navigator.mediaDevices.enumerateDevices().then(function (devices) { console.log(devices)
@@ -374,8 +498,9 @@ var run = function(){
 
         camera.updateProjectionMatrix();
 
-        for(var i = 0; i < 25; i++) {
+        for(var i = 0; i < shapeArr.length; i++) {
             rotateShape(shapeArr[i]);
+            //scaleShape(shapeArr[i]);
         }
 
         switch (layerKey) {
@@ -447,7 +572,10 @@ var run = function(){
                 colour = rgbToHex(currFreq[4], currFreq[8], currFreq[12]);
         }
     }
+
+    requestAnimationFrame(run);
     renderer.render(scene, camera);
+    //effect3d.render(scene, camera);
 };
 run();
 

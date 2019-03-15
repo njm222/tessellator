@@ -12,7 +12,7 @@ var peak = 0;
 var rms = 0;
 
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75,width/height, 0.1, 1000);
+var camera = new THREE.StereoCamera.PerspectiveCamera(75,width/height, 0.1, 1000);
 //camera.focalLength = -90;
 var renderer = new THREE.WebGLRenderer();
 //renderer.setPixelRatio( window.devicePixelRatio );
@@ -25,8 +25,8 @@ document.getElementById("visualizer-main").appendChild(renderer.domElement);
 javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 camera.position.z = 90;
 
-var effect3d = new THREE.AnaglyphEffect(renderer);
-effect3d.setSize(window.innerWidth, window.innerHeight);
+/*var effect3d = new THREE.AnaglyphEffect(renderer);
+effect3d.setSize(window.innerWidth, window.innerHeight);*/
 
 var colour = new THREE.Color("rgb(256,256,256)");
 var basicMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
@@ -266,7 +266,7 @@ window.addEventListener('resize', re => {
     const height = window.innerHeight;
 
     renderer.setSize(width, height);
-    effect3d.setSize(width, height);
+    /*effect3d.setSize(width, height);*/
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
 });

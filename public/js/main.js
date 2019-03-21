@@ -22,7 +22,7 @@ var controls = new THREE.OrbitControls(camera);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("visualizer-main").appendChild(renderer.domElement);
 //Stats
-javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+/*javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()*/
 camera.position.z = 90;
 
 /*var effect3d = new THREE.AnaglyphEffect(renderer);
@@ -106,6 +106,7 @@ function newShapePosition() {
             shapeArr[shapeCount++].position.set(x,y,z);
             x = x + distance;
         }
+
         layerMarker[f] = shapeCount;
         console.log(shapeCount);
         z = z - distance;
@@ -451,12 +452,9 @@ function changeCameraZoomTatum() {
         camera.zoom = 4;
     }
 
-    console.log("t");
 }
 
 function changeCameraZoomBeat() {
-    //camera.zoom = Math.sin(highAvFreq/200) * Math.acos((beatEnd - trackCounter)/400);
-    console.log(beatConfidence);
 
     if(beatConfidence > 0.95) {
         camera.zoom = 1 + Math.sin((rms + highAvFreq)/100) * ( Math.asin((beatEnd - trackCounter)/500))/* * Math.sin((rms+highAvFreq)/75)*/;
@@ -479,11 +477,6 @@ function scaleShape(shapeToScale) {
 var run = function(){
     controls.update();
 
-    /*navigator.mediaDevices.enumerateDevices().then(function (devices) { console.log(devices)
-    });*/
-    //console.log("150: " + frequencyData[150] + "       175: " + frequencyData[175]);
-
-
     if (!isPaused && isVisualizer && gotVisualizerScripts) {
 
         getData();
@@ -496,17 +489,11 @@ var run = function(){
         changeColourMode();
         changeLayerMode();
 
-        camera.updateProjectionMatrix();
-
-        for(var i = 0; i < shapeArr.length; i++) {
+        for(let i = 0; i < shapeArr.length; i++) {
             rotateShape(shapeArr[i]);
-            //scaleShape(shapeArr[i]);
         }
 
         switch (layerKey) {
-            /*case 0:
-                changeColourLayer000();
-                break;*/
             case 1:
                 changeColourLayer1();
                 break;
@@ -535,7 +522,7 @@ var run = function(){
                 changeColourLayer001();
                 break;
             default:
-                changeColourLayer001();
+                changeColourLayer1();
         }
         switch (colourKey) {
             case 1:
@@ -573,6 +560,7 @@ var run = function(){
         }
     }
 
+    camera.updateProjectionMatrix();
     requestAnimationFrame(run);
     renderer.render(scene, camera);
     //effect3d.render(scene, camera);
@@ -580,8 +568,3 @@ var run = function(){
 run();
 
 gotVisualizerScripts = true;
-
-/* Idea:
-    use spotify audio analysis to change the spin of the camera
-    based on a switch case that randomize when the section changes
- */

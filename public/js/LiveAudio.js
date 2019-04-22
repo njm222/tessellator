@@ -29,8 +29,9 @@ if (navigator.mediaDevices.getUserMedia === undefined) {
 if (navigator.mediaDevices.getUserMedia) {
     console.log('getUserMedia supported.');
     navigator.mediaDevices.enumerateDevices().then((devices) => {
-        devices = devices.filter((d) => d.kind === 'audioinput');
-        var constraints = {audio: {deviceId: devices[0].deviceId}};
+        devices = devices.filter((d) => d.kind === 'audiooutput');
+        console.log(devices);
+        let constraints = {audio: {deviceId: 'default'}};
         navigator.mediaDevices.getUserMedia (constraints)
             .then(
                 function(stream) { console.log(stream);

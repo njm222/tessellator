@@ -80,7 +80,7 @@ function newShapePosition() {
     let z = 0;
     let distance = 20;
     let shapeCount = 0;
-    let lim = 16;
+    let lim = 10;
 
     //layer 0
     shapeArr[shapeCount++].position.set(x,y,z);
@@ -428,8 +428,8 @@ function changeCameraZoom() {
 
     //camera.zoom = Math.sin(highAvFreq/100) * Math.sin(lowAvFreq / 50); //good
 
-    if(camera.zoom > 8) {
-        camera.zoom = 8;
+    if(camera.zoom > 8-(cubeCounter/110)) {
+        camera.zoom = 8-(cubeCounter/110);
     } else if(camera.zoom < 1.3) {
         camera.zoom = 1.3;
     }
@@ -550,7 +550,7 @@ var run = function(){
                 colour = rgbToHex(avFreq*2, Math.pow(avFreq, 1.5)*3, avFreq/10);
                 break;
             case 9:
-                colour = rgbToHex(avFreq*2, avFreq/10, avFreq*3);Math.pow(avFreq, 1.5)
+                colour = rgbToHex(avFreq*2, avFreq/10, avFreq*3);
                 break;
             case 10:
                 colour = rgbToHex(currFreq[13], currFreq[9], currFreq[5]);

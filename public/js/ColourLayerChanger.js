@@ -122,7 +122,7 @@ function changeBeat() {
             if (g_beats[g_beat]) {
                 beatConfidence = g_beats[g_beat]["confidence"];
             }
-            if (beatConfidence > 0.34) {
+            if (beatConfidence > beatChange) {
                 beatCounter++;
                 if(beatConfidence > 0.9) {
                     spinr++;
@@ -277,7 +277,7 @@ function changeColourLayer1() {
         }
     }
 
-    if(beatCounter > 32){
+    if(beatCounter > 24){
         beatCounter = 0;
         setLargeShape = false;
         //wireframeLayerChange();
@@ -341,7 +341,7 @@ function changeColourLayer2() {
         }
     }
 
-    if(beatCounter > 32){
+    if(beatCounter > 24){
         beatCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();
@@ -405,7 +405,7 @@ function changeColourLayer3() {
         }
     }
 
-    if(beatCounter > 32){
+    if(beatCounter > 24){
         beatCounter = 0;
         //wireframeLayerChange();
         //randomWireframeChange();

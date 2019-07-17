@@ -32,6 +32,8 @@ Hosted @ (https://tessellator.herokuapp.com)
 
 * [spotify-web-api](https://developer.spotify.com/documentation/web-api/)
 
+* [three.js](https://threejs.org/)
+
 
 ### Authors
 

@@ -122,22 +122,22 @@ function changeBar() {
         barEnd = (g_bars[g_bar]["start"] + g_bars[g_bar]["duration"]) * 1000;
         if (trackCounter > barEnd) {
             g_bar++;
+            barCounter++;
             bassArrCounter = 0;
             kickArrCounter = 0;
             snareArrCounter = 0;
             midsArrCounter = 0;
             highsArrCounter = 0;
 
-            if(g_bar % 2 != 0) {
+            if(g_bar % 2 !== 0) {
                 changedColour = true;
             }
-            barCounter++;
             if(g_bars[g_bar]) {
                 barConfidence = g_bars[g_bar]["confidence"];
             }
 
             if(barConfidence > 0.5) {
-                if(modeKey.key !== 7 && barCounter % 2 == 0) {
+                if(modeKey.key !== 7 && barCounter % 2 === 0) {
                     cameraRandom = Math.floor(Math.random() * 2);
                     positionCamera(cameraRandom);
                     console.log("cameraRandom:   " + cameraRandom);
@@ -365,8 +365,6 @@ function mode6() {
 
     if(beatCounter > 1) {
 
-        console.log("beat");
-
         shapeArr[0].material.wireframe = !shapeArr[0].material.wireframe;
         shapeArr[0].material.flatShading = !shapeArr[0].material.wireframe;
         shapeArr[0].material.needsUpdate = true;
@@ -374,14 +372,14 @@ function mode6() {
         beatCounter = 0;
 
     } else if(barCounter >= 1) {
-        if(bassAv-(bassDeviation*bassFactor*1.5) > bassArr[bassArrCounter] || bassArr[bassArrCounter] > bassAv+(bassDeviation*bassFactor)) {
-            console.log("bar");
+        if(true) {
+            console.log("sphere bar change");
             removeShape();
             addGenerativeSphere();
         }
         barCounter = 0;
     } else {
-        if(bassAv-(bassDeviation*bassFactor*1.5) > bassArr[bassArrCounter] || bassArr[bassArrCounter] > bassAv+(bassDeviation*bassFactor)) {
+        if(bassEnergy > bassAv - (bassDeviation*bassFactor)) {
             prevWidth = shapeArr[0].geometry.widthSegments;
             prevHeight = shapeArr[0].geometry.heightSegments;
             removeShape();

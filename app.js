@@ -1,4 +1,5 @@
 var express = require('express');
+var sm = require('sitemap');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -6,7 +7,28 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var app = express();
+var app = express()
+    , sitemap = sm.createSitemap({
+    hostname: 'https://tessellator.herokuapp.com',
+    cacheTime: 600000000,
+    urls: [
+        { url: '/', changefreq: 'daily'}
+    ]
+});
+
+app.use(express.static(__dirname + '/public'))
+    .use(cors())
+    .use(cookieParser());
+
+app.get('/sitemap.xml', function(req, res) {
+    sitemap.toXML( function (err, xml) {
+        if (err) {
+            return res.status(500).end();
+        }
+        res.header('Content-Type', 'application/xml');
+        res.send( xml );
+    });
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

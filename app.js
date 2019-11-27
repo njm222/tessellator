@@ -3,6 +3,7 @@ var sm = require('sitemap');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var port = (process.env.PORT || 5000);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -44,3 +45,5 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 module.exports = app;
+console.log('Listening on ' + port);
+app.listen(5000);

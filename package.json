@@ -1,5 +1,5 @@
 {
-  "name": "spotify-music-visualizer",
+  "name": "spotify-visualizer",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -11,6 +11,8 @@
     "express": "~4.16.1",
     "morgan": "~1.9.1",
     "pug": "^2.0.4",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "querystring": "~0.2.0",
+    "sitemap": "^2.1.0"
   }
 }

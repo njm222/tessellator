@@ -45,5 +45,3 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 module.exports = app;
-console.log('Listening on ' + port);
-app.listen(5000);

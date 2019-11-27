@@ -1,7 +1,7 @@
 //Variables
 var wait8 = 0;
 var reverse = false;
-var cubeCounter = 1;
+var shapeCounter = 1;
 var incrementBy = 1;
 var tempoLayerCounter = 0;
 var wireframeCounter = 0;
@@ -9,13 +9,20 @@ var recentWireframe = 0;
 var recentWireframe1 = Math.floor(Math.random() * (8 - 1) ) + 1;
 var recentWireframe2 = Math.floor(Math.random() * (25 - 9) ) + 9;
 
+let fib0 = 0;
+let fib1 = 1;
+
 var randomCounter1 = 0;
+
+function incrementTrackCounter() {
+    trackCounter+= 10;
+}
+
+var doIncrementTrackCounter = setInterval(incrementTrackCounter, 10);
 
 function incrementLayerCounter() {
     tempoLayerCounter+= 0.01;
 }
-
-var doIncrementLayerCounter = setInterval(incrementLayerCounter, 10);
 
 function randomWireframeLayerChange() {
     if(wireframeCounter < 5 && wireframeCounter < 10) {
@@ -78,17 +85,49 @@ function wireframeLayerChange() {
     }
 }*/
 
-/*
-* Layer 0 = 0
-* Layer 1 = [1-8]
-* Layer 2 = [9-24]
-*/
+function setModeKey() {
+    if(g_sections[g_section]){
+        sectionEnd = (g_sections[g_section]["start"] + g_sections[g_section]["duration"])*1000;
+        g_tempo = (g_sections[g_section]["tempo"]);
+        spotLight.intensity = (g_sections[g_section]["loudness"] + 40) / 10;
+
+        if(trackCounter > sectionEnd){
+            g_section++;
+
+            modeKey.key = Math.floor(Math.random() * (8 - 1)) + 1;
+            console.log("layer mode: " + modeKey.key);
+        }
+    }
+}
+
+function setColourKey() {
+
+    if (g_bar % 2 == 0 && changedColour == true){
+        colourKey = Math.floor(Math.random() * 10);
+        changedColour = false;
+        console.log("colour mode: " + colourKey);
+    }
+}
+
+function changeFreqMode() {
+
+    if(g_tatum % 53 == 0) {
+        freqKey = Math.floor(Math.random() * (11 - 2)) + 2;
+        //console.log("freq mode: " + freqKey);
+    }
+}
 
 function changeBar() {
     if(g_bars[g_bar]) {
         barEnd = (g_bars[g_bar]["start"] + g_bars[g_bar]["duration"]) * 1000;
         if (trackCounter > barEnd) {
             g_bar++;
+            bassArrCounter = 0;
+            kickArrCounter = 0;
+            snareArrCounter = 0;
+            midsArrCounter = 0;
+            highsArrCounter = 0;
+
             if(g_bar % 2 != 0) {
                 changedColour = true;
             }
@@ -98,10 +137,12 @@ function changeBar() {
             }
 
             if(barConfidence > 0.5) {
-                if((layerKey == (6 || 7 || 8) ||  barCounter % 2 == 0)) {
+                if(modeKey.key !== 7 && barCounter % 2 == 0) {
                     cameraRandom = Math.floor(Math.random() * 2);
                     positionCamera(cameraRandom);
                     console.log("cameraRandom:   " + cameraRandom);
+
+
                 }
                 if(barConfidence > 0.8) {
                     spinr++;
@@ -118,23 +159,25 @@ function changeBeat() {
         beatEnd = beatStart + (g_beats[g_beat]["duration"] * 1000);
 
         if (trackCounter > beatEnd) {
+            // console.log("Beat increased: " + g_beat);
             g_beat++;
             if (g_beats[g_beat]) {
                 beatConfidence = g_beats[g_beat]["confidence"];
             }
-            if (beatConfidence > beatChange) {
+            if (beatConfidence > (beatAv-(beatVar))) {
                 beatCounter++;
+                console.log("beat");
                 if(beatConfidence > 0.9) {
                     spinr++;
                 }
             }
-        } else if(g_valence > 0.1) {
+        } /*else if(g_valence > 0.1) {
             let beatDuration = beatEnd-beatStart;
             if (beatConfidence > beatZoom && beatStart +((beatDuration/100)*2) < trackCounter < beatEnd - ((beatDuration / 100) * 27)) {
                 if (cameraRandom > 3) {
                     camera.zoom = .65;
                 } else {
-                    changeCameraZoomBeat();
+                    changeCameraZoom();
                 }
             } else if(g_valence < 0.8) {
                 if (cameraRandom > 3) {
@@ -163,7 +206,7 @@ function changeBeat() {
                     changeCameraZoom();
                 }
             }
-        }
+        }*/
     }
 }
 
@@ -177,11 +220,226 @@ function changeTatum() {
             if(g_tatums[g_tatum]) {
                 tatumConfidence = g_tatums[g_tatum]["confidence"];
             }
-
-            tatumCounter++;
+            if (tatumConfidence > (tatumAv-(tatumVar))) {
+                tatumCounter++;
+            }
 
         }
     }
+}
+
+function resetMode() {
+    // clear screen or something?
+    console.log('resetMode');
+    beatCounter = 0;
+    tatumCounter = 0;
+    shapeCounter = 0;
+    changedColour = true;
+    fib0 = 0;
+    fib1 = 1;
+    shapeIncrement = Math.ceil(Math.random() * 7);
+    noise = new SimplexNoise(Math.random());
+
+    for(let i = 0; i < shapeMax; i++){
+        changeColour(shapeArr[i], '0x0000');
+    }
+}
+
+function mode1() {
+    if(beatCounter > 3) {
+        for(let i = layerMarker[beatCounter-4]; i < layerMarker[beatCounter-3]; i++) {
+            changeColour(shapeArr[i], '0x0000');
+        }
+        for(let i = layerMarker[beatCounter-2]; i < layerMarker[beatCounter]; i++) {
+            changeColour(shapeArr[i], colour);
+        }
+    } else {
+        if(beatCounter !== 0) {
+            for(let i = layerMarker[beatCounter-1]; i < layerMarker[beatCounter]; i++) {
+                changeColour(shapeArr[i], colour);
+            }
+        }
+        changeColour(shapeArr[0], colour);
+    }
+
+    shapeCounter = layerMarker[beatCounter];
+
+    if(beatCounter > layerMarker.length-1){
+        resetMode();
+    }
+}
+
+function mode2() {
+    if(beatCounter > 3) {
+        for(let i = layerMarker[beatCounter-4]; i < layerMarker[beatCounter-3]; i = i+2) {
+            changeColour(shapeArr[i], '0x0000');
+        }
+        for(let i = layerMarker[beatCounter-2]; i < layerMarker[beatCounter]; i = i+2) {
+            changeColour(shapeArr[i], colour);
+        }
+    } else {
+        if(beatCounter !== 0) {
+            for(let i = layerMarker[beatCounter-1]; i < layerMarker[beatCounter]; i = i+2) {
+                changeColour(shapeArr[i], colour);
+            }
+        } else {
+            changeColour(shapeArr[0], colour);
+        }
+    }
+
+    shapeCounter = layerMarker[beatCounter];
+
+    if(beatCounter > layerMarker.length-1){
+        resetMode();
+    }
+}
+
+function mode3() {
+    if(beatCounter > 3) {
+        for(let i = layerMarker[beatCounter-4]; i < layerMarker[beatCounter-3]; i = i+shapeIncrement) {
+            changeColour(shapeArr[i], '0x0000');
+        }
+        for(let i = layerMarker[beatCounter-2]; i < layerMarker[beatCounter]; i = i+shapeIncrement) {
+            changeColour(shapeArr[i], colour);
+        }
+    } else {
+        if(beatCounter !== 0) {
+            for(let i = layerMarker[beatCounter-1]; i < layerMarker[beatCounter]; i = i+shapeIncrement) {
+                changeColour(shapeArr[i], colour);
+            }
+        }
+        changeColour(shapeArr[0], colour);
+    }
+
+    shapeCounter = layerMarker[beatCounter];
+
+    if(beatCounter > layerMarker[layerMarker.length-1]){
+        resetMode(modeKey.key);
+    }
+}
+
+function mode4() {
+    if(tatumConfidence > (tatumAv+tatumVar*1.25)) {
+        if(shapeCounter-1 < layerMarker[layerMarker.length-1]) {
+            shapeCounter++;
+        }
+        for(let i = 0; i < shapeCounter; i++) {
+            changeColour(shapeArr[i], colour);
+        }
+    } else {
+        changeColour(shapeArr[beatCounter], colour);
+    }
+
+    if(shapeCounter >= layerMarker[layerMarker.length-1] || beatCounter >= layerMarker[layerMarker.length-2]){
+        resetMode();
+    }
+}
+
+function mode5() {
+
+    //increment using fib
+
+    if(beatCounter > 1) {
+        if(shapeCounter+fib0+fib1 < layerMarker[layerMarker.length-1]) {
+            shapeCounter = fib0 + fib1;
+            fib0 = fib1;
+            fib1 = shapeCounter;
+            console.log(shapeCounter);
+            beatCounter = 0;
+        }
+        for(let i = 0; i < shapeCounter; i++) {
+            if(i % 2 === 0) {
+                changeColour(shapeArr[i], 0x0000);
+            } else {
+                changeColour(shapeArr[i], colour);
+            }
+        }
+    }
+
+    if(shapeCounter+fib0+fib1 >= layerMarker[layerMarker.length-1]){
+        resetMode();
+    }
+}
+
+function mode6() {
+
+    if(beatCounter > 1) {
+
+        console.log("beat");
+
+        shapeArr[0].material.wireframe = !shapeArr[0].material.wireframe;
+        shapeArr[0].material.flatShading = !shapeArr[0].material.wireframe;
+        shapeArr[0].material.needsUpdate = true;
+
+        beatCounter = 0;
+
+    } else if(barCounter >= 1) {
+        if(bassAv-(bassDeviation*bassFactor*1.5) > bassArr[bassArrCounter] || bassArr[bassArrCounter] > bassAv+(bassDeviation*bassFactor)) {
+            console.log("bar");
+            removeShape();
+            addGenerativeSphere();
+        }
+        barCounter = 0;
+    } else {
+        if(bassAv-(bassDeviation*bassFactor*1.5) > bassArr[bassArrCounter] || bassArr[bassArrCounter] > bassAv+(bassDeviation*bassFactor)) {
+            prevWidth = shapeArr[0].geometry.widthSegments;
+            prevHeight = shapeArr[0].geometry.heightSegments;
+            removeShape();
+            addGenerativeSphereSimple(); // keep width and height the same
+        }
+    }
+
+    changeColour(shapeArr[0], colour);
+}
+
+let noiseFreq = 64;
+let pow7 = 1.3;
+/** Perlin Noise Heightmap displacement*/
+function mode7() {
+
+    if(tatumCounter > 1) {
+        //heightMapVersion = Math.floor(Math.random()*shapeArr[0].geometry.attributes.position.count/3);
+        if(snareEnergy > snareAv - (snareDeviation*snareFactor)) {
+            shapeArr[0].material.wireframe = !shapeArr[0].material.wireframe;
+            shapeArr[0].material.flatShading = !shapeArr[0].material.wireframe;
+            shapeArr[0].material.needsUpdate = true;
+        }
+        tatumCounter = 0;
+    }
+
+    if(beatCounter === 1) {
+        noiseFreq = kickAv*(.5+Math.cos((beatEnd - trackCounter)/2000))/2;
+    } else if (beatCounter === 2) {
+        noiseFreq = snareAv*(.5+Math.sin((beatEnd - trackCounter)/2000))/2;
+    } else if (beatCounter > 2) {
+        beatCounter = 0;
+    }
+
+    let position = shapeArr[0].geometry.attributes.position;
+    let zHeight = g_energy*rms;
+
+    if(barCounter % g_time_signature === 0) {
+        heightMapVersion -= Math.abs(Math.sin(beatEnd - trackCounter)) + snareEnergy*g_tempo*0.0001;
+    } else {
+        heightMapVersion += Math.abs(Math.sin(beatEnd - trackCounter)) + snareEnergy*g_tempo*0.0001;
+    }
+
+    for (let i = 0; i < position.count; i++) {
+        //position.setZ(i, noise.noise2D((i*(g_valence/4)) + heightMapVersion, (i*(g_tempo/1000)) + heightMapVersion)*zHeight);
+        //position.setZ(i, noise.noise2D(((i%256) + heightMapVersion) / noiseFreq, (Math.floor(i/256) - heightMapVersion) / noiseFreq)*zHeight);
+        let z = Math.pow(noise.noise2D(((i%513) - heightMapVersion) / noiseFreq, (Math.floor(i/513) - heightMapVersion) / noiseFreq)*zHeight, pow7);
+        if(z > 0) {
+            position.setZ(i, z);
+            //mountain
+        } else {
+            position.setZ(i, Math.random());
+            //water
+        }
+    }
+    position.needsUpdate = true;
+    shapeArr[0].geometry.verticesNeedUpdate = true;
+    shapeArr[0].geometry.computeBoundingSphere();
+    changeColour(shapeArr[0], colour);
 }
 
 function changeColourLayer001() {
@@ -657,102 +915,102 @@ function changeColourLayer55() {
 
 function changeColourLayer6() {
     if(beatCounter == 2) {
-        cubeCounter += incrementBy;
-        if(cubeCounter > shapeArr.length) {
+        shapeCounter += incrementBy;
+        if(shapeCounter > shapeArr.length) {
             for (let i = 0; i < shapeArr.length; i++) {
                 changeColour(shapeArr[i], 0x000000);
             }
-            cubeCounter = 0;
+            shapeCounter = 0;
             incrementBy = 1;
         }
-        console.log(cubeCounter);
+        console.log(shapeCounter);
     }
 
-    if(cubeCounter > layerMarker[15]) {
+    if(shapeCounter > layerMarker[15]) {
         for (let i = layerMarker[14]; i < layerMarker[15]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 30;
-    } else if(cubeCounter > layerMarker[14]) {
+    } else if(shapeCounter > layerMarker[14]) {
         for (let i = layerMarker[13]; i < layerMarker[14]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 28;
-    } else if(cubeCounter > layerMarker[13]) {
+    } else if(shapeCounter > layerMarker[13]) {
         for (let i = layerMarker[12]; i < layerMarker[13]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 26;
-    } else if(cubeCounter > layerMarker[12]) {
+    } else if(shapeCounter > layerMarker[12]) {
         for (let i = layerMarker[11]; i < layerMarker[12]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 24;
-    } else if(cubeCounter > layerMarker[11]) {
+    } else if(shapeCounter > layerMarker[11]) {
         for (let i = layerMarker[10]; i < layerMarker[11]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 22;
-    } else if(cubeCounter > layerMarker[10]) {
+    } else if(shapeCounter > layerMarker[10]) {
         for (let i = layerMarker[9]; i < layerMarker[10]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 20;
-    } else if(cubeCounter > layerMarker[9]) {
+    } else if(shapeCounter > layerMarker[9]) {
         for (let i = layerMarker[8]; i < layerMarker[9]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 18;
-    } else if(cubeCounter > layerMarker[8]) {
+    } else if(shapeCounter > layerMarker[8]) {
         for (let i = layerMarker[7]; i < layerMarker[8]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 16;
-    } else if(cubeCounter > layerMarker[7]) {
+    } else if(shapeCounter > layerMarker[7]) {
         for (let i = layerMarker[6]; i < layerMarker[7]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 14;
-    } else if(cubeCounter > layerMarker[6]) {
+    } else if(shapeCounter > layerMarker[6]) {
         for (let i = layerMarker[5]; i < layerMarker[6]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 12;
-    } else if(cubeCounter > layerMarker[5]) {
+    } else if(shapeCounter > layerMarker[5]) {
         for (let i = layerMarker[4]; i < layerMarker[5]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 10;
-    } else if(cubeCounter > layerMarker[4]) {
+    } else if(shapeCounter > layerMarker[4]) {
         for (let i = layerMarker[3]; i < layerMarker[4]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 8;
-    } else if(cubeCounter > layerMarker[3]) {
+    } else if(shapeCounter > layerMarker[3]) {
         for (let i = layerMarker[2]; i < layerMarker[3]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 6;
-    } else if(cubeCounter > layerMarker[2]) {
+    } else if(shapeCounter > layerMarker[2]) {
         for (let i = layerMarker[1]; i < layerMarker[2]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 4;
-    } else if(cubeCounter > layerMarker[1]) {
+    } else if(shapeCounter > layerMarker[1]) {
         for (let i = layerMarker[0]; i < layerMarker[1]; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
         incrementBy = 2;
-    } else if(cubeCounter > layerMarker[0]) {
+    } else if(shapeCounter > layerMarker[0]) {
         changeColour(shapeArr[0], 0x000000);
         incrementBy = 1;
     }
 
-    if(cubeCounter >= shapeArr.length) {
-        cubeCounter = shapeArr.length-1;
+    if(shapeCounter >= shapeArr.length) {
+        shapeCounter = shapeArr.length-1;
     }
 
-    for(let i = layerMarker[Math.floor(incrementBy/2)]; i < cubeCounter; i++) {
+    for(let i = layerMarker[Math.floor(incrementBy/2)]; i < shapeCounter; i++) {
         changeColour(shapeArr[i], colour);
     }
 
@@ -767,12 +1025,12 @@ function changeColourLayer6() {
 
 function changeColourLayer66() {
     if(tempoLayerCounter > g_tempo/25) {
-        cubeCounter++;
-        if(cubeCounter > 24)
-            cubeCounter = 0;
+        shapeCounter++;
+        if(shapeCounter > 24)
+            shapeCounter = 0;
     }
 
-    changeColour(shapeArr[cubeCounter], colour);
+    changeColour(shapeArr[shapeCounter], colour);
 
     if(tempoLayerCounter > g_tempo/25){
         tempoLayerCounter = 0;
@@ -785,13 +1043,13 @@ function changeColourLayer66() {
 
 function changeColourLayer7() {
 
-    if(cubeCounter < shapeMax && tatumConfidence > tc && tatumStart < trackCounter < tatumEnd) {
-        cubeCounter += 1;
+    if(shapeCounter < shapeMax && tatumConfidence > tc && tatumStart < trackCounter < tatumEnd) {
+        shapeCounter += 1;
     }
     if(beatConfidence > bc) {
-        if(cubeCounter > shapeMax)
-            cubeCounter = shapeMax;
-        for(let i = 0; i < cubeCounter; i++) {
+        if(shapeCounter > shapeMax)
+            shapeCounter = shapeMax;
+        for(let i = 0; i < shapeCounter; i++) {
             changeColour(shapeArr[i], colour);
             scaleShape(shapeArr[i]);
         }
@@ -801,7 +1059,7 @@ function changeColourLayer7() {
         for(let i = 0; i < shapeMax; i++) {
             changeColour(shapeArr[i], 0x000000);
         }
-        cubeCounter = 1;
+        shapeCounter = 1;
         //wireframeLayerChange();
         //randomWireframeChange();
         randomWireframeLayerChange();
@@ -811,12 +1069,12 @@ function changeColourLayer7() {
 
 function changeColourLayer77() {
     if(tempoLayerCounter > g_tempo) {
-        cubeCounter++;
-        if(cubeCounter > 25)
-            cubeCounter = 0;
+        shapeCounter++;
+        if(shapeCounter > 25)
+            shapeCounter = 0;
     }
 
-    for(var i = 0; i < cubeCounter; i++) {
+    for(var i = 0; i < shapeCounter; i++) {
         changeColour(shapeArr[i], colour);
     }
     if(tempoLayerCounter > g_tempo+1){
@@ -832,31 +1090,31 @@ function changeColourLayer8() {
 
     if(tempoLayerCounter > 3) {
         if(reverse == false) {
-            cubeCounter++;
+            shapeCounter++;
             wait8 = 0;
         } else {
             wait8++;
             if (wait8 > 360)
-                cubeCounter--;
+                shapeCounter--;
         }
-        if(cubeCounter > shapeMax) {
+        if(shapeCounter > shapeMax) {
             reverse = true;
         }
-        if(cubeCounter == 0) {
+        if(shapeCounter == 0) {
             reverse = false;
         }
     }
 
     if(reverse == false) {
-        for(let i = 0; i < cubeCounter; i++) {
+        for(let i = 0; i < shapeCounter; i++) {
             changeColour(shapeArr[i], colour);
             scaleShape(shapeArr[i]);
         }
     } else {
         if (wait8 > 360)
-            changeColour(shapeArr[cubeCounter-1], 0x00000);
+            changeColour(shapeArr[shapeCounter-1], 0x00000);
         else {
-            for(let i = 0; i < cubeCounter-1; i++) {
+            for(let i = 0; i < shapeCounter-1; i++) {
                 changeColour(shapeArr[i], colour);
                 scaleShape(shapeArr[i]);
             }

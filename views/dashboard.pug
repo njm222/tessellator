@@ -1,0 +1,315 @@
+extends layout
+
+block content
+    - var spotifyLink = external_urls.spotify
+    div(id='dashboard' class='align-items-center')
+        div(id='user-profile')
+            div(class='row d-flex justify-content-center m-5')
+                h1 Hello #{display_name}
+            div(class='row d-flex justify-content-center m-4')
+                h6 A real time 3D audio visualizer made with WebGl and the Spotify Web API
+            div(class='row d-flex justify-content-around')
+                a(target='_blank' href=spotifyLink class='btn btn-info') Open Spotify
+            div(id='player-info' class='row d-flex justify-content-center m-4')
+                div(class='playing my-3' id='dashboardTrackInfo')
+            div(class='row d-flex justify-content-around')
+                a(id='toVisualizer' class='btn btn-primary') Open Visualizer
+
+block visualizer-content
+    div(id='main-visualizer')
+        div(id='visualizer-controls')
+            div(class='visualizer-controls-container')
+                a(id='toDashboard' class='btn') Dashboard
+                div(id='trackInfo' class='btn')
+                a(id='openModeControls' class='btn') Modes
+                a(id='closeModeControls' class='btn') Modes
+                div(id='visualizerModeControls')
+                    div(class='cameraControls')
+                        a(class='btn' id='cameraRotate') Rotate
+                        a(class='btn' id='cameraZoom') Zoom
+                        a(class='btn' id='randomizeColour') Random Colour
+                        a(class='btn' id='randomizeMode') Random Mode
+                    div(class='mode-container')
+                        - for(var i = 1; i < 9; i++)
+                            - var modeID = 'mode_' + i;
+                            a(id=modeID class='btn visualizerMode') #{i}
+                    div(id='shapeType' class='dropdown')
+                        button(class='btn btn-primary dropdown-toggle' type='button' id='shapeDropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') Change Shape
+                        div(class='dropdown-menu' aria-labelledby='dropdownMenuButton')
+                            - for(var i = 0; i < 5; i++)
+                                - var shapeType = 'changeShape(' + i + ')'
+                                a(class='dropdown-item' onclick=shapeType) Shape #{i}
+
+block script
+    script(src='/js/ColourLayerChanger.js')
+    script(src='/js/main.js')
+    script(src='/js/KeyboardInput.js')
+    script(await type='text/javascript').
+        var access_token = "!{access_token}";
+        var refresh_token = "!{refresh_token}";
+        var spotifyLink = "!{external_urls}";
+        var currentTrack, currentArtist, currentTrackID;
+
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            const player = new Spotify.Player({
+                name: 'Visualizer Player',
+                getOAuthToken: cb => { cb(access_token); }
+            });
+
+            player.on('initialization_error', e => {console.error(e)});
+            player.on('authentication_error', e => console.error(e));
+            player.on('account_error', e => console.error(e));
+            player.on('playback_error', e => console.error(e));
+
+            player.on('ready', data => {
+                console.log('Ready with Device ID', data.device_id);
+                playRandomTrack(data.device_id);
+            });
+
+            player.on('player_state_changed', function (state) {
+                trackCounter = state.position;
+                isPaused = state.paused;
+
+                if (trackCounter < 10) {
+                    getPlayerTrack();
+                    g_section = 0;
+                    g_bar = 0;
+                    g_beat = 0;
+                    g_tatum = 0;
+                    g_segment = 0;
+                    cameraRandom = 2;
+                    spinr = 0;
+
+                    analyser.minDecibels = -90;
+                    analyser.maxDecibels = -25;
+                }
+                trackEnd = state.duration;
+            });
+
+            player.connect();
+
+        }
+
+
+        //MOVE THESE FUNCTIONS TO A SEPERATE FILE
+        function getPlayerTrack() {
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me/player',
+                headers: {
+                    'Authorization': 'Bearer ' + access_token
+                },
+                success: function (response) {
+                    if(response) {
+                        console.log("// TRACK INFO \\");
+                        currentTrack = response.item.name;
+                        currentArtist = response.item.artists[0].name;
+
+                        document.getElementById('trackInfo').innerHTML = currentTrack + ' by ' + currentArtist;
+                        document.getElementById('dashboardTrackInfo').innerHTML = currentTrack + ' by ' + currentArtist;
+
+                        currentTrackID = response.item.id;
+                        getFeatures(currentTrackID);
+                        getAnalysis(currentTrackID);
+                    }
+                },
+                error: function (error) {
+                    if(error.status === 401) {
+                        window.location.replace('/refreshToken');
+                    }
+                }
+            });
+        }
+
+        function play(device_id, track) {
+            $.ajax({
+                url: `https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
+                type: "PUT",
+                data: JSON.stringify({uris: [track]}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + access_token
+                }
+            });
+        }
+
+        function playRandomTrack(device_id) {
+            $.ajax({
+                url: 'https://api.spotify.com/v1/me/top/tracks',
+                headers: {
+                    'Authorization': 'Bearer ' + access_token
+                },
+                success: function (response) {
+                    play(device_id, response.items[Math.floor(Math.random() * 20)].uri);
+                }
+            });
+        }
+
+        function getFeatures(track) {
+            $.ajax({
+                url: `https://api.spotify.com/v1/audio-features/${track}`,
+                headers: {
+                    'Authorization': 'Bearer ' + access_token
+                },
+                success: function (response) {
+                    console.log("// TRACK FEATURES \\");
+                    console.log(response);
+                    g_valence = response.valence;
+                    g_energy = response.energy;
+                    g_danceability = response.danceability;
+
+                    beatZoom = 0.75 + g_danceability / 10;
+
+                    if (0.75 / response.energy < 0.94) {
+                        analyser.smoothingTimeConstant = 0.75 / g_energy;
+                    } else if (0.75 / response.danceability < 0.94) {
+                        analyser.smoothingTimeConstant = 0.75 / g_danceability;
+                    } else {
+                        analyser.smoothingTimeConstant = 0.94;
+                    }
+
+                    zoomIntensity = 300 - response.tempo;
+                    g_tempo = response.tempo;
+                    g_time_signature = response.time_signature;
+                }
+            });
+        }
+        
+        function getAnalysis(track) {
+            $.ajax({
+                url: `https://api.spotify.com/v1/audio-analysis/${track}`,
+                headers: {
+                    'Authorization': 'Bearer ' + access_token
+                },
+                success: function (response) {
+                    console.log("// TRACK ANALYSIS \\");
+                    console.log(response);
+                    g_sections = response.sections;
+                    g_bars = response.bars;
+                    g_beats = response.beats;
+                    g_tatums = response.tatums;
+                    g_segments = response.segments;
+
+                    /** Add beat Av and Var check to check beatConfidence  */
+
+                    beatVar = 0;
+                    beatAv = g_beats[0]["confidence"];
+                    let d = 0;
+                    for(let i = 1; i < g_beats.length; i++) {
+                        d = g_beats[i]["confidence"] - beatAv;
+                        beatAv += d / g_beats.length;
+                        beatVar += d * (g_beats[i]["confidence"] - beatAv);
+                    }
+
+                    beatVar = beatVar / (g_beats.length - 1);
+                    beatVar = beatVar * (1.8+g_valence);
+
+                    console.log("beatAv = " + beatAv);
+                    console.log("beatVar = " + beatVar);
+
+                    console.log("//////////////////////////")
+
+                    tatumVar = 0;
+                    tatumAv = g_tatums[0]["confidence"];
+                    d = 0;
+                    for (let i = 1; i < g_tatums.length; i++) {
+                        d = g_tatums[i]["confidence"] - tatumAv;
+                        tatumAv += d / g_tatums.length;
+                        tatumVar += d * (g_tatums[i]["confidence"] - tatumAv);
+                    }
+
+                    console.log("tatumAv = " + tatumAv);
+                    tatumVar = tatumVar / (g_tatums.length - 1);
+                    tatumVar = tatumVar * 2.2;
+                    console.log("tatumVar = " + tatumVar);
+                }
+            });
+        }
+
+
+        /** Mode Controls */
+        var modes = document.querySelectorAll('.visualizerMode');
+        modes.forEach(function (elem) {
+            elem.addEventListener('click', function (evt) {
+                modeKey.key = parseInt(elem.innerHTML);
+            });
+        });
+
+        document.getElementById('cameraRotate').addEventListener('click', function (ev) {
+            toggleRotate = !toggleRotate;
+            if (toggleRotate) {
+                $('#cameraRotate').css({color: "#3AD36B"})
+            } else {
+                $('#cameraRotate').css({color: "#FFF"})
+            }
+        });
+
+        document.getElementById('cameraZoom').addEventListener('click', function (ev) {
+            toggleZoom = !toggleZoom;
+            if (toggleZoom) {
+                $('#cameraZoom').css({color: "#3AD36B"})
+            } else {
+                $('#cameraZoom').css({color: "#FFF"})
+            }
+        });
+
+        document.getElementById('randomizeColour').addEventListener('click', function (ev) {
+            randomizeColour = !randomizeColour;
+            if (randomizeColour) {
+                $('#randomizeColour').css({color: "#3AD36B"})
+            } else {
+                $('#randomizeColour').css({color: "#FFF"})
+            }
+        });
+
+        document.getElementById('randomizeMode').addEventListener('click', function (ev) {
+            randomizeMode = !randomizeMode;
+            if (randomizeMode) {
+                $('#randomizeMode').css({color: "#3AD36B"})
+            } else {
+                $('#randomizeMode').css({color: "#FFF"})
+            }
+        });
+
+        document.getElementById('toVisualizer').addEventListener('click', function (ev) {
+            $('#main-container').hide();
+            $('#main-visualizer').show();
+
+            window.history.pushState("visualizer", "Visualizer", "/visualizer");
+            gtag('config', 'UA-133459521-1', {
+                'page_title': 'Visualizer',
+                'page_path': '/Visualizer'
+            });
+        });
+
+        document.getElementById('toDashboard').addEventListener('click', function (ev) {
+            $('#main-container').show();
+            $('#main-visualizer').hide();
+
+            window.history.pushState("dashboard", "Dashboard", "/dashboard");
+            gtag('config', 'UA-133459521-1', {
+                'page_title': 'Dashboard',
+                'page_path': '/Dashboard'
+            });
+        });
+
+        document.getElementById('openModeControls').addEventListener('click', function (ev) {
+            $('#visualizerModeControls').css({display: "flex", 'align-self': "center"});
+            $('#closeModeControls').css({display: "flex", 'align-self': "center"});
+            $('#openModeControls').hide();
+        });
+        document.getElementById('closeModeControls').addEventListener('click', function (ev) {
+            $('#visualizerModeControls').css({display: "none"});
+            $('#closeModeControls').css({display: "none"});
+            $('#openModeControls').show();
+
+        });
+
+        $('#main-visualizer').on('mousemove', function (event) {
+            if (200 - event.clientY < 0) {
+                $('#visualizer-controls').css({display: "block", top: 200 - event.clientY});
+            } else {
+                $('#visualizer-controls').css({display: "block", top: 0});
+            }
+        }).on('mouseout', function () {
+            $('#visualizer-controls').css({display: "none"});
+        });

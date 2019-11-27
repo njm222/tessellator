@@ -3,8 +3,9 @@
 /**
  * Module dependencies.
  */
+
 var app = require('../app');
-var debug = require('debug')('spotify-visualizer:server');
+var debug = require('debug')('spotify-music-visualizer:server');
 var http = require('http');
 
 /**

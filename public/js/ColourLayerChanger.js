@@ -363,30 +363,27 @@ function mode5() {
 
 function mode6() {
 
-    if(beatCounter > 1) {
+    prevThetaS = Math.PI/4 * Math.sin(g_tempo*g_energy*trackCounter/100000);
 
+    if(tatumCounter > 1) {
+        tatumCounter = 0;
+    }
+    if(beatCounter > 1) {
         shapeArr[0].material.wireframe = !shapeArr[0].material.wireframe;
         shapeArr[0].material.flatShading = !shapeArr[0].material.wireframe;
         shapeArr[0].material.needsUpdate = true;
-
         beatCounter = 0;
-
     } else if(barCounter >= 1) {
-        if(true) {
-            console.log("sphere bar change");
-            removeShape();
-            addGenerativeSphere();
-        }
+        prevThetaL = avFreq % Math.PI;
         barCounter = 0;
     } else {
         if(bassEnergy > bassAv - (bassDeviation*bassFactor)) {
-            prevWidth = shapeArr[0].geometry.widthSegments;
-            prevHeight = shapeArr[0].geometry.heightSegments;
-            removeShape();
-            addGenerativeSphereSimple(); // keep width and height the same
+            prevWidth = 3 + Math.floor(snareAv/2) % 30;
+            prevHeight = 3 + Math.floor(kickAv/2) % 30;
         }
     }
-
+    removeShape();
+    addGenerativeSphere();
     changeColour(shapeArr[0], colour);
 }
 

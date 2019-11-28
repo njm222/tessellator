@@ -221,8 +221,8 @@ let tetraGeo = new THREE.TetrahedronGeometry(10, 0);
 //Generative Sphere variables
 let prevThetaS = 0;
 let prevThetaL = Math.PI/4;
-let prevWidth = 32;
-let prevHeight = 32;
+let prevWidth = 15;
+let prevHeight = 15;
 
 //Perlin Terrain variables
 let planeGeo = new THREE.PlaneBufferGeometry(window.innerWidth, window.innerWidth, 512, 512);
@@ -233,21 +233,21 @@ let spotLight = new THREE.SpotLight(0xffffff);
 
 let noise = new SimplexNoise(Math.random());
 
-function addGenerativeSphereSimple() {
-    //prevThetaS = 1+Math.sin(snareAv)*g_valence % (2*Math.PI);
-    prevThetaS = Math.PI/4 * Math.sin(trackCounter/(2*g_tempo));
+function addGenerativeSphere() {
 
-    shapeArr.push(new THREE.Mesh(new THREE.SphereBufferGeometry(50, prevWidth, prevHeight % 32, 0, Math.PI * 2, prevThetaS % (Math.PI / 4), prevThetaL), phongMaterial));
+    shapeArr.push(new THREE.Mesh(new THREE.SphereBufferGeometry(50, prevWidth, prevHeight, 0, Math.PI * 2, prevThetaS % (Math.PI / 4), prevThetaL), phongMaterial));
     shapeArr[0].rotation.set(Math.PI / 2, 0, 0);
     scene.add(shapeArr[0]);
 
 }
 
-function addGenerativeSphere() {
+function addGenerativeSphere1() {
     prevThetaL = kickEnergy % Math.PI;
     prevThetaS = Math.PI/4 * Math.sin(trackCounter/(2*g_tempo));
+    prevWidth = 3 + Math.floor(bassAv) % 30;
+    prevHeight = 3 + Math.floor(snareAv) % 30;
 
-    shapeArr.push(new THREE.Mesh(new THREE.SphereBufferGeometry(50, Math.floor(bassEnergy) % 32, Math.floor(kickEnergy) % 32, 0, Math.PI * 2, prevThetaS % (Math.PI / 4), prevThetaL), phongMaterial));
+    shapeArr.push(new THREE.Mesh(new THREE.SphereBufferGeometry(50, prevWidth, prevHeight, 0, Math.PI * 2, prevThetaS % (Math.PI / 4), prevThetaL), phongMaterial));
     shapeArr[0].rotation.set(Math.PI / 2, 0, 0);
     scene.add(shapeArr[0]);
 }

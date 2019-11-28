@@ -392,22 +392,22 @@ let pow7 = 1.3;
 /** Perlin Noise Heightmap displacement*/
 function mode7() {
 
-    if(tatumCounter > 1) {
+    if(beatCounter > 1) {
         //heightMapVersion = Math.floor(Math.random()*shapeArr[0].geometry.attributes.position.count/3);
         if(snareEnergy > snareAv - (snareDeviation*snareFactor)) {
             shapeArr[0].material.wireframe = !shapeArr[0].material.wireframe;
             shapeArr[0].material.flatShading = !shapeArr[0].material.wireframe;
             shapeArr[0].material.needsUpdate = true;
         }
-        tatumCounter = 0;
+        beatCounter = 0;
     }
 
-    if(beatCounter === 1) {
+    if(tatumCounter === 1) {
         noiseFreq = kickAv*(.5+Math.cos((beatEnd - trackCounter)/2000))/2;
-    } else if (beatCounter === 2) {
+    } else if (tatumCounter === 2) {
         noiseFreq = snareAv*(.5+Math.sin((beatEnd - trackCounter)/2000))/2;
-    } else if (beatCounter > 2) {
-        beatCounter = 0;
+    } else if (tatumCounter > 2) {
+        tatumCounter = 0;
     }
 
     let position = shapeArr[0].geometry.attributes.position;
@@ -420,9 +420,16 @@ function mode7() {
     }
 
     for (let i = 0; i < position.count; i++) {
-        //position.setZ(i, noise.noise2D((i*(g_valence/4)) + heightMapVersion, (i*(g_tempo/1000)) + heightMapVersion)*zHeight);
-        //position.setZ(i, noise.noise2D(((i%256) + heightMapVersion) / noiseFreq, (Math.floor(i/256) - heightMapVersion) / noiseFreq)*zHeight);
-        let z = Math.pow(noise.noise2D(((i%513) - heightMapVersion) / noiseFreq, (Math.floor(i/513) - heightMapVersion) / noiseFreq)*zHeight, pow7);
+        let z;
+        if(barCounter % 3 === 0) {
+            z = Math.pow(noise.noise2D(((i%513) - heightMapVersion) / noiseFreq, (Math.floor(i/513) - heightMapVersion) / noiseFreq)*zHeight, pow7);
+        } else if(barCounter % 4 === 0) {
+            z = Math.pow(noise.noise2D(((i%513) - heightMapVersion) / noiseFreq, (Math.floor(i/513) + heightMapVersion) / noiseFreq)*zHeight, pow7);
+        } else if(barCounter % 5 === 0) {
+            z = Math.pow(noise.noise2D(((i%513) + heightMapVersion) / noiseFreq, (Math.floor(i/513) - heightMapVersion) / noiseFreq)*zHeight, pow7);
+        } else {
+            z = Math.pow(noise.noise2D(((i%513) + heightMapVersion) / noiseFreq, (Math.floor(i/513) + heightMapVersion) / noiseFreq)*zHeight, pow7);
+        }
         if(z > 0) {
             position.setZ(i, z);
             //mountain

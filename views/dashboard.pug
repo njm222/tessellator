@@ -93,14 +93,14 @@ block script
         function sendTrackAnalytics(track, artist) {
             // For Track Event
             gtag('event', 'Started New Track', {
-                'event_label': track,
+                'event_label': 'Playing: ' + track,
                 'event_category': 'Track Details',
                 'non_interaction': true
             });
 
             // For Artist Event
             gtag('event', 'Started New Artist', {
-                'event_label': artist,
+                'event_label': 'Playing: ' + artist,
                 'event_category': 'Track Details',
                 'non_interaction': true
             });
@@ -109,27 +109,27 @@ block script
         function sendTrackFeaturesAnalytics(features) {
             // For Track Event
             gtag('event', 'Valence', {
-                'event_label': features.valence,
+                'event_label': 'Valence: ' + features.valence,
                 'event_category': 'Track Features',
                 'non_interaction': true
             });
             gtag('event', 'Tempo', {
-                'event_label': features.tempo,
+                'event_label': 'Tempo: ' + features.tempo,
                 'event_category': 'Track Features',
                 'non_interaction': true
             });
             gtag('event', 'Energy', {
-                'event_label': features.energy,
+                'event_label': 'Energy: ' + features.energy,
                 'event_category': 'Track Features',
                 'non_interaction': true
             });
             gtag('event', 'Danceability', {
-                'event_label': features.danceability,
+                'event_label': 'Danceability: ' + features.danceability,
                 'event_category': 'Track Features',
                 'non_interaction': true
             });
             gtag('event', 'Time Signature', {
-                'event_label': features.time_signature,
+                'event_label': 'Time Signature: ' + features.time_signature,
                 'event_category': 'Track Features',
                 'non_interaction': true
             });

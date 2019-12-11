@@ -90,6 +90,50 @@ block script
 
         }
 
+        function sendTrackAnalytics(track, artist) {
+            // For Track Event
+            gtag('event', 'Started New Track', {
+                'event_label': track,
+                'event_category': 'Track Details',
+                'non_interaction': true
+            });
+
+            // For Artist Event
+            gtag('event', 'Started New Artist', {
+                'event_label': artist,
+                'event_category': 'Track Details',
+                'non_interaction': true
+            });
+        }
+
+        function sendTrackFeaturesAnalytics(features) {
+            // For Track Event
+            gtag('event', 'Valence', {
+                'event_label': features.valence,
+                'event_category': 'Track Features',
+                'non_interaction': true
+            });
+            gtag('event', 'Tempo', {
+                'event_label': features.tempo,
+                'event_category': 'Track Features',
+                'non_interaction': true
+            });
+            gtag('event', 'Energy', {
+                'event_label': features.energy,
+                'event_category': 'Track Features',
+                'non_interaction': true
+            });
+            gtag('event', 'Danceability', {
+                'event_label': features.danceability,
+                'event_category': 'Track Features',
+                'non_interaction': true
+            });
+            gtag('event', 'Time Signature', {
+                'event_label': features.time_signature,
+                'event_category': 'Track Features',
+                'non_interaction': true
+            });
+        }
 
         //MOVE THESE FUNCTIONS TO A SEPERATE FILE
         function getPlayerTrack() {
@@ -110,6 +154,8 @@ block script
                         currentTrackID = response.item.id;
                         getFeatures(currentTrackID);
                         getAnalysis(currentTrackID);
+
+                        sendTrackAnalytics(currentTrack, currentArtist);
                     }
                 },
                 error: function (error) {
@@ -170,6 +216,8 @@ block script
                     zoomIntensity = 300 - response.tempo;
                     g_tempo = response.tempo;
                     g_time_signature = response.time_signature;
+
+                    sendTrackFeaturesAnalytics(response);
                 }
             });
         }
@@ -233,7 +281,9 @@ block script
                 modeKey.key = parseInt(elem.innerHTML);
 
                 // Analytics
-                gtag('event', 'Set Mode to (' +elem.innerHTML+ ')', {
+                gtag('event', 'User Set Visualizer Mode', {
+                    'value': elem.innerHTML,
+                    'event_label': 'User Set Visualizer Mode (' +elem.innerHTML+')',
                     'event_category': 'Visualizer Controls'
                 });
             });
@@ -248,7 +298,9 @@ block script
             }
 
             // Analytics
-            gtag('event', 'Set Camera Rotate (' + toggleRotate + ')', {
+            gtag('event', 'User Set Camera Rotate', {
+                'value': toggleRotate,
+                'event_label': 'User Set Camera Rotate (' +toggleRotate+ ')',
                 'event_category': 'Visualizer Controls'
             });
         });
@@ -262,7 +314,9 @@ block script
             }
 
             // Analytics
-            gtag('event', 'Set Camera Zoom (' + toggleZoom + ')', {
+            gtag('event', 'User Set Camera Zoom', {
+                'value': toggleZoom,
+                'event_label': 'User Set Camera Zoom (' +toggleZoom+ ')',
                 'event_category': 'Visualizer Controls'
             });
         });
@@ -276,7 +330,9 @@ block script
             }
 
             // Analytics
-            gtag('event', 'Set Randomize Colour (' +randomizeColour+ ')', {
+            gtag('event', 'User Set Randomize Colour', {
+                'value': randomizeColour,
+                'event_label': 'User Set Randomize Colour (' +randomizeColour+ ')',
                 'event_category': 'Visualizer Controls'
             });
         });
@@ -288,6 +344,13 @@ block script
             } else {
                 $('#randomizeMode').css({color: "#FFF"})
             }
+
+            // Analytics
+            gtag('event', 'User Set Randomize Mode', {
+                'value': randomizeMode,
+                'event_label': 'User Set Randomize Mode (' +randomizeMode+ ')',
+                'event_category': 'Visualizer Controls'
+            });
         });
 
         document.getElementById('toVisualizer').addEventListener('click', function (ev) {
@@ -321,6 +384,7 @@ block script
 
             // Analytics
             gtag('event', 'Opened Mode Controls', {
+                'event_label': 'Opened Mode Controls',
                 'event_category': 'Visualizer Controls'
             });
         });
@@ -331,6 +395,7 @@ block script
 
             // Analytics
             gtag('event', 'Closed Mode Controls', {
+                'event_label': 'Closed Mode Controls',
                 'event_category': 'Visualizer Controls'
             });
         });

@@ -103,7 +103,7 @@ function setModeKey() {
 function setColourKey() {
 
     if (g_bar % 2 == 0 && changedColour == true){
-        colourKey = Math.floor(Math.random() * 10);
+        colourKey = Math.floor(Math.random() * 13);
         changedColour = false;
         console.log("colour mode: " + colourKey);
     }

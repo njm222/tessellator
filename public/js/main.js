@@ -509,6 +509,12 @@ function setColour(key) {
         case 10:
             colour = rgbToHex(currFreq[13], currFreq[9], currFreq[5]);
             break;
+        case 11:
+            colour = hslToHex(highsEnergy*avFreq, snareEnergy, bassEnergy);
+            break;
+        case 12:
+            colour = hslToHex(360-(highsEnergy*avFreq), bassEnergy, snareEnergy);
+            break;
         default:
             colour = rgbToHex(currFreq[4], currFreq[8], currFreq[12]);
     }

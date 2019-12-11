@@ -231,6 +231,11 @@ block script
         modes.forEach(function (elem) {
             elem.addEventListener('click', function (evt) {
                 modeKey.key = parseInt(elem.innerHTML);
+
+                // Analytics
+                gtag('event', 'Set Mode to (' +elem.innerHTML+ ')', {
+                    'event_category': 'Visualizer Controls'
+                });
             });
         });
 
@@ -241,6 +246,11 @@ block script
             } else {
                 $('#cameraRotate').css({color: "#FFF"})
             }
+
+            // Analytics
+            gtag('event', 'Set Camera Rotate (' + toggleRotate + ')', {
+                'event_category': 'Visualizer Controls'
+            });
         });
 
         document.getElementById('cameraZoom').addEventListener('click', function (ev) {
@@ -250,6 +260,11 @@ block script
             } else {
                 $('#cameraZoom').css({color: "#FFF"})
             }
+
+            // Analytics
+            gtag('event', 'Set Camera Zoom (' + toggleZoom + ')', {
+                'event_category': 'Visualizer Controls'
+            });
         });
 
         document.getElementById('randomizeColour').addEventListener('click', function (ev) {
@@ -259,6 +274,11 @@ block script
             } else {
                 $('#randomizeColour').css({color: "#FFF"})
             }
+
+            // Analytics
+            gtag('event', 'Set Randomize Colour (' +randomizeColour+ ')', {
+                'event_category': 'Visualizer Controls'
+            });
         });
 
         document.getElementById('randomizeMode').addEventListener('click', function (ev) {
@@ -274,6 +294,7 @@ block script
             $('#main-container').hide();
             $('#main-visualizer').show();
 
+            // Analytics
             window.history.pushState("visualizer", "Visualizer", "/visualizer");
             gtag('config', 'UA-133459521-1', {
                 'page_title': 'Visualizer',
@@ -285,6 +306,7 @@ block script
             $('#main-container').show();
             $('#main-visualizer').hide();
 
+            // Analytics
             window.history.pushState("dashboard", "Dashboard", "/dashboard");
             gtag('config', 'UA-133459521-1', {
                 'page_title': 'Dashboard',
@@ -296,12 +318,21 @@ block script
             $('#visualizerModeControls').css({display: "flex", 'align-self': "center"});
             $('#closeModeControls').css({display: "flex", 'align-self': "center"});
             $('#openModeControls').hide();
+
+            // Analytics
+            gtag('event', 'Opened Mode Controls', {
+                'event_category': 'Visualizer Controls'
+            });
         });
         document.getElementById('closeModeControls').addEventListener('click', function (ev) {
             $('#visualizerModeControls').css({display: "none"});
             $('#closeModeControls').css({display: "none"});
             $('#openModeControls').show();
 
+            // Analytics
+            gtag('event', 'Closed Mode Controls', {
+                'event_category': 'Visualizer Controls'
+            });
         });
 
         $('#main-visualizer').on('mousemove', function (event) {

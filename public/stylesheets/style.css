@@ -182,3 +182,7 @@ a:hover, a:focus {
 #main-container {
   text-align: center;
 }
+
+.githubLink h1 {
+  padding: 20vh;
+}

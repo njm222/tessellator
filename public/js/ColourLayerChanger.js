@@ -388,7 +388,7 @@ function mode6() {
 }
 
 let noiseFreq = 64;
-let pow7 = 1.3;
+let pow7 = 1.5;
 /** Perlin Noise Heightmap displacement*/
 function mode7() {
 
@@ -402,12 +402,12 @@ function mode7() {
         beatCounter = 0;
     }
 
-    if(tatumCounter === 1) {
-        noiseFreq = kickAv*(.5+Math.cos((beatEnd - trackCounter)/2000))/2;
-    } else if (tatumCounter === 2) {
-        noiseFreq = snareAv*(.5+Math.sin((beatEnd - trackCounter)/2000))/2;
-    } else if (tatumCounter > 2) {
-        tatumCounter = 0;
+    if(g_energy > .7) {
+        noiseFreq = bassAv;
+    } else if (g_energy > .4) {
+        noiseFreq = snareAv;
+    } else {
+        noiseFreq = midsAv;
     }
 
     let position = shapeArr[0].geometry.attributes.position;
@@ -430,11 +430,15 @@ function mode7() {
         } else {
             z = Math.pow(noise.noise2D(((i%513) + heightMapVersion) / noiseFreq, (Math.floor(i/513) + heightMapVersion) / noiseFreq)*zHeight, pow7);
         }
+
         if(z > 0) {
             position.setZ(i, z);
             //mountain
+        } else if(g_valence > .5) {
+            position.setZ(i, (noise.noise2D(Date.now()/2000, i/noiseFreq)*Math.min((highsEnergy+highsAv), 25)));
+            //water
         } else {
-            position.setZ(i, Math.random());
+            position.setZ(i, (noise.noise2D(i/noiseFreq, Date.now()/2000)*Math.min((highsEnergy+highsAv), 25)));
             //water
         }
     }

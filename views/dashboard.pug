@@ -109,26 +109,31 @@ block script
         function sendTrackFeaturesAnalytics(features) {
             // For Track Event
             gtag('event', 'Valence', {
+                'value': features.valence,
                 'event_label': 'Valence: ' + features.valence,
                 'event_category': 'Track Features',
                 'non_interaction': true
             });
             gtag('event', 'Tempo', {
+                'value': features.tempo,
                 'event_label': 'Tempo: ' + features.tempo,
                 'event_category': 'Track Features',
                 'non_interaction': true
             });
             gtag('event', 'Energy', {
+                'value': features.energy,
                 'event_label': 'Energy: ' + features.energy,
                 'event_category': 'Track Features',
                 'non_interaction': true
             });
             gtag('event', 'Danceability', {
+                'value': features.danceability,
                 'event_label': 'Danceability: ' + features.danceability,
                 'event_category': 'Track Features',
                 'non_interaction': true
             });
             gtag('event', 'Time Signature', {
+                'value': features.time_signature,
                 'event_label': 'Time Signature: ' + features.time_signature,
                 'event_category': 'Track Features',
                 'non_interaction': true

@@ -9,8 +9,8 @@ html
                 dataLayer.push(arguments);
             }
             gtag('js', new Date());
-
             gtag('config', 'UA-133459521-1', {
+                'user_id': '#{display_name}',
                 'page_title': '#{title}',
                 'page_path': '/#{title}'
             });

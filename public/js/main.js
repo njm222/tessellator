@@ -480,19 +480,19 @@ function setColour(key) {
 
     switch (key) {
         case 1:
-            colour = rgbToHex(avFreq, avFreq, Math.pow(bassAv, 1.12));
+            colour = rgbToHex(highsEnergy, midsEnergy, snareEnergy);
             break;
         case 2:
             colour = rgbToHex(avFreq, Math.pow(bassAv, 1.12), avFreq);
             break;
         case 3:
-            colour = rgbToHex(Math.pow(bassAv, 1.12), avFreq, avFreq);
+            colour = hslToHex(snareEnergy, bassEnergy, midsEnergy);
             break;
         case 4:
-            colour = rgbToHex(avFreq/2, avFreq/2, snareAv + colourModifier);
+            colour = hslToHex(kickEnergy, snareEnergy, midsEnergy);
             break;
         case 5:
-            colour = rgbToHex(avFreq/2, snareAv + colourModifier, avFreq/2);
+            colour = hslToHex(bassEnergy, bassAv+highsEnergy, midsEnergy);
             break;
         case 6:
             colour = rgbToHex(snareAv + colourModifier, avFreq/2, avFreq/2);
@@ -510,10 +510,10 @@ function setColour(key) {
             colour = rgbToHex(currFreq[13], currFreq[9], currFreq[5]);
             break;
         case 11:
-            colour = hslToHex(highsEnergy*avFreq, snareEnergy, bassEnergy);
+            colour = hslToHex(highsEnergy*avFreq, bassEnergy, midsEnergy);
             break;
         case 12:
-            colour = hslToHex(360-(highsEnergy*avFreq), bassEnergy, snareEnergy);
+            colour = hslToHex(360-(highsEnergy*avFreq), bassEnergy, midsEnergy);
             break;
         default:
             colour = rgbToHex(currFreq[4], currFreq[8], currFreq[12]);

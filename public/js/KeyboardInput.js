@@ -39,6 +39,12 @@ document.addEventListener("keydown", function (event) {
         colourKey = 8;
     else if(keypress == "C")
         colourKey = 9;
+    else if(keypress == "R")
+        colourKey = 10;
+    else if(keypress == "F")
+        colourKey = 11;
+    else if(keypress == "V")
+        colourKey = 12;
 
     console.log("colour mode: " + colourKey);
 });

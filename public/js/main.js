@@ -324,7 +324,7 @@ function setShapePosition() {
     let x = 0;
     let y = 0;
     let z = 0;
-    let distance = 20;
+    let distance = 25;
     let shapeCount = 0;
     let lim = 12;
 
@@ -545,7 +545,8 @@ function doMode(key) {
             mode7();
             break;
         default:
-            mode7();
+            modeKey.key = 1;
+            mode1();
     }
 }
 

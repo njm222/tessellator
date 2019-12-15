@@ -72,22 +72,27 @@ block script
 
                 if (trackCounter < 10) {
                     getPlayerTrack();
-                    g_section = 0;
-                    g_bar = 0;
-                    g_beat = 0;
-                    g_tatum = 0;
-                    g_segment = 0;
-                    cameraRandom = 2;
-                    spinr = 0;
-
-                    analyser.minDecibels = -90;
-                    analyser.maxDecibels = -25;
+                    resetVariables();
                 }
                 trackEnd = state.duration;
             });
 
             player.connect();
 
+        }
+
+        function resetVariables() {
+            g_section = 0;
+            g_bar = 0;
+            g_beat = 0;
+            g_tatum = 0;
+            g_segment = 0;
+            cameraRandom = 2;
+            spinr = 0;
+
+
+            analyser.minDecibels = -90;
+            analyser.maxDecibels = -25;
         }
 
         function sendTrackAnalytics(track, artist) {
@@ -209,6 +214,9 @@ block script
                     g_danceability = response.danceability;
 
                     beatZoom = 0.75 + g_danceability / 10;
+                    if(randomizeMode) {
+                        recentWireframe = new Array(Math.ceil(g_energy*10)).fill(0);
+                    }
 
                     if (0.75 / response.energy < 0.94) {
                         analyser.smoothingTimeConstant = 0.75 / g_energy;

@@ -157,6 +157,9 @@ modeKey.registerListener(function (val) {
         if (modeSwitch) {
             $('#shapeType').show();
             removeShape();
+            if(randomizeMode) {
+                shapeType = Math.floor(Math.random()*5);
+            }
             addShape(shapeType);
             setShapePosition();
             modeSwitch = false;

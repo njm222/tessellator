@@ -27,6 +27,11 @@ a:hover, a:focus {
   text-decoration: none;
 }
 
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
 #visualizer-controls a {
   color: #FFF;
   text-decoration: none;

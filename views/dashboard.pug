@@ -13,7 +13,10 @@ block content
             div(id='player-info' class='row d-flex justify-content-center m-4')
                 div(class='playing my-3' id='dashboardTrackInfo')
             div(class='row d-flex justify-content-around')
-                a(id='toVisualizer' class='btn btn-primary') Open Visualizer
+                if product == "premium"
+                    a(id='toVisualizer' class='btn btn-primary') Open Visualizer
+                else
+                    a(id='toVisualizer' class='btn btn-primary disabled') Spotify Premium Users Only
 
 block visualizer-content
     div(id='main-visualizer')

@@ -54,6 +54,13 @@ a.disabled {
   text-decoration: none;
 }
 
+@media screen and (min-width: 480px) {
+  .navbar {
+    padding: 1rem 2rem;
+  }
+}
+
+
 .dropdown-menu {
   background-color: #202020;
 }
@@ -110,12 +117,8 @@ a.disabled {
   background-color: #272727;
 }
 
-#main-visualizer, #visualizerModeControls, #closeModeControls {
+#main-visualizer {
   display: none;
-}
-
-#closeModeControls {
-  color: #3BD36B;
 }
 
 #visualizer-controls {

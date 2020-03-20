@@ -121,8 +121,10 @@ a.disabled {
 
 .visualizer-controls-container {
   display: flex;
-  padding: 1em;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
+  padding: 1em;
 }
 
 #trackInfo {

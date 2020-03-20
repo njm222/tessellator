@@ -26,22 +26,20 @@ block visualizer-content
                 div(id='trackInfo' class='btn')
                 a(id='openModeControls' class='btn') Modes
                 a(id='closeModeControls' class='btn') Modes
-                div(id='visualizerModeControls')
-                    div(class='cameraControls')
-                        a(class='btn' id='cameraRotate') Rotate
-                        a(class='btn' id='cameraZoom') Zoom
-                        a(class='btn' id='randomizeColour') Random Colour
-                        a(class='btn' id='randomizeMode') Random Mode
-                    div(class='mode-container')
-                        - for(var i = 1; i < 9; i++)
-                            - var modeID = 'mode_' + i;
-                            a(id=modeID class='btn visualizerMode') #{i}
-                    div(id='shapeType' class='dropdown')
-                        button(class='btn btn-primary dropdown-toggle' type='button' id='shapeDropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') Change Shape
-                        div(class='dropdown-menu' aria-labelledby='dropdownMenuButton')
-                            - for(var i = 0; i < 5; i++)
-                                - var shapeType = 'changeShape(' + i + ')'
-                                a(class='dropdown-item' onclick=shapeType) Shape #{i}
+                a(class='btn' id='cameraRotate') Rotate
+                a(class='btn' id='cameraZoom') Zoom
+                a(class='btn' id='randomizeColour') Random Colour
+                a(class='btn' id='randomizeMode') Random Mode
+                div(class='mode-container')
+                    - for(var i = 1; i < 9; i++)
+                        - var modeID = 'mode_' + i;
+                        a(id=modeID class='btn visualizerMode') #{i}
+                div(id='shapeType' class='dropdown')
+                    button(class='btn btn-primary dropdown-toggle' type='button' id='shapeDropdown' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') Change Shape
+                    div(class='dropdown-menu' aria-labelledby='dropdownMenuButton')
+                        - for(var i = 0; i < 5; i++)
+                            - var shapeType = 'changeShape(' + i + ')'
+                            a(class='dropdown-item' onclick=shapeType) Shape #{i}
 
 block script
     script(src='/js/ColourLayerChanger.js')

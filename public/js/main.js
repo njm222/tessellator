@@ -175,7 +175,7 @@ modeKey.registerListener(function (val) {
             addGenerativeSphere();
         }
         if (modeKey.key == 7) {
-            scene.fog = new THREE.Fog("#222222", 400, 500);
+            scene.fog = new THREE.Fog("#222222", 300, 1000);
             scene.background = new THREE.Color("#222222");
             positionCamera(4);
             addOcean();

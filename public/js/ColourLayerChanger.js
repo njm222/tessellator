@@ -373,7 +373,7 @@ function mode7() {
         heightMapVersion += Math.abs(Math.sin(beatEnd - trackCounter)) + snareEnergy*g_tempo*0.0001;
     }
 
-    pow7 = (bassAv+snareEnergy)/250;
+    pow7 = (bassAv+snareEnergy+bassEnergy)/400;
 
     for (let i = 0; i < position.count; i++) {
         let z;

@@ -5,18 +5,20 @@ block content
     div(id='dashboard' class='align-items-center')
         div(id='user-profile')
             div(class='row d-flex justify-content-center m-5')
-                h1 Hello, #{display_name}
-            div(class='row d-flex justify-content-center m-4')
+                h1 hello, #{display_name}_
+            div(class='row d-flex justify-content-center')
                 h6 A real time 3D audio visualizer made with WebGl and the Spotify Web API
-            div(class='row d-flex justify-content-around')
-                a(target='_blank' href=spotifyLink class='btn btn-info') Open Spotify
+            div(class='row d-flex justify-content-center m-2')
+                h6 For best results, use an external speaker and microphone.
+            div(class='row d-flex justify-content-around m-4')
+                a(target='_blank' href=spotifyLink class='btn btn-info') open Spotify
             div(id='player-info' class='row d-flex justify-content-center m-4')
                 div(class='playing my-3' id='dashboardTrackInfo')
             div(class='row d-flex justify-content-around')
                 if product == "premium"
-                    a(id='toVisualizer' class='btn btn-primary') Open Visualizer
+                    a(id='toVisualizer' class='btn btn-primary') open visualizer
                 else
-                    a(id='toVisualizer' class='btn btn-primary disabled') Spotify Premium Users Only
+                    a(id='toVisualizer' class='btn btn-primary disabled') spotify premium users only
 
 block visualizer-content
     div(id='main-visualizer')

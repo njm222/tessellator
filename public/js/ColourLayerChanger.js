@@ -342,7 +342,7 @@ function mode6() {
 }
 
 let noiseFreq = 64;
-let pow7 = 1.4;
+let pow7;
 /** Perlin Noise Heightmap displacement*/
 function mode7() {
 
@@ -365,13 +365,15 @@ function mode7() {
     }
 
     let position = shapeArr[0].geometry.attributes.position;
-    let zHeight = g_energy*rms;
+    let zHeight = g_energy*midsAv;
 
     if(barCounter % g_time_signature === 0) {
         heightMapVersion -= Math.abs(Math.sin(beatEnd - trackCounter)) + snareEnergy*g_tempo*0.0001;
     } else {
         heightMapVersion += Math.abs(Math.sin(beatEnd - trackCounter)) + snareEnergy*g_tempo*0.0001;
     }
+
+    pow7 = (bassAv+snareEnergy)/250;
 
     for (let i = 0; i < position.count; i++) {
         let z;

@@ -153,6 +153,9 @@ modeKey.registerListener(function (val) {
 
     $('.visualizerMode').css('color', '#FFF');
     $('#mode_' + val).css('color', '#3AD36B');
+    positionCamera(0);
+    scene.fog = new THREE.Fog("#000000", .1, 0);
+    scene.background = new THREE.Color("#000000");
     if (modeKey.key < 6) {
         if (modeSwitch) {
             $('#shapeType').show();
@@ -164,7 +167,6 @@ modeKey.registerListener(function (val) {
             setShapePosition();
             modeSwitch = false;
         }
-
         resetMode();
     } else {
         removeShape();
@@ -173,7 +175,9 @@ modeKey.registerListener(function (val) {
             addGenerativeSphere();
         }
         if (modeKey.key == 7) {
-            positionCamera(0);
+            scene.fog = new THREE.Fog("#222222", 400, 500);
+            scene.background = new THREE.Color("#222222");
+            positionCamera(4);
             addOcean();
             heightMapVersion = 0;
             noise = new SimplexNoise(Math.random());
@@ -391,9 +395,9 @@ function positionCamera(cameraRandom) {
             break;
         case 4:
             camera.position.x = 0;
-            camera.position.y = 90;
-            camera.position.z = 0;
-            spotLight.position.set(Math.random() * (180 + 180) -180, 100, Math.random() * (180 + 180) -180);
+            camera.position.y = -150;
+            camera.position.z = 150;
+            spotLight.position.set(0, 0, 350);
             break;
         case 5:
             camera.position.x = 0;

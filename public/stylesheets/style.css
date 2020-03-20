@@ -1,7 +1,12 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width: 100%;
+  height: 100%;
   margin: 0;
+  padding: 0;
+  overflow-x: hidden;
   color: #FFF;
+  font: 14px 'Tomorrow', sans-serif;
+  letter-spacing: 2px;
   background-color: rgba(0,0,0,.8);
 }
 

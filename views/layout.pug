@@ -14,6 +14,7 @@ html
                 'page_title': '#{title}',
                 'page_path': '/#{title}'
             });
+        link(rel='stylesheet', href="https://fonts.googleapis.com/css?family=Tomorrow&display=swap")
         link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css')
         link(rel='stylesheet', href='/stylesheets/style.css')
         script(src='https://sdk.scdn.co/spotify-player.js')
@@ -33,7 +34,7 @@ html
             crossorigin='anonymous'
         )
     body
-        div(id='main-container' class='container')
+        div(id='main-container')
             include head.pug
             block content
         block visualizer-content

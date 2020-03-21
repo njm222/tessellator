@@ -182,6 +182,9 @@ modeKey.registerListener(function (val) {
             heightMapVersion = 0;
             noise = new SimplexNoise(Math.random());
         }
+        if(modeKey.key == 8) {
+            addGenerativeRing();
+        }
 
         if (!modeSwitch) {
             $('#shapeType').hide();
@@ -234,6 +237,10 @@ let prevHeight = 15;
 //Perlin Terrain variables
 let planeGeo = new THREE.PlaneBufferGeometry(window.innerWidth, window.innerWidth, 512, 512);
 
+//Generative Ring variables
+let innerLength = 5;
+let outerLength = 10;
+
 //Light
 let l1 = new THREE.PointLight(0xffffff);
 let spotLight = new THREE.SpotLight(0xffffff);
@@ -244,6 +251,14 @@ function addGenerativeSphere() {
 
     shapeArr.push(new THREE.Mesh(new THREE.SphereBufferGeometry(50, prevWidth, prevHeight, 0, Math.PI * 2, prevThetaS % (Math.PI / 4), prevThetaL), phongMaterial));
     shapeArr[0].rotation.set(Math.PI / 2, 0, 0);
+    scene.add(shapeArr[0]);
+
+}
+
+function addGenerativeRing() {
+
+    shapeArr.push(new THREE.Mesh(new THREE.RingBufferGeometry(innerLength, outerLength, prevThetaL, 1, prevThetaS, Math.PI*2), phongMaterial));
+    //shapeArr[0].rotation.set(Math.PI / 2, 0, 0);
     scene.add(shapeArr[0]);
 
 }
@@ -550,6 +565,9 @@ function doMode(key) {
             break;
         case 7:
             mode7();
+            break;
+        case 8:
+            mode8();
             break;
         default:
             modeKey.key = 1;

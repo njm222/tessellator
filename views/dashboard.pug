@@ -232,6 +232,9 @@ block script
                     g_time_signature = response.time_signature;
 
                     sendTrackFeaturesAnalytics(response);
+                },
+                error: function () {
+                    setTimeout(getFeatures, 3000, track);
                 }
             });
         }
@@ -283,6 +286,9 @@ block script
                     tatumVar = tatumVar / (g_tatums.length - 1);
                     tatumVar = tatumVar * 2.2;
                     console.log("tatumVar = " + tatumVar);
+                },
+                error: function () {
+                    setTimeout(getAnalysis, 3000, track);
                 }
             });
         }

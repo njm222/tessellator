@@ -403,3 +403,28 @@ function mode7() {
     shapeArr[0].geometry.computeBoundingSphere();
     changeColour(shapeArr[0], colour);
 }
+
+function mode8() {
+
+    if(barCounter % 3 == 0) {
+        innerLength = midsEnergy/(highsAv+1);
+        outerLength = kickAv;
+    } else if(barCounter % 4 == 0) {
+        innerLength = snareAv;
+        outerLength = midsEnergy/(highsAv+1);
+    } else {
+        innerLength = kickEnergy/(highsAv+1);
+        outerLength = bassAv;
+    }
+
+    prevThetaS = Math.PI/4 * Math.sin(g_tempo*g_energy*trackCounter/100000);
+
+    if(beatCounter >= g_time_signature) {
+        prevThetaL = Math.floor(avFreq % 32);
+        beatCounter = 0;
+    }
+
+    removeShape();
+    addGenerativeRing();
+    changeColour(shapeArr[0], colour);
+}

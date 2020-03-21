@@ -79,6 +79,10 @@ a.disabled {
   text-transform: uppercase;
 }
 
+.navbar-brand:hover {
+  color: #D31E1E !important;
+}
+
 .dropdown-menu {
   background-color: #202020;
 }
@@ -110,8 +114,8 @@ a.disabled {
 }
 
 .btn-info:hover {
-  background-color: #3AD36B;
-  border-color: #3BD36B;
+  background-color: #0069d9;
+  border-color: #0062cc;
 }
 
 .btn-primary {
@@ -119,10 +123,10 @@ a.disabled {
   border-color: #44644B;
 }
 
-.btn-primary:hover {
+/*.btn-primary:hover {
   background-color: #44644B;
   border-color: #44644B;
-}
+}*/
 
 .btn-primary:not(:disabled):not(.disabled).active,
 .btn-primary:not(:disabled):not(.disabled):active,

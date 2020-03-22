@@ -49,7 +49,7 @@ block script
         var access_token = "!{access_token}";
         var refresh_token = "!{refresh_token}";
         var spotifyLink = "!{external_urls}";
-        var currentTrack, currentArtist, currentTrackID;
+        var currentTrack, currentTrackLink, currentArtist, currentTrackID;
 
         window.onSpotifyWebPlaybackSDKReady = () => {
             const player = new Spotify.Player({
@@ -158,9 +158,10 @@ block script
                         console.log("// TRACK INFO \\");
                         currentTrack = response.item.name;
                         currentArtist = response.item.artists[0].name;
+                        currentTrackLink = response.item.external_urls.spotify
 
-                        document.getElementById('trackInfo').innerHTML = currentTrack + ' by ' + currentArtist;
-                        document.getElementById('dashboardTrackInfo').innerHTML = currentTrack + ' by ' + currentArtist;
+                        document.getElementById('trackInfo').innerHTML = `<a href="` + currentTrackLink + `" target="_blank">` + currentTrack + ' by ' + currentArtist + `</a>`;
+                        document.getElementById('dashboardTrackInfo').innerHTML = `<a href="` + currentTrackLink + `" target="_blank">` + currentTrack + ' by ' + currentArtist + `</a>`;
 
                         currentTrackID = response.item.id;
                         getFeatures(currentTrackID);

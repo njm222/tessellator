@@ -422,6 +422,11 @@ function mode8() {
     if(beatCounter >= g_time_signature) {
         prevThetaL = Math.floor(avFreq % 32);
         beatCounter = 0;
+    } else if(tatumCounter > 1) {
+        shapeArr[0].material.wireframe = !shapeArr[0].material.wireframe;
+        shapeArr[0].material.flatShading = !shapeArr[0].material.wireframe;
+        shapeArr[0].material.needsUpdate = true;
+        tatumCounter = 0;
     }
 
     removeShape();

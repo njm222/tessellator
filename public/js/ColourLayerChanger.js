@@ -39,7 +39,7 @@ function setModeKey() {
 
 function setColourKey() {
 
-    if (g_bar % 2 == 0 && changedColour == true){
+    if (g_beat % 2 == 0 && changedColour === true){
         colourKey = Math.floor(Math.random() * 13);
         changedColour = false;
         console.log("colour mode: " + colourKey);
@@ -165,11 +165,25 @@ function changeTatum() {
     }
 }
 
+function changeSegment() {
+    if(g_segments[g_segment]) {
+        segmentStart = g_segments[g_segment]["start"] * 1000;
+        segmentEnd = segmentStart + (g_segments[g_segment]["duration"] * 1000);
+
+        if (trackCounter >= segmentEnd) {
+            g_segment++;
+            segmentCounter++;
+        }
+    }
+}
+
 function resetMode() {
     // clear screen or something?
     console.log('resetMode');
     beatCounter = 0;
     tatumCounter = 0;
+    segmentCounter = 0;
+    barCounter = 0;
     shapeCounter = 0;
     changedColour = true;
     fib0 = 0;
@@ -342,59 +356,37 @@ function mode6() {
 }
 
 let noiseFreq = 64;
-let pow7;
 /** Perlin Noise Heightmap displacement*/
 function mode7() {
 
-    if(beatCounter > 1) {
-        //heightMapVersion = Math.floor(Math.random()*shapeArr[0].geometry.attributes.position.count/3);
-        if(snareEnergy > snareAv - (snareDeviation*snareFactor)) {
-            shapeArr[0].material.wireframe = !shapeArr[0].material.wireframe;
-            shapeArr[0].material.flatShading = !shapeArr[0].material.wireframe;
-            shapeArr[0].material.needsUpdate = true;
-        }
-        beatCounter = 0;
+    if(barCounter >= 1) {
+        shapeArr[0].material.wireframe = !shapeArr[0].material.wireframe;
+        shapeArr[0].material.flatShading = !shapeArr[0].material.wireframe;
+        shapeArr[0].material.needsUpdate = true;
+        barCounter = 0;
     }
 
     if(g_energy > .7) {
-        noiseFreq = bassAv;
+        noiseFreq = snareAv+(bassAv+midsAv)/highsAv;
     } else if (g_energy > .4) {
-        noiseFreq = snareAv;
+        noiseFreq = (kickAv*g_energy)+((snareAv+midsAv)/(highsAv*g_valence*g_danceability));
     } else {
-        noiseFreq = midsAv;
+        noiseFreq = bassAv+kickAv-midsAv;
     }
 
     let position = shapeArr[0].geometry.attributes.position;
-    let zHeight = g_energy*midsAv;
+    const zHeight = (g_energy*g_danceability*bassEnergy*2);
 
-    if(barCounter % g_time_signature === 0) {
-        heightMapVersion -= Math.abs(Math.sin(beatEnd - trackCounter)) + snareEnergy*g_tempo*0.0001;
-    } else {
-        heightMapVersion += Math.abs(Math.sin(beatEnd - trackCounter)) + snareEnergy*g_tempo*0.0001;
-    }
-
-    pow7 = (bassAv+snareEnergy+bassEnergy)/400;
+    const speed = Date.now()/(g_tempo*g_valence*100);
 
     for (let i = 0; i < position.count; i++) {
         let z;
-        if(barCounter % 3 === 0) {
-            z = Math.pow(noise.noise2D(((i%513) - heightMapVersion) / noiseFreq, (Math.floor(i/513) - heightMapVersion) / noiseFreq)*zHeight, pow7);
-        } else if(barCounter % 4 === 0) {
-            z = Math.pow(noise.noise2D(((i%513) - heightMapVersion) / noiseFreq, (Math.floor(i/513) + heightMapVersion) / noiseFreq)*zHeight, pow7);
-        } else if(barCounter % 5 === 0) {
-            z = Math.pow(noise.noise2D(((i%513) + heightMapVersion) / noiseFreq, (Math.floor(i/513) - heightMapVersion) / noiseFreq)*zHeight, pow7);
-        } else {
-            z = Math.pow(noise.noise2D(((i%513) + heightMapVersion) / noiseFreq, (Math.floor(i/513) + heightMapVersion) / noiseFreq)*zHeight, pow7);
-        }
-
+        z = noise.noise3D(((i%513)) / noiseFreq, (Math.floor(i/513)) / noiseFreq, speed)*zHeight;
         if(z > 0) {
             position.setZ(i, z);
             //mountain
-        } else if(g_valence > .5) {
-            position.setZ(i, (noise.noise2D(Date.now()/2000, i/noiseFreq)*Math.min((highsEnergy+highsAv), 25)));
-            //water
         } else {
-            position.setZ(i, (noise.noise2D(i/noiseFreq, Date.now()/2000)*Math.min((highsEnergy+highsAv), 25)));
+            position.setZ(i, (noise.noise2D(i/noiseFreq, speed)*Math.min(highsAv, 10)));
             //water
         }
     }

@@ -89,6 +89,7 @@ let tatumVar = 0;
 let beatAv = 0.93;
 let beatVar = 0;
 
+
 let sectionEnd = 0;
 
 let colourModifier = 0;
@@ -108,6 +109,11 @@ let tatumEnd = 0;
 let tatumCounter = 0;
 let tatumConfidence = 0;
 
+let segmentStart = 0;
+let segmentEnd = 0;
+let segmentCounter =0;
+let segmentConfidence = 0;
+
 // Rotation Variables
 let spinr, spinf = 0;
 const spin2 = 0.03;
@@ -125,7 +131,7 @@ let bc = 0.5;
 
 let randomizer = false;
 let changedColour = true;
-let heightMapVersion = 3;
+let heightMapVersion = 1;
 
 let modeSwitch = false;
 let shapeArr = [];
@@ -846,6 +852,7 @@ let run = function(){
         changeBar();
         changeBeat();
         changeTatum();
+        changeSegment();
 
         changeFreqMode();
         // change these to event listeners

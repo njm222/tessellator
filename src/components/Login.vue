@@ -19,7 +19,7 @@
       </div>
       <div v-else key="LoginFalse">
         <h1>Welcome Home</h1>
-        <button class="btn secondary" href="/login">Login</button>
+        <a href="/login"><button class="btn secondary">Login</button></a>
         <h4>A 3D interactive music visualizer.</h4>
       </div>
     </transition>

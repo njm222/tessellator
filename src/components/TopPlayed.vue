@@ -6,7 +6,7 @@
         <h2>Top Tracks Played</h2>
         </button>
       </div>
-      <div class="tab" v-bind:class="{off: toggleTracks}" key="topTracksTitle">
+      <div class="tab" v-bind:class="{off: toggleTracks}" key="topArtistsTitle">
         <button class="btn" @click="setToggle(toggleTracks)">
           <h2>Top Artists Played</h2>
         </button>

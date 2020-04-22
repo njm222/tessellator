@@ -7,13 +7,16 @@
           <div class="visualizer-button-container" v-if="this.SpotifyAnalysisUtils && this.SpotifyAnalysisUtils.loaded" key="OpenVisualizer">
             <button class="btn secondary" @click="openVis">open visualizer</button>
           </div>
-          <div class="visualizer-button-container" v-else key="LoadingVisualizer">
+          <div class="visualizer-button-container" v-else-if="this.user.product === 'premium'" key="LoadingVisualizer">
             <breeding-rhombus-spinner
                     :animation-duration="2000"
                     :size="64"
                     color="#FFF"
             ></breeding-rhombus-spinner>
             <p class="loading">loading visualizer</p>
+          </div>
+          <div class="visualizer-button-container" v-else key="NonPremiumUser">
+            <p>Sorry, you must be a Spotify 'premium' user to view the viusalizer</p>
           </div>
         </transition>
       </div>

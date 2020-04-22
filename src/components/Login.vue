@@ -14,6 +14,7 @@
                     color="#FFF"
             ></breeding-rhombus-spinner>
             <p class="loading">loading visualizer</p>
+            <p class="advice">For the best experience use a non-mobile device with a modern browser (not Safari) </p>
           </div>
           <div class="visualizer-button-container" v-else key="NonPremiumUser">
             <p>Sorry, you must be a Spotify 'premium' user to view the viusalizer</p>
@@ -120,5 +121,11 @@ export default class Login extends Vue {
 .visualizer-button-container .loading {
   animation: fade 1.5s infinite alternate;
   padding-top: 1em;
+}
+
+.advice {
+  max-width: 460px;
+  line-height: 2em;
+  padding: 0 1em;
 }
 </style>

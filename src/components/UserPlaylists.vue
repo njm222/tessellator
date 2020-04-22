@@ -62,6 +62,6 @@ export default class UserPlaylists extends Vue {
   }
   .fadeUp-enter, .fadeUp-leave-to {
     opacity: 0;
-    transform: translateY(20vh);
+    transform: translateY(10vh);
   }
 </style>

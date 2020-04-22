@@ -13,11 +13,11 @@ app.use(express.static(__dirname + '/dist'))
 app.use(express.json());
 dotenv.config();
 
-const client_id = 'a4b15d285e5348be8d635b1235d3dde1';
-const client_secret = 'b4eb8a6eb0094c1aa9517dd61b132ca1';
 const server_port = process.env.PORT || 8081;
-const redirect_uri = 'https://tessellator.herokuapp.com/callback';
 const scope = 'user-read-private user-read-email user-read-birthdate user-top-read user-read-recently-played user-modify-playback-state user-read-playback-state user-read-currently-playing streaming user-library-modify user-library-read';
+const client_id = process.env.Spotify_client_id;
+const client_secret = process.env.Spotify_client_secret;
+const redirect_uri = process.env.Spotify_redirect_uri;
 
 app.listen(server_port, () => {
   console.log("Server is listening on port: " + server_port);

@@ -21,6 +21,7 @@
     "firebase-admin": "^8.10.0",
     "query-string": "^6.11.1",
     "querystring": "^0.2.0",
+    "request": "^2.88.2",
     "simplex-noise": "^2.4.0",
     "stats.js": "^0.17.0",
     "three": "^0.115.0",

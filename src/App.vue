@@ -109,6 +109,7 @@ a:hover, a:focus {
   background-color: #b3b3b3;
   mask-size: contain;
   mask-repeat: no-repeat;
+  transition: all 0.25s;
 }
 
 .icon:hover {

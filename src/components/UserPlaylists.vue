@@ -5,10 +5,17 @@
         <div v-for='(playlist) in this.usersPlaylists.get(userID)' :key="userID + playlist.id">
           <UserPlaylist :playlistDetails="playlist" :userID="userID"></UserPlaylist>
         </div>
-        <button class="btn secondary" @click="hideUserPlaylists(userID)">Hide {{userID}}'s playlists</button>
+        <div v-if="this.usersPlaylists.get(userID).length === 0" class="item">
+          {{userID}} has no public playlists
+        </div>
+        <div class="icon-container">
+          <i @click="hideUserPlaylists(userID)" class="icon expand down"></i>
+        </div>
       </div>
       <div v-else key="open{{userID}}Playlists">
-        <button class="btn primary" @click="getOnlineUserPlaylists(userID)">load {{userID}}'s playlists</button>
+        <div class="icon-container">
+          <i @click="getOnlineUserPlaylists(userID)" class="icon expand"></i>
+        </div>
       </div>
     </transition>
   </div>
@@ -57,11 +64,33 @@ export default class UserPlaylists extends Vue {
 </script>
 
 <style scoped>
-  .fadeUp-enter-active, .fadeUp-leave-active {
-    transition: all 0.5s ease-in-out;
-  }
-  .fadeUp-enter, .fadeUp-leave-to {
-    opacity: 0;
-    transform: translateY(10vh);
-  }
+.fadeUp-enter-active, .fadeUp-leave-active {
+  transition: all 0.5s ease-in-out;
+}
+.fadeUp-enter, .fadeUp-leave-to {
+  opacity: 0;
+  transform: translateY(10vh);
+}
+
+.icon-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -80px;
+}
+
+.playlists-container .icon-container {
+  margin-top: 0;
+}
+
+.playlists-container .icon.expand {
+  background-color: #d31e1e;
+}
+
+.icon.expand {
+  margin-right: 10px;
+}
+
+.icon.expand:hover {
+  background-color: #FFF;
+}
 </style>

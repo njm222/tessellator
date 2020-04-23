@@ -1,23 +1,25 @@
 <template>
   <transition name="fadeUp">
     <div class="player-container" v-if="this.accessToken && this.playerInfo">
-      <transition name="fadeDown" mode="out-in">
-        <div v-if="this.hidePlayerToggle" class="hidden-bar-container" key="HiddenPlayerContainer">
-          <div class="showToggle">
-            <i @click="showPlayer" class="icon expand down"></i>
+      <div class="player-bar-container" v-bind:class="[this.hidePlayerToggle ? 'hidden' : '']">
+        <transition name="fadeDown" mode="out-in">
+          <div v-if="this.hidePlayerToggle" key="HiddenPlayerContainer">
+            <div class="showToggle">
+              <i @click="showPlayer" class="icon expand down"></i>
+            </div>
           </div>
-        </div>
-        <div v-else class="player-bar-container" key="OpenPlayerContainer">
-          <div class="hideToggle">
-            <i @click="hidePlayer" class="icon expand"></i>
+          <div v-else key="OpenPlayerContainer">
+            <div class="hideToggle">
+              <i @click="hidePlayer" class="icon expand"></i>
+            </div>
+            <div class="player-bar">
+              <TrackItem :trackDetails="this.playerInfo.track_window.current_track"></TrackItem>
+              <PlayerControls></PlayerControls>
+            </div>
           </div>
-          <div class="player-bar">
-            <TrackItem :trackDetails="this.playerInfo.track_window.current_track"></TrackItem>
-            <PlayerControls></PlayerControls>
-          </div>
-        </div>
-      </transition>
-      <div class="player-progress" v-bind:class="[this.hidePlayerToggle ? 'off' : 'on']">
+        </transition>
+      </div>
+      <div class="player-progress" v-bind:class="[this.hidePlayerToggle ? 'hidden' : '']">
         <SeekTrack :playerInfo="this.playerInfo"></SeekTrack>
       </div>
     </div>
@@ -233,17 +235,11 @@ export default class Player extends Vue {
   flex-direction: column;
   padding: 0.5em 1em 0;
   background: #292929;
+  opacity: 0.9;
 }
 
-.player-container .hidden-bar-container {
-  display: flex;
-  flex-direction: column;
-  background: #292929;
+.player-container .player-bar-container.hidden {
   opacity: 0.3;
-}
-
-.player-container:hover {
-  opacity: 0.8;
 }
 
 .player-bar {
@@ -257,15 +253,17 @@ export default class Player extends Vue {
   display: flex;
   justify-content: center;
   background: #292929;
-  transition: 1s;
-}
-
-.player-progress.on {
   opacity: 0.9;
 }
 
-.player-progress.off {
+.player-progress.hidden {
   opacity: 0.3;
+}
+
+.player-container:hover,
+.player-container:hover .player-bar-container,
+.player-container:hover .player-progress {
+  opacity: 1;
 }
 
 .hideToggle {

@@ -174,6 +174,10 @@ export default class VisualizerControls extends Vue {
   opacity: 0.3;
 }
 
+.controls-container .child:hover {
+  opacity: 1;
+}
+
 .controls {
   width: 10vw;
   height: 70%;
@@ -191,10 +195,6 @@ export default class VisualizerControls extends Vue {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-}
-
-.hidden-controls-container:hover {
-  opacity: 0.8;
 }
 
 .hidden-controls-container a {

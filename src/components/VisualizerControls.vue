@@ -168,6 +168,7 @@ export default class VisualizerControls extends Vue {
   height: 100%;
   background: #292929;
   opacity: 0.9;
+  transition: all 0.25s;
 }
 
 .controls-container .child.closed {

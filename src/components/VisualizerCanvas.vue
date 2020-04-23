@@ -631,12 +631,32 @@ export default class VisualizerCanvas extends Vue {
     })
   }
 
+  private changeColourKey () {
+    if (this.SpotifyAnalysisUtils.changeColour) {
+      const newColourKey = Math.floor(Math.random() * 9)
+      this.$store.commit('mutateColourKey', newColourKey)
+      this.SpotifyAnalysisUtils.changeColour = false
+      console.log(`changing colour key to ${newColourKey}`)
+    }
+  }
+
+  private changeModeKey () {
+    if (this.SpotifyAnalysisUtils.changeMode) {
+      const newModeKey = Math.floor(1 + Math.random() * 5)
+      this.$store.commit('mutateModeKey', newModeKey)
+      this.SpotifyAnalysisUtils.changeMode = false
+      console.log(`changing mode key to ${newModeKey}`)
+    }
+  }
+
   @Watch('ModeKey')
   onModeKeyChanged (mode: number, oldMode: number) {
     console.log(`changing mode key to ${mode} from ${oldMode}`)
     if (mode) {
       this.changingMode = true
       this.removeShape()
+      VisualizerCanvas.camera.position.set(0, 0, 90)
+      VisualizerCanvas.camera.rotation.set(0, 0, 0)
       if (mode > 2) {
         this.addShape(Math.floor(Math.random() * 5))
         this.setShapePosition()
@@ -654,24 +674,6 @@ export default class VisualizerCanvas extends Vue {
       }
       this.changingMode = false
       console.log(VisualizerCanvas.scene.children[1])
-    }
-  }
-
-  private changeColourKey () {
-    if (this.SpotifyAnalysisUtils.changeColour) {
-      const newColourKey = Math.floor(Math.random() * 9)
-      this.$store.commit('mutateColourKey', newColourKey)
-      this.SpotifyAnalysisUtils.changeColour = false
-      console.log(`changing colour key to ${newColourKey}`)
-    }
-  }
-
-  private changeModeKey () {
-    if (this.SpotifyAnalysisUtils.changeMode) {
-      const newModeKey = Math.floor(1 + Math.random() * 5)
-      this.$store.commit('mutateModeKey', newModeKey)
-      this.SpotifyAnalysisUtils.changeMode = false
-      console.log(`changing mode key to ${newModeKey}`)
     }
   }
 }

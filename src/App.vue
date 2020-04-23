@@ -24,6 +24,7 @@ body {
   overflow-x: hidden;
   color: #FFF;
   text-align: center;
+  font-family: monospace;
   font: 14px 'Tomorrow', sans-serif;
   letter-spacing: 2px;
   background: #121212;

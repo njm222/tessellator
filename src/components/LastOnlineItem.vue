@@ -1,7 +1,9 @@
 <template>
   <div v-if='lastOnlineUser' class="item">
     <a v-bind:href='lastOnlineUser.spotifyLink' target='_blank' :key="calculatedTime">
-      {{lastOnlineUser.user}}
+      <strong>
+        {{lastOnlineUser.user}}
+      </strong>
     </a>
     <div class="time">
       {{calculatedTime}}

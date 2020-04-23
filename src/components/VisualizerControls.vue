@@ -31,7 +31,7 @@
       </div>
       <div v-else class="child closed" key="CloseVisualizerControls">
         <div class="hidden-controls-container">
-          <a @click="showControls"> > </a>
+          <i @click="showControls" class="icon expand right"></i>
         </div>
       </div>
     </transition>
@@ -193,9 +193,16 @@ export default class VisualizerControls extends Vue {
   justify-content: space-evenly;
 }
 
+.hidden-controls-container:hover {
+  opacity: 0.8;
+}
+
 .hidden-controls-container a {
   font-size: 3vh;
   padding: 0.1em;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .btn:hover {

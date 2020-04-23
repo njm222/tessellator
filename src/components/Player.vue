@@ -3,7 +3,7 @@
     <div class="player-container" v-if="this.accessToken && this.playerInfo">
       <transition name="fadeDown" mode="out-in">
         <div v-if="this.hidePlayerToggle" class="hidden-bar-container" key="HiddenPlayerContainer">
-          <div>
+          <div class="showToggle">
             <i @click="showPlayer" class="icon expand down"></i>
           </div>
         </div>
@@ -233,7 +233,6 @@ export default class Player extends Vue {
   flex-direction: column;
   padding: 0.5em 1em 0;
   background: #292929;
-  opacity: 0.9;
 }
 
 .player-container .hidden-bar-container {
@@ -241,6 +240,10 @@ export default class Player extends Vue {
   flex-direction: column;
   background: #292929;
   opacity: 0.3;
+}
+
+.player-container:hover {
+  opacity: 0.8;
 }
 
 .player-bar {
@@ -269,6 +272,11 @@ export default class Player extends Vue {
   position: fixed;
   right: 0;
   left: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.showToggle {
   display: flex;
   justify-content: center;
 }

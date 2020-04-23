@@ -61,6 +61,7 @@ a {
 }
 
 a:hover, a:focus {
+  cursor: pointer;
   font-weight: bold;
   color: #D31E1E;
   text-decoration: none;
@@ -110,6 +111,7 @@ a:hover, a:focus {
 }
 
 .icon:hover {
+  cursor: pointer;
   background-color: #FFF;
   width: 20px;
   height: 20px;
@@ -149,15 +151,18 @@ a:hover, a:focus {
   transform: rotate(180deg);
 }
 
-.icon.expand.right {
+.icon.expand.left {
   transform: rotate(90deg);
 }
 
-.icon.expand.left {
+.icon.expand.right {
   transform: rotate(-90deg);
 }
 
-.icon.expand:hover {
+.icon.expand:hover,
+.icon.expand.down:hover,
+.icon.expand.left:hover,
+.icon.expand.right:hover{
   background-color: #FFF;
 }
 

@@ -72,6 +72,10 @@ export default class UserPlaylists extends Vue {
   transform: translateY(10vh);
 }
 
+.playlists-container {
+  font-family: monospace;
+}
+
 .icon-container {
   display: flex;
   justify-content: flex-end;
@@ -83,6 +87,7 @@ export default class UserPlaylists extends Vue {
 }
 
 .playlists-container .icon.expand {
+  margin-top: 1em;
   background-color: #d31e1e;
 }
 

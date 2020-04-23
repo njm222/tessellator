@@ -59,5 +59,6 @@ export default class LastPlayedItem extends Vue {
 <style scoped>
 .item .time {
   margin-top: 1em;
+  font-family: monospace;
 }
 </style>

@@ -24,8 +24,7 @@ body {
   overflow-x: hidden;
   color: #FFF;
   text-align: center;
-  font-family: monospace;
-  font: 14px 'Tomorrow', sans-serif;
+  font: 14px 'Tomorrow', monospace;
   letter-spacing: 2px;
   background: #121212;
   background: linear-gradient(#121212 40%, #2F3931 100%);

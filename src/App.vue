@@ -99,11 +99,6 @@ a:hover, a:focus {
   font-weight: bolder;
 }
 
-.home-container {
-  display: flex;
-  justify-content: space-around;
-}
-
 .icon {
   margin: 0 10px;
   height: 18px;
@@ -144,6 +139,26 @@ a:hover, a:focus {
   mask-image: url('assets/icons/heart.svg');
   height: 25px;
   width: 25px;
+}
+
+.icon.expand {
+  mask-image: url('assets/icons/expand.svg');
+}
+
+.icon.expand.down {
+  transform: rotate(180deg);
+}
+
+.icon.expand.right {
+  transform: rotate(90deg);
+}
+
+.icon.expand.left {
+  transform: rotate(-90deg);
+}
+
+.icon.expand:hover {
+  background-color: #FFF;
 }
 
 .icon.heart.on {
@@ -206,14 +221,22 @@ a:hover, a:focus {
   transform: translateX(-40vw);
 }
 
-@media only screen and (max-width: 450px) {
+.home-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 1em;
+}
+
+@media only screen and (max-width: 768px) {
   .home-container {
     flex-direction: column;
     flex-flow: column-reverse;
-    padding: 0 1em;
   }
+}
 
+@media only screen and (max-width: 450px) {
   .icon {
+    margin: 0 0.5em;
     width: 15px;
     height: 15px;
   }

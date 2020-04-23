@@ -4,12 +4,12 @@
       <transition name="fadeDown" mode="out-in">
         <div v-if="this.hidePlayerToggle" class="hidden-bar-container" key="HiddenPlayerContainer">
           <div>
-            <a @click="showPlayer">show player</a>
+            <i @click="showPlayer" class="icon expand down"></i>
           </div>
         </div>
         <div v-else class="player-bar-container" key="OpenPlayerContainer">
           <div class="hideToggle">
-            <a @click="hidePlayer">hide player</a>
+            <i @click="hidePlayer" class="icon expand"></i>
           </div>
           <div class="player-bar">
             <TrackItem :trackDetails="this.playerInfo.track_window.current_track"></TrackItem>
@@ -269,5 +269,7 @@ export default class Player extends Vue {
   position: fixed;
   right: 0;
   left: 0;
+  display: flex;
+  justify-content: center;
 }
 </style>

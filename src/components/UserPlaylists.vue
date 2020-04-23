@@ -75,7 +75,7 @@ export default class UserPlaylists extends Vue {
 .icon-container {
   display: flex;
   justify-content: flex-end;
-  margin-top: -6.5em;
+  margin-top: -2rem;
 }
 
 .playlists-container .icon-container {
@@ -87,7 +87,7 @@ export default class UserPlaylists extends Vue {
 }
 
 .icon.expand {
-  margin-right: 10px;
+  margin-right: 1em;
 }
 
 .icon.expand:hover {

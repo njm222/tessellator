@@ -102,7 +102,7 @@ a:hover, a:focus {
 }
 
 .icon {
-  margin: 0 10px;
+  margin: 0 1em;
   height: 18px;
   width: 18px;
   display: block;

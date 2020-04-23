@@ -34,9 +34,6 @@
               <UserPlaylists :userID="item.user"></UserPlaylists>
             </div>
           </div>
-          <div v-else>
-            <p>no users</p>
-          </div>
         </transition>
       </div>
     </div>

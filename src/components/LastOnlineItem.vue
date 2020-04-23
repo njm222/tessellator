@@ -3,7 +3,7 @@
     <a v-bind:href='lastOnlineUser.spotifyLink' target='_blank' :key="calculatedTime">
       {{lastOnlineUser.user}}
     </a>
-    <div>
+    <div class="time">
       {{calculatedTime}}
     </div>
   </div>
@@ -55,4 +55,7 @@ export default class LastPlayedItem extends Vue {
 </script>
 
 <style scoped>
+.time {
+  margin-top: 1em;
+}
 </style>

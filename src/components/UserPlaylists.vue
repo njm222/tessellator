@@ -75,7 +75,7 @@ export default class UserPlaylists extends Vue {
 .icon-container {
   display: flex;
   justify-content: flex-end;
-  margin-top: -80px;
+  margin-top: -6.5em;
 }
 
 .playlists-container .icon-container {

@@ -280,4 +280,11 @@ export default class Player extends Vue {
   display: flex;
   justify-content: center;
 }
+
+@media only screen and (max-width: 375px) {
+  .hideToggle {
+    position: relative;
+    margin-bottom: 10px;
+  }
+}
 </style>

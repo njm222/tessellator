@@ -162,7 +162,7 @@ a:hover, a:focus {
 .icon.expand:hover,
 .icon.expand.down:hover,
 .icon.expand.left:hover,
-.icon.expand.right:hover{
+.icon.expand.right:hover {
   background-color: #FFF;
 }
 
@@ -239,7 +239,7 @@ a:hover, a:focus {
   }
 }
 
-@media only screen and (max-width: 450px) {
+@media only screen and (max-width: 450px) and (min-width: 375px){
   .icon {
     margin: 0 0.5em;
     width: 15px;

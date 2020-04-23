@@ -221,4 +221,10 @@ export default class SeekTrack extends Vue {
     padding-right: 15px;
     border-radius: 15px;
   }
+
+@media only screen and (max-width: 450px) {
+  .now-playing-center-container {
+    width: 85%;
+  }
+}
 </style>

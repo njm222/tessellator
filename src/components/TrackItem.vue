@@ -69,4 +69,10 @@ export default class TrackItem extends Vue {
 .artist-name {
   padding: 5px 0;
 }
+
+@media only screen and (max-width: 375px) {
+  .now-playing-left-container {
+    display: none;
+  }
+}
 </style>

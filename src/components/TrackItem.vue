@@ -60,7 +60,6 @@ export default class TrackItem extends Vue {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0 14px;
 }
 
 .track-name {

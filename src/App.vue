@@ -162,8 +162,8 @@ a:hover, a:focus {
 
 .icon.shuffle {
   mask-image: url('assets/icons/shuffle.svg');
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
 }
 
 .icon.shuffle.on {
@@ -204,5 +204,33 @@ a:hover, a:focus {
 .fadeRight-enter, .fadeRight-leave-to {
   opacity: 0;
   transform: translateX(-40vw);
+}
+
+@media only screen and (max-width: 450px) {
+  .home-container {
+    flex-direction: column;
+    flex-flow: column-reverse;
+    padding: 0 1em;
+  }
+
+  .icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .icon.play {
+    height: 25px;
+    width: 25px;
+  }
+
+  .icon.shuffle {
+    height: 20px;
+    width: 20px;
+  }
+
+  .icon.heart {
+    height: 20px;
+    width: 20px;
+  }
 }
 </style>

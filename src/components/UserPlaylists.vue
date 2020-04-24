@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div>
     <transition name="fadeUp" mode="out-in">
       <div v-if="this.usersPlaylists.get(userID)" class="playlists-container" key="close{{userID}}Playlists">
         <div v-for='(playlist) in this.usersPlaylists.get(userID)' :key="userID + playlist.id">
@@ -8,14 +8,12 @@
         <div v-if="this.usersPlaylists.get(userID).length === 0" class="item">
           {{userID}} has no public playlists
         </div>
-        <div class="icon-container">
-          <i @click="hideUserPlaylists(userID)" class="icon expand down"></i>
+        <div @click="hideUserPlaylists(userID)" class="icon-container">
+          <i class="icon expand down"></i>
         </div>
       </div>
-      <div v-else key="open{{userID}}Playlists">
-        <div class="icon-container">
-          <i @click="getOnlineUserPlaylists(userID)" class="icon expand"></i>
-        </div>
+      <div @click="getOnlineUserPlaylists(userID)" v-else class="icon-container" key="open{{userID}}Playlists">
+        <i class="icon expand"></i>
       </div>
     </transition>
   </div>
@@ -74,12 +72,14 @@ export default class UserPlaylists extends Vue {
 
 .playlists-container {
   font-family: monospace;
+  max-width: 60vw;
+  text-align: left;
 }
 
 .icon-container {
+  cursor: pointer;
   display: flex;
-  justify-content: flex-end;
-  margin-top: -2rem;
+  justify-content: center;
 }
 
 .playlists-container .icon-container {
@@ -95,7 +95,7 @@ export default class UserPlaylists extends Vue {
   margin-right: 1em;
 }
 
-.icon.expand:hover {
+.icon-container:hover .icon.expand {
   background-color: #FFF;
 }
 </style>

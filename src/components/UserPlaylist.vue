@@ -46,6 +46,10 @@ export default class Playlist extends Vue {
   flex-basis: auto;
 }
 
+.playlist-item a {
+  max-width: 45vw;
+}
+
 .icon.play {
   height: 20px;
   width: 20px;

@@ -66,6 +66,6 @@ export default class MyPlaylists extends Vue {
     display: inline-flex;
     flex-direction: column;
     min-width: 300px;
-    padding: 1em;
+    padding: 1em 1.5em;
   }
 </style>

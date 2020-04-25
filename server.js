@@ -3,15 +3,21 @@ const path = require('path')
 const request = require('request'); // "Request" library
 const cors = require('cors');
 const dotenv = require('dotenv');
+const history = require('connect-history-api-fallback')
 const querystring = require('query-string');
 const fbAdmin = require('firebase-admin');
 const FieldValue = fbAdmin.firestore.FieldValue;
 const app = express();
 
-app.use(express.static(__dirname + '/dist'))
-  .use(cors());
-app.use(express.json());
 dotenv.config();
+
+app.use(express.static(__dirname + '/dist'));
+app.use(cors());
+app.use(express.json());
+app.use(history({
+  index: '/index.html'
+}))
+
 
 const server_port = process.env.PORT || 8081;
 const scope = 'user-read-private user-read-email user-read-birthdate user-top-read user-read-recently-played user-modify-playback-state user-read-playback-state user-read-currently-playing streaming user-library-modify user-library-read';
@@ -163,6 +169,10 @@ app.post('/addArtistsPlayed', function (req, res) {
       count: FieldValue.increment(1)
     }, { merge: true });
   })
+})
+
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, '/dist/index.html'))
 })
 
 /** Move below to a separate firestore-utils */

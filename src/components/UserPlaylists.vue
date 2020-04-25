@@ -87,12 +87,16 @@ export default class UserPlaylists extends Vue {
 }
 
 .playlists-container .icon.expand {
-  margin-top: 1em;
   background-color: #d31e1e;
 }
 
 .icon.expand {
   margin-right: 1em;
+}
+
+.icon-container:hover {
+  border-radius: 1em;
+  background-color: #292929;
 }
 
 .icon-container:hover .icon.expand {

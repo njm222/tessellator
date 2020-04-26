@@ -41,10 +41,12 @@ import { SpotifyAnalysis } from '@/services/spotify-utils'
 })
 export default class Player extends Vue {
   private hidePlayerToggle: boolean;
+  private prevTrackID: string;
 
   constructor () {
     super()
     this.hidePlayerToggle = false
+    this.prevTrackID = ''
   }
 
   get SpotifyAnalysisUtils () {
@@ -185,8 +187,12 @@ export default class Player extends Vue {
         // send firebase Data as lastPlayed under /users/{uid}
         this.sendTrackData(response.data.item)
         // send to firestore
-        addTrackPlayed(response.data.item, this.$store.state.user.id)
-        addArtistsPlayed(response.data.item, this.$store.state.user.id)
+        if (this.prevTrackID !== response.data.item.id) {
+          console.log(`sending new played track ${response.data.item.id}`)
+          addTrackPlayed(response.data.item, this.$store.state.user.id)
+          addArtistsPlayed(response.data.item, this.$store.state.user.id)
+          this.prevTrackID = response.data.item.id
+        }
       }
     }).catch(error => {
       console.log(error)

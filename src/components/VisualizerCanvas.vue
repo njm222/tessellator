@@ -639,7 +639,7 @@ export default class VisualizerCanvas extends Vue {
   }
 
   private canvasResizeListener (el: Element) {
-    el.addEventListener('onresize', re => {
+    window.addEventListener('resize', re => {
       const width = el.clientWidth
       const height = el.clientHeight
 
@@ -705,11 +705,6 @@ export default class VisualizerCanvas extends Vue {
 }
 
 .scene {
-  width: 100%;
-  height: 100%;
-}
-
-canvas {
   width: 100%;
   height: 100%;
 }

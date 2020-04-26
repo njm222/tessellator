@@ -1,7 +1,7 @@
 <template>
   <div class="sceneContainer">
-    <div class="scene" ref="sceneRef">
-    </div>
+    <div class="scene" ref="sceneRef"></div>
+    <button class="btn close" @click="closeVis">X</button>
   </div>
 </template>
 
@@ -86,6 +86,10 @@ export default class VisualizerCanvas extends Vue {
 
   get TrackTime () {
     return this.$store.state.trackPosition
+  }
+
+  closeVis () {
+    this.$store.commit('mutateOpenVisualizer', false)
   }
 
   mounted () {
@@ -311,7 +315,7 @@ export default class VisualizerCanvas extends Vue {
         this.changeColour(VisualizerCanvas.shapeArr[i], '0x0000')
       }
     } else {
-      for (let i = 0; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i++) {
+      for (let i = 0; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i = i + 2) {
         this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
       }
     }
@@ -584,7 +588,7 @@ export default class VisualizerCanvas extends Vue {
     pointLight.position.set(0, 500, 600)
     VisualizerCanvas.scene.add(pointLight)
 
-    spotLight.position.set(0, -window.innerHeight / 2, window.innerHeight / 8)
+    spotLight.position.set(0, -window.innerHeight / 3, window.innerHeight / 16)
     spotLight.castShadow = true
 
     spotLight.shadow.mapSize.width = window.innerWidth
@@ -687,27 +691,40 @@ export default class VisualizerCanvas extends Vue {
         this.rotateShapeToggle = false
       }
       this.changingMode = false
-      console.log(VisualizerCanvas.scene.children[1])
     }
   }
 }
 </script>
 
 <style scoped>
-  .sceneContainer {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 100%;
-  }
+.sceneContainer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
 
-  .scene {
-    width: 100%;
-    height: 100%;
-  }
+.scene {
+  width: 100%;
+  height: 100%;
+}
 
-  canvas {
-    width: 100%;
-    height: 100%;
-  }
+canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.btn.close {
+  position: fixed;
+  font-size: 2vw;
+  top: 0;
+  right: 0;
+  opacity: 0.3;
+  transition: all 0.5s;
+}
+
+.btn.close:hover {
+  opacity: 1;
+  border: 1px solid #FFF;
+}
 </style>

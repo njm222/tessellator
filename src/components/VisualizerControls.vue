@@ -3,7 +3,6 @@
     <transition name="fadeRight" mode="out-in">
       <div v-if="this.isOpen" class="child" key="OpenVisualizerControls">
         <div class="controls">
-          <button class="btn close" @click="closeVis">close visualizer</button>
           <div>
             Mode:
 
@@ -26,7 +25,7 @@
           <button class="btn toggle" @click="toggleCameraRotate" v-if="this.ModeKey > 1" v-bind:class="{on: this.CameraRotateToggle}">
             Camera Rotate
           </button>
-          <button class="btn close" @click="hideControls"> hide controls </button>
+          <button class="btn hide" @click="hideControls"> hide controls </button>
         </div>
       </div>
       <div v-else class="child closed" key="CloseVisualizerControls">
@@ -88,10 +87,6 @@ export default class VisualizerControls extends Vue {
 
   toggleRandomColour () {
     this.$store.commit('mutateRandomColour', !this.RandomColour)
-  }
-
-  closeVis () {
-    this.$store.commit('mutateOpenVisualizer', false)
   }
 
   hideControls () {
@@ -223,7 +218,7 @@ export default class VisualizerControls extends Vue {
   color: #3AD36B;
 }
 
-.btn.close {
+.btn.hide {
   background: #121212;
 }
 </style>

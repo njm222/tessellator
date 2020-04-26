@@ -142,8 +142,12 @@ export class SpotifyAnalysis {
       const segmentEnd = this.g_segments[this.g_segment].start + this.g_segments[this.g_segment].duration
       if (trackCounter > segmentEnd) {
         this.g_segment++
-        this.g_timbre = this.g_segments[this.g_segment].timbre
-        this.g_pitches = this.g_segments[this.g_segment].pitches
+        if (this.g_segments[this.g_segment].timbre) {
+          this.g_timbre = this.g_segments[this.g_segment].timbre
+        }
+        if (this.g_segments[this.g_segment].pitches) {
+          this.g_pitches = this.g_segments[this.g_segment].pitches
+        }
       }
     }
   }

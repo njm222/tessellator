@@ -410,13 +410,13 @@ export default class VisualizerCanvas extends Vue {
   private setColour (key: number, SpotifyAnalysisUtils: any) {
     switch (key) {
       case 1:
-        VisualizerCanvas.shapeColour = this.hslToHex(SpotifyAnalysisUtils.g_timbre[2] * 2, SpotifyAnalysisUtils.g_timbre[1] * 2, SpotifyAnalysisUtils.g_timbre[0] * 2)
+        VisualizerCanvas.shapeColour = this.hslToHex(SpotifyAnalysisUtils.g_timbre[2] * 2, SpotifyAnalysisUtils.g_timbre[1] * 2, SpotifyAnalysisUtils.g_timbre[0] * 3)
         break
       case 2:
-        VisualizerCanvas.shapeColour = this.hslToHex((1 - SpotifyAnalysisUtils.g_timbre[2]) * 2, SpotifyAnalysisUtils.g_timbre[1] * 2, SpotifyAnalysisUtils.g_timbre[0] * 2)
+        VisualizerCanvas.shapeColour = this.hslToHex((1 - SpotifyAnalysisUtils.g_timbre[2]) * 2, SpotifyAnalysisUtils.g_timbre[1] * 2, SpotifyAnalysisUtils.g_timbre[0] * 3)
         break
       case 3:
-        VisualizerCanvas.shapeColour = this.hslToHex(VisualizerCanvas.liveAudio.snareObject.snareEnergy, VisualizerCanvas.liveAudio.bassObject.bassAv, SpotifyAnalysisUtils.g_timbre[0])
+        VisualizerCanvas.shapeColour = this.hslToHex(SpotifyAnalysisUtils.g_timbre[1] * 2, VisualizerCanvas.liveAudio.bassObject.bassAv, SpotifyAnalysisUtils.g_timbre[0] * 3)
         break
       case 4:
         VisualizerCanvas.shapeColour = this.rgbToHex(VisualizerCanvas.liveAudio.highsObject.highsEnergy, VisualizerCanvas.liveAudio.midsObject.midsEnergy, VisualizerCanvas.liveAudio.snareObject.snareEnergy)
@@ -521,8 +521,6 @@ export default class VisualizerCanvas extends Vue {
     VisualizerCanvas.shapeArr.push(new THREE.Mesh(new THREE.SphereBufferGeometry(50, Math.ceil(segments * 3), Math.ceil(segments * 3), 0, Math.PI * 2, Math.sin(SpotifyAnalysisUtils.trackFeatures.tempo * this.TrackTime / 1000000) * Math.PI * 2, (VisualizerCanvas.liveAudio.rms / 255) * 6), new THREE.MeshPhongMaterial({ wireframe: isWireframe, flatShading: !isWireframe })))
     VisualizerCanvas.shapeArr[0].rotation.set(Math.PI / 2, 0, 0)
     VisualizerCanvas.scene.add(VisualizerCanvas.shapeArr[0])
-    console.log((VisualizerCanvas.shapeArr[0].geometry as THREE.SphereBufferGeometry).parameters.thetaStart)
-    console.log((VisualizerCanvas.shapeArr[0].geometry as THREE.SphereBufferGeometry).parameters.thetaLength)
   }
 
   private addShape (shapeType: number) {

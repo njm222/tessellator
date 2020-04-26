@@ -2,7 +2,7 @@
   <div>
     <transition name="fade" mode="out-in">
       <div v-if="this.user" key="LoginTrue">
-        <h1>hello, {{this.user.display_name}}_</h1>
+        <h1>hello, <a :href="this.user.external_urls.spotify" target='_blank'>{{this.user.display_name}}</a></h1>
         <transition name="fade" mode="out-in">
           <div class="visualizer-button-container" v-if="this.SpotifyAnalysisUtils && this.SpotifyAnalysisUtils.loaded" key="OpenVisualizer">
             <button class="btn secondary" @click="openVis">open visualizer</button>
@@ -14,7 +14,7 @@
                     color="#FFF"
             ></breeding-rhombus-spinner>
             <p class="loading">loading visualizer</p>
-            <p class="advice">For the best experience use a non-mobile device with a modern browser (not Safari) </p>
+            <p class="advice">For the best experience use a non-mobile device with a modern browser (not Safari)</p>
           </div>
           <div class="visualizer-button-container" v-else key="NonPremiumUser">
             <p>Sorry, you must be a Spotify 'premium' user to view the viusalizer</p>

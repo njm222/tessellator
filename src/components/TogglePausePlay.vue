@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { SpotifyPlayer } from '@/services/spotify-utils'
 
 @Component
 export default class ToggleNextPrev extends Vue {

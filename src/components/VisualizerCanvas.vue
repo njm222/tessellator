@@ -190,51 +190,6 @@ export default class VisualizerCanvas extends Vue {
     }
   }
 
-  private mode4 (SpotifyAnalysisUtils: any) {
-    if (SpotifyAnalysisUtils.barCounter > 3) {
-      for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 4]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 3]; i++) {
-        this.changeColour(VisualizerCanvas.shapeArr[i], '0x0000')
-      }
-      for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 2]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i++) {
-        this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
-      }
-    } else {
-      if (SpotifyAnalysisUtils.beatCounter !== 0) {
-        for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 1]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i++) {
-          this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
-        }
-      }
-      this.changeColour(VisualizerCanvas.shapeArr[0], VisualizerCanvas.shapeColour)
-    }
-
-    if (SpotifyAnalysisUtils.beatCounter > VisualizerCanvas.layerMarker.length - 1) {
-      SpotifyAnalysisUtils.beatCounter = 0
-    }
-  }
-
-  private mode5 (SpotifyAnalysisUtils: any) {
-    if (SpotifyAnalysisUtils.beatCounter > 3) {
-      for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 4]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 3]; i = i + 2) {
-        this.changeColour(VisualizerCanvas.shapeArr[i], '0x0000')
-      }
-      for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 2]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i = i + 2) {
-        this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
-      }
-    } else {
-      if (SpotifyAnalysisUtils.beatCounter !== 0) {
-        for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 1]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i = i + 2) {
-          this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
-        }
-      } else {
-        this.changeColour(VisualizerCanvas.shapeArr[0], VisualizerCanvas.shapeColour)
-      }
-    }
-
-    if (SpotifyAnalysisUtils.beatCounter > VisualizerCanvas.layerMarker.length - 1) {
-      SpotifyAnalysisUtils.beatCounter = 0
-    }
-  }
-
   private mode1 (SpotifyAnalysisUtils: any) {
     let noiseFreq = 64
     if (SpotifyAnalysisUtils.trackFeatures.valence > 0.7) {
@@ -304,6 +259,64 @@ export default class VisualizerCanvas extends Vue {
     }
   }
 
+  private mode4 (SpotifyAnalysisUtils: any) {
+    if (SpotifyAnalysisUtils.barCounter > 3) {
+      for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 4]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 3]; i++) {
+        this.changeColour(VisualizerCanvas.shapeArr[i], '0x0000')
+      }
+      for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 2]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i++) {
+        this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
+      }
+    } else {
+      if (SpotifyAnalysisUtils.beatCounter !== 0) {
+        for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 1]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i++) {
+          this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
+        }
+      }
+      this.changeColour(VisualizerCanvas.shapeArr[0], VisualizerCanvas.shapeColour)
+    }
+
+    if (SpotifyAnalysisUtils.beatCounter > VisualizerCanvas.layerMarker.length - 1) {
+      SpotifyAnalysisUtils.beatCounter = 0
+    }
+  }
+
+  private mode5 (SpotifyAnalysisUtils: any) {
+    if (SpotifyAnalysisUtils.beatCounter > 3) {
+      for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 4]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 3]; i = i + 2) {
+        this.changeColour(VisualizerCanvas.shapeArr[i], '0x0000')
+      }
+      for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 2]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i = i + 2) {
+        this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
+      }
+    } else {
+      if (SpotifyAnalysisUtils.beatCounter !== 0) {
+        for (let i = VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter - 1]; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i = i + 2) {
+          this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
+        }
+      } else {
+        this.changeColour(VisualizerCanvas.shapeArr[0], VisualizerCanvas.shapeColour)
+      }
+    }
+
+    if (SpotifyAnalysisUtils.beatCounter > VisualizerCanvas.layerMarker.length - 1) {
+      SpotifyAnalysisUtils.beatCounter = 0
+    }
+  }
+
+  private mode6 (SpotifyAnalysisUtils: any) {
+    if (SpotifyAnalysisUtils.beatCounter > VisualizerCanvas.layerMarker.length - 1) {
+      SpotifyAnalysisUtils.beatCounter = 0
+      for (let i = 0; i < VisualizerCanvas.shapeArr.length; i++) {
+        this.changeColour(VisualizerCanvas.shapeArr[i], '0x0000')
+      }
+    } else {
+      for (let i = 0; i < VisualizerCanvas.layerMarker[SpotifyAnalysisUtils.beatCounter]; i++) {
+        this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
+      }
+    }
+  }
+
   private doMode (key: number, SpotifyAnalysisUtils: any) {
     switch (key) {
       case 1:
@@ -320,6 +333,9 @@ export default class VisualizerCanvas extends Vue {
         break
       case 5:
         this.mode5(SpotifyAnalysisUtils)
+        break
+      case 6:
+        this.mode6(SpotifyAnalysisUtils)
         break
       default:
         this.$store.commit('mutateModeKey', 1)
@@ -631,7 +647,7 @@ export default class VisualizerCanvas extends Vue {
 
   private changeColourKey () {
     if (this.SpotifyAnalysisUtils.changeColour) {
-      const newColourKey = Math.floor(Math.random() * 9)
+      const newColourKey = Math.floor(1 + Math.random() * 12)
       this.$store.commit('mutateColourKey', newColourKey)
       this.SpotifyAnalysisUtils.changeColour = false
       console.log(`changing colour key to ${newColourKey}`)
@@ -640,7 +656,7 @@ export default class VisualizerCanvas extends Vue {
 
   private changeModeKey () {
     if (this.SpotifyAnalysisUtils.changeMode) {
-      const newModeKey = Math.floor(1 + Math.random() * 5)
+      const newModeKey = Math.floor(1 + Math.random() * 6)
       this.$store.commit('mutateModeKey', newModeKey)
       this.SpotifyAnalysisUtils.changeMode = false
       console.log(`changing mode key to ${newModeKey}`)

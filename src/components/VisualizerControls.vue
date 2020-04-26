@@ -128,6 +128,8 @@ export default class VisualizerControls extends Vue {
       this.$store.commit('mutateModeKey', 4)
     } else if (parseInt(cmd) === 5) {
       this.$store.commit('mutateModeKey', 5)
+    } else if (parseInt(cmd) === 6) {
+      this.$store.commit('mutateModeKey', 6)
     } else if (cmd === 'q') {
       this.$store.commit('mutateColourKey', 1)
     } else if (cmd === 'a') {

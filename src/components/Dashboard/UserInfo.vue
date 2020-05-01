@@ -40,11 +40,4 @@ export default class UserInfo extends Vue {
 </script>
 
 <style scoped>
-a {
-  color: #d31e1e;
-}
-
-a:hover {
-  color: #42b983;
-}
 </style>

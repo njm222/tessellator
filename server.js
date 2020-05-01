@@ -1,19 +1,20 @@
 const express = require('express');
-const path = require('path')
+const path = require('path');
 const request = require('request'); // "Request" library
 const cors = require('cors');
-const compression = require('compression')
+const compression = require('compression');
 const dotenv = require('dotenv');
 const querystring = require('query-string');
 const fbAdmin = require('firebase-admin');
 const FieldValue = fbAdmin.firestore.FieldValue;
 const app = express();
+dotenv.config();
 const server_port = process.env.PORT || 8081;
 const scope = 'user-read-private user-read-email user-read-birthdate user-top-read user-read-recently-played user-modify-playback-state user-read-playback-state user-read-currently-playing streaming user-library-modify user-library-read';
 const client_id = process.env.Spotify_client_id;
 const client_secret = process.env.Spotify_client_secret;
 const redirect_uri = process.env.Spotify_redirect_uri;
-dotenv.config();
+
 
 // Gzip compression for html, js, css
 app.get('*.html', function (req, res, next) {

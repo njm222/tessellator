@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import UserInfo from '@/components/UserInfo.vue'
+import UserInfo from '@/components/Dashboard/UserInfo.vue'
 
 export default {
   name: 'Dashboard',

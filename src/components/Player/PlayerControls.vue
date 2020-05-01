@@ -13,13 +13,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
-import TogglePausePlay from '@/components/TogglePausePlay.vue'
-import ToggleShuffle from '@/components/ToggleShuffle.vue'
-import ToggleRepeat from '@/components/ToggleRepeat.vue'
-import TogglePrev from '@/components/TogglePrev.vue'
-import ToggleNext from '@/components/ToggleNext.vue'
-import SaveTrack from '@/components/SaveTrack.vue'
+import { Component, Vue } from 'vue-property-decorator'
+import TogglePausePlay from './PlayerControls/TogglePausePlay.vue'
+import ToggleShuffle from './PlayerControls/ToggleShuffle.vue'
+import ToggleRepeat from './PlayerControls/ToggleRepeat.vue'
+import TogglePrev from './PlayerControls/TogglePrev.vue'
+import ToggleNext from './PlayerControls/ToggleNext.vue'
+import SaveTrack from './PlayerControls/SaveTrack.vue'
 
 @Component({
   components: { TogglePausePlay, ToggleShuffle, ToggleRepeat, TogglePrev, ToggleNext, SaveTrack }

@@ -42,10 +42,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { firebaseRef } from '@/services/firebase-utils'
-import LastPlayedItem from '@/components/LastPlayedItem.vue'
-import LastOnlineItem from '@/components/LastOnlineItem.vue'
-import OnlineItem from '@/components/OnlineItem.vue'
-import UserPlaylists from '@/components/UserPlaylists.vue'
+import LastPlayedItem from './LastPlayedItem.vue'
+import LastOnlineItem from './LastOnlineItem.vue'
+import OnlineItem from './OnlineItem.vue'
+import UserPlaylists from '../Playlists/UserPlaylists.vue'
 import { FingerprintSpinner } from 'epic-spinners'
 
 @Component({

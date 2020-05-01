@@ -21,12 +21,12 @@
 
 <script>
 // @ is an alias to /src
-import Login from '@/components/Login.vue'
-import OnlineUsers from '@/components/OnlineUsers.vue'
-import Player from '@/components/Player.vue'
-import MyPlaylists from '@/components/MyPlaylists.vue'
-import VisualizerCanvas from '@/components/VisualizerCanvas'
-import VisualizerControls from '@/components/VisualizerControls'
+import Login from '@/components/Login/Login.vue'
+import OnlineUsers from '@/components/OnlineUsers/OnlineUsers.vue'
+import Player from '@/components/Player/Player.vue'
+import MyPlaylists from '@/components/Playlists/MyPlaylists.vue'
+import VisualizerCanvas from '@/components/Visualizer/VisualizerCanvas.vue'
+import VisualizerControls from '@/components/Visualizer/VisualizerControls.vue'
 
 export default {
   name: 'Home',

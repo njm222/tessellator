@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import TopPlayed from '@/components/TopPlayed.vue'
+import TopPlayed from '@/components/Community/TopPlayed.vue'
 
 export default {
   name: 'Community',

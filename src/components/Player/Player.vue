@@ -28,12 +28,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { getCookie, setCookie } from '@/services/cookie-utils'
 import { addTrackPlayed, addArtistsPlayed, firebaseRef } from '@/services/firebase-utils'
-import TrackItem from '@/components/TrackItem.vue'
-import SeekTrack from '@/components/SeekTrack.vue'
-import PlayerControls from '@/components/PlayerControls.vue'
+import TrackItem from '../Track/TrackItem.vue'
+import SeekTrack from './SeekTrack.vue'
+import PlayerControls from './PlayerControls.vue'
 import { SpotifyAnalysis } from '@/services/spotify-utils'
 
 @Component({

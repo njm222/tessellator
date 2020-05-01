@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
-import LiveAudio from '@/services/liveAudio-utils'
+import LiveAudio from '../../services/liveAudio-utils'
 import * as THREE from 'three'
 import SimplexNoise from 'simplex-noise'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
@@ -320,6 +320,14 @@ export default class VisualizerCanvas extends Vue {
       }
     }
   }
+
+  // private mode7 (SpotifyAnalysisUtils: any) {
+  //   // mode 7 code points Material
+  //   if (SpotifyAnalysisUtils.beatCounter > 0) {
+  //     // change shape
+  //   }
+  //   this.changeColour(VisualizerCanvas.shapeArr[0], VisualizerCanvas.shapeColour)
+  // }
 
   private doMode (key: number, SpotifyAnalysisUtils: any) {
     switch (key) {

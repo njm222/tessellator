@@ -49,8 +49,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import TopTrack from '@/components/TopTrack.vue'
-import TopArtist from '@/components/TopArtist.vue'
+import TopTrack from './TopTrack.vue'
+import TopArtist from './TopArtist.vue'
 import { firebaseRef } from '@/services/firebase-utils'
 import { FingerprintSpinner } from 'epic-spinners'
 

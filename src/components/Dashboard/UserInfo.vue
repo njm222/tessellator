@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="this.user">
+    <div v-if="this.user">
       <h1>Hi there, {{ this.user.display_name }}</h1>
       <p>Email address: {{ this.user.email }}</p>
       <p>Country: {{this.user.country}}</p>
@@ -9,9 +9,12 @@
       </p>
       <p>Number of followers: {{ this.user.followers.total }}</p>
       <p>
-        <button v-on:click="logOut()" class="btn secondary">Log out</button>
+        <button @click="logOut()" class="btn secondary">Log out</button>
       </p>
-    </template>
+    </div>
+    <div v-else>
+      <p>Please <a href="/login">login</a> to view this page</p>
+    </div>
   </div>
 </template>
 
@@ -37,5 +40,11 @@ export default class UserInfo extends Vue {
 </script>
 
 <style scoped>
+a {
+  color: #d31e1e;
+}
 
+a:hover {
+  color: #42b983;
+}
 </style>

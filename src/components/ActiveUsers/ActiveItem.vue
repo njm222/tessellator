@@ -1,11 +1,11 @@
 <template>
-  <div v-if='lastOnlineUser' class="item user-info">
-    <a v-bind:href='lastOnlineUser.spotifyLink' target='_blank' :key="calculatedTime">
+  <div class="item user-info">
+    <a v-bind:href='spotifyLink' target='_blank' :key="calculatedTime">
       <strong>
-        {{lastOnlineUser.user}}
+        {{user}}
       </strong>
     </a>
-    <div class="time">
+    <div v-if='lastOnline' class="time">
       {{calculatedTime}}
     </div>
   </div>
@@ -15,20 +15,23 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
-export default class LastPlayedItem extends Vue {
+export default class ActiveItem extends Vue {
   @Prop({ required: true })
-  lastOnlineUser!: {
-    user: string;
-    spotifyLink: string;
-    lastOnline: number;
-  }
+  user!: string;
 
-  private calculatedTime!: string
+  @Prop({ required: true })
+  spotifyLink!: string;
+
+  @Prop()
+  lastOnline!: number;
+
+  private calculatedTime!: string;
   private timerRef!: any;
 
-  constructor () {
-    super()
-    this.calcTime()
+  mounted () {
+    if (this.lastOnline) {
+      this.calcTime()
+    }
   }
 
   destroyed () {
@@ -41,7 +44,7 @@ export default class LastPlayedItem extends Vue {
 
   calcTime () {
     const currTime: any = new Date().getTime()
-    const lastTime: number = new Date(this.lastOnlineUser.lastOnline).getTime()
+    const lastTime: number = new Date(this.lastOnline).getTime()
     const time = Math.floor((currTime - lastTime) / 60000)
     if (time > 1440) {
       this.calculatedTime = Math.floor((time / 1440)).toString() + ' days ago'

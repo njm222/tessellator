@@ -3,13 +3,13 @@
       <div class="online-users-title">
         <transition name="fade" mode="out-in">
           <div v-if='onlineUsers'>
-            <h3>Online Users <i>({{onlineUsers.size}})</i></h3>
+            <ActiveUsersTitle title="Online Users" :usersCount="onlineUsers.size"></ActiveUsersTitle>
           </div>
           <div v-else-if="lastOnlineUsers">
-            <h3>Last Online Users</h3>
+            <ActiveUsersTitle title="Last Online Users" :usersCount="lastOnlineUsers.size"></ActiveUsersTitle>
           </div>
           <div v-else>
-            <h3>Online Users <i>(?)</i></h3>
+            <ActiveUsersTitle title="Online Users" usersCount="?"></ActiveUsersTitle>
             <fingerprint-spinner
                     :animation-duration="1500"
                     :size="64"
@@ -22,14 +22,14 @@
         <transition name="fadeRight" mode="out-in">
           <div v-if="onlineUsers" key="onlineUsersContainer">
             <div class="each-user" v-for='(item) in onlineUsers.values()' :key='item.user'>
-              <OnlineItem :onlineUser="item"></OnlineItem>
+              <ActiveItem :user="item.user" :spotifyLink="item.spotifyLink"></ActiveItem>
               <LastPlayedItem :trackDetails="item.lastPlayed"></LastPlayedItem>
               <UserPlaylists :userID="item.user"></UserPlaylists>
             </div>
           </div>
           <div v-else-if="lastOnlineUsers" key="lastOnlineUsersContainer">
             <div class="each-user" v-for='(item, i) in Array.from(lastOnlineUsers.values()).reverse()' :key="item.user + i">
-              <LastOnlineItem :lastOnlineUser="item"></LastOnlineItem>
+              <ActiveItem :user="item.user" :spotifyLink="item.spotifyLink" :lastOnline="item.lastOnline"></ActiveItem>
               <LastPlayedItem :trackDetails="item.lastPlayed"></LastPlayedItem>
               <UserPlaylists :userID="item.user"></UserPlaylists>
             </div>
@@ -42,14 +42,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { firebaseRef } from '@/services/firebase-utils'
-import LastPlayedItem from './LastPlayedItem.vue'
-import LastOnlineItem from './LastOnlineItem.vue'
-import OnlineItem from './OnlineItem.vue'
-import UserPlaylists from '../Playlists/UserPlaylists.vue'
 import { FingerprintSpinner } from 'epic-spinners'
+import LastPlayedItem from './LastPlayedItem.vue'
+import UserPlaylists from '../Playlists/UserPlaylists.vue'
+import ActiveUsersTitle from './ActiveUsersTitle.vue'
+import ActiveItem from './ActiveItem.vue'
 
 @Component({
-  components: { LastPlayedItem, LastOnlineItem, OnlineItem, UserPlaylists, FingerprintSpinner }
+  components: { FingerprintSpinner, LastPlayedItem, UserPlaylists, ActiveUsersTitle, ActiveItem }
 })
 export default class OnlineUsers extends Vue {
   get user () {

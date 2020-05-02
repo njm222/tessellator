@@ -78,7 +78,7 @@
     "last 2 versions"
   ],
   "main": "server.js",
-  "repository": "https://github.com/njm222/Spotify_Music_Visualizer",
+  "repository": "https://github.com/njm222/Spotify_Visualizer",
   "author": "njm222 <nathan.john.menezes@gmail.com>",
   "license": "MIT"
 }

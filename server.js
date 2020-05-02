@@ -166,7 +166,8 @@ app.post('/authUser', function (req, res) {
 
 app.post('/addUser', function (req, res) {
   const userData = req.body.userData;
-  fbAdmin.firestore().collection('users').doc(userData.id).set({
+  const userRef = fbAdmin.firestore().collection('users').doc(userData.id)
+  userRef.set({
     userData: userData
   }, { merge: true }).then(ref => {
     // console.log('Added document with ID: ', ref)

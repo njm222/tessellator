@@ -34,7 +34,7 @@ export default class UserInfo extends Vue {
     this.$store.commit('mutateRefreshToken', null)
     deleteCookie('accessToken')
     deleteCookie('refreshToken')
-    this.$router.push({ name: 'Home' })
+    this.$router.push({ name: 'HomeManager.vue' })
   }
 }
 </script>

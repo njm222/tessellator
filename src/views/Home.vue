@@ -2,7 +2,7 @@
   <div class="home">
     <Player v-if="this.$store.state.authUser"></Player>
     <div v-if="!this.$store.state.openVisualizer">
-      <Login :key="this.$store.state.accessToken"/>
+      <HomeManager :key="this.$store.state.accessToken"/>
       <div v-if="this.$store.state.playerInfo">
         <transition-group class="home-container" name="fade">
           <OnlineUsers v-if="this.$store.state.user" :key="this.$store.state.authUser"/>
@@ -21,8 +21,8 @@
 
 <script>
 // @ is an alias to /src
-import Login from '@/components/Home/Login.vue'
-import OnlineUsers from '@/components/OnlineUsers/OnlineUsers.vue'
+import HomeManager from '@/components/Home/HomeManager.vue'
+import OnlineUsers from '@/components/ActiveUsers/ActiveUsersManager.vue'
 import Player from '@/components/Player/Player.vue'
 import MyPlaylists from '@/components/Playlists/MyPlaylists.vue'
 import VisualizerCanvas from '@/components/Visualizer/VisualizerCanvas.vue'
@@ -31,7 +31,7 @@ import VisualizerControls from '@/components/Visualizer/VisualizerControls.vue'
 export default {
   name: 'Home',
   components: {
-    Login,
+    HomeManager,
     OnlineUsers,
     Player,
     MyPlaylists,

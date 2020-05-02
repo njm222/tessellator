@@ -5,8 +5,8 @@
         {{user}}
       </strong>
     </a>
-    <div v-if='lastOnline' class="time">
-      {{calculatedTime}}
+    <div v-if="lastOnline" class="time">
+      {{this.calculatedTime}}
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default class ActiveItem extends Vue {
   @Prop()
   lastOnline!: number;
 
-  private calculatedTime!: string;
+  private calculatedTime = '';
   private timerRef!: any;
 
   mounted () {
@@ -48,13 +48,14 @@ export default class ActiveItem extends Vue {
     const time = Math.floor((currTime - lastTime) / 60000)
     if (time > 1440) {
       this.calculatedTime = Math.floor((time / 1440)).toString() + ' days ago'
+      // this.timerRef = setTimeout(this.calcTime, 360000)
     } else if (time > 60) {
       this.calculatedTime = Math.floor((time / 60)).toString() + ' hours ago'
+      this.timerRef = setTimeout(this.calcTime, 360000)
     } else {
       this.calculatedTime = time.toString() + ' mins ago'
+      this.timerRef = setTimeout(this.calcTime, 60000)
     }
-    console.log('changed time to ' + time)
-    this.timerRef = setTimeout(this.calcTime, 60000) // remove set timeout on destroy
   }
 }
 </script>

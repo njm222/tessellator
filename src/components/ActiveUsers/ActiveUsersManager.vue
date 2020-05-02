@@ -6,7 +6,7 @@
             <ActiveUsersTitle title="Online Users" :usersCount="onlineUsers.size"></ActiveUsersTitle>
           </div>
           <div v-else-if="lastOnlineUsers">
-            <ActiveUsersTitle title="Last Online Users" :usersCount="lastOnlineUsers.size"></ActiveUsersTitle>
+            <ActiveUsersTitle title="Last Online Users"></ActiveUsersTitle>
           </div>
           <div v-else>
             <ActiveUsersTitle title="Online Users" usersCount="?"></ActiveUsersTitle>

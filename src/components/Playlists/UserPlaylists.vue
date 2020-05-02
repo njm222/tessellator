@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import UserPlaylist from '@/components/Playlists/UserPlaylist.vue'
+import UserPlaylist from '@/components/Playlists/PlaylistItem.vue'
 
 @Component({
   components: { UserPlaylist }

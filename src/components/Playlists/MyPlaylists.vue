@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import UserPlaylist from './UserPlaylist.vue'
+import UserPlaylist from './PlaylistItem.vue'
 import { FingerprintSpinner } from 'epic-spinners'
 
 @Component({

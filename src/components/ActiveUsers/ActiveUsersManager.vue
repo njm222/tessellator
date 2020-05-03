@@ -173,6 +173,6 @@ export default class OnlineUsers extends Vue {
   text-align: start;
   padding-bottom: 1em;
   min-width: 300px;
-  max-width: 60vw;
+  max-width: 50vw;
 }
 </style>

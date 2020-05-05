@@ -537,10 +537,10 @@ export default class VisualizerCanvas extends Vue {
       }
 
       VisualizerCanvas.layerMarker[f] = shapeCount
-      console.log(shapeCount)
+      // console.log(shapeCount)
       z = z - distance
     }
-    console.log(VisualizerCanvas.layerMarker)
+    // console.log(VisualizerCanvas.layerMarker)
   }
 
   private static removeShape () {
@@ -590,7 +590,6 @@ export default class VisualizerCanvas extends Vue {
     if (chords.length > 0) {
       segments = chords.reduce((sum, currVal) => sum + currVal)
     }
-    console.log(timbreSum)
     const TorusKnot = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv / 2, SpotifyAnalysisUtils.trackFeatures.valence * 50, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
     const material = new THREE.PointsMaterial({ color: 0xFFF })
     VisualizerCanvas.shapeCloudArr.push(new THREE.Points(TorusKnot, material))
@@ -604,7 +603,6 @@ export default class VisualizerCanvas extends Vue {
         VisualizerCanvas.shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({ color: 0x000000 })))
         VisualizerCanvas.scene.add(VisualizerCanvas.shapeArr[i])
       }
-      console.log('added new cube grid')
     } else if (shapeType === 1) {
       const octaGeo = new THREE.OctahedronGeometry(10, 0)
       for (let i = 0; i < VisualizerCanvas.shapeMax; i++) {

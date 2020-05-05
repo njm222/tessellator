@@ -81,7 +81,7 @@ export default class Home extends Vue {
   updateGtagUserID (name: string) {
     this.$gtag.set({ user_id: name })
     this.$gtag.pageview({
-      page_title: 'HomeManager.vue.vue',
+      page_title: 'HomeManager.vue',
       page_path: '/login',
       page_location: '/login'
     })

@@ -99,7 +99,6 @@ export default class OnlineUsers extends Vue {
         key: userID,
         value: response.data.items
       }
-      // this.$store.commit('mutateUsersPlaylists', payload)
       this.$nextTick().then(() => {
         this.$store.commit('mutateUsersPlaylists', payload)
       })

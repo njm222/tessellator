@@ -191,10 +191,10 @@ export default class VisualizerCanvas extends Vue {
       (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.92, VisualizerCanvas.liveAudio.kickObject.kickEnergy / 255)
       VisualizerCanvas.composer.render()
     } else if (this.ModeKey === 2) {
-      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.95, VisualizerCanvas.liveAudio.kickObject.kickEnergy / 255)
+      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.max(0.85, VisualizerCanvas.liveAudio.kickObject.kickEnergy / 255)
       VisualizerCanvas.composer.render()
     } else {
-      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.82, VisualizerCanvas.liveAudio.bassObject.bassEnergy / 255)
+      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.85, VisualizerCanvas.liveAudio.bassObject.bassEnergy / 255)
       VisualizerCanvas.composer.render()
     }
   }
@@ -241,10 +241,6 @@ export default class VisualizerCanvas extends Vue {
   }
 
   private mode2 (SpotifyAnalysisUtils: any) {
-    if (SpotifyAnalysisUtils.beatCounter > 0) {
-      // change shape
-      SpotifyAnalysisUtils.beatCounter = 0
-    }
     if (VisualizerCanvas.shapeCloudArr.length > 0) {
       VisualizerCanvas.removeShape()
       this.addGenerativeTorus(SpotifyAnalysisUtils)
@@ -537,10 +533,10 @@ export default class VisualizerCanvas extends Vue {
       }
 
       VisualizerCanvas.layerMarker[f] = shapeCount
-      // console.log(shapeCount)
+      console.log(shapeCount)
       z = z - distance
     }
-    // console.log(VisualizerCanvas.layerMarker)
+    console.log(VisualizerCanvas.layerMarker)
   }
 
   private static removeShape () {
@@ -590,7 +586,7 @@ export default class VisualizerCanvas extends Vue {
     if (chords.length > 0) {
       segments = chords.reduce((sum, currVal) => sum + currVal)
     }
-    const TorusKnot = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv / 2, SpotifyAnalysisUtils.trackFeatures.valence * 50, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
+    const TorusKnot = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv, SpotifyAnalysisUtils.trackFeatures.valence * 50, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
     const material = new THREE.PointsMaterial({ color: 0xFFF })
     VisualizerCanvas.shapeCloudArr.push(new THREE.Points(TorusKnot, material))
     VisualizerCanvas.scene.add(VisualizerCanvas.shapeCloudArr[0])
@@ -603,6 +599,7 @@ export default class VisualizerCanvas extends Vue {
         VisualizerCanvas.shapeArr.push(new THREE.Mesh(cubeGeo, new THREE.MeshLambertMaterial({ color: 0x000000 })))
         VisualizerCanvas.scene.add(VisualizerCanvas.shapeArr[i])
       }
+      console.log('added new cube grid')
     } else if (shapeType === 1) {
       const octaGeo = new THREE.OctahedronGeometry(10, 0)
       for (let i = 0; i < VisualizerCanvas.shapeMax; i++) {

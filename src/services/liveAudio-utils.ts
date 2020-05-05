@@ -204,7 +204,7 @@ export default class LiveAudio {
     }
     this.kickObject.kickEnergy = this.kickObject.kickEnergy / (this.kickObject.upper - this.kickObject.lower)
     this.kickObject.kickArr[this.kickObject.kickArrCounter++] = this.kickObject.kickEnergy
-    if (this.kickObject.kickArrCounter >= 32) {
+    if (this.kickObject.kickArrCounter >= 64) {
       this.kickObject.kickArrCounter = 0
     }
   }
@@ -215,7 +215,7 @@ export default class LiveAudio {
     }
     this.snareObject.snareEnergy = this.snareObject.snareEnergy / (this.snareObject.upper - this.snareObject.lower)
     this.snareObject.snareArr[this.snareObject.snareArrCounter++] = this.snareObject.snareEnergy
-    if (this.snareObject.snareArrCounter >= 32) {
+    if (this.snareObject.snareArrCounter >= 64) {
       this.snareObject.snareArrCounter = 0
     }
   }
@@ -226,7 +226,7 @@ export default class LiveAudio {
     }
     this.midsObject.midsEnergy = this.midsObject.midsEnergy / (this.midsObject.upper - this.midsObject.lower)
     this.midsObject.midsArr[this.midsObject.midsArrCounter++] = this.midsObject.midsEnergy
-    if (this.midsObject.midsArrCounter >= 32) {
+    if (this.midsObject.midsArrCounter >= 64) {
       this.midsObject.midsArrCounter = 0
     }
   }
@@ -237,7 +237,7 @@ export default class LiveAudio {
     }
     this.highsObject.highsEnergy = this.highsObject.highsEnergy / (this.highsObject.upper - this.highsObject.lower)
     this.highsObject.highsArr[this.highsObject.highsArrCounter++] = this.highsObject.highsEnergy
-    if (this.highsObject.highsArrCounter >= 32) {
+    if (this.highsObject.highsArrCounter >= 64) {
       this.highsObject.highsArrCounter = 0
     }
   }

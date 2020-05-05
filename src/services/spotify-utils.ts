@@ -60,7 +60,7 @@ export class SpotifyAnalysis {
       console.log(error)
       if (error.code === 401) {
         router.push({ name: 'HomeManager.vue' })
-      } else {
+      } else if (error.code === 504) {
         this.getTrackFeatures(accessToken, trackID)
       }
     })
@@ -77,7 +77,7 @@ export class SpotifyAnalysis {
       console.log(error)
       if (error.code === 401) {
         router.push({ name: 'HomeManager.vue' })
-      } else {
+      } else if (error.code === 504) {
         this.getTrackAnalysis(accessToken, trackID)
       }
     })

@@ -137,7 +137,7 @@ export default class OnlineUsers extends Vue {
 
   loadLastOnline () {
     const lastOnlineU = new Map<number, any>()
-    firebaseRef.firebase.database().ref('users/').orderByChild('lastOnline').limitToLast(10).on('value', (snapshot: any) => {
+    firebaseRef.firebase.database().ref('users/').orderByChild('lastOnline').limitToLast(11).on('value', (snapshot: any) => {
       lastOnlineU.clear()
       snapshot.forEach((user: any) => {
         if (this.user.id !== user.key) {

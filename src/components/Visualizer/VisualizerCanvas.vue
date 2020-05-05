@@ -23,6 +23,7 @@ export default class VisualizerCanvas extends Vue {
   static renderer: THREE.WebGLRenderer;
   static composer: EffectComposer
   static shapeArr: THREE.Mesh[];
+  static shapeCloudArr: THREE.Points[];
   static shapeMax: number;
   static layerMarker: number[];
   static shapeColour: string;
@@ -40,6 +41,7 @@ export default class VisualizerCanvas extends Vue {
     VisualizerCanvas.renderer = new THREE.WebGLRenderer({ antialias: true })
     VisualizerCanvas.scene = new THREE.Scene()
     VisualizerCanvas.shapeArr = []
+    VisualizerCanvas.shapeCloudArr = []
     VisualizerCanvas.shapeMax = 529
     VisualizerCanvas.layerMarker = []
     VisualizerCanvas.shapeColour = '#FFF'
@@ -110,7 +112,7 @@ export default class VisualizerCanvas extends Vue {
   }
 
   beforeDestroy () {
-    this.removeShape()
+    VisualizerCanvas.removeShape()
     cancelAnimationFrame(this.animationID)
   }
 
@@ -125,8 +127,8 @@ export default class VisualizerCanvas extends Vue {
       el.appendChild(VisualizerCanvas.renderer.domElement)
       this.canvasResizeListener(el)
 
-      this.addLighting()
-      this.addOcean()
+      VisualizerCanvas.addLighting()
+      VisualizerCanvas.addOcean()
       VisualizerCanvas.camera.position.z = 90
 
       // postprocessing
@@ -185,8 +187,11 @@ export default class VisualizerCanvas extends Vue {
     }
 
     VisualizerCanvas.camera.updateProjectionMatrix()
-    if (this.ModeKey > 2) {
+    if (this.ModeKey > 3) {
       (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.92, VisualizerCanvas.liveAudio.kickObject.kickEnergy / 255)
+      VisualizerCanvas.composer.render()
+    } else if (this.ModeKey === 2) {
+      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.95, VisualizerCanvas.liveAudio.kickObject.kickEnergy / 255)
       VisualizerCanvas.composer.render()
     } else {
       (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.82, VisualizerCanvas.liveAudio.bassObject.bassEnergy / 255)
@@ -236,11 +241,23 @@ export default class VisualizerCanvas extends Vue {
   }
 
   private mode2 (SpotifyAnalysisUtils: any) {
+    if (SpotifyAnalysisUtils.beatCounter > 0) {
+      // change shape
+      SpotifyAnalysisUtils.beatCounter = 0
+    }
+    if (VisualizerCanvas.shapeCloudArr.length > 0) {
+      VisualizerCanvas.removeShape()
+      this.addGenerativeTorus(SpotifyAnalysisUtils)
+    }
+    this.changeColourPoints(VisualizerCanvas.shapeCloudArr[0], VisualizerCanvas.shapeColour)
+  }
+
+  private mode3 (SpotifyAnalysisUtils: any) {
     let isWireframe = false
     if (VisualizerCanvas.shapeArr.length > 0) {
       isWireframe = (VisualizerCanvas.shapeArr[0].material as THREE.MeshPhongMaterial).wireframe
     }
-    this.removeShape()
+    VisualizerCanvas.removeShape()
     this.addGenerativeSphere(SpotifyAnalysisUtils, isWireframe)
     // this.modifyGenerativeSphere(VisualizerCanvas.shapeArr[0])
     if (SpotifyAnalysisUtils.barCounter >= 1) {
@@ -250,17 +267,6 @@ export default class VisualizerCanvas extends Vue {
       SpotifyAnalysisUtils.barCounter = 0
     }
     this.changeColour(VisualizerCanvas.shapeArr[0], VisualizerCanvas.shapeColour)
-  }
-
-  private mode3 (SpotifyAnalysisUtils: any) {
-    if (SpotifyAnalysisUtils.tatumCounter % VisualizerCanvas.shapeArr.length === 0) {
-      for (let i = 0; i < VisualizerCanvas.shapeArr.length; i++) {
-        this.changeColour(VisualizerCanvas.shapeArr[i], '0x0000')
-      }
-    }
-    for (let i = 0; i < 1 + (SpotifyAnalysisUtils.tatumCounter % VisualizerCanvas.shapeArr.length); i++) {
-      this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
-    }
   }
 
   private mode4 (SpotifyAnalysisUtils: any) {
@@ -321,13 +327,16 @@ export default class VisualizerCanvas extends Vue {
     }
   }
 
-  // private mode7 (SpotifyAnalysisUtils: any) {
-  //   // mode 7 code points Material
-  //   if (SpotifyAnalysisUtils.beatCounter > 0) {
-  //     // change shape
-  //   }
-  //   this.changeColour(VisualizerCanvas.shapeArr[0], VisualizerCanvas.shapeColour)
-  // }
+  private mode7 (SpotifyAnalysisUtils: any) {
+    if (SpotifyAnalysisUtils.tatumCounter % VisualizerCanvas.shapeArr.length === 0) {
+      for (let i = 0; i < VisualizerCanvas.shapeArr.length; i++) {
+        this.changeColour(VisualizerCanvas.shapeArr[i], '0x0000')
+      }
+    }
+    for (let i = 0; i < 1 + (SpotifyAnalysisUtils.tatumCounter % VisualizerCanvas.shapeArr.length); i++) {
+      this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
+    }
+  }
 
   private doMode (key: number, SpotifyAnalysisUtils: any) {
     switch (key) {
@@ -349,6 +358,9 @@ export default class VisualizerCanvas extends Vue {
       case 6:
         this.mode6(SpotifyAnalysisUtils)
         break
+      case 7:
+        this.mode7(SpotifyAnalysisUtils)
+        break
       default:
         this.$store.commit('mutateModeKey', 1)
         this.mode1(SpotifyAnalysisUtils)
@@ -356,11 +368,14 @@ export default class VisualizerCanvas extends Vue {
   }
 
   zoomCamera () {
+    if (this.SpotifyAnalysisUtils.g_beats[this.SpotifyAnalysisUtils.g_beat] == null) {
+      return
+    }
     const beatConfidence = this.SpotifyAnalysisUtils.g_beats[this.SpotifyAnalysisUtils.g_beat].confidence
     const beatEnd = this.SpotifyAnalysisUtils.g_beats[this.SpotifyAnalysisUtils.g_beat].start + this.SpotifyAnalysisUtils.g_beats[this.SpotifyAnalysisUtils.g_beat].duration
     const zoomVal = ((Math.asin(VisualizerCanvas.liveAudio.bassObject.bassEnergy / 255) * (1 + this.SpotifyAnalysisUtils.trackFeatures.danceability)) + Math.asin(VisualizerCanvas.liveAudio.bassObject.bassAv / 255)) * this.SpotifyAnalysisUtils.trackFeatures.energy
 
-    if (this.ModeKey > 1 && zoomVal > 0.8) {
+    if (this.ModeKey > 2 && zoomVal > 0.8) {
       if (beatConfidence > 0.9) {
         if (this.SpotifyAnalysisUtils.g_bar % 2 === 0) {
           VisualizerCanvas.camera.zoom = zoomVal * (1 - (this.TrackTime / 1000 - beatEnd))
@@ -383,7 +398,7 @@ export default class VisualizerCanvas extends Vue {
     const rotationX = VisualizerCanvas.noise.noise2D(time, time + offset) / 3
     let rotationZ = 0
 
-    if (this.ModeKey > 1) {
+    if (this.ModeKey > 2) {
       if (this.SpotifyAnalysisUtils.g_beats[this.SpotifyAnalysisUtils.g_beat] && this.SpotifyAnalysisUtils.g_beats[this.SpotifyAnalysisUtils.g_beat].confidence > 0.85) {
         if (this.SpotifyAnalysisUtils.barCounter % 2 === 0) {
           rotationZ = (this.SpotifyAnalysisUtils.trackFeatures.tempo * VisualizerCanvas.liveAudio.bassObject.bassAv) / (500000)
@@ -427,6 +442,14 @@ export default class VisualizerCanvas extends Vue {
     }
   }
 
+  private changeColourPoints (currShape: THREE.Points, currColour: string) {
+    if (currShape.material instanceof THREE.Material) {
+      const colour = new THREE.Color(parseInt(currColour))
+      const params: THREE.PointsMaterialParameters = { color: colour }
+      currShape.material.setValues(params)
+    }
+  }
+
   private changeColour (currShape: THREE.Mesh, currColour: string) {
     if (currShape.material instanceof THREE.Material) {
       const colour = new THREE.Color(parseInt(currColour))
@@ -447,25 +470,25 @@ export default class VisualizerCanvas extends Vue {
         VisualizerCanvas.shapeColour = this.hslToHex(SpotifyAnalysisUtils.g_timbre[1] * 2, VisualizerCanvas.liveAudio.bassObject.bassAv, SpotifyAnalysisUtils.g_timbre[0] * 3)
         break
       case 4:
-        VisualizerCanvas.shapeColour = this.rgbToHex(VisualizerCanvas.liveAudio.highsObject.highsEnergy, VisualizerCanvas.liveAudio.midsObject.midsEnergy, VisualizerCanvas.liveAudio.snareObject.snareEnergy)
+        VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.highsObject.highsEnergy, VisualizerCanvas.liveAudio.midsObject.midsEnergy, VisualizerCanvas.liveAudio.snareObject.snareEnergy)
         break
       case 5:
         VisualizerCanvas.shapeColour = this.hslToHex(VisualizerCanvas.liveAudio.bassObject.bassEnergy, VisualizerCanvas.liveAudio.bassObject.bassAv + VisualizerCanvas.liveAudio.highsObject.highsEnergy, VisualizerCanvas.liveAudio.midsObject.midsEnergy)
         break
       case 6:
-        VisualizerCanvas.shapeColour = this.rgbToHex(VisualizerCanvas.liveAudio.snareObject.snareAv, VisualizerCanvas.liveAudio.avFreq / 2, VisualizerCanvas.liveAudio.avFreq / 2)
+        VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.snareObject.snareAv, VisualizerCanvas.liveAudio.avFreq / 2, VisualizerCanvas.liveAudio.avFreq / 2)
         break
       case 7:
-        VisualizerCanvas.shapeColour = this.rgbToHex(VisualizerCanvas.liveAudio.rms, VisualizerCanvas.liveAudio.avFreq, VisualizerCanvas.liveAudio.peak)
+        VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.rms, VisualizerCanvas.liveAudio.avFreq, VisualizerCanvas.liveAudio.peak)
         break
       case 8:
-        VisualizerCanvas.shapeColour = this.rgbToHex(VisualizerCanvas.liveAudio.peak, VisualizerCanvas.liveAudio.avFreq, VisualizerCanvas.liveAudio.rms)
+        VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.peak, VisualizerCanvas.liveAudio.avFreq, VisualizerCanvas.liveAudio.rms)
         break
       case 9:
-        VisualizerCanvas.shapeColour = this.rgbToHex(VisualizerCanvas.liveAudio.avFreq * 2, VisualizerCanvas.liveAudio.avFreq / 10, VisualizerCanvas.liveAudio.avFreq * 3)
+        VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.avFreq * 2, VisualizerCanvas.liveAudio.avFreq / 10, VisualizerCanvas.liveAudio.avFreq * 3)
         break
       case 10:
-        VisualizerCanvas.shapeColour = this.rgbToHex(VisualizerCanvas.liveAudio.frequencyData[13], VisualizerCanvas.liveAudio.frequencyData[9], VisualizerCanvas.liveAudio.frequencyData[5])
+        VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.frequencyData[13], VisualizerCanvas.liveAudio.frequencyData[9], VisualizerCanvas.liveAudio.frequencyData[5])
         break
       case 11:
         VisualizerCanvas.shapeColour = this.hslToHex(VisualizerCanvas.liveAudio.highsObject.highsEnergy * VisualizerCanvas.liveAudio.avFreq, VisualizerCanvas.liveAudio.bassObject.bassEnergy, VisualizerCanvas.liveAudio.midsObject.midsEnergy)
@@ -474,7 +497,7 @@ export default class VisualizerCanvas extends Vue {
         VisualizerCanvas.shapeColour = this.hslToHex(360 - (VisualizerCanvas.liveAudio.highsObject.highsEnergy * VisualizerCanvas.liveAudio.avFreq), VisualizerCanvas.liveAudio.bassObject.bassEnergy, VisualizerCanvas.liveAudio.midsObject.midsEnergy)
         break
       default:
-        VisualizerCanvas.shapeColour = this.rgbToHex(VisualizerCanvas.liveAudio.frequencyData[4], VisualizerCanvas.liveAudio.frequencyData[8], VisualizerCanvas.liveAudio.frequencyData[12])
+        VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.frequencyData[4], VisualizerCanvas.liveAudio.frequencyData[8], VisualizerCanvas.liveAudio.frequencyData[12])
     }
   }
 
@@ -520,7 +543,7 @@ export default class VisualizerCanvas extends Vue {
     console.log(VisualizerCanvas.layerMarker)
   }
 
-  private removeShape () {
+  private static removeShape () {
     console.log('removing shapes')
     for (let i = 0; i < VisualizerCanvas.shapeArr.length; i++) {
       VisualizerCanvas.scene.remove(VisualizerCanvas.shapeArr[i])
@@ -529,9 +552,17 @@ export default class VisualizerCanvas extends Vue {
       material.dispose()
     }
     VisualizerCanvas.shapeArr = []
+
+    for (let i = 0; i < VisualizerCanvas.shapeCloudArr.length; i++) {
+      VisualizerCanvas.scene.remove(VisualizerCanvas.shapeCloudArr[i])
+      VisualizerCanvas.shapeCloudArr[i].geometry.dispose()
+      const material = VisualizerCanvas.shapeCloudArr[i].material as THREE.Material
+      material.dispose()
+    }
+    VisualizerCanvas.shapeCloudArr = []
   }
 
-  private addOcean () {
+  private static addOcean () {
     VisualizerCanvas.shapeArr.push(new THREE.Mesh(new THREE.PlaneBufferGeometry(window.innerWidth, window.innerWidth, 256, 256), new THREE.MeshLambertMaterial()))
     console.log(VisualizerCanvas.shapeArr)
     VisualizerCanvas.shapeArr[0].rotation.set(-Math.PI / 4, 0, Math.PI / 2)
@@ -551,7 +582,22 @@ export default class VisualizerCanvas extends Vue {
     VisualizerCanvas.scene.add(VisualizerCanvas.shapeArr[0])
   }
 
-  private addShape (shapeType: number) {
+  private addGenerativeTorus (SpotifyAnalysisUtils: any) {
+    let segments = 1
+    const timbreArr: number[] = SpotifyAnalysisUtils.g_timbre
+    const timbreSum = Math.ceil(timbreArr.reduce((sum, currVal) => sum + currVal) / (SpotifyAnalysisUtils.trackFeatures.energy * 30))
+    const chords: number[] = SpotifyAnalysisUtils.g_pitches.filter((pitch: number) => pitch > 0.5)
+    if (chords.length > 0) {
+      segments = chords.reduce((sum, currVal) => sum + currVal)
+    }
+    console.log(timbreSum)
+    const TorusKnot = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv / 2, SpotifyAnalysisUtils.trackFeatures.valence * 50, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
+    const material = new THREE.PointsMaterial({ color: 0xFFF })
+    VisualizerCanvas.shapeCloudArr.push(new THREE.Points(TorusKnot, material))
+    VisualizerCanvas.scene.add(VisualizerCanvas.shapeCloudArr[0])
+  }
+
+  private static addShape (shapeType: number) {
     if (shapeType === 0) {
       const cubeGeo = new THREE.BoxGeometry(10, 10, 10)
       for (let i = 0; i < VisualizerCanvas.shapeMax; i++) {
@@ -590,7 +636,7 @@ export default class VisualizerCanvas extends Vue {
     }
   }
 
-  private addLighting () {
+  private static addLighting () {
     const pointLight = new THREE.PointLight(0xffffff)
     const spotLight = new THREE.SpotLight(0xffffff)
     pointLight.position.set(0, 500, 600)
@@ -608,13 +654,13 @@ export default class VisualizerCanvas extends Vue {
     VisualizerCanvas.scene.add(spotLight)
   }
 
-  private rgbToHexHelper (num: number) {
+  private static rgbToHexHelper (num: number) {
     const hex = Math.ceil(num).toString(16)
     return hex.length === 1 ? '0' + hex : hex
   }
 
-  private rgbToHex (r: number, g: number, b: number) {
-    return ('0x' + this.rgbToHexHelper(r) + this.rgbToHexHelper(g) + this.rgbToHexHelper(b))
+  private static rgbToHex (r: number, g: number, b: number) {
+    return ('0x' + VisualizerCanvas.rgbToHexHelper(r) + VisualizerCanvas.rgbToHexHelper(g) + VisualizerCanvas.rgbToHexHelper(b))
   }
 
   private hslToHex (h: number, s: number, l: number) {
@@ -675,28 +721,36 @@ export default class VisualizerCanvas extends Vue {
     }
   }
 
+  private static resetCamera () {
+    VisualizerCanvas.camera.position.set(0, 0, 90)
+    VisualizerCanvas.camera.rotation.set(0, 0, 0)
+  }
+
   @Watch('ModeKey')
   onModeKeyChanged (mode: number, oldMode: number) {
     console.log(`changing mode key to ${mode} from ${oldMode}`)
     if (mode) {
       this.changingMode = true
-      this.removeShape()
-      VisualizerCanvas.camera.position.set(0, 0, 90)
-      VisualizerCanvas.camera.rotation.set(0, 0, 0)
-      if (mode > 2) {
-        this.addShape(Math.floor(Math.random() * 5))
-        this.setShapePosition()
-        this.rotateShapeToggle = true
-        VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight / 2, 90)
-      } else if (mode === 1) {
-        this.addOcean()
+      VisualizerCanvas.removeShape()
+      VisualizerCanvas.resetCamera()
+      if (mode === 1) {
+        VisualizerCanvas.addOcean()
         VisualizerCanvas.noise = new SimplexNoise()
         this.rotateShapeToggle = false
         VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight / 2, 90)
       } else if (mode === 2) {
+        this.addGenerativeTorus(this.SpotifyAnalysisUtils)
+        this.rotateShapeToggle = false
+        VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight / 2, 90)
+      } else if (mode === 3) {
         this.addGenerativeSphere(this.SpotifyAnalysisUtils, false)
         VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight / 4, 0)
         this.rotateShapeToggle = false
+      } else if (mode > 2) {
+        VisualizerCanvas.addShape(Math.floor(Math.random() * 5))
+        this.setShapePosition()
+        this.rotateShapeToggle = true
+        VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight / 2, 90)
       }
       this.changingMode = false
     }

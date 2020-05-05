@@ -19,10 +19,10 @@
           <button class="btn toggle" @click="toggleRandomColour" v-bind:class="{on: this.RandomColour}">
             Randomize Colour
           </button>
-          <button class="btn toggle" @click="toggleCameraZoom" v-if="this.ModeKey > 1" v-bind:class="{on: this.CameraZoomToggle}">
+          <button class="btn toggle" @click="toggleCameraZoom" v-if="this.ModeKey > 2" v-bind:class="{on: this.CameraZoomToggle}">
             Camera Zoom
           </button>
-          <button class="btn toggle" @click="toggleCameraRotate" v-if="this.ModeKey > 1" v-bind:class="{on: this.CameraRotateToggle}">
+          <button class="btn toggle" @click="toggleCameraRotate" v-if="this.ModeKey > 2" v-bind:class="{on: this.CameraRotateToggle}">
             Camera Rotate
           </button>
           <button class="btn hide" @click="hideControls"> hide controls </button>
@@ -125,6 +125,8 @@ export default class VisualizerControls extends Vue {
       this.$store.commit('mutateModeKey', 5)
     } else if (parseInt(cmd) === 6) {
       this.$store.commit('mutateModeKey', 6)
+    } else if (parseInt(cmd) === 7) {
+      this.$store.commit('mutateModeKey', 7)
     } else if (cmd === 'q') {
       this.$store.commit('mutateColourKey', 1)
     } else if (cmd === 'a') {

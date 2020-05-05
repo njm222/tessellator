@@ -185,7 +185,9 @@ export default class Player extends Vue {
           console.log('SpotifyAnalysisUtils doesnt exist')
         }
         // send firebase Data as lastPlayed under /users/{uid}
-        this.sendTrackData(response.data.item)
+        if (response.data.item) {
+          this.sendTrackData(response.data.item)
+        }
         // send to firestore
         if (this.prevTrackID !== response.data.item.id) {
           console.log(`sending new played track ${response.data.item.id}`)

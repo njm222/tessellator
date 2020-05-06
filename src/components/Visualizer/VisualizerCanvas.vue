@@ -712,7 +712,7 @@ export default class VisualizerCanvas extends Vue {
 
   private changeModeKey () {
     if (this.SpotifyAnalysisUtils.changeMode) {
-      const newModeKey = Math.floor(1 + Math.random() * 6)
+      const newModeKey = Math.floor(1 + Math.random() * 7)
       this.$store.commit('mutateModeKey', newModeKey)
       this.SpotifyAnalysisUtils.changeMode = false
       console.log(`changing mode key to ${newModeKey}`)

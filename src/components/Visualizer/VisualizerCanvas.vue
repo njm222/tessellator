@@ -188,10 +188,10 @@ export default class VisualizerCanvas extends Vue {
 
     VisualizerCanvas.camera.updateProjectionMatrix()
     if (this.ModeKey > 3) {
-      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.92, VisualizerCanvas.liveAudio.kickObject.kickEnergy / 255)
+      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.92, VisualizerCanvas.liveAudio.snareObject.snareEnergy / 255)
       VisualizerCanvas.composer.render()
     } else if (this.ModeKey === 2) {
-      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.max(0.85, VisualizerCanvas.liveAudio.kickObject.kickEnergy / 255)
+      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.max(0.85, VisualizerCanvas.liveAudio.snareObject.snareEnergy / 255)
       VisualizerCanvas.composer.render()
     } else {
       (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.85, VisualizerCanvas.liveAudio.bassObject.bassEnergy / 255)
@@ -586,7 +586,7 @@ export default class VisualizerCanvas extends Vue {
     if (chords.length > 0) {
       segments = chords.reduce((sum, currVal) => sum + currVal)
     }
-    const TorusKnot = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv, SpotifyAnalysisUtils.trackFeatures.valence * 50, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
+    const TorusKnot = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv, VisualizerCanvas.liveAudio.highsObject.highsAv, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
     const material = new THREE.PointsMaterial({ color: 0xFFF })
     VisualizerCanvas.shapeCloudArr.push(new THREE.Points(TorusKnot, material))
     VisualizerCanvas.scene.add(VisualizerCanvas.shapeCloudArr[0])

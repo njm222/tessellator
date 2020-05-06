@@ -24,6 +24,7 @@ export default class VisualizerCanvas extends Vue {
   static composer: EffectComposer
   static shapeArr: THREE.Mesh[];
   static shapeCloudArr: THREE.Points[];
+  static circleSprite: THREE.Texture;
   static shapeMax: number;
   static layerMarker: number[];
   static shapeColour: string;
@@ -42,6 +43,8 @@ export default class VisualizerCanvas extends Vue {
     VisualizerCanvas.scene = new THREE.Scene()
     VisualizerCanvas.shapeArr = []
     VisualizerCanvas.shapeCloudArr = []
+    VisualizerCanvas.circleSprite = new THREE.TextureLoader().load('/textures/spark1.png')
+    console.log(VisualizerCanvas.circleSprite)
     VisualizerCanvas.shapeMax = 529
     VisualizerCanvas.layerMarker = []
     VisualizerCanvas.shapeColour = '#FFF'
@@ -587,7 +590,7 @@ export default class VisualizerCanvas extends Vue {
       segments = chords.reduce((sum, currVal) => sum + currVal)
     }
     const TorusKnot = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv, VisualizerCanvas.liveAudio.highsObject.highsAv, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
-    const material = new THREE.PointsMaterial({ color: 0xFFF })
+    const material = new THREE.PointsMaterial({ color: 0xFFF, size: Math.floor(1 + segments / 2), map: VisualizerCanvas.circleSprite, alphaTest: 0.5, transparent: true })
     VisualizerCanvas.shapeCloudArr.push(new THREE.Points(TorusKnot, material))
     VisualizerCanvas.scene.add(VisualizerCanvas.shapeCloudArr[0])
   }

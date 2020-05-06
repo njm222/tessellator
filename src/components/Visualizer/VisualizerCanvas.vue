@@ -611,13 +611,6 @@ export default class VisualizerCanvas extends Vue {
       }
       console.log('added new octa grid')
     } else if (shapeType === 2) {
-      const sphereGeo = new THREE.SphereGeometry(5, 32, 32)
-      for (let i = 0; i < VisualizerCanvas.shapeMax; i++) {
-        VisualizerCanvas.shapeArr.push(new THREE.Mesh(sphereGeo, new THREE.MeshLambertMaterial({ color: 0x000000 })))
-        VisualizerCanvas.scene.add(VisualizerCanvas.shapeArr[i])
-      }
-      console.log('added new sphere grid')
-    } else if (shapeType === 3) {
       const tetraGeo = new THREE.TetrahedronGeometry(10, 0)
       for (let i = 0; i < VisualizerCanvas.shapeMax; i++) {
         VisualizerCanvas.shapeArr.push(new THREE.Mesh(tetraGeo, new THREE.MeshLambertMaterial({ color: 0x000000 })))
@@ -745,7 +738,7 @@ export default class VisualizerCanvas extends Vue {
         VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight / 4, 0)
         this.rotateShapeToggle = false
       } else if (mode > 2) {
-        VisualizerCanvas.addShape(Math.floor(Math.random() * 5))
+        VisualizerCanvas.addShape(Math.floor(Math.random() * 4))
         this.setShapePosition()
         this.rotateShapeToggle = true
         VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight / 2, 90)

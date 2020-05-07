@@ -209,7 +209,7 @@ export default class VisualizerCanvas extends Vue {
     } else if (SpotifyAnalysisUtils.trackFeatures.valence > 0.4) {
       noiseFreq = (VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.midsObject.midsAv) / SpotifyAnalysisUtils.trackFeatures.energy
     } else if (SpotifyAnalysisUtils.trackFeatures.valence > 0.1) {
-      noiseFreq = (VisualizerCanvas.liveAudio.snareObject.snareAv + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.highsObject.highsEnergy) / SpotifyAnalysisUtils.trackFeatures.danceability
+      noiseFreq = (VisualizerCanvas.liveAudio.snareObject.snareAv + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.highsObject.highsAv) / SpotifyAnalysisUtils.trackFeatures.danceability
     } else {
       noiseFreq = ((VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.midsObject.midsAv - VisualizerCanvas.liveAudio.highsObject.highsEnergy) / SpotifyAnalysisUtils.trackFeatures.energy)
     }
@@ -493,7 +493,7 @@ export default class VisualizerCanvas extends Vue {
         VisualizerCanvas.shapeColour = this.hslToHex(VisualizerCanvas.liveAudio.highsObject.highsEnergy * VisualizerCanvas.liveAudio.avFreq, VisualizerCanvas.liveAudio.bassObject.bassEnergy, VisualizerCanvas.liveAudio.midsObject.midsEnergy)
         break
       case 12:
-        VisualizerCanvas.shapeColour = this.hslToHex(360 - (VisualizerCanvas.liveAudio.highsObject.highsEnergy * VisualizerCanvas.liveAudio.avFreq), VisualizerCanvas.liveAudio.bassObject.bassEnergy, VisualizerCanvas.liveAudio.midsObject.midsEnergy)
+        VisualizerCanvas.shapeColour = this.hslToHex(VisualizerCanvas.liveAudio.avFreq + VisualizerCanvas.liveAudio.midsObject.midsAv, VisualizerCanvas.liveAudio.bassObject.bassAv, VisualizerCanvas.liveAudio.midsObject.midsAv)
         break
       default:
         VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.frequencyData[4], VisualizerCanvas.liveAudio.frequencyData[8], VisualizerCanvas.liveAudio.frequencyData[12])

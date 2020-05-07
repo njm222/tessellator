@@ -207,15 +207,15 @@ export default class VisualizerCanvas extends Vue {
     if (SpotifyAnalysisUtils.trackFeatures.valence > 0.7) {
       noiseFreq = ((VisualizerCanvas.liveAudio.bassObject.bassAv - VisualizerCanvas.liveAudio.highsObject.highsAv) / (SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * SpotifyAnalysisUtils.trackFeatures.valence))
     } else if (SpotifyAnalysisUtils.trackFeatures.valence > 0.4) {
-      noiseFreq = (VisualizerCanvas.liveAudio.bassObject.bassAv + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.midsObject.midsAv) / SpotifyAnalysisUtils.trackFeatures.energy
-    } else if (this.SpotifyAnalysisUtils.trackFeatures.valence > 0.1) {
-      noiseFreq = (VisualizerCanvas.liveAudio.bassObject.bassAv + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.highsObject.highsEnergy) / SpotifyAnalysisUtils.trackFeatures.danceability
+      noiseFreq = (VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.midsObject.midsAv) / SpotifyAnalysisUtils.trackFeatures.energy
+    } else if (SpotifyAnalysisUtils.trackFeatures.valence > 0.1) {
+      noiseFreq = (VisualizerCanvas.liveAudio.snareObject.snareAv + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.highsObject.highsEnergy) / SpotifyAnalysisUtils.trackFeatures.danceability
     } else {
-      noiseFreq = ((VisualizerCanvas.liveAudio.bassObject.bassAv + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.midsObject.midsAv - VisualizerCanvas.liveAudio.highsObject.highsEnergy) / SpotifyAnalysisUtils.trackFeatures.energy)
+      noiseFreq = ((VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.midsObject.midsAv - VisualizerCanvas.liveAudio.highsObject.highsEnergy) / SpotifyAnalysisUtils.trackFeatures.energy)
     }
 
     const zHeight = (SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * (VisualizerCanvas.liveAudio.rms + VisualizerCanvas.liveAudio.highsObject.highsEnergy)) * (1.5 - SpotifyAnalysisUtils.trackFeatures.valence)
-    const speed = (Date.now() + VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickEnergy) / (SpotifyAnalysisUtils.trackFeatures.tempo * SpotifyAnalysisUtils.trackFeatures.danceability * SpotifyAnalysisUtils.trackFeatures.energy * 20)
+    const speed = (Date.now() + VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickEnergy) / (SpotifyAnalysisUtils.trackFeatures.tempo * SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.valence * 20)
 
     const shapeGeo = VisualizerCanvas.shapeArr[0].geometry as THREE.BufferGeometry
     const position = shapeGeo.getAttribute('position') as THREE.BufferAttribute

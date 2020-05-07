@@ -475,7 +475,7 @@ export default class VisualizerCanvas extends Vue {
         VisualizerCanvas.shapeColour = this.hslToHex(VisualizerCanvas.liveAudio.bassObject.bassEnergy, VisualizerCanvas.liveAudio.bassObject.bassAv + VisualizerCanvas.liveAudio.highsObject.highsEnergy, VisualizerCanvas.liveAudio.midsObject.midsEnergy)
         break
       case 6:
-        VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.snareObject.snareAv, VisualizerCanvas.liveAudio.avFreq / 2, VisualizerCanvas.liveAudio.avFreq / 2)
+        VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.snareObject.snareEnergy, VisualizerCanvas.liveAudio.avFreq, VisualizerCanvas.liveAudio.highsObject.highsAv)
         break
       case 7:
         VisualizerCanvas.shapeColour = VisualizerCanvas.rgbToHex(VisualizerCanvas.liveAudio.rms, VisualizerCanvas.liveAudio.avFreq, VisualizerCanvas.liveAudio.peak)

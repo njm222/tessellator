@@ -66,7 +66,7 @@ export default class VisualizerCanvas extends Vue {
   }
 
   get RandomColour () {
-    return this.$store.state.randomMode
+    return this.$store.state.randomColour
   }
 
   get ModeKey () {

@@ -636,8 +636,8 @@ export default class VisualizerCanvas extends Vue {
     spotLight.position.set(0, -window.innerHeight / 2, window.innerHeight / 16)
     spotLight.castShadow = true
 
-    spotLight.shadow.mapSize.width = window.innerWidth
-    spotLight.shadow.mapSize.height = window.innerHeight
+    spotLight.shadow.mapSize.width = window.innerWidth * 2
+    spotLight.shadow.mapSize.height = window.innerHeight * 2
 
     spotLight.shadow.camera.near = 500
     spotLight.shadow.camera.far = 4000

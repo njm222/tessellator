@@ -207,7 +207,7 @@ export default class VisualizerCanvas extends Vue {
     if (SpotifyAnalysisUtils.trackFeatures.valence > 0.7) {
       noiseFreq = ((VisualizerCanvas.liveAudio.bassObject.bassAv - VisualizerCanvas.liveAudio.highsObject.highsAv) / (SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * SpotifyAnalysisUtils.trackFeatures.valence))
     } else if (SpotifyAnalysisUtils.trackFeatures.valence > 0.4) {
-      noiseFreq = (VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.midsObject.midsAv) / SpotifyAnalysisUtils.trackFeatures.energy
+      noiseFreq = (VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.snareObject.snareAv) / SpotifyAnalysisUtils.trackFeatures.energy
     } else if (SpotifyAnalysisUtils.trackFeatures.valence > 0.1) {
       noiseFreq = (VisualizerCanvas.liveAudio.snareObject.snareAv + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.highsObject.highsAv) / SpotifyAnalysisUtils.trackFeatures.danceability
     } else {
@@ -562,10 +562,10 @@ export default class VisualizerCanvas extends Vue {
   }
 
   private static addOcean () {
-    VisualizerCanvas.shapeArr.push(new THREE.Mesh(new THREE.PlaneBufferGeometry(window.innerWidth, window.innerWidth, 256, 256), new THREE.MeshLambertMaterial()))
+    VisualizerCanvas.shapeArr.push(new THREE.Mesh(new THREE.PlaneBufferGeometry(window.innerWidth * 2, window.innerHeight * 2, 256, 256), new THREE.MeshLambertMaterial()))
     console.log(VisualizerCanvas.shapeArr)
     VisualizerCanvas.shapeArr[0].rotation.set(-Math.PI / 4, 0, Math.PI / 2)
-    VisualizerCanvas.shapeArr[0].position.set(0, 0, -250)
+    VisualizerCanvas.shapeArr[0].position.set(0, 0, -window.innerHeight / 4)
     VisualizerCanvas.scene.add(VisualizerCanvas.shapeArr[0])
     console.log('added ocean')
   }
@@ -728,7 +728,7 @@ export default class VisualizerCanvas extends Vue {
         VisualizerCanvas.addOcean()
         VisualizerCanvas.noise = new SimplexNoise()
         this.rotateShapeToggle = false
-        VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight / 2, 90)
+        VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight, 90)
       } else if (mode === 2) {
         this.addGenerativeTorus(this.SpotifyAnalysisUtils)
         this.rotateShapeToggle = false

@@ -372,14 +372,14 @@ export default class VisualizerCanvas extends Vue {
     }
     const beatConfidence = this.SpotifyAnalysisUtils.g_beats[this.SpotifyAnalysisUtils.g_beat].confidence
     const beatEnd = this.SpotifyAnalysisUtils.g_beats[this.SpotifyAnalysisUtils.g_beat].start + this.SpotifyAnalysisUtils.g_beats[this.SpotifyAnalysisUtils.g_beat].duration
-    const zoomVal = ((Math.asin(VisualizerCanvas.liveAudio.bassObject.bassEnergy / 255) * (1 + this.SpotifyAnalysisUtils.trackFeatures.danceability)) + Math.asin(VisualizerCanvas.liveAudio.bassObject.bassAv / 255)) * this.SpotifyAnalysisUtils.trackFeatures.energy
+    const zoomVal = ((Math.asin(VisualizerCanvas.liveAudio.bassObject.bassAv / 255) * (1 + this.SpotifyAnalysisUtils.trackFeatures.danceability)) + Math.asin(VisualizerCanvas.liveAudio.snareObject.snareAv / 255)) * this.SpotifyAnalysisUtils.trackFeatures.energy
 
     if (this.ModeKey > 2 && zoomVal > 0.8) {
       if (beatConfidence > 0.9) {
         if (this.SpotifyAnalysisUtils.g_bar % 2 === 0) {
           VisualizerCanvas.camera.zoom = zoomVal * (1 - (this.TrackTime / 1000 - beatEnd))
         } else {
-          VisualizerCanvas.camera.zoom = zoomVal * (this.TrackTime / 1000 - beatEnd)
+          VisualizerCanvas.camera.zoom = zoomVal * (1 + this.TrackTime / 1000 - beatEnd)
         }
       } else {
         VisualizerCanvas.camera.zoom = zoomVal

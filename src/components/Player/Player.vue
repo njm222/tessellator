@@ -113,14 +113,14 @@ export default class Player extends Vue {
     player.addListener('ready', data => {
       console.log('Ready with deviceID ', data.device_id)
       this.$store.commit('mutateDeviceID', data.device_id)
-      this.playRandomTrack(data.device_id)
+      // this.playRandomTrack(data.device_id)
+      this.switchPlayer(data.device_id)
     })
     player.addListener('player_state_changed', data => {
       console.log('player state changed')
       console.log(data)
       this.$store.commit('mutatePlayerInfo', data)
-      if (data && data.position === 0) {
-        console.log(data)
+      if (data && data.track_window.current_track.id !== this.prevTrackID) {
         this.getPlayerTrack()
       }
     })
@@ -148,10 +148,22 @@ export default class Player extends Vue {
   }
 
   private play (device_id: string, track: string): void {
-    console.log(track)
-    console.log(device_id)
     Vue.axios.put(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
       uris: [track]
+    }, {
+      headers: { Authorization: 'Bearer ' + this.$store.state.accessToken }
+    }).then(res => {
+      console.log(res)
+    }).catch((error) => {
+      console.log(error)
+      this.refreshAccessToken()
+    })
+  }
+
+  private switchPlayer (device_id: string): void {
+    Vue.axios.put('https://api.spotify.com/v1/me/player', {
+      device_ids: [device_id],
+      play: true
     }, {
       headers: { Authorization: 'Bearer ' + this.$store.state.accessToken }
     }).then(res => {

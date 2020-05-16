@@ -44,7 +44,6 @@ export default class VisualizerCanvas extends Vue {
     VisualizerCanvas.shapeArr = []
     VisualizerCanvas.shapeCloudArr = []
     VisualizerCanvas.circleSprite = new THREE.TextureLoader().load('/textures/spark1.png')
-    console.log(VisualizerCanvas.circleSprite)
     VisualizerCanvas.shapeMax = 529
     VisualizerCanvas.layerMarker = []
     VisualizerCanvas.shapeColour = '#FFF'
@@ -232,6 +231,7 @@ export default class VisualizerCanvas extends Vue {
 
     if (SpotifyAnalysisUtils.barCounter >= 1) {
       const shapeMaterial = VisualizerCanvas.shapeArr[0].material as THREE.MeshLambertMaterialParameters
+      VisualizerCanvas.noise = new SimplexNoise()
       shapeMaterial.wireframe = !shapeMaterial.wireframe
       shapeMaterial.flatShading = !shapeMaterial.wireframe
       // shapeMaterial.needsUpdate = true

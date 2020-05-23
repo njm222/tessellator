@@ -590,7 +590,7 @@ export default class VisualizerCanvas extends Vue {
       segments = chords.reduce((sum, currVal) => sum + currVal)
     }
     const TorusKnot = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv, VisualizerCanvas.liveAudio.highsObject.highsAv, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
-    const material = new THREE.PointsMaterial({ color: 0xFFF, size: Math.min(Math.max(segments / 3, 1.5), 2.5), map: VisualizerCanvas.circleSprite, alphaTest: 0.5, transparent: true })
+    const material = new THREE.PointsMaterial({ color: 0xFFF, size: Math.min(Math.max(segments / 3, 1.5), 4), map: VisualizerCanvas.circleSprite, alphaTest: 0.5, transparent: true })
     VisualizerCanvas.shapeCloudArr.push(new THREE.Points(TorusKnot, material))
     VisualizerCanvas.scene.add(VisualizerCanvas.shapeCloudArr[0])
   }

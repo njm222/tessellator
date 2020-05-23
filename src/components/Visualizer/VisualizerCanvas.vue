@@ -506,7 +506,7 @@ export default class VisualizerCanvas extends Vue {
     let x = 0
     let y = 0
     let z = 0
-    const distance = 35
+    const distance = 40
     let shapeCount = 0
     const lim = 12
 
@@ -537,7 +537,7 @@ export default class VisualizerCanvas extends Vue {
 
       VisualizerCanvas.layerMarker[f] = shapeCount
       console.log(shapeCount)
-      z = z - distance
+      z = z - distance + 10
     }
     console.log(VisualizerCanvas.layerMarker)
   }

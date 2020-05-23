@@ -202,7 +202,7 @@ export default class VisualizerCanvas extends Vue {
   }
 
   private mode1 (SpotifyAnalysisUtils: any) {
-    let noiseFreq = 64
+    let noiseFreq = 128
     if (SpotifyAnalysisUtils.trackFeatures.valence > 0.7) {
       noiseFreq = ((VisualizerCanvas.liveAudio.bassObject.bassAv - VisualizerCanvas.liveAudio.highsObject.highsAv) / (SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * SpotifyAnalysisUtils.trackFeatures.valence))
     } else if (SpotifyAnalysisUtils.trackFeatures.valence > 0.4) {
@@ -212,7 +212,7 @@ export default class VisualizerCanvas extends Vue {
     } else {
       noiseFreq = ((VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.midsObject.midsAv - VisualizerCanvas.liveAudio.highsObject.highsEnergy) / SpotifyAnalysisUtils.trackFeatures.energy)
     }
-    noiseFreq = Math.min(Math.max(noiseFreq, 128), 1024)
+    noiseFreq = Math.min(Math.max(noiseFreq, 128), 896)
 
     const zHeight = Math.max((SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * (VisualizerCanvas.liveAudio.rms + VisualizerCanvas.liveAudio.highsObject.highsEnergy)) * (1.5 - SpotifyAnalysisUtils.trackFeatures.valence), 15)
     const speed = (Date.now() + VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.snareObject.snareEnergy) / Math.max((SpotifyAnalysisUtils.trackFeatures.tempo * SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * 30), 800)

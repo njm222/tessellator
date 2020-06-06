@@ -125,7 +125,7 @@ export class SpotifyAnalysis {
       if (!beatEnd || trackCounter > beatEnd) {
         const beatConfidence = this.g_beats[this.g_beat].confidence
         this.g_beat++
-        if (beatConfidence > (this.beatAv + this.beatVariance)) {
+        if (beatConfidence > (this.beatAv - this.beatVariance)) {
           console.log('## beat ##')
           this.beatCounter++
         }

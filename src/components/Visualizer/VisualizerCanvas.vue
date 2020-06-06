@@ -246,8 +246,7 @@ export default class VisualizerCanvas extends Vue {
 
   private mode2 (SpotifyAnalysisUtils: any) {
     if (VisualizerCanvas.shapeCloudArr.length > 0) {
-      VisualizerCanvas.removeShape()
-      this.addGenerativeTorus(SpotifyAnalysisUtils)
+      this.updateGenerativeTorus(SpotifyAnalysisUtils)
     }
     this.changeColourPoints(VisualizerCanvas.shapeCloudArr[0], VisualizerCanvas.shapeColour)
   }
@@ -580,6 +579,18 @@ export default class VisualizerCanvas extends Vue {
     VisualizerCanvas.shapeArr.push(new THREE.Mesh(new THREE.SphereBufferGeometry(50, Math.ceil(segments * 3), Math.ceil(segments * 3), 0, Math.PI * 2, Math.sin(SpotifyAnalysisUtils.trackFeatures.tempo * this.TrackTime / 1000000) * Math.PI * 2, (VisualizerCanvas.liveAudio.rms / 255) * 6), new THREE.MeshPhongMaterial({ wireframe: isWireframe, flatShading: !isWireframe })))
     VisualizerCanvas.shapeArr[0].rotation.set(Math.PI / 2, 0, 0)
     VisualizerCanvas.scene.add(VisualizerCanvas.shapeArr[0])
+  }
+
+  private updateGenerativeTorus (SpotifyAnalysisUtils: any) {
+    let segments = 1
+    const timbreArr: number[] = SpotifyAnalysisUtils.g_timbre
+    const timbreSum = Math.ceil(timbreArr.reduce((sum, currVal) => sum + currVal) / (SpotifyAnalysisUtils.trackFeatures.energy * 30))
+    const chords: number[] = SpotifyAnalysisUtils.g_pitches.filter((pitch: number) => pitch > 0.5)
+    if (chords.length > 0) {
+      segments = chords.reduce((sum, currVal) => sum + currVal)
+    }
+
+    VisualizerCanvas.shapeCloudArr[0].geometry = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv, VisualizerCanvas.liveAudio.highsObject.highsAv, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
   }
 
   private addGenerativeTorus (SpotifyAnalysisUtils: any) {

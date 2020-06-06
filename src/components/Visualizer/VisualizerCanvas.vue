@@ -123,9 +123,9 @@ export default class VisualizerCanvas extends Vue {
     const el = this.$refs.sceneRef as Element
     this.$nextTick(() => {
       VisualizerCanvas.camera = new THREE.PerspectiveCamera(75, el.clientWidth / el.clientHeight, 0.1, 1000)
-      VisualizerCanvas.renderer.setSize(el.clientWidth, el.clientHeight)
-      VisualizerCanvas.camera.aspect = el.clientWidth / el.clientHeight
-      console.log(el.children)
+      VisualizerCanvas.renderer.setSize(window.innerWidth, window.innerHeight)
+      VisualizerCanvas.renderer.setPixelRatio(window.devicePixelRatio)
+      VisualizerCanvas.camera.aspect = window.innerWidth / window.innerHeight
       el.appendChild(VisualizerCanvas.renderer.domElement)
       this.canvasResizeListener(el)
 
@@ -697,11 +697,12 @@ export default class VisualizerCanvas extends Vue {
 
   private canvasResizeListener (el: Element) {
     window.addEventListener('resize', re => {
-      const width = el.clientWidth
-      const height = el.clientHeight
-
-      VisualizerCanvas.renderer.setSize(width, height)
+      const width = window.innerWidth
+      const height = window.innerHeight
+      
       VisualizerCanvas.camera.aspect = width / height
+      VisualizerCanvas.renderer.setSize(width, height)
+      VisualizerCanvas.renderer.setPixelRatio(window.devicePixelRatio)
       VisualizerCanvas.camera.updateProjectionMatrix()
     })
   }

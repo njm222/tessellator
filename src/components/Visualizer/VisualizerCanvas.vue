@@ -1,12 +1,12 @@
 <template>
   <div class="sceneContainer">
     <div class="scene" ref="sceneRef"></div>
-    <button class="btn close" @click="closeVis">X</button>
+    <button v-show="controlsToggle" class="btn close" @click="closeVis">X</button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import LiveAudio from '../../services/liveAudio-utils'
 import * as THREE from 'three'
 import SimplexNoise from 'simplex-noise'
@@ -16,6 +16,9 @@ import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass
 
 @Component
 export default class VisualizerCanvas extends Vue {
+  @Prop({ required: true })
+  controlsToggle!: boolean
+
   static liveAudio: LiveAudio;
   static noise: SimplexNoise;
   static scene: THREE.Scene;

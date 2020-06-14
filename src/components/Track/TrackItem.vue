@@ -46,8 +46,8 @@ export default class TrackItem extends Vue {
 
 <style scoped>
 .now-playing-left-container {
-  width: 25%;
-  min-width: 140px;
+  width: 20%;
+  min-width: 180px;
 }
 
 .now-playing-left {

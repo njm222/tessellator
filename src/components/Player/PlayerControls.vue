@@ -37,8 +37,8 @@ export default class PlayerControls extends Vue {
 
 <style scoped>
   .now-playing-right-container {
-    width: 25%;
-    min-width: 140px;
+    width: 20%;
+    min-width: 180px;
   }
 
   .now-playing-right {
@@ -48,7 +48,7 @@ export default class PlayerControls extends Vue {
   .player-controls {
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     flex-flow: row nowrap;
   }

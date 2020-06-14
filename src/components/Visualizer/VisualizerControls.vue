@@ -1,7 +1,7 @@
 <template>
   <div class="controls-container">
     <transition name="fadeRight" mode="out-in">
-      <div v-if="this.isOpen" class="child" key="OpenVisualizerControls">
+      <div v-if="this.isOpen" class="child" v-bind:class="{hidden: !this.controlsToggle}" key="OpenVisualizerControls">
         <div class="controls">
           <div>
             Mode:
@@ -19,16 +19,16 @@
           <button class="btn toggle" @click="toggleRandomColour" v-bind:class="{on: this.RandomColour}">
             Randomize Colour
           </button>
-          <button class="btn toggle" @click="toggleCameraZoom" v-if="this.ModeKey > 2" v-bind:class="{on: this.CameraZoomToggle}">
+          <button class="btn toggle" @click="toggleCameraZoom" v-if="this.ModeKey > 3" v-bind:class="{on: this.CameraZoomToggle}">
             Camera Zoom
           </button>
-          <button class="btn toggle" @click="toggleCameraRotate" v-if="this.ModeKey > 2" v-bind:class="{on: this.CameraRotateToggle}">
+          <button class="btn toggle" @click="toggleCameraRotate" v-if="this.ModeKey > 3" v-bind:class="{on: this.CameraRotateToggle}">
             Camera Rotate
           </button>
           <button class="btn hide" @click="hideControls"> hide controls </button>
         </div>
       </div>
-      <div v-else class="child closed" key="CloseVisualizerControls">
+      <div v-else class="child closed" v-bind:class="{hidden: !this.controlsToggle}" key="CloseVisualizerControls">
         <div class="hidden-controls-container">
           <i @click="showControls" class="icon expand right"></i>
         </div>
@@ -38,10 +38,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue } from 'vue-property-decorator'
 
 @Component
 export default class VisualizerControls extends Vue {
+  @Prop({ required: true })
+  controlsToggle!: boolean
+
   private isOpen: boolean;
 
   constructor () {
@@ -127,6 +130,8 @@ export default class VisualizerControls extends Vue {
       this.$store.commit('mutateModeKey', 6)
     } else if (parseInt(cmd) === 7) {
       this.$store.commit('mutateModeKey', 7)
+    } else if (parseInt(cmd) === 8) {
+      this.$store.commit('mutateModeKey', 8)
     } else if (cmd === 'q') {
       this.$store.commit('mutateColourKey', 1)
     } else if (cmd === 'a') {
@@ -166,16 +171,18 @@ export default class VisualizerControls extends Vue {
   min-width: 1.5em;
   height: 100%;
   background: #292929;
-  opacity: 0.9;
-  transition: all 0.25s;
-}
-
-.controls-container .child.closed {
-  opacity: 0.3;
+  transition: all 0.5s;
+  opacity: 0.7;
 }
 
 .controls-container .child:hover {
   opacity: 1;
+}
+
+.controls-container .child.hidden {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-10vh);
 }
 
 .controls {

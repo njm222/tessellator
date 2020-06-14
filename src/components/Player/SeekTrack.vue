@@ -167,7 +167,9 @@ export default class SeekTrack extends Vue {
 
 <style scoped>
   .now-playing-center-container {
-    width: 70%;
+    width: 50%;
+    align-self: flex-end;
+    font-size: small;
   }
 
   .now-playing-center {
@@ -180,21 +182,21 @@ export default class SeekTrack extends Vue {
 
   .slider {
     width: 100%;
-    padding: 10px 10px;
+    padding: 0.5em;
   }
 
   .slider-bar {
-    height: 6px;
+    height: 0.4em;
     position: relative;
     display: block;
-    border-radius: 15px;
+    border-radius: 0.75em;
     background-color: #212131;
   }
 
   .slider-handle {
-    width: 16px;
-    height: 16px;
-    top: -5px;
+    width: 0.8em;
+    height: 0.8em;
+    top: -0.2em;
     position: absolute;
     border-radius: 50%;
     background-color: #42b983;
@@ -204,22 +206,22 @@ export default class SeekTrack extends Vue {
     cursor: pointer;
     z-index: 3;
     transition-duration: 0s;
-    left: 0px;
+    left: 0;
   }
 
   .slider-handle:hover,
   .slider-handle:active{
-    width: 20px;
-    height: 20px;
-    top: -7px;
+    width: 1em;
+    height: 1em;
+    top: -0.3em;
   }
 
   .slider-process {
     background-color: #42b983;
-    width: 0px;
-    height: 6px;
-    padding-right: 15px;
-    border-radius: 15px;
+    width: 0;
+    height: 0.4em;
+    padding-right: 0.5em;
+    border-radius: 1em;
   }
 
 @media only screen and (max-width: 450px) {

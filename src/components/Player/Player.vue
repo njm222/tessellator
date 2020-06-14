@@ -1,26 +1,12 @@
 <template>
   <transition name="fadeUp">
-    <div class="player-container" v-if="this.accessToken && this.playerInfo">
-      <div class="player-bar-container" v-bind:class="[this.hidePlayerToggle ? 'hidden' : '']">
-        <transition name="fadeDown" mode="out-in">
-          <div v-if="this.hidePlayerToggle" key="HiddenPlayerContainer">
-            <div class="showToggle">
-              <i @click="showPlayer" class="icon expand down"></i>
-            </div>
-          </div>
-          <div v-else key="OpenPlayerContainer">
-            <div class="hideToggle">
-              <i @click="hidePlayer" class="icon expand"></i>
-            </div>
-            <div class="player-bar">
-              <TrackItem :trackDetails="this.playerInfo.track_window.current_track"></TrackItem>
-              <PlayerControls></PlayerControls>
-            </div>
-          </div>
-        </transition>
-      </div>
-      <div class="player-progress" v-bind:class="[this.hidePlayerToggle ? 'hidden' : '']">
-        <SeekTrack :playerInfo="this.playerInfo"></SeekTrack>
+    <div class="player-container" v-show="this.accessToken && this.playerInfo" v-bind:class="{hidden: !this.controlsToggle}">
+      <div class="player-bar-container">
+        <div class="player-bar">
+          <TrackItem :trackDetails="this.playerInfo.track_window.current_track"></TrackItem>
+          <SeekTrack :playerInfo="this.playerInfo"></SeekTrack>
+          <PlayerControls></PlayerControls>
+        </div>
       </div>
     </div>
   </transition>
@@ -28,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { getCookie, setCookie } from '@/services/cookie-utils'
 import { addTrackPlayed, addArtistsPlayed, firebaseRef } from '@/services/firebase-utils'
 import TrackItem from '../Track/TrackItem.vue'
@@ -40,12 +26,13 @@ import { SpotifyAnalysis } from '@/services/spotify-utils'
   components: { TrackItem, SeekTrack, PlayerControls }
 })
 export default class Player extends Vue {
-  private hidePlayerToggle: boolean;
   private prevTrackID: string;
+
+  @Prop({ required: true })
+  controlsToggle!: boolean
 
   constructor () {
     super()
-    this.hidePlayerToggle = false
     this.prevTrackID = ''
   }
 
@@ -63,14 +50,6 @@ export default class Player extends Vue {
 
   get user () {
     return this.$store.state.user
-  }
-
-  hidePlayer () {
-    this.hidePlayerToggle = true
-  }
-
-  showPlayer () {
-    this.hidePlayerToggle = false
   }
 
   created (): void {
@@ -202,9 +181,9 @@ export default class Player extends Vue {
         }
         // send to firestore
         if (this.prevTrackID !== response.data.item.id) {
-          console.log(`sending new played track ${response.data.item.id}`)
-          addTrackPlayed(response.data.item, this.$store.state.user.id)
-          addArtistsPlayed(response.data.item, this.$store.state.user.id)
+          // console.log(`sending new played track ${response.data.item.id}`)
+          // addTrackPlayed(response.data.item, this.$store.state.user.id)
+          // addArtistsPlayed(response.data.item, this.$store.state.user.id)
           this.prevTrackID = response.data.item.id
         }
       }
@@ -241,6 +220,12 @@ export default class Player extends Vue {
   transform: translateY(10vh);
 }
 
+.player-container.hidden {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10vh);
+}
+
 .player-container {
   z-index: 1;
   display: flex;
@@ -248,18 +233,15 @@ export default class Player extends Vue {
   position: fixed;
   bottom: 0;
   width: 100%;
+  background: #292929;
+  transition: all 0.5s;
+  opacity: 0.7;
 }
 
 .player-bar-container {
   display: flex;
   flex-direction: column;
-  padding: 0.5em 1em 0;
-  background: #292929;
-  opacity: 0.9;
-}
-
-.player-container .player-bar-container.hidden {
-  opacity: 0.3;
+  padding: 0.5em 1em;
 }
 
 .player-bar {
@@ -269,40 +251,8 @@ export default class Player extends Vue {
   justify-content: space-around;
 }
 
-.player-progress {
-  display: flex;
-  justify-content: center;
-  background: #292929;
-  opacity: 0.9;
-}
-
-.player-progress.hidden {
-  opacity: 0.3;
-}
-
 .player-container:hover,
-.player-container:hover .player-bar-container,
-.player-container:hover .player-progress {
+.player-container:hover .player-bar-container {
   opacity: 1;
-}
-
-.hideToggle {
-  position: fixed;
-  right: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.showToggle {
-  display: flex;
-  justify-content: center;
-}
-
-@media only screen and (max-width: 375px) {
-  .hideToggle {
-    position: relative;
-    margin-bottom: 10px;
-  }
 }
 </style>

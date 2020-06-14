@@ -102,7 +102,7 @@ a:hover, a:focus {
 }
 
 .icon {
-  margin: 0 1em;
+  margin: 0;
   height: 18px;
   width: 18px;
   display: block;
@@ -129,24 +129,21 @@ a:hover, a:focus {
 
 .icon.play {
   mask-image: url('assets/icons/play-button-inside-a-circle.svg');
-  height: 30px;
-  width: 30px;
-}
-
-.icon.pause {
-  mask-image: url('assets/icons/rounded-pause-button.svg');
-  height: 30px;
-  width: 30px;
-}
-
-.icon.heart {
-  mask-image: url('assets/icons/heart.svg');
   height: 25px;
   width: 25px;
 }
 
+.icon.pause {
+  mask-image: url('assets/icons/rounded-pause-button.svg');
+  height: 25px;
+  width: 25px;
+}
+
+.icon.heart {
+  mask-image: url('assets/icons/heart.svg');
+}
+
 .icon.expand {
-  margin: 0;
   mask-image: url('assets/icons/expand.svg');
 }
 
@@ -174,19 +171,24 @@ a:hover, a:focus {
 }
 
 .icon.play:hover {
-  height: 35px;
-  width: 35px;
+  height: 28px;
+  width: 28px;
 }
 
 .icon.pause:hover {
-  height: 35px;
-  width: 35px;
+  height: 28px;
+  width: 28px;
 }
 
 .icon.shuffle {
   mask-image: url('assets/icons/shuffle.svg');
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
+}
+
+.icon.shuffle:hover {
+  width: 23px;
+  height: 23px;
 }
 
 .icon.shuffle.on {
@@ -244,7 +246,6 @@ a:hover, a:focus {
 
 @media only screen and (max-width: 450px) and (min-width: 375px){
   .icon {
-    margin: 0 0.5em;
     width: 15px;
     height: 15px;
   }

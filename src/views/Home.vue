@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <Player v-if="this.$store.state.authUser"></Player>
+  <div class="home" @mousemove="showPlayer">
+    <Player v-if="this.$store.state.authUser" :controlsToggle="playerToggle"></Player>
     <div v-if="!this.$store.state.openVisualizer">
       <HomeManager :key="this.$store.state.accessToken"/>
       <div v-if="this.$store.state.playerInfo">
@@ -12,8 +12,8 @@
     </div>
     <div v-else>
       <div v-if="this.$store.state.openVisualizer">
-        <VisualizerCanvas v-if="this.$store.state.playerInfo"></VisualizerCanvas>
-        <VisualizerControls v-if="this.$store.state.modeKey"></VisualizerControls>
+        <VisualizerCanvas v-if="this.$store.state.playerInfo" :controlsToggle="playerToggle"></VisualizerCanvas>
+        <VisualizerControls v-if="this.$store.state.modeKey" :controlsToggle="playerToggle"></VisualizerControls>
       </div>
     </div>
   </div>
@@ -37,6 +37,29 @@ export default {
     MyPlaylists,
     VisualizerCanvas,
     VisualizerControls
+  },
+  data () {
+    return {
+      playerToggle: false,
+      activityListener: null
+    }
+  },
+  methods: {
+    showPlayer () {
+      console.log('showing player')
+      this.playerToggle = true
+      this.setActiveUser()
+    },
+    hidePlayer () {
+      console.log('hiding player')
+      this.playerToggle = false
+    },
+    setActiveUser () {
+      clearTimeout(this.activityListener)
+      this.activityListener = setTimeout(() => {
+        this.hidePlayer()
+      }, 3500)
+    }
   }
 }
 </script>

@@ -193,7 +193,7 @@ export default class VisualizerCanvas extends Vue {
 
     VisualizerCanvas.camera.updateProjectionMatrix()
     if (this.ModeKey > 3) {
-      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.92, VisualizerCanvas.liveAudio.snareObject.snareEnergy / 255)
+      (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.min(0.88, VisualizerCanvas.liveAudio.snareObject.snareEnergy / 255)
       VisualizerCanvas.composer.render()
     } else if (this.ModeKey === 2) {
       (VisualizerCanvas.composer.passes[1] as any).uniforms.damp.value = Math.max(0.85, VisualizerCanvas.liveAudio.snareObject.snareEnergy / 255)
@@ -216,9 +216,8 @@ export default class VisualizerCanvas extends Vue {
       noiseFreq = ((VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.kickObject.kickAv - VisualizerCanvas.liveAudio.midsObject.midsAv - VisualizerCanvas.liveAudio.highsObject.highsEnergy) / SpotifyAnalysisUtils.trackFeatures.energy)
     }
     noiseFreq = Math.min(Math.max(noiseFreq, 128), 896)
-
-    const zHeight = Math.max((SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * (VisualizerCanvas.liveAudio.rms + VisualizerCanvas.liveAudio.highsObject.highsEnergy)) * (1.5 - SpotifyAnalysisUtils.trackFeatures.valence), 15)
-    const speed = (Date.now() + VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.snareObject.snareEnergy) / Math.max((SpotifyAnalysisUtils.trackFeatures.tempo * SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * 30), 800)
+    const zHeight = Math.min(Math.max((SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * (VisualizerCanvas.liveAudio.rms + VisualizerCanvas.liveAudio.highsObject.highsEnergy) / 3), 20), 80)
+    const speed = (Date.now() + VisualizerCanvas.liveAudio.bassObject.bassEnergy + VisualizerCanvas.liveAudio.midsObject.midsEnergy) / Math.max((SpotifyAnalysisUtils.trackFeatures.tempo * SpotifyAnalysisUtils.trackFeatures.energy * SpotifyAnalysisUtils.trackFeatures.danceability * 20), 900)
 
     const shapeGeo = VisualizerCanvas.shapeArr[0].geometry as THREE.BufferGeometry
     const position = shapeGeo.getAttribute('position') as THREE.BufferAttribute
@@ -738,6 +737,8 @@ export default class VisualizerCanvas extends Vue {
       VisualizerCanvas.removeShape()
       VisualizerCanvas.resetCamera()
       if (mode === 1) {
+        VisualizerCanvas.camera.position.set(0, -50, 0)
+        VisualizerCanvas.camera.rotation.set(0, 1, 0)
         VisualizerCanvas.addOcean()
         VisualizerCanvas.noise = new SimplexNoise()
         this.rotateShapeToggle = false

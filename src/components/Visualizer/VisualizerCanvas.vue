@@ -134,8 +134,8 @@ export default class VisualizerCanvas extends Vue {
 
       VisualizerCanvas.addLighting()
       VisualizerCanvas.addOcean()
-      VisualizerCanvas.camera.position.z = 90
-
+      VisualizerCanvas.camera.position.set(0, -50, 0)
+      VisualizerCanvas.camera.rotation.set(0, 1, 0)
       // postprocessing
       VisualizerCanvas.composer = new EffectComposer(VisualizerCanvas.renderer)
       VisualizerCanvas.composer.addPass(new RenderPass(VisualizerCanvas.scene, VisualizerCanvas.camera))
@@ -645,18 +645,15 @@ export default class VisualizerCanvas extends Vue {
   private static addLighting () {
     const pointLight = new THREE.PointLight(0xffffff)
     const spotLight = new THREE.SpotLight(0xffffff)
-    pointLight.position.set(0, 500, 600)
-    VisualizerCanvas.scene.add(pointLight)
+
+    pointLight.position.set(0, 0, window.innerHeight / 8)
 
     spotLight.position.set(0, -window.innerHeight / 2, window.innerHeight / 16)
     spotLight.castShadow = true
-
     spotLight.shadow.mapSize.width = window.innerWidth * 2
     spotLight.shadow.mapSize.height = window.innerHeight * 2
 
-    spotLight.shadow.camera.near = 500
-    spotLight.shadow.camera.far = 4000
-    spotLight.shadow.camera.fov = 30
+    VisualizerCanvas.scene.add(pointLight)
     VisualizerCanvas.scene.add(spotLight)
   }
 

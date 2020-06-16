@@ -134,7 +134,7 @@ export default class VisualizerCanvas extends Vue {
 
       VisualizerCanvas.addLighting()
       VisualizerCanvas.addOcean()
-      VisualizerCanvas.camera.position.set(0, -50, 0)
+      VisualizerCanvas.camera.position.set(0, -100, 0)
       VisualizerCanvas.camera.rotation.set(0, 1, 0)
       // postprocessing
       VisualizerCanvas.composer = new EffectComposer(VisualizerCanvas.renderer)
@@ -698,7 +698,6 @@ export default class VisualizerCanvas extends Vue {
     window.addEventListener('resize', re => {
       const width = window.innerWidth
       const height = window.innerHeight
-      
       VisualizerCanvas.camera.aspect = width / height
       VisualizerCanvas.renderer.setSize(width, height)
       VisualizerCanvas.renderer.setPixelRatio(window.devicePixelRatio)
@@ -737,7 +736,7 @@ export default class VisualizerCanvas extends Vue {
       VisualizerCanvas.removeShape()
       VisualizerCanvas.resetCamera()
       if (mode === 1) {
-        VisualizerCanvas.camera.position.set(0, -50, 0)
+        VisualizerCanvas.camera.position.set(0, -100, 0)
         VisualizerCanvas.camera.rotation.set(0, 1, 0)
         VisualizerCanvas.addOcean()
         VisualizerCanvas.noise = new SimplexNoise()

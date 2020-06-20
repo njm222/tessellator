@@ -14,7 +14,7 @@ export default class AboutDescription extends Vue {
   data () {
     return {
       description: 'A | free to use | real-time | 3-D | Spotify music visualizer',
-      content: 'The brainchild of <a href="https://www.linkedin.com/in/nathan-menezes-568249b9/">Nathan Menezes</a>, after he went to a <a href="https://www.christian-loeffler.net/">Christian Löffler</a> set... Tessellator was born.<br>' +
+      content: 'The inspiration for Tessellator came after a <a href="https://www.christian-loeffler.net/">Christian Löffler</a> set in SF.<br>' +
         'Tessellator is an interactive 3D music visualizer that has been developed to enhance your experience while listening to your favourite tracks. ' +
         'Tessellator uses the live audio to draw the visualizations in real-time. No loops / static content.'
     }

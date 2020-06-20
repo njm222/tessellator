@@ -1,7 +1,23 @@
 <template>
   <div class="about">
-    <a href="https://github.com/njm222/Spotify_Visualizer" target="_blank">
-      <h1>Github</h1>
-    </a>
+    <FAQ />
+    <Contact />
   </div>
 </template>
+
+<script>
+import FAQ from '@/components/About/FAQ.vue'
+import Contact from '@/components/About/Contact.vue'
+
+export default {
+  name: 'About',
+  components: {
+    FAQ: FAQ,
+    Contact: Contact
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

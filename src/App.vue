@@ -143,6 +143,10 @@ a:hover, a:focus {
   mask-image: url('assets/icons/heart.svg');
 }
 
+.icon.dropdown {
+  mask-image: url('assets/icons/menu-caret.svg');
+}
+
 .icon.expand {
   mask-image: url('assets/icons/expand.svg');
 }
@@ -207,8 +211,16 @@ a:hover, a:focus {
   opacity: 0;
 }
 
+.fadeDown-enter-active, .fadeDown-leave-active {
+  transition: all 0.5s ease-in-out;
+}
+.fadeDown-enter, .fadeDown-leave-to {
+  opacity: 0;
+  transform: translateY(-4em);
+}
+
 .fadeUp-enter-active, .fadeUp-leave-active {
-  transition: all 1s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 .fadeUp-enter, .fadeUp-leave-to {
   opacity: 0;
@@ -216,7 +228,7 @@ a:hover, a:focus {
 }
 
 .fadeLeft-enter-active, .fadeLeft-leave-active {
-  transition: all 1s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 .fadeLeft-enter, .fadeLeft-leave-to {
   opacity: 0;
@@ -224,7 +236,7 @@ a:hover, a:focus {
 }
 
 .fadeRight-enter-active, .fadeRight-leave-active {
-  transition: all 1s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 .fadeRight-enter, .fadeRight-leave-to {
   opacity: 0;

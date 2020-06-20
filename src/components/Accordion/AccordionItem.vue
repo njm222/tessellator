@@ -1,5 +1,5 @@
 <template>
-  <div class="accordion-item">
+  <div class="accordion-item" :class="{ active: open }">
     <div class="accordion-title" @click="open = !open">
       <h4 v-html="item.title" :class="{ active: open }"></h4>
       <i class="icon dropdown" :class="{ on: open }"></i>
@@ -36,6 +36,11 @@ export default class AccordionItem extends Vue {
   background-color: #292929;
   box-shadow: 0 10px 6px -6px #070707;
   opacity: 0.8;
+  transition: all 1s;
+}
+
+.accordion-item.active {
+  box-shadow: none;
 }
 
 .accordion-item:hover {

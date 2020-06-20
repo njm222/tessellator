@@ -102,6 +102,14 @@ export default class VisualizerControls extends Vue {
     console.log(this.isOpen)
   }
 
+  toggleFullscreen () {
+    if (document.fullscreenElement) {
+      document.exitFullscreen()
+    } else {
+      document.documentElement.requestFullscreen()
+    }
+  }
+
   mounted () {
     window.addEventListener('keypress', this.doCommand)
   }
@@ -150,6 +158,16 @@ export default class VisualizerControls extends Vue {
       this.$store.commit('mutateColourKey', 8)
     } else if (cmd === 'c') {
       this.$store.commit('mutateColourKey', 10)
+    } else if (cmd === 'r') {
+      this.$store.commit('mutateColourKey', 11)
+    } else if (cmd === 'v') {
+      this.$store.commit('mutateColourKey', 12)
+    } else if (cmd === 'f') {
+      this.toggleFullscreen()
+    } else if (cmd === 'm') {
+      this.toggleRandomMode()
+    } else if (cmd === 'k') {
+      this.toggleRandomColour()
     }
   }
 }

@@ -18,7 +18,7 @@ export default class FAQ extends Vue {
       faqItems: [
         {
           title: 'How does the visualizer work?',
-          content: 'First a player is created and starts playing a track, from which the track features and analysis is obtained, all through the Spotify API.<br><br>' +
+          content: 'First a player is created and starts playing a track, from which the track features and analysis are obtained, all through the Spotify API.<br><br>' +
               'At the same time your microphone starts listening to what is being played via the Web Audio API and further audio analysis is conducted.<br><br>' +
               'Using the audio analysis from the microphone and the Spotify API the animations are rendered on the screen in real-time using threejs.',
           id: 0

@@ -29,29 +29,34 @@ export default class FAQ extends Vue {
           id: 1
         },
         {
+          title: 'How do I view the visualizer in fullscreen?',
+          content: 'You can use the keyboard key \'f\' or \'F11\'',
+          id: 2
+        },
+        {
           title: 'Can I use another device to change the music?',
           content: 'Yes, but make sure the \'Visualizer Player\' is selected from \'Devices available\' tab on the Spotify App.',
-          id: 2
+          id: 3
         },
         {
           title: 'How do I change a visualizer mode?',
           content: 'You can use the keyboard keys \'1-7\' to select a specific mode.',
-          id: 3
+          id: 4
         },
         {
           title: 'How do I change a colour mode?',
           content: 'You can use the keyboard keys \'q-v\' to select a specific colour mode.',
-          id: 4
+          id: 5
         },
         {
           title: 'How do I toggle the visualizer mode randomizer?',
           content: 'Open the visualizer controls on the left of the visualizer screen and the click on the \'Randomize Mode\' button or the keyboard key \'m\'.',
-          id: 5
+          id: 6
         },
         {
           title: 'How do I toggle the colour mode randomizer?',
           content: 'Open the visualizer controls on the left of the visualizer screen and the click on the \'Randomize Colour\' button or the keyboard key \'k\'.',
-          id: 6
+          id: 7
         }
       ]
     }

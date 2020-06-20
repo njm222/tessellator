@@ -63,3 +63,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.home {
+  padding: 0 0 10vh 0;
+}
+</style>

@@ -32,15 +32,15 @@ export default class AccordionItem extends Vue {
 <style scoped>
 .accordion-item {
   margin: 2em 0;
-  padding: 2em;
+  padding: 0.5em 2em;
   background-color: #292929;
-  box-shadow: 0 10px 6px -6px #070707;
+  box-shadow: 0 10px 10px -6px #181818;
   opacity: 0.8;
   transition: all 1s;
 }
 
 .accordion-item.active {
-  box-shadow: none;
+  box-shadow: 0 15px 18px -6px #070707;
 }
 
 .accordion-item:hover {

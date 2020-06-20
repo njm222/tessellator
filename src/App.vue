@@ -45,7 +45,6 @@ body:after {
 #app {
   width: 100%;
   height: 100%;
-  padding: 0 0 10vh 0;
 }
 
 #nav {
@@ -247,6 +246,16 @@ a:hover, a:focus {
   display: flex;
   justify-content: space-around;
   padding: 0 1em;
+}
+
+.about a,
+.faq a {
+  color: #FFFF00;
+}
+
+.about a:hover,
+.faq a:hover {
+  color: #D31E1E;
 }
 
 @media only screen and (max-width: 768px) {

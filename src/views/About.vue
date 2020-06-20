@@ -1,5 +1,6 @@
 <template>
-  <div class="about">
+  <div>
+    <AboutDescription />
     <FAQ />
     <Contact />
   </div>
@@ -8,12 +9,14 @@
 <script>
 import FAQ from '@/components/About/FAQ.vue'
 import Contact from '@/components/About/Contact.vue'
+import AboutDescription from '../components/About/AboutDescription'
 
 export default {
   name: 'About',
   components: {
-    FAQ: FAQ,
-    Contact: Contact
+    AboutDescription,
+    FAQ,
+    Contact
   }
 }
 </script>

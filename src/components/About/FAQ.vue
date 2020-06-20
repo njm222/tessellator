@@ -1,6 +1,6 @@
 <template>
   <div class="faq">
-    <h1>F.A.Q.</h1>
+    <h2>F.A.Q.</h2>
     <AccordionManager :items="faqItems" />
   </div>
 </template>
@@ -18,9 +18,9 @@ export default class FAQ extends Vue {
       faqItems: [
         {
           title: 'How does the visualizer work?',
-          content: 'First a player is created and starts playing a track, from which the track features and analysis are obtained, all through the Spotify API.<br><br>' +
-              'At the same time your microphone starts listening to what is being played via the Web Audio API and further audio analysis is conducted.<br><br>' +
-              'Using the audio analysis from the microphone and the Spotify API the animations are rendered on the screen in real-time using threejs.',
+          content: 'First a player is created and starts playing a track, from which the track features and analysis are obtained, all through the <a href="https://developer.spotify.com/">Spotify API</a>.<br><br>' +
+              'At the same time your microphone starts listening to what is being played via the <a href="https://developer.mozilla.org/docs/Web/API/Web_Audio_API">Web Audio API</a> and further audio analysis is conducted.<br><br>' +
+              'Using the audio analysis from the microphone and the Spotify API the animations are rendered on the screen in real-time using <a href="https://threejs.org/">three.js</a>  .',
           id: 0
         },
         {
@@ -66,7 +66,21 @@ export default class FAQ extends Vue {
 
 <style scoped>
 .faq {
-  margin: 0 10%;
-  max-width: 80vw;
+  margin: 0 15%;
+  max-width: 70vw;
+}
+
+@media only screen and (max-width: 768px) {
+  .faq {
+    margin: 0 10%;
+    max-width: 80vw;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .faq {
+    margin: 0 5%;
+    max-width: 90vw;
+  }
 }
 </style>

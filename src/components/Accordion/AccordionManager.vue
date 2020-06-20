@@ -24,6 +24,6 @@ export default class AccordionManager extends Vue {
 <style scoped>
 .accordion-container {
   text-align: left;
-  padding: 2.5vw;
+  padding: 0 2em;
 }
 </style>

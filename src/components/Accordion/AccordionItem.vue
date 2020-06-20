@@ -1,8 +1,8 @@
 <template>
   <div class="accordion-item">
     <div class="accordion-title" @click="open = !open">
-      <h4 v-html="item.title"></h4>
-      <i class="icon dropdown"></i>
+      <h4 v-html="item.title" :class="{ active: open }"></h4>
+      <i class="icon dropdown" :class="{ on: open }"></i>
     </div>
     <transition name="fadeDown">
       <div v-if="open" class="accorion-content">
@@ -47,6 +47,22 @@ export default class AccordionItem extends Vue {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+}
+
+.accordion-title i,
+.accordion-title h4 {
+  transition: all 0.5s;
+}
+
+.accordion-title .active {
+  color: #42b983;
+}
+.accordion-title .on {
+  background-color: #D31E1E;
+  transform: rotate(180deg);
+}
+.accordion-title .on:hover {
+  background-color: #E42F2F;
 }
 .accordion-title a {
   padding: .25em;

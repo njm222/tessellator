@@ -182,8 +182,8 @@ export default class Player extends Vue {
         // send to firestore
         if (this.prevTrackID !== response.data.item.id) {
           // console.log(`sending new played track ${response.data.item.id}`)
-          // addTrackPlayed(response.data.item, this.$store.state.user.id)
-          // addArtistsPlayed(response.data.item, this.$store.state.user.id)
+          addTrackPlayed(response.data.item, this.$store.state.user.id)
+          addArtistsPlayed(response.data.item, this.$store.state.user.id)
           this.prevTrackID = response.data.item.id
         }
       }

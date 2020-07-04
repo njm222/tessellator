@@ -329,12 +329,12 @@ export default class VisualizerCanvas extends Vue {
   }
 
   private mode7 (SpotifyAnalysisUtils: any) {
-    if (SpotifyAnalysisUtils.tatumCounter % VisualizerCanvas.shapeArr.length === 0) {
+    if (SpotifyAnalysisUtils.tatumCounter - VisualizerCanvas.layerMarker[3] >= 0) {
       for (let i = 0; i < VisualizerCanvas.shapeArr.length; i++) {
         this.changeColour(VisualizerCanvas.shapeArr[i], '0x0000')
       }
     }
-    for (let i = 0; i < 1 + (SpotifyAnalysisUtils.tatumCounter % VisualizerCanvas.shapeArr.length); i++) {
+    for (let i = 0; i < 1 + (SpotifyAnalysisUtils.tatumCounter % VisualizerCanvas.layerMarker[3]); i++) {
       this.changeColour(VisualizerCanvas.shapeArr[i], VisualizerCanvas.shapeColour)
     }
   }

@@ -23,8 +23,6 @@ export default class Playlist extends Vue {
   }
 
   private playPlaylist (device_id: string, playlist: string): void {
-    console.log(playlist)
-    console.log(device_id)
     Vue.axios.put(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
       context_uri: playlist
     }, {

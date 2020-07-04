@@ -24,9 +24,6 @@ export default class LastPlayedItem extends Vue {
   }
 
   private playTrack (device_id: string, track: string): void {
-    console.log(track)
-    console.log(device_id)
-    console.log(this.$store.state.accessToken)
     Vue.axios.put(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
       uris: [track]
     }, {

@@ -14,7 +14,6 @@ const client_id = process.env.Spotify_client_id;
 const client_secret = process.env.Spotify_client_secret;
 const redirect_uri = process.env.Spotify_redirect_uri;
 
-
 // Gzip compression for html, js, css
 app.get('*.html', function (req, res, next) {
   req.url = req.url + '.gz';
@@ -98,8 +97,8 @@ app.get('/callback' , function (req, res) {
     if (!error && response.statusCode === 200) {
       const access_token = body.access_token;
       const refresh_token = body.refresh_token;
-      res.cookie('accessToken', access_token);
-      res.cookie('refreshToken', refresh_token);
+      res.cookie('accessToken', access_token, { expires: new Date(Date.now() + (30 * 60 * 1000))}); // cookie will be removed after 30 mins
+      res.cookie('refreshToken', refresh_token); // session cookie
       res.redirect('/');
     } else {
       res.redirect('/' +

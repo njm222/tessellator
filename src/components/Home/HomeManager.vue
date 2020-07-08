@@ -78,7 +78,7 @@ export default class Home extends Vue {
     }).catch(console.log)
   }
 
-  updateGtagUserID (name: string) {
+  private updateGtagUserID (name: string) {
     this.$gtag.set({ user_id: name })
     this.$gtag.pageview({
       page_title: 'HomeManager.vue',

@@ -20,7 +20,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import HomeManager from '@/components/Home/HomeManager.vue'
 import OnlineUsers from '@/components/ActiveUsers/ActiveUsersManager.vue'
 import Player from '@/components/Player/Player.vue'

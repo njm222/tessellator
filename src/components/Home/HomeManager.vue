@@ -70,7 +70,7 @@ export default class Home extends Vue {
   }
 
   private refreshAccessToken () {
-    Vue.axios.post('/refreshToken', {
+    Vue.axios.post('http://tessellator.herokuapp.com/refreshToken', {
       refreshToken: this.$store.state.refreshToken
     }).then((response) => {
       setCookie('accessToken', response.data.access_token)

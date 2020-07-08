@@ -99,9 +99,9 @@ app.get('/callback' , function (req, res) {
       const refresh_token = body.refresh_token;
       res.cookie('accessToken', access_token, { expires: new Date(Date.now() + (30 * 60 * 1000))}); // cookie will be removed after 30 mins
       res.cookie('refreshToken', refresh_token); // session cookie
-      res.redirect('/');
+      res.redirect('https://tessellator.space/');
     } else {
-      res.redirect('/' +
+      res.redirect('https://tessellator.space/' +
         querystring.stringify({
           error: 'invalid_token'
         }));
@@ -170,7 +170,7 @@ app.post('/addUser', function (req, res) {
   userRef.set({
     userData: userData
   }, { merge: true }).then(ref => {
-    res.send('user: ' + userData.id + 'has been updated')
+    res.send('user: ' + userData.id + ' has been updated')
   }).catch((error) => {
     console.log(error)
     res.status(500).send(error)

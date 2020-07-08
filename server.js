@@ -160,6 +160,7 @@ app.post('/authUser', function (req, res) {
     })
     .catch(function(error) {
       console.log('Error creating custom token:', error);
+      res.status(500).send(error)
     })
 });
 
@@ -169,9 +170,10 @@ app.post('/addUser', function (req, res) {
   userRef.set({
     userData: userData
   }, { merge: true }).then(ref => {
-    // console.log('Added document with ID: ', ref)
+    res.send('user: ' + userData.id + 'has been updated')
   }).catch((error) => {
     console.log(error)
+    res.status(500).send(error)
   })
 })
 

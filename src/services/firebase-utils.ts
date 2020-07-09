@@ -12,6 +12,8 @@ const firebaseConfig = {
   appId: process.env.VUE_APP_AppId
 }
 
+const apiURL = process.env.VUE_APP_ApiURL
+
 firebase.initializeApp(firebaseConfig)
 
 export const firebaseRef = { firebase }
@@ -49,7 +51,7 @@ function handleUserPresense (auth: any, spotifyUrl: string) {
 
 export function authUser (userData: SpotifyApi.UserProfileResponse): Promise<boolean> {
   return new Promise((resolve, reject) => {
-    Axios.post('/authUser', userData).then((res) => {
+    Axios.post(apiURL + '/authUser', userData).then((res) => {
       console.log(`Sent user id: ${userData.id} to server`)
       firebase.auth().signInWithCustomToken(res.data).then((res) => {
         handleUserPresense(res, userData.external_urls.spotify)
@@ -62,7 +64,7 @@ export function authUser (userData: SpotifyApi.UserProfileResponse): Promise<boo
 }
 
 export function addUser (UserData: SpotifyApi.UserProfileResponse) {
-  Axios.post('/addUser', {
+  Axios.post(apiURL + '/addUser', {
     userData: UserData
   }).then((res) => {
     console.log(res)
@@ -72,7 +74,7 @@ export function addUser (UserData: SpotifyApi.UserProfileResponse) {
 }
 
 export function addTrackPlayed (trackData: SpotifyApi.TrackObjectFull, userID: string) {
-  Axios.post('/addTrackPlayed', {
+  Axios.post(apiURL + '/addTrackPlayed', {
     trackData: trackData,
     userID: userID
   }).then((res) => {
@@ -83,7 +85,7 @@ export function addTrackPlayed (trackData: SpotifyApi.TrackObjectFull, userID: s
 }
 
 export function addArtistsPlayed (trackData: SpotifyApi.TrackObjectFull, userID: string) {
-  Axios.post('/addArtistsPlayed', {
+  Axios.post(apiURL + '/addArtistsPlayed', {
     artistsData: trackData.artists,
     userID: userID
   }).then((res) => {

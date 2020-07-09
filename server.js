@@ -99,9 +99,9 @@ app.get('/callback' , function (req, res) {
       const refresh_token = body.refresh_token;
       res.cookie('accessToken', access_token, { expires: new Date(Date.now() + (30 * 60 * 1000))}); // cookie will be removed after 30 mins
       res.cookie('refreshToken', refresh_token); // session cookie
-      res.redirect('https://tessellator.space/');
+      res.redirect('/');
     } else {
-      res.redirect('https://tessellator.space/' +
+      res.redirect('/' +
         querystring.stringify({
           error: 'invalid_token'
         }));

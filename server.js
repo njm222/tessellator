@@ -1,4 +1,5 @@
 const express = require('express')
+const enforce = require('express-sslify')
 const path = require('path')
 const request = require('request') // "Request" library
 const cors = require('cors')
@@ -45,11 +46,11 @@ function requireHTTPS (req, res, next) {
   next()
 }
 
-app.use(express.static(path.join(__dirname, '/dist'))
+app.use(enforce.HTTPS({ trustProtoHeader: true }))
+  .use(express.static(__dirname + '/dist'))
   .use(cors())
   .use(express.json())
   .use(compression())
-  .use(requireHTTPS)
 
 // Server Setup
 app.listen(server_port, () => {

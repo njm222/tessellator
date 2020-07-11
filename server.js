@@ -176,13 +176,22 @@ app.post('/authUser', function (req, res) {
 app.post('/addUser', function (req, res) {
   const userData = req.body.userData
   const userRef = fbAdmin.firestore().collection('users').doc(userData.id)
-  userRef.set({
-    userData: userData
-  }, { merge: true }).then(ref => {
-    res.send('user: ' + userData.id + ' has been updated')
-  }).catch((error) => {
-    console.log(error)
-    res.status(500).send(error)
+
+  userRef.get().then((snapshot) => {
+    if (!snapshot.exists) {
+      const allUsersDataRef = fbAdmin.firestore().collection('users').doc('allUsersData')
+      allUsersDataRef.set({
+        totalNumUsers: FieldValue.increment(1)
+      }, { merge: true })
+    }
+    userRef.set({
+      userData: userData
+    }, { merge: true }).then(ref => {
+      res.send('user: ' + userData.id + ' has been updated')
+    }).catch((error) => {
+      console.log(error)
+      res.status(500).send(error)
+    })
   })
 })
 

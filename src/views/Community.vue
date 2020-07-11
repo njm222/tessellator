@@ -8,7 +8,7 @@
 
 <script>
 import TopPlayed from '@/components/Community/TopPlayed.vue'
-import UserGeoChart from '@/components/Community/UserGeoChart'
+import UserGeoChart from '@/components/Community/UserGeoChart.vue'
 
 export default {
   name: 'Community',

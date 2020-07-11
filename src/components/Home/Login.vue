@@ -11,7 +11,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { firebaseRef } from '@/services/firebase-utils'
-import UserGeoChart from '@/components/Community/UserGeoChart'
+import UserGeoChart from '@/components/Community/UserGeoChart.vue'
 
 @Component({
   components: { UserGeoChart }

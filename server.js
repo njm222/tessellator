@@ -154,6 +154,29 @@ fbAdmin.initializeApp({
   databaseURL: 'https://tessellator-space.firebaseio.com'
 })
 
+/** Move to a separate firestore-utils */
+function incrementTotalUsers () {
+  const allUsersDataRef = fbAdmin.firestore().collection('aggregateUserData').doc('userCount')
+  allUsersDataRef.set({
+    count: FieldValue.increment(1)
+  }, { merge: true }).then((ref) => {
+    console.log(ref)
+  }).catch((error) => {
+    console.log(error)
+  })
+}
+
+function incrementTotalUsersCountries (countryToIncrement) {
+  const allUsersDataRef = fbAdmin.firestore().collection('aggregateUserData').doc('userCountryCount')
+  const object = {}
+  object[countryToIncrement] = FieldValue.increment(1)
+  allUsersDataRef.set(object, { merge: true }).then((ref) => {
+    console.log(ref)
+  }).catch((error) => {
+    console.log(error)
+  })
+}
+
 app.post('/authUser', function (req, res) {
   const userID = req.body.id
   fbAdmin.auth().createCustomToken(userID)
@@ -173,10 +196,8 @@ app.post('/addUser', function (req, res) {
 
   userRef.get().then((snapshot) => {
     if (!snapshot.exists) {
-      const allUsersDataRef = fbAdmin.firestore().collection('users').doc('allUsersData')
-      allUsersDataRef.set({
-        totalNumUsers: FieldValue.increment(1)
-      }, { merge: true })
+      incrementTotalUsers()
+      incrementTotalUsersCountries(userData.country)
     }
     userRef.set({
       userData: userData
@@ -217,10 +238,3 @@ app.post('/addArtistsPlayed', function (req, res) {
     }, { merge: true })
   })
 })
-/** Move below to a separate firestore-utils */
-
-function incrementCounter (docRef, numShards) {
-  const shardId = Math.floor(Math.random() * numShards)
-  const shardRef = docRef.collection('topUserTracks').doc(shardId.toString())
-  return shardRef.set({ count: FieldValue.increment(1) }, { merge: true })
-}

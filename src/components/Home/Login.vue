@@ -4,14 +4,18 @@
     <a href="https://tessellator.herokuapp.com/login"><button class="btn secondary">Login</button></a>
     <h4>A | free to use | real-time | 3-D | Spotify music visualizer</h4>
     <p>Unique users: <span :key="userCount">{{ userCount }}</span></p>
+    <UserGeoChart />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { firebaseRef } from '@/services/firebase-utils'
+import UserGeoChart from '../../components/Community/UserGeoChart'
 
-@Component
+@Component({
+  components: { UserGeoChart }
+})
 export default class Login extends Vue {
   private userCount = 'loading...'
 
@@ -22,7 +26,6 @@ export default class Login extends Vue {
 
   loadAllUsersData () {
     const allUsersDataRef = firebaseRef.firebase.firestore().collection('aggregateUserData').doc('userCount')
-
     allUsersDataRef.get().then((snapshot) => {
       const data = snapshot.data()
       if (data) {

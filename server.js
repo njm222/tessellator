@@ -214,13 +214,21 @@ app.post('/addTrackPlayed', function (req, res) {
   const trackData = req.body.trackData
   const userID = req.body.userID
   const trackRef = fbAdmin.firestore().collection('topUserTracks').doc(trackData.id)
+
   trackRef.set({
     count: FieldValue.increment(1),
     trackData: trackData
-  }, { merge: true })
-  trackRef.collection('users').doc(userID).set({
-    count: FieldValue.increment(1)
-  }, { merge: true })
+  }, { merge: true }).then(ref => {
+    trackRef.collection('users').doc(userID).set({
+      count: FieldValue.increment(1)
+    }, { merge: true }).then(ref => {
+      res.send(ref)
+    }).catch((error) => {
+      res.status(500).send(error)
+    })
+  }).catch((error) => {
+    res.status(500).send(error)
+  })
 })
 
 app.post('/addArtistsPlayed', function (req, res) {
@@ -232,9 +240,16 @@ app.post('/addArtistsPlayed', function (req, res) {
     artistRef.set({
       count: FieldValue.increment(1),
       artistData: artist
-    }, { merge: true })
-    artistRef.collection('users').doc(userID).set({
-      count: FieldValue.increment(1)
-    }, { merge: true })
+    }, { merge: true }).then(ref => {
+      artistRef.collection('users').doc(userID).set({
+        count: FieldValue.increment(1)
+      }, { merge: true }).then(ref => {
+        res.send(ref)
+      }).catch(error => {
+        res.status(500).send(error)
+      })
+    }).catch(error => {
+      res.status(500).send(error)
+    })
   })
 })

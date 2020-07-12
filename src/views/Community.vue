@@ -1,8 +1,8 @@
 <template>
   <div class="community">
-    <UserGeoChart/>
     <h1>Community</h1>
     <TopPlayed/>
+    <UserGeoChart/>
   </div>
 </template>
 

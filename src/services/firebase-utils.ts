@@ -15,6 +15,7 @@ const firebaseConfig = {
 const apiURL = process.env.VUE_APP_ApiURL
 
 firebase.initializeApp(firebaseConfig)
+firebase.performance()
 
 export const firebaseRef = { firebase }
 

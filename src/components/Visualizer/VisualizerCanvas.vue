@@ -248,7 +248,7 @@ export default class VisualizerCanvas extends Vue {
 
   private mode2 (SpotifyAnalysisUtils: any) {
     if (VisualizerCanvas.shapeCloudArr.length > 0) {
-      this.updateGenerativeTorus(SpotifyAnalysisUtils)
+      VisualizerCanvas.updateGenerativeTorus(SpotifyAnalysisUtils)
     }
     this.changeColourPoints(VisualizerCanvas.shapeCloudArr[0], VisualizerCanvas.shapeColour)
   }
@@ -578,12 +578,13 @@ export default class VisualizerCanvas extends Vue {
     if (chords.length > 0) {
       segments = chords.reduce((sum, currVal) => sum + currVal)
     }
-    VisualizerCanvas.shapeArr.push(new THREE.Mesh(new THREE.SphereBufferGeometry(50, Math.ceil(segments * 3), Math.ceil(segments * 3), 0, Math.PI * 2, Math.sin(SpotifyAnalysisUtils.trackFeatures.tempo * this.TrackTime / 1000000) * Math.PI * 2, (VisualizerCanvas.liveAudio.rms / 255) * 6), new THREE.MeshPhongMaterial({ wireframe: isWireframe, flatShading: !isWireframe })))
+
+    VisualizerCanvas.shapeArr.push(new THREE.Mesh(new THREE.SphereBufferGeometry(50, Math.ceil(segments * 3), Math.ceil(segments * 3), 0, Math.PI * 2, Math.sin(SpotifyAnalysisUtils.trackFeatures.tempo * (Date.now() / 1000000)) * Math.PI * 2, (VisualizerCanvas.liveAudio.avFreq / 255) * Math.PI * 2), new THREE.MeshPhongMaterial({ wireframe: isWireframe, flatShading: !isWireframe })))
     VisualizerCanvas.shapeArr[0].rotation.set(Math.PI / 2, 0, 0)
     VisualizerCanvas.scene.add(VisualizerCanvas.shapeArr[0])
   }
 
-  private updateGenerativeTorus (SpotifyAnalysisUtils: any) {
+  private static updateGenerativeTorus (SpotifyAnalysisUtils: any) {
     let segments = 1
     const timbreArr: number[] = SpotifyAnalysisUtils.g_timbre
     const timbreSum = Math.ceil(timbreArr.reduce((sum, currVal) => sum + currVal) / (SpotifyAnalysisUtils.trackFeatures.energy * 30))
@@ -595,7 +596,7 @@ export default class VisualizerCanvas extends Vue {
     VisualizerCanvas.shapeCloudArr[0].geometry = new THREE.TorusKnotBufferGeometry(VisualizerCanvas.liveAudio.midsObject.midsAv, VisualizerCanvas.liveAudio.highsObject.highsAv, VisualizerCanvas.liveAudio.bassObject.bassAv, Math.ceil(segments * 4), SpotifyAnalysisUtils.trackFeatures.danceability * 10, timbreSum)
   }
 
-  private addGenerativeTorus (SpotifyAnalysisUtils: any) {
+  private static addGenerativeTorus (SpotifyAnalysisUtils: any) {
     let segments = 1
     const timbreArr: number[] = SpotifyAnalysisUtils.g_timbre
     const timbreSum = Math.ceil(timbreArr.reduce((sum, currVal) => sum + currVal) / (SpotifyAnalysisUtils.trackFeatures.energy * 30))
@@ -743,7 +744,7 @@ export default class VisualizerCanvas extends Vue {
         this.rotateShapeToggle = false
         VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight, 90)
       } else if (mode === 2) {
-        this.addGenerativeTorus(this.SpotifyAnalysisUtils)
+        VisualizerCanvas.addGenerativeTorus(this.SpotifyAnalysisUtils)
         this.rotateShapeToggle = false
         VisualizerCanvas.scene.children[1].position.set(0, -window.innerHeight / 2, 90)
       } else if (mode === 3) {

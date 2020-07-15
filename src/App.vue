@@ -248,13 +248,17 @@ a:hover, a:focus {
   padding: 0 1em;
 }
 
+.dashboard a,
 .about a,
-.faq a {
+.faq a,
+.contact-content a {
   color: #FFFF00;
 }
 
+.dashboard a:hover,
 .about a:hover,
-.faq a:hover {
+.faq a:hover,
+.contact-content a:hover {
   color: #D31E1E;
 }
 

@@ -27,13 +27,15 @@ export default class UserGeoChart extends Vue {
           title: 'sample title',
           subtitle: 'sample subtitle'
         },
+        geochartVersion: 11,
+        keepAspectRatio: true,
         backgroundColor: '',
         datalessRegionColor: '#01161E',
         defaultColor: '#42b983',
         colorAxis: {
           colors: ['#EF476F', '#FFC43D', '#42B983']
         },
-        keepAspectRatio: true
+        legend: 'none'
       }
     }
   }
@@ -51,6 +53,10 @@ export default class UserGeoChart extends Vue {
         Object.entries(data).forEach(item => {
           this.chartData.push(item)
         })
+        const orderedData = Object.keys(data).sort((a, b) => {
+          return data[b] - data[a]
+        })
+        this.chartOptions.colorAxis.maxValue = data[orderedData[1]] * 1.3
       }
     }).catch((error) => {
       console.log(error)

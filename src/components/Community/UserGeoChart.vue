@@ -2,6 +2,7 @@
   <div>
     <h2>User Distribution</h2>
     <GChart
+      :settings="{ packages: ['geochart'] }"
       type="GeoChart"
       :data="this.chartData"
       :options="this.chartOptions"

@@ -26,7 +26,7 @@
     "request": "^2.88.2",
     "simplex-noise": "^2.4.0",
     "stats.js": "^0.17.0",
-    "three": "^0.115.0",
+    "three": "^0.125.0",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-class-component": "^7.2.2",

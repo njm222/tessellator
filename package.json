@@ -11,7 +11,7 @@
   "dependencies": {
     "@types/spotify-web-api-node": "^4.0.1",
     "@types/spotify-web-playback-sdk": "^0.1.7",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "compression": "^1.7.4",
     "core-js": "^3.6.4",
     "cors": "^2.8.5",

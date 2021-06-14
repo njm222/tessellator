@@ -154,6 +154,9 @@ fbAdmin.initializeApp({
   databaseURL: 'https://tessellator-space.firebaseio.com'
 })
 
+const appCheck = fbAdmin.appCheck();
+appCheck.activate('6LcZOR0bAAAAADN5uxVD0IsM5bAnE44rlrDgaKlq');
+
 /** Move to a separate firestore-utils */
 function incrementTotalUsers () {
   const allUsersDataRef = fbAdmin.firestore().collection('aggregateUserData').doc('userCount')

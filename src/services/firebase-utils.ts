@@ -16,7 +16,7 @@ const apiURL = process.env.VUE_APP_ApiURL
 
 firebase.initializeApp(firebaseConfig)
 
-const appCheck = fbAdmin.appCheck();
+const appCheck = firebase.appCheck();
 appCheck.activate('6LcZOR0bAAAAADN5uxVD0IsM5bAnE44rlrDgaKlq');
 
 firebase.performance()

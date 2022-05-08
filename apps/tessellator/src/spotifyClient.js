@@ -1,3 +1,4 @@
+// TODO: separate client api calls => core
 import SpotifyWebApi from "spotify-web-api-js";
 import { useStore, mutations } from "./utils/store";
 import { updateToken } from "./backendClient";
@@ -39,7 +40,7 @@ export const getTrackFeatures = async (trackId) => {
 /* -------- PLAYER -------- */
 
 export const sdkInit = () => {
-  console.log('sdkInit');
+  console.log("sdkInit");
   window.onSpotifyWebPlaybackSDKReady = () => {
     const player = new window.Spotify.Player({
       name: "Visualizer Player",
@@ -49,7 +50,7 @@ export const sdkInit = () => {
     });
     addPlayerListeners(player);
     player.connect();
-    console.log('connect player')
+    console.log("connect player");
   };
 };
 

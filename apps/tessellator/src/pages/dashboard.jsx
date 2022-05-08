@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { setState, getState } from "../utils/store";
-import { setAccessToken } from "@/spotifyClient";
 import Keyboard from "@/components/dom/controls/Keybaord";
 import MouseActivity from "@/components/dom/controls/MouseActivity";
 import IconButton from "@/components/dom/IconButton";
@@ -10,7 +9,6 @@ import SettingsIcon from "@/components/dom/SettingsIcon";
 import Player from "@/components/dom/player/Player";
 import WelcomeUser from "@/components/dom/WelcomeUser";
 import Loader from "@/components/dom/Loader";
-import { updateToken } from "@/backendClient";
 import { Stats } from "@react-three/drei";
 import { useToggle } from "@/components/useToggle";
 

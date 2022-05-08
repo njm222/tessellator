@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, Suspense, useRef } from "react";
+import { useState, useEffect, memo, Suspense, useRef, MutableRefObject } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useStore } from "@/utils/store";
@@ -7,7 +7,7 @@ import { login } from "../../backendClient";
 import Particles from "./Particles";
 import { Cloud, Sky } from "@react-three/drei";
 
-const LandingScene = () => {
+const LandingScene = ({ }: { r3f?: boolean }) => {
   const camera = useThree((state) => state.camera);
   const [refreshToken, router] = useStore((state) => [
     state.refreshToken,
@@ -15,7 +15,7 @@ const LandingScene = () => {
   ]);
   const [isNavigating, setIsNavigating] = useState(false);
   const [isHover, setIsHover] = useState(false);
-  const textRef = useRef();
+  const textRef: MutableRefObject<any> = useRef();
 
   useEffect(() => {
     camera.position.set(0, 0, 100);
@@ -28,7 +28,7 @@ const LandingScene = () => {
   useFrame((state, delta) => {
     if (isNavigating) {
       camera.position.lerp(new THREE.Vector3(0, 0, -10), delta * 5);
-      textRef.current.scale.lerp(new THREE.Vector3(0.2, 0.2, 0.5), delta * 5);
+      textRef.current?.scale.lerp(new THREE.Vector3(0.2, 0.2, 0.5), delta * 5);
     } else {
       if (camera.position.z < 0) {
         camera.position.z = 80;

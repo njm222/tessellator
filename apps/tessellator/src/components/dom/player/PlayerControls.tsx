@@ -10,7 +10,7 @@ export default function PlayerControls() {
     state.player.playerState.paused,
   ]);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   return (
     <>

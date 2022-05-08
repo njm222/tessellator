@@ -1,5 +1,5 @@
 import { button, folder, useControls } from "leva";
-import { useStore, setState, getState } from "@/utils/store";
+import { useStore } from "@/utils/store";
 import { useEffect } from "react";
 import { defaultAnalyzerOptions } from "@/constants";
 
@@ -13,7 +13,7 @@ const Settings = ({ handleClose }) => {
     if (value === audioAnalyzerOptions[key]) {
       return;
     }
-    setState((state) => ({
+    useStore.setState((state) => ({
       audioAnalyzerOptions: {
         ...state.audioAnalyzerOptions,
         [key]: value,
@@ -22,7 +22,7 @@ const Settings = ({ handleClose }) => {
   };
 
   useEffect(() => {
-    getState().audioAnalyzer?.updateAnalyser(audioAnalyzerOptions);
+    useStore.setState().audioAnalyzer?.updateAnalyser(audioAnalyzerOptions);
   }, [audioAnalyzerOptions]);
 
   const values = useControls({ close: button(() => handleClose()) }, []);
@@ -59,7 +59,9 @@ const Settings = ({ handleClose }) => {
           onChange: (v) => handleChange(v, "maxDecibels"),
           transient: true,
         },
-        reset: button(() => setAnalyzerValues(defaultAnalyzerOptions)),
+        reset: button(() => setAnalyzerValues({
+          value: defaultAnalyzerOptions, transient: true,
+        })),
       }),
     }),
     [audioAnalyzerOptions]

@@ -1,7 +1,14 @@
-const hslToHex = (h, s, l) => {
-  h = (h % 360) / 360;
-  s = (s % 255) / 255;
-  l = (l % 255) / 255;
+/**
+ * Generates a hex colour given the hsl values
+ * @param  {number} h The hue
+ * @param  {number} s The saturation
+ * @param  {number} l The lightness
+ * @return {string} The hex colour
+ */
+export function hslToHex(h: number, s: number, l: number): string {
+  h = (h % 361) / 360;
+  s = (s % 256) / 255;
+  l = (l % 256) / 255;
   let r, g, b;
   if (s === 0) {
     r = g = b = l; // achromatic
@@ -25,6 +32,4 @@ const hslToHex = (h, s, l) => {
     return hex.length === 1 ? "0" + hex : hex;
   };
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-};
-
-export default hslToHex;
+}

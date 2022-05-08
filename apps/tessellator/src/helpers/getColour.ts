@@ -1,5 +1,5 @@
 import { useStore } from "@/utils/store";
-import hslToHex from "./hslToHex";
+import { hslToHex } from "@tessellator/core";
 
 const getColour = () => {
   const spotifyAnalyzer = useStore.getState().spotifyAnalyzer;

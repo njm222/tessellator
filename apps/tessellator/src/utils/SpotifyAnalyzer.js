@@ -1,5 +1,5 @@
 import { mutations } from "./store";
-
+// TODO: move to libs
 export default class SpotifyAnalyzer {
   constructor() {
     this.segmentCounter = 0;
@@ -42,6 +42,7 @@ export default class SpotifyAnalyzer {
     this.updateData();
   }
 
+  // TODO: pass position as prop
   updateData() {
     const position = mutations.position / 1000;
     if (!position) {

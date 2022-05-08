@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@tessellator/core": ["../../libs/core/src/index.ts"],
       "@/*": ["src/*"]
     },
     "target": "es5",

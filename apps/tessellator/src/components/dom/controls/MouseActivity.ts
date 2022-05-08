@@ -1,14 +1,14 @@
-import { useEffect, useRef, memo } from "react";
-import { setState } from "@/utils/store";
+import { useEffect, useRef, memo, MutableRefObject } from "react";
+import { useStore } from "@/utils/store";
 
 const MouseActivity = () => {
-  const mouseTimeout = useRef();
+  const mouseTimeout: MutableRefObject<NodeJS.Timeout> = useRef();
 
   const mouseMoveHandler = () => {
     clearTimeout(mouseTimeout.current);
-    setState({ mouseActive: true });
+    useStore.setState({ mouseActive: true });
     mouseTimeout.current = setTimeout(
-      () => setState({ mouseActive: false }),
+      () => useStore.setState({ mouseActive: false }),
       3500
     );
   };

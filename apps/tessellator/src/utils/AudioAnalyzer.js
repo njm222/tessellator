@@ -1,3 +1,4 @@
+// TODO: move to libs
 export default class AudioAnalyser {
   constructor(props) {
     this.bassObject = {

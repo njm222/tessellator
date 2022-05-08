@@ -1,1 +1,2 @@
-export * from "./lib/stringUtils";
+export * from "./primitiveUtils/stringUtils";
+export * from "./colourUtils/hslToHex";

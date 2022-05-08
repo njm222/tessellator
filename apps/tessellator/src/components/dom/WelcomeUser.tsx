@@ -15,8 +15,8 @@ export default function WelcomeUser() {
     const parent = document.querySelector(
       ".welcomeContainer > .typewriterText"
     );
-    Array.from(parent.children).forEach((child, i) => {
-      child.style.setProperty("--n", i);
+    Array.from(parent.children).forEach((child: HTMLElement, i: number) => {
+      child.style.setProperty("--n", i.toString());
     });
   }, []);
 

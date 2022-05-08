@@ -1,6 +1,5 @@
 import { Stats } from "@react-three/drei";
 import dynamic from "next/dynamic";
-import { useStore } from "../utils/store";
 
 const LandingScene = dynamic(
   () => import("../components/canvas/LandingScene"),
@@ -9,12 +8,11 @@ const LandingScene = dynamic(
   }
 );
 
-const Page = ({ title }) => {
-  useStore.setState({ title });
+const Page = ({ showStats = false }: { showStats?: boolean }) => {
   return (
     <>
       <LandingScene r3f />
-      <Stats />
+      {showStats && <Stats />}
     </>
   );
 };

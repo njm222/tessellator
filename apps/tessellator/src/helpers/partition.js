@@ -1,3 +1,4 @@
+// TODO: move to core
 function partition(array, isValid) {
   if (!Array.isArray(array)) {
     return isValid(array) ? [[array], []] : [[], [array]];

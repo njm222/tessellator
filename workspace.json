@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "projects": {
+    "api": "apps/api",
+    "core": "libs/core",
+    "tessellator": "apps/tessellator",
+    "tessellator-e2e": "apps/tessellator-e2e"
+  }
+}

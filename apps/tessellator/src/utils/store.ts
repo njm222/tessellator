@@ -1,12 +1,12 @@
 import create from "zustand";
 import shallow from "zustand/shallow";
-import { persist } from "zustand/middleware";
+import { persist, subscribeWithSelector } from "zustand/middleware";
 import SpotifyAnalyzer from "./SpotifyAnalyzer";
 import { defaultAnalyzerOptions } from "../constants";
 
 const useStoreImpl = create(
-  persist(
-    (set) => ({
+  subscribeWithSelector(
+    persist((set) => ({
       set,
       title: "Tessellator",
       router: null,
@@ -31,22 +31,22 @@ const useStoreImpl = create(
         playerState: null,
       },
     }),
-    {
-      name: "tessellator-zustand",
-      version: 1.0,
-      partialize: (state) => ({
-        accessToken: state.accessToken,
-        refreshToken: state.refreshToken,
-        audioAnalyzerOptions: state.audioAnalyzerOptions,
-      }),
-      merge: (persistedState, currentState) => {
-        if (currentState?.refreshToken) {
-          return currentState;
-        }
-        return { ...currentState, ...persistedState };
-      },
-    }
-  )
+      {
+        name: "tessellator-zustand",
+        version: 1.0,
+        partialize: (state) => ({
+          accessToken: state.accessToken,
+          refreshToken: state.refreshToken,
+          audioAnalyzerOptions: state.audioAnalyzerOptions,
+        }),
+        merge: (persistedState, currentState) => {
+          if (currentState?.refreshToken) {
+            return currentState;
+          }
+          return { ...currentState, ...persistedState };
+        },
+      }
+    ))
 );
 
 const mutations = {
@@ -54,7 +54,7 @@ const mutations = {
 };
 
 // shallow compare store
-const useStore = (sel) => useStoreImpl(sel, shallow);
+const useStore = ((selector) => useStoreImpl(selector, shallow)) as typeof useStoreImpl;
 Object.assign(useStore, useStoreImpl);
 
 const { getState, setState } = useStoreImpl;

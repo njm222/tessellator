@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { setState } from "../utils/store";
+import { useStore } from "../utils/store";
 import { useEffect } from "react";
 import Header from "../config";
 import Dom from "../components/layout/dom";
@@ -13,7 +13,7 @@ const LCanvas = dynamic(() => import("../components/layout/canvas"), {
 });
 
 const Balance = ({ child }) => {
-  const [r3f, dom] = partition(child, (c) => c.props.r3f === true);
+  const [r3f, dom] = partition(child, (c) => c.props?.r3f === true)
 
   return (
     <>
@@ -27,7 +27,7 @@ function App({ Component, pageProps = { title: "index" } }) {
   const router = useRouter();
 
   useEffect(() => {
-    setState({ router });
+    useStore.setState({ router });
   }, [router]);
 
   const child = Component(pageProps).props.children;

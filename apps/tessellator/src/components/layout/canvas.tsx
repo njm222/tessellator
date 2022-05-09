@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload } from "@react-three/drei";
 import { useStore } from "@/utils/store";
-import { useEffect, useRef, Suspense } from "react";
+import { useEffect, useRef } from "react";
 
 const LControl = () => {
   const dom = useStore((state) => state.dom);
@@ -20,7 +20,6 @@ const LCanvas = ({ children }) => {
 
   return (
     <Canvas
-      mode="concurrent"
       style={{
         position: "absolute",
         top: 0,

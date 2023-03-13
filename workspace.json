@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "projects": {
+    "api": "apps/api",
+    "tessellator": "apps/tessellator",
+    "core": "packages/core",
+    "eslint-config-custom": "packages/eslint-config-custom",
+    "eslint-config-custom-server": "packages/eslint-config-custom-server",
+    "jest-presets": "packages/jest-presets",
+    "logger": "packages/logger",
+    "tsconfig": "packages/tsconfig",
+    "ui": "packages/ui"
+  }
+}

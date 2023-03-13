@@ -1,86 +1,22 @@
 {
-  "name": "tessellator",
-  "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "start": "node server.js",
-    "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
-    "@types/spotify-web-api-node": "^4.0.1",
-    "@types/spotify-web-playback-sdk": "^0.1.7",
-    "axios": "^0.21.1",
-    "compression": "^1.7.4",
-    "core-js": "^3.6.4",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "epic-spinners": "^1.1.0",
-    "express": "^4.17.1",
-    "express-sslify": "^1.2.0",
-    "firebase": "^8.6.7",
-    "firebase-admin": "^8.10.0",
-    "query-string": "^6.11.1",
-    "querystring": "^0.2.0",
-    "request": "^2.88.2",
-    "simplex-noise": "^2.4.0",
-    "stats.js": "^0.17.0",
-    "three": "^0.115.0",
-    "vue": "^2.6.11",
-    "vue-axios": "^2.1.5",
-    "vue-class-component": "^7.2.2",
-    "vue-google-charts": "^0.3.3",
-    "vue-gtag": "^1.6.2",
-    "vue-property-decorator": "^8.3.0",
-    "vue-router": "^3.1.5",
-    "vuex": "^3.1.2"
+    "start": "dotenv -- turbo run start",
+    "build": "dotenv -- turbo run build",
+    "clean": "turbo run clean",
+    "dev": "dotenv -- turbo run dev --no-cache  --continue",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
   },
   "devDependencies": {
-    "@types/three": "^0.103.2",
-    "@typescript-eslint/eslint-plugin": "^2.18.0",
-    "@typescript-eslint/parser": "^2.18.0",
-    "@vue/cli-plugin-babel": "~4.2.0",
-    "@vue/cli-plugin-eslint": "~4.2.0",
-    "@vue/cli-plugin-router": "~4.2.0",
-    "@vue/cli-plugin-typescript": "~4.2.0",
-    "@vue/cli-plugin-vuex": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
-    "@vue/eslint-config-standard": "^5.1.0",
-    "@vue/eslint-config-typescript": "^5.0.1",
-    "compression-webpack-plugin": "^3.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^6.1.2",
-    "typescript": "~3.7.5",
-    "vue-template-compiler": "^2.6.11"
+    "dotenv-cli": "latest",
+    "prettier": "^2.7.1",
+    "turbo": "^1.8.2"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/standard",
-      "@vue/typescript/recommended"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2020
-    },
-    "rules": {
-      "@typescript-eslint/camelcase": "off"
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
-  "main": "server.js",
-  "repository": "https://github.com/njm222/Spotify_Visualizer",
-  "author": "njm222 <nathan.john.menezes@gmail.com>",
-  "license": "MIT"
+  "packageManager": "yarn@1.22.17"
 }

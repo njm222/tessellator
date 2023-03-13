@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
 import { getMyInfo } from "../../spotifyClient";
-import { usePortal } from "../../utils/portalContext";
 
 export default function WelcomeUser() {
   const [name, setName] = useState<string>("");
-  const { inPortal } = usePortal();
 
   useEffect(() => {
     (async () => {
@@ -14,7 +12,7 @@ export default function WelcomeUser() {
     })();
   }, [setName]);
 
-  if (!name || inPortal) return null;
+  if (!name) return null;
 
   return (
     <div className="welcomeContainer">
@@ -23,16 +21,23 @@ export default function WelcomeUser() {
           typewriter
             .start()
             .typeString(`hello ${name}, `)
-            .pauseFor(1000)
+            .pauseFor(500)
             .typeString("welcome to tessellator...")
             .pauseFor(1000)
             .deleteAll()
+            .pauseFor(250)
             .typeString("click play on the player below to begin")
             .pauseFor(2500)
             .deleteAll()
+            .pauseFor(250)
             .typeString("then jump [scroll] into the portal below")
             .pauseFor(3500)
-            .deleteAll();
+            .deleteAll()
+            .pauseFor(250)
+            .callFunction(({ elements: { container } }) => {
+              typewriter.stop();
+              container.innerHTML = "";
+            });
         }}
         options={{ delay: 50, deleteSpeed: 1 }}
       />

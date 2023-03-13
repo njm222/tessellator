@@ -48,48 +48,11 @@ img {
 }
 
 .welcomeContainer {
-  width: max-content;
-  margin: auto;
+  position: relative;
   padding: 1em;
+  text-align: center;
   color: #fff;
-}
-
-.typewriterText p {
-  width: 100%;
-  border-right: 0.15em solid orange;
-  font-family: "Courier";
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  opacity: 0;
-  -webkit-animation: type 2s steps(40, end);
-  animation: type 2s steps(40, end);
-  -webkit-animation-delay: calc(var(--n) * 2s);
-  animation-delay: calc(var(--n) * 2s);
-  -webkit-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-}
-
-@keyframes type {
-  0% {
-    width: 0;
-  }
-  1% {
-    opacity: 1;
-  }
-  99.9% {
-    border-right: 0.15em solid orange;
-  }
-  100% {
-    opacity: 1;
-    border: none;
-  }
-}
-
-@keyframes blink {
-  50% {
-    border-color: transparent;
-  }
+  font-size: 2rem;
 }
 
 /* ---------- Settings ---------- */
@@ -98,30 +61,6 @@ img {
   top: 1rem;
   right: 1rem;
   color: #292929;
-}
-
-/* ---------- Playlists ---------- */
-
-.myPlaylists {
-  display: flex;
-  position: fixed;
-  padding: 1em;
-  bottom: 0;
-}
-
-.playlist {
-  width: 150px;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 1em;
-}
-
-.playlist img {
-  max-width: 100%;
-  height: auto;
 }
 
 /* ---------- Player ---------- */

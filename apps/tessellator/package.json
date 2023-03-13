@@ -27,6 +27,7 @@
     "spotify-web-api-js": "^1.5.2",
     "three": "^0.149.0",
     "three-stdlib": "^2.9.1",
+    "typewriter-effect": "^2.12.1",
     "ui": "*"
   },
   "devDependencies": {

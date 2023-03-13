@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Typewriter from "typewriter-effect";
 import { getMyInfo } from "../../spotifyClient";
 import { usePortal } from "../../utils/portalContext";
 
@@ -13,24 +14,28 @@ export default function WelcomeUser() {
     })();
   }, [setName]);
 
-  useEffect(() => {
-    const parent = document.querySelector(
-      ".welcomeContainer > .typewriterText"
-    );
-    if (!parent?.children) return;
+  if (!name || inPortal) return null;
 
-    Array.from(parent.children).forEach((child: Element, i: number) => {
-      (child as HTMLElement).style.setProperty("--n", i.toString());
-    });
-  }, []);
-
-  return inPortal ? null : (
+  return (
     <div className="welcomeContainer">
-      <div className="typewriterText">
-        <p>hello {name},</p>
-        <p>welcome to tessellator... a spotify music visualizer</p>
-        <p>jump [scroll] into the portal below &#x2B07; to see it in action</p>
-      </div>
+      <Typewriter
+        onInit={(typewriter) => {
+          typewriter
+            .start()
+            .typeString(`hello ${name}, `)
+            .pauseFor(1000)
+            .typeString("welcome to tessellator...")
+            .pauseFor(1000)
+            .deleteAll()
+            .typeString("click play on the player below to begin")
+            .pauseFor(2500)
+            .deleteAll()
+            .typeString("then jump [scroll] into the portal below")
+            .pauseFor(3500)
+            .deleteAll();
+        }}
+        options={{ delay: 50, deleteSpeed: 1 }}
+      />
     </div>
   );
 }

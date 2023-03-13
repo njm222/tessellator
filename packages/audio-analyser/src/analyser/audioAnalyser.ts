@@ -1,9 +1,6 @@
-import {
-  AudioAnalyserData,
-  AudioAnalyserProps,
-} from "./audioAnalyserTypes";
+import { AudioAnalyserData, AudioAnalyserProps } from "./audioAnalyserTypes";
 
-import FrequencySection from "../frequency-section/frequencySection"
+import FrequencySection from "../frequency-section/frequencySection";
 import { defaultAnalyserOptions } from "..";
 
 export default class AudioAnalyser {
@@ -26,13 +23,34 @@ export default class AudioAnalyser {
       frequencyData: new Uint8Array(defaultAnalyserOptions.fftSize),
     };
 
-    const bucketSize = defaultAnalyserOptions.sampleRate / defaultAnalyserOptions.fftSize;
+    const bucketSize =
+      defaultAnalyserOptions.sampleRate / defaultAnalyserOptions.fftSize;
 
-    this.bassSection = new FrequencySection({ bucketSize, lowerRange: 0, upperRange: 250 })
-    this.kickSection = new FrequencySection({ bucketSize, lowerRange: 50, upperRange: 150 })
-    this.snareSection = new FrequencySection({ bucketSize, lowerRange: 150, upperRange: 250 })
-    this.midSection = new FrequencySection({ bucketSize, lowerRange: 250, upperRange: 1000 })
-    this.highSection = new FrequencySection({ bucketSize, lowerRange: 1000, upperRange: 20000 })
+    this.bassSection = new FrequencySection({
+      bucketSize,
+      lowerRange: 0,
+      upperRange: 250,
+    });
+    this.kickSection = new FrequencySection({
+      bucketSize,
+      lowerRange: 50,
+      upperRange: 150,
+    });
+    this.snareSection = new FrequencySection({
+      bucketSize,
+      lowerRange: 150,
+      upperRange: 250,
+    });
+    this.midSection = new FrequencySection({
+      bucketSize,
+      lowerRange: 250,
+      upperRange: 1000,
+    });
+    this.highSection = new FrequencySection({
+      bucketSize,
+      lowerRange: 1000,
+      upperRange: 20000,
+    });
   }
 
   setup(props: AudioAnalyserProps) {

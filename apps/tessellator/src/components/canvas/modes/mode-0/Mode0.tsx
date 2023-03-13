@@ -2,11 +2,11 @@ import React, { useRef, memo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useAspect } from "@react-three/drei";
 import * as THREE from "three";
-import getColour from "../../../helpers/getColour";
+import getColour from "./getColour";
 import { createNoise3D } from "simplex-noise";
-import { useAnalyser } from "../../../utils/analyserContext";
-import { usePlayer } from "../../../utils/playerContext";
-import { useControls } from "../../dom/controls/controlsContext";
+import { useAnalyser } from "../../../../utils/analyserContext";
+import { usePlayer } from "../../../../utils/playerContext";
+import { useControls } from "../../../dom/controls/controlsContext";
 
 let simplexNoise = createNoise3D();
 

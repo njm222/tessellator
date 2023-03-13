@@ -1,8 +1,8 @@
 import React, { memo, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { mutations } from "../../utils/store";
-import Mode0 from "./modes/Mode0";
-import Mode1 from "./modes/Mode1";
+import Mode0 from "./modes/mode-0/Mode0";
+import Mode1 from "./modes/mode-1/Mode1";
 import { useAnalyser } from "../../utils/analyserContext";
 import { usePlayer } from "../../utils/playerContext";
 import {

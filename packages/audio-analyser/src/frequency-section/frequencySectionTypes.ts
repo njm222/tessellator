@@ -5,11 +5,11 @@
  * @property {number?} counterLimit - limit of the data array length
  */
 export type FrequencySectionProps = {
-    bucketSize: number;
-    lowerRange: number;
-    upperRange: number;
-    counterLimit?: number;
-}
+  bucketSize: number;
+  lowerRange: number;
+  upperRange: number;
+  counterLimit?: number;
+};
 
 /**
  * @property {number} deviation - standard deviation of the data array
@@ -22,12 +22,12 @@ export type FrequencySectionProps = {
  * @property {number[]} data - average decibel value over time
  */
 export type FrequencySection = {
-    deviation: number;
-    average: number;
-    energy: number;
-    counter: number;
-    counterLimit: number;
-    lowerIndex: number;
-    upperIndex: number;
-    data: number[];
+  deviation: number;
+  average: number;
+  energy: number;
+  counter: number;
+  counterLimit: number;
+  lowerIndex: number;
+  upperIndex: number;
+  data: number[];
 };

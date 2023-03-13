@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Vector3, Float32BufferAttribute, Points, ShaderMaterial } from "three";
-import "../shaders/ParticleMaterial";
-import { usePlayer } from "../../../utils/playerContext";
-import { useAnalyser } from "../../../utils/analyserContext";
-import getColour from "../../../helpers/getColour";
-import { useControls } from "../../dom/controls/controlsContext";
-import { hexToVector3 } from "../../../helpers/hexTo";
+import "../../shaders/ParticleMaterial";
+import { usePlayer } from "../../../../utils/playerContext";
+import { useAnalyser } from "../../../../utils/analyserContext";
+import getColour from "./getColour";
+import { useControls } from "../../../dom/controls/controlsContext";
+import { hexToVector3 } from "../../../../helpers/hexTo";
 
 const Mode1 = () => {
   const mesh = useRef<Points>(null);

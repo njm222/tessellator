@@ -41,6 +41,7 @@
     "@types/three": "^0.149.0",
     "eslint-config-custom": "*",
     "file-loader": "^6.2.0",
+    "glslify-loader": "^2.0.0",
     "next-compose-plugins": "^2.2.1",
     "next-offline": "^5.0.5",
     "raw-loader": "^4.0.2",

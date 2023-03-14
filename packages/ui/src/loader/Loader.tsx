@@ -1,3 +1,5 @@
+import "./loader.css";
+
 export const Loader = ({
   message,
   dotVariant = 1,

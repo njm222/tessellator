@@ -1,16 +1,19 @@
-import { environment } from "../../../environments/environment";
 import { stringify } from "querystring";
 import { generateRandomString } from "core";
 import { Request, Response } from "express";
 
 export function LoginController({
   spotifyAccountUrl,
+  clientId,
+  redirectUri,
+  stateKey,
 }: {
   spotifyAccountUrl: string;
+  clientId: string;
+  redirectUri: string;
+  stateKey: string;
 }) {
   return async function loginController(req: Request, res: Response) {
-    const { clientId, redirectUri, stateKey, challengeKey, verifierKey } =
-      environment;
     const state = generateRandomString(16);
 
     res.cookie(stateKey, state);

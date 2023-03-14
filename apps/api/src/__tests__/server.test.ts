@@ -2,12 +2,12 @@ import supertest from "supertest";
 import { createServer } from "../server";
 
 describe("server", () => {
-  it("health check returns 200", async () => {
+  it("should start the server", async () => {
     await supertest(createServer())
-      .get("/healthz")
+      .get("/")
       .expect(200)
       .then((res) => {
-        expect(res.body.ok).toBe(true);
+        expect(res.body.message).toBe("tessellator-api is running!");
       });
   });
 });

@@ -1,19 +1,23 @@
 import { stringify } from "querystring";
 import axios, { Method } from "axios";
-import { environment } from "../../../environments/environment";
 import { Request, Response } from "express";
 
 export function CallbackController({
   spotifyAccountUrl,
   frontendUrl,
+  clientId,
+  clientSecret,
+  redirectUri,
+  stateKey,
 }: {
   spotifyAccountUrl: string;
   frontendUrl: string;
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+  stateKey: string;
 }) {
   return async function callbackController(req: Request, res: Response) {
-    const { clientId, redirectUri, stateKey, clientSecret, verifierKey } =
-      environment;
-
     const code = req.query.code || null;
     const state = req.query.state || null;
 
@@ -21,7 +25,6 @@ export function CallbackController({
       res.redirect(`/#${stringify({ error: "state_mismatch" })}`);
     } else {
       res.clearCookie(stateKey);
-      res.clearCookie(verifierKey);
 
       const authOptions = {
         method: "POST" as Method,

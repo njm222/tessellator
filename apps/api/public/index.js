@@ -37,8 +37,6 @@ var environment = {
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET || "",
   spotifyAccountUrl: process.env.SPOTIFY_ACCOUNT_URL || "",
   stateKey: "spotify_auth_state",
-  challengeKey: "spotify_auth_challenge",
-  verifierKey: "spotify_auth_verifier",
   frontendUrl: process.env.FRONTEND_URL || ""
 };
 
@@ -47,9 +45,7 @@ var import_cookie_parser = __toESM(require("cookie-parser"));
 var createServer = () => {
   const app = (0, import_express.default)();
   app.disable("x-powered-by").use((0, import_morgan.default)("dev")).use((0, import_body_parser.urlencoded)({ extended: true })).use((0, import_body_parser.json)()).use(import_express.default.static(`${__dirname}/public`)).use((0, import_cors.default)({ credentials: true, origin: environment.frontendUrl })).use((0, import_cookie_parser.default)()).get("/", (req, res) => {
-    return res.json({ message: `api running` });
-  }).get("/healthz", (req, res) => {
-    return res.json({ ok: true });
+    return res.json({ message: `tessellator-api is running!` });
   });
   return app;
 };
@@ -89,10 +85,12 @@ var apiClient = import_axios.default.create({
 
 // src/app/authentication/login/loginController.ts
 function LoginController({
-  spotifyAccountUrl
+  spotifyAccountUrl,
+  clientId,
+  redirectUri,
+  stateKey
 }) {
   return async function loginController2(req, res) {
-    const { clientId, redirectUri, stateKey, challengeKey, verifierKey } = environment;
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
     const scope = "user-read-private user-read-email user-top-read user-read-recently-played user-modify-playback-state user-read-playback-state user-read-currently-playing app-remote-control streaming user-library-modify user-library-read";
@@ -109,7 +107,10 @@ function LoginController({
 
 // src/app/authentication/login/index.ts
 var loginController = LoginController({
-  spotifyAccountUrl: environment.spotifyAccountUrl
+  spotifyAccountUrl: environment.spotifyAccountUrl,
+  clientId: environment.clientId,
+  redirectUri: environment.redirectUri,
+  stateKey: environment.stateKey
 });
 
 // src/app/authentication/callback/callbackController.ts
@@ -117,17 +118,19 @@ var import_querystring2 = require("querystring");
 var import_axios2 = __toESM(require("axios"));
 function CallbackController({
   spotifyAccountUrl,
-  frontendUrl
+  frontendUrl,
+  clientId,
+  clientSecret,
+  redirectUri,
+  stateKey
 }) {
   return async function callbackController2(req, res) {
-    const { clientId, redirectUri, stateKey, clientSecret, verifierKey } = environment;
     const code = req.query.code || null;
     const state = req.query.state || null;
     if (state === null) {
       res.redirect(`/#${(0, import_querystring2.stringify)({ error: "state_mismatch" })}`);
     } else {
       res.clearCookie(stateKey);
-      res.clearCookie(verifierKey);
       const authOptions = {
         method: "POST",
         url: `${spotifyAccountUrl}/api/token`,
@@ -156,7 +159,11 @@ function CallbackController({
 // src/app/authentication/callback/index.ts
 var callbackController = CallbackController({
   spotifyAccountUrl: environment.spotifyAccountUrl,
-  frontendUrl: environment.frontendUrl
+  frontendUrl: environment.frontendUrl,
+  clientId: environment.clientId,
+  clientSecret: environment.clientSecret,
+  redirectUri: environment.redirectUri,
+  stateKey: environment.stateKey
 });
 
 // src/app/authentication/refresh-token/refreshTokenController.ts

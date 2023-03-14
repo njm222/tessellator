@@ -20,6 +20,8 @@
   margin-top: 2.5rem;
 }
 
+/* source: https://css-tricks.com/single-element-loaders-the-dots */
+
 .dots-1 {
   height: 15px;
   aspect-ratio: 5;

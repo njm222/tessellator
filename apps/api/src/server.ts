@@ -16,11 +16,8 @@ export const createServer = () => {
     .use(cors({ credentials: true, origin: environment.frontendUrl }))
     .use(cookieParser())
     .get("/", (req, res) => {
-      return res.json({ message: `api running` });
+      return res.json({ message: `tessellator-api is running!` });
     })
-    .get("/healthz", (req, res) => {
-      return res.json({ ok: true });
-    });
 
   return app;
 };

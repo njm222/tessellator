@@ -17,7 +17,7 @@ export const createServer = () => {
     .use(cookieParser())
     .get("/", (req, res) => {
       return res.json({ message: `tessellator-api is running!` });
-    })
+    });
 
   return app;
 };

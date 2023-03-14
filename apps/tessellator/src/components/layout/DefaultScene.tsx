@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, Stats } from "@react-three/drei";
-
+import { environment } from "../../environments/environment";
 export default function DefaultScene({ children }: { children: JSX.Element }) {
   // Everything defined in here will persist between route changes, only children are swapped
   return (
@@ -17,7 +17,7 @@ export default function DefaultScene({ children }: { children: JSX.Element }) {
       {children}
       <Preload all />
       <OrbitControls />
-      <Stats />
+      {environment.production ? null : <Stats />}
     </Canvas>
   );
 }

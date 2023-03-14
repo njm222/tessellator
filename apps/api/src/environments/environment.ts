@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: process.env.NODE_ENV === "production",
   redirectUri: `${process.env.BACKEND_URL}/callback`,
   clientId: process.env.SPOTIFY_CLIENT_ID || "",
   port: process.env.BACKEND_PORT || "",

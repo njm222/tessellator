@@ -30,7 +30,7 @@ var import_cors = __toESM(require("cors"));
 
 // src/environments/environment.ts
 var environment = {
-  production: false,
+  production: process.env.NODE_ENV === "production",
   redirectUri: `${process.env.BACKEND_URL}/callback`,
   clientId: process.env.SPOTIFY_CLIENT_ID || "",
   port: process.env.BACKEND_PORT || "",
@@ -72,7 +72,7 @@ var import_axios = __toESM(require("axios"));
 
 // ../../packages/core/src/environments/environment.ts
 var environment2 = {
-  production: false,
+  production: process.env.NODE_ENV === "production",
   backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL,
   frontendUrl: process.env.NEXT_PUBLIC_FRONTEND_URL || process.env.FRONTEND_URL
 };

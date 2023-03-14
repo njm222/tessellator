@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
 import { getMyInfo } from "../../spotifyClient";
+import { usePlayer } from "../../utils/playerContext";
 
 export default function WelcomeUser() {
+  const { spotifyAnalyser } = usePlayer();
   const [name, setName] = useState<string>("");
 
   useEffect(() => {
@@ -12,7 +14,7 @@ export default function WelcomeUser() {
     })();
   }, [setName]);
 
-  if (!name) return null;
+  if (!name || !spotifyAnalyser.tatums.current) return null;
 
   return (
     <div className="welcomeContainer">

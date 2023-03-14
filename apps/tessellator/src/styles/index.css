@@ -1,3 +1,5 @@
+@import url("ui/index.css");
+
 html,
 body,
 #__next {
@@ -18,6 +20,10 @@ img {
   height: auto;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .domContainer {
   position: absolute;
   top: 0;
@@ -26,25 +32,6 @@ img {
   height: 100vh;
   overflow: hidden;
   z-index: 10;
-}
-
-.hidden {
-  visibility: hidden;
-}
-
-.loader {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  color: #fff;
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32px;
-  z-index: 100;
 }
 
 .welcomeContainer {

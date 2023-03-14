@@ -12,8 +12,7 @@
     "build": "tsup src/index.ts --format esm --dts",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsup src/index.ts --format esm --watch --dts",
-    "lint": "eslint \"src/**/*.ts*\"",
-    "test": "jest"
+    "lint": "eslint \"src/**/*.ts*\""
   },
   "jest": {
     "preset": "jest-presets/jest/node"

@@ -164,7 +164,12 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
 
   return (
     <PlayerContext.Provider value={{ ...value, spotifyAnalyser }}>
-      {!player ? <Loader /> : null}
+      {!trackAnalysis ? (
+        <Loader
+          message="Setting up player"
+          dotVariant={Math.floor(Math.random() * 11)}
+        />
+      ) : null}
       {children}
     </PlayerContext.Provider>
   );

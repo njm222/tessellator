@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Loader } from "../Loader";
+import { Loader } from "../loader/Loader";
 
 describe("Loader", () => {
   it("renders without crashing", () => {

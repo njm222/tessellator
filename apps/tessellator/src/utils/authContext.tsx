@@ -111,7 +111,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({
 
   return (
     <AuthContext.Provider value={value}>
-      {isLoading && router.pathname !== "/" ? <Loader /> : null}
+      {isLoading && router.pathname !== "/" ? (
+        <Loader dotVariant={Math.floor(Math.random() * 11)} />
+      ) : null}
       {value.accessToken && router.pathname !== "/" ? ( // TODO: decouple
         <PlayerProvider>
           <AnalyserProvider>{children}</AnalyserProvider>

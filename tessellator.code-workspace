@@ -1,17 +1,23 @@
 {
-  "folders": [        
+  "folders": [
     { "name": "jest-presets", "path": "./packages/jest-presets" },
-    { "name": "eslint-config-custom", "path": "./packages/eslint-config-custom" },
-    { "name": "eslint-config-custom-server", "path": "./packages/eslint-config-custom-server" },
+    {
+      "name": "eslint-config-custom",
+      "path": "./packages/eslint-config-custom"
+    },
+    {
+      "name": "eslint-config-custom-server",
+      "path": "./packages/eslint-config-custom-server"
+    },
     { "name": "tsconfig", "path": "./packages/tsconfig" },
     { "name": "logger", "path": "./packages/logger" },
     { "name": "core", "path": "./packages/core" },
-    { "name": "ui", "path": "./packages/ui" },    
-    { "name": "audio-analyser", "path": "./packages/audio-analyser" },    
-    { "name": "spotify-analyser", "path": "./packages/spotify-analyser" },    
+    { "name": "ui", "path": "./packages/ui" },
+    { "name": "audio-analyser", "path": "./packages/audio-analyser" },
+    { "name": "spotify-analyser", "path": "./packages/spotify-analyser" },
     { "name": "api", "path": "./apps/api" },
     { "name": "tessellator", "path": "./apps/tessellator" },
-    { "name": "root", "path": "./" },    
+    { "name": "root", "path": "./" }
   ],
   "settings": {
     "files.exclude": {
@@ -20,11 +26,11 @@
       "apps/": true,
       "dist/": true,
       ".next/": true,
-      ".turbo/": true,
+      ".turbo/": true
     },
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true,
+      "source.fixAll.eslint": true
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "typescript.tsdk": "root/node_modules/typescript/lib",
@@ -32,6 +38,6 @@
     "javascript.preferences.importModuleSpecifier": "project-relative",
     "[typescriptreact]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-  },
+    }
+  }
 }

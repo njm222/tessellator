@@ -114,7 +114,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
           console.log(data); // TODO: change these to toast messages
         });
         player.addListener("ready", (data: any) => {
-          spotifyClient.transferMyPlayback([data.device_id]);
+          spotifyClient.transferMyPlayback([data.device_id], { play: false });
           // .then(() => sapotifyClient.play({ device_id: data.device_id }));
         });
         player.addListener("player_state_changed", async (playerState: any) => {

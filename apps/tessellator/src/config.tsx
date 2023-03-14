@@ -1,9 +1,9 @@
 import Head from "next/head";
+import { environment } from "./environments/environment";
 
 const titleDefault = "Tessellator";
-const url = "http://localhost:4200";
-const description =
-  "A | free to use | real-time | 3-D | Spotify music visualizer";
+const url = environment.frontendUrl;
+const description = "A | free to use | real-time | 3-D | music visualizer";
 const author = "njm222";
 
 const Header = ({ title = titleDefault }) => {
@@ -70,13 +70,6 @@ const Header = ({ title = titleDefault }) => {
         />
         <meta name="theme-color" content="#000" />
         <link rel="shortcut icon" href="/icons/favicon.ico" />
-
-        {/* 
-      Twitter Summary card
-        documentation: https://dev.twitter.com/cards/getting-started
-        Be sure validate your Twitter card markup on the documentation site. */}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@onirenaud" />
       </Head>
     </>
   );

@@ -1,30 +1,11 @@
-import { button, folder, useControls } from "leva";
-import { useEffect, useState } from "react";
-import { LocalStorageKeys } from "../../constants";
 import React from "react";
-import { IconButton, SettingsIcon } from "ui";
-import { useAnalyser } from "../../utils/analyserContext";
-import { useMouseActivity } from "./controls/mouseActivityContext";
+import { button, folder, useControls } from "leva";
+import { useEffect } from "react";
+import { LocalStorageKeys } from "../../../constants";
+import { useAnalyser } from "../../../utils/analyserContext";
 import { defaultAnalyserOptions } from "audio-analyser";
 
-export function Settings() {
-  const { mouseActive } = useMouseActivity();
-
-  const [open, setOpen] = useState(false);
-  return open ? (
-    <SettingsOptions handleClose={() => setOpen(false)} />
-  ) : (
-    <div className={`settings ${!mouseActive && "hidden"}`}>
-      <IconButton
-        title="settings"
-        onClick={() => setOpen(true)}
-        icon={<SettingsIcon />}
-      />
-    </div>
-  );
-}
-
-function SettingsOptions({ handleClose }: { handleClose: () => void }) {
+export function AnalyserOptions() {
   const {
     analyserOptions: {
       fftSize,
@@ -35,7 +16,6 @@ function SettingsOptions({ handleClose }: { handleClose: () => void }) {
     setAnalyserOptions,
   } = useAnalyser();
 
-  useControls({ close: button(handleClose) }, []);
   const [analyzerValues, setAnalyzerValues] = useControls(
     () => ({
       "Analyzer Options": folder({
@@ -61,7 +41,14 @@ function SettingsOptions({ handleClose }: { handleClose: () => void }) {
           max: 0,
           step: 1,
         },
-        reset: button(() => setAnalyzerValues(defaultAnalyserOptions)),
+        reset: button(() =>
+          setAnalyzerValues({
+            fftSize: defaultAnalyserOptions.fftSize,
+            smoothingTimeConstant: defaultAnalyserOptions.smoothingTimeConstant,
+            minDecibels: defaultAnalyserOptions.minDecibels,
+            maxDecibels: defaultAnalyserOptions.maxDecibels,
+          })
+        ),
       }),
     }),
     []

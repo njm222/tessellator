@@ -1,5 +1,5 @@
 import VisualizerScene from "../components/canvas/scenes/VisualizerScene";
-import { Settings } from "../components/dom/Settings";
+import { Settings } from "../components/dom/settings/Settings";
 import { Player } from "../components/dom/player/Player";
 import WelcomeUser from "../components/dom/WelcomeUser";
 import React from "react";

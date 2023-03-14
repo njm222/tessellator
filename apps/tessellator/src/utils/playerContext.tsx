@@ -115,22 +115,29 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
         });
         player.addListener("ready", (data: any) => {
           spotifyClient.transferMyPlayback([data.device_id], { play: false });
-          // .then(() => sapotifyClient.play({ device_id: data.device_id }));
         });
         player.addListener("player_state_changed", async (playerState: any) => {
           // update track position
           mutations.position = playerState?.position;
 
-          const trackId = playerState?.track_window.current_track.id;
-          if (trackId !== player?.lastPlayed) {
+          const { id, type } = playerState?.track_window.current_track;
+
+          if (type !== "track") {
+            alert(
+              `You have selected an ${type}. Please select a track from the spotify app.`
+            );
+            return;
+          }
+
+          if (id !== player?.lastPlayed) {
             const [analysis, features] = await Promise.all([
-              getTrackAnalysis(trackId),
-              getTrackFeatures(trackId),
+              getTrackAnalysis(id),
+              getTrackFeatures(id),
             ]);
 
             setTrackFeatures(features);
             setTrackAnalysis(analysis);
-            setPlayer({ ...playerState, lastPlayed: trackId });
+            setPlayer({ ...playerState, lastPlayed: id });
             return;
           }
           // update playerState

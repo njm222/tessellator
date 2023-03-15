@@ -29,7 +29,7 @@ function Terrain() {
 
     const { snareSection, bassSection, kickSection, highSection } =
       audioAnalyser;
-    const { segments } = spotifyAnalyser;
+    const segment = spotifyAnalyser.getCurrentSegment();
     const { energy, danceability, valence } = trackFeatures;
 
     // Set the variables for simplex
@@ -48,9 +48,7 @@ function Terrain() {
     );
 
     // Get the current time
-    time.current += segments.current?.timbre?.length
-      ? segments.current?.timbre[11] / 500
-      : 1;
+    time.current += segment?.timbre?.length ? segment?.timbre[11] / 500 : 1;
 
     // Get the references of the terrain
     const terrainGeometry: THREE.PlaneGeometry = terrainGeometryRef.current;

@@ -14,7 +14,7 @@ export default function WelcomeUser() {
     })();
   }, [setName]);
 
-  if (!name || !spotifyAnalyser.tatums.current) return null;
+  if (!name || !spotifyAnalyser.sections) return null;
 
   return (
     <div className="welcomeContainer">

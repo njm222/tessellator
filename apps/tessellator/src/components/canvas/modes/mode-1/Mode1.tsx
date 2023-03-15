@@ -15,7 +15,7 @@ const Mode1 = () => {
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
   const getIndexOfChord = (max: boolean) => {
-    const chords = spotifyAnalyser.segments.current?.pitches;
+    const chords = spotifyAnalyser.getCurrentSegment()?.pitches;
     if (!chords) return 0;
     return chords.indexOf(max ? Math.max(...chords) : Math.min(...chords));
   };

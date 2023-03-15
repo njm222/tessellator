@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "tsup src/index.ts --format cjs  --outDir public",
+    "build": "tsup src/index.ts --outDir public --format cjs",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf public",
-    "dev": "tsup src/index.ts --format cjs --watch --onSuccess \"node public/index.js\"",
+    "dev": "tsup src/index.ts --outDir public --format cjs --watch --onSuccess \"node public/index.js\"",
     "lint": "tsc --noEmit && eslint \"src/**/*.ts*\"",
     "start": "node public/index.js",
     "test": "jest --detectOpenHandles"

@@ -14,7 +14,7 @@ export function Player() {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!player) {
+    if (!player.lastPlayed) {
       return;
     }
 
@@ -38,7 +38,7 @@ export function Player() {
     }, 10);
   }, [player]);
 
-  if (!player) return null;
+  if (!player.lastPlayed) return null;
 
   return (
     <div className={`playerContainer ${!mouseActive && "hidden"}`}>

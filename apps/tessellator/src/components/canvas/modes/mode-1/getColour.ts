@@ -2,8 +2,8 @@ import { hslToHex } from "core";
 import SpotifyAnalyser from "spotify-analyser";
 import AudioAnalyser from "audio-analyser";
 
-const minSaturation = 100;
-const minLightness = 150;
+const minSaturation = 150;
+const minLightness = 200;
 
 const getColour = (
   colourKey: number,

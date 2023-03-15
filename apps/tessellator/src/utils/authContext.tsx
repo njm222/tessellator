@@ -33,12 +33,7 @@ const AuthContext = createContext({
   },
 });
 
-function getTokens() {
-  const accessToken = Cookies.get("accessToken");
-  const refreshToken = Cookies.get("refreshToken");
-
-  return { accessToken, refreshToken };
-}
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider: FC<AuthProviderProps> = ({
   children,
@@ -125,4 +120,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+function getTokens() {
+  const accessToken = Cookies.get("accessToken");
+  const refreshToken = Cookies.get("refreshToken");
+
+  return { accessToken, refreshToken };
+}

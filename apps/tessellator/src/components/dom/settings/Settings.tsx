@@ -1,6 +1,5 @@
 import { button, useControls } from "leva";
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { IconButton, SettingsIcon } from "ui";
 import { useMouseActivity } from "../controls/mouseActivityContext";
 import { AnalyserOptions } from "./AnalyserOptions";

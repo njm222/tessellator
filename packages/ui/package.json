@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
-    "@types/react": "^17.0.13",
-    "@types/react-dom": "^17.0.8",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
     "autoprefixer": "^10.4.14",
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",

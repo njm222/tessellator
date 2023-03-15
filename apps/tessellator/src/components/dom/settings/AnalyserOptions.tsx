@@ -1,4 +1,3 @@
-import React from "react";
 import { button, folder, useControls } from "leva";
 import { useEffect } from "react";
 import { LocalStorageKeys } from "../../../constants";

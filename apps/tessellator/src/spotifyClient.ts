@@ -42,12 +42,13 @@ export const pausePlayer = async () => {
   return results;
 };
 
-export const playRandomTopTrack = async () => {
-  const tracks = (await spotifyClient.getMyTopTracks()).items
-  const trackUri = tracks[Math.floor(Math.random() * tracks.length)].uri
+export const playTopTracks = async () => {
+  const tracksUri = (await spotifyClient.getMyTopTracks()).items.map(
+    ({ uri }) => uri
+  );
 
-  return await spotifyClient.play({ uris: [trackUri] })
-}
+  return await spotifyClient.play({ uris: tracksUri });
+};
 
 export const nextTrack = async () => {
   const results = await spotifyClient.skipToNext();

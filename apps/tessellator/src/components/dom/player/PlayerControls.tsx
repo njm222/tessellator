@@ -8,10 +8,16 @@ import { PlayIcon, PauseIcon, NextIcon, PrevIcon } from "./PlayerIcons";
 import { IconButton } from "ui";
 import { usePlayer } from "../../../utils/playerContext";
 import { useAnalyser } from "../../../utils/analyserContext";
+import { useEffect } from "react";
 
 export default function PlayerControls() {
   const { player } = usePlayer();
   const { audioAnalyser, analyserOptions } = useAnalyser();
+
+  useEffect(() => {
+    // resolves autoplay podcast issue
+    if (!player.paused && !audioAnalyser.source) pausePlayer();
+  }, [audioAnalyser.source, player]);
 
   return (
     <>

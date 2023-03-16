@@ -13,6 +13,7 @@
     "@react-three/drei": "^9.56.5",
     "@react-three/fiber": "^8.11.2",
     "@react-three/flex": "^1.0.1",
+    "@react-three/postprocessing": "^2.7.0",
     "audio-analyser": "*",
     "core": "*",
     "js-cookie": "^3.0.1",

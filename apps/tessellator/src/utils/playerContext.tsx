@@ -10,7 +10,7 @@ import {
 import {
   getTrackAnalysis,
   getTrackFeatures,
-  playRandomTopTrack,
+  playTopTracks,
 } from "../spotifyClient";
 import { useAuth } from "./authContext";
 import { mutations } from "./store";
@@ -103,35 +103,42 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
         });
 
         player.addListener("initialization_error", (data: any) => {
-          console.log("initialization_error");
+          alert("initialization_error");
           console.log(data);
         });
         player.addListener("authentication_error", (data: any) => {
-          console.log("authentication_error");
+          alert("authentication_error");
           console.log(data);
           handleRefreshToken();
         });
         player.addListener("account_error", (data: any) => {
-          console.log("account_error");
+          alert("account_error");
           console.log(data);
         });
         player.addListener("playback_error", (data: any) => {
-          console.log("playback_error");
-          console.log(data); // TODO: change these to toast messages
+          alert("playback_error");
+          console.log(data);
         });
-        player.addListener("ready", async (data: { device_id: string }) => {
-          await playRandomTopTrack();
-          spotifyClient.transferMyPlayback([data.device_id], { play: false });
+        player.addListener("ready", (data: { device_id: string }) => {
+          if (!data.device_id) {
+            // toast message
+            alert("player failed to start");
+            return;
+          }
+
+          spotifyClient.transferMyPlayback([data.device_id], {
+            play: false,
+          });
         });
         player.addListener("player_state_changed", async (playerState: any) => {
           // update track position
-          mutations.position = playerState?.position;
+          mutations.position = playerState?.position ?? 0;
 
           const { id, type } = playerState?.track_window.current_track;
 
           if (type !== "track") {
             // handles case when podcast is played
-            await playRandomTopTrack();
+            await playTopTracks();
             return;
           }
 

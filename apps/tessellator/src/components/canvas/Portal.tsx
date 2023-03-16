@@ -1,7 +1,8 @@
 import { Vector3, Quaternion, Mesh } from "three";
-import { memo, MutableRefObject, ReactNode, useRef } from "react";
+import React, { memo, MutableRefObject, ReactNode, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { PerspectiveCamera, RenderTexture } from "@react-three/drei";
+import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
 import { usePortal } from "../../utils/portalContext";
 
 function Portal({ children }: { children: ReactNode }) {
@@ -81,6 +82,8 @@ function Portal({ children }: { children: ReactNode }) {
 
 export default memo(Portal);
 
+const [portalWidth, portalHeight] = [3, 7];
+
 const PortalScene = ({
   children,
   meshRef,
@@ -88,17 +91,25 @@ const PortalScene = ({
   children: ReactNode;
   meshRef: MutableRefObject<Mesh>;
 }) => {
+  const meshTrimRef = useRef(new Mesh());
   return (
-    <>
-      {/* <Bloom> */}
-      <mesh position={[0, 0, -0.02]}>
-        <planeGeometry args={[2.6, 5.1]} attach="geometry" />
+    <group position={[0, 1, 0]}>
+      <EffectComposer>
+        <SelectiveBloom
+          selection={meshTrimRef}
+          luminanceThreshold={0.1}
+          luminanceSmoothing={0.1}
+        />
+      </EffectComposer>
+      <mesh ref={meshTrimRef} position={[0, 0, -0.02]}>
+        <planeGeometry
+          args={[portalWidth + 0.1, portalHeight + 0.1]}
+          attach="geometry"
+        />
         <meshBasicMaterial color="red" />
       </mesh>
-      <ambientLight />
-      {/* </Bloom> */}
       <mesh ref={meshRef}>
-        <planeGeometry args={[2.5, 5]} />
+        <planeGeometry args={[portalWidth, portalHeight]} />
         <meshStandardMaterial>
           <RenderTexture
             attach="map"
@@ -109,7 +120,7 @@ const PortalScene = ({
               makeDefault
               manual
               fov={50}
-              aspect={2.5 / 5}
+              aspect={portalWidth / portalHeight}
               position={[0, 0, 10]}
               onUpdate={(c) => c.updateProjectionMatrix()}
             />
@@ -117,6 +128,6 @@ const PortalScene = ({
           </RenderTexture>
         </meshStandardMaterial>
       </mesh>
-    </>
+    </group>
   );
 };

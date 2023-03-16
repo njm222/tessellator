@@ -1,5 +1,6 @@
-import LandingScene from "../components/canvas/scenes/LandingScene";
+import React from "react";
 import { DefaultPageProps } from "./_app";
+import LandingScene from "../components/canvas/scenes/LandingScene";
 
 export default function Page() {
   return null;

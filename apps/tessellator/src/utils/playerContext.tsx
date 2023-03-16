@@ -7,7 +7,11 @@ import {
   useState,
   FC,
 } from "react";
-import { getTrackAnalysis, getTrackFeatures } from "../spotifyClient";
+import {
+  getTrackAnalysis,
+  getTrackFeatures,
+  playRandomTopTrack,
+} from "../spotifyClient";
 import { useAuth } from "./authContext";
 import { mutations } from "./store";
 import { spotifyClient } from "../spotifyClient";
@@ -62,6 +66,8 @@ export const PlayerContext = createContext({
   spotifyAnalyser: new SpotifyAnalyser(),
 });
 
+export const usePlayer = () => useContext(PlayerContext);
+
 export const PlayerProvider: FC<PlayerProviderProps> = ({
   children,
 }: {
@@ -113,7 +119,8 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
           console.log("playback_error");
           console.log(data); // TODO: change these to toast messages
         });
-        player.addListener("ready", (data: any) => {
+        player.addListener("ready", async (data: { device_id: string }) => {
+          await playRandomTopTrack();
           spotifyClient.transferMyPlayback([data.device_id], { play: false });
         });
         player.addListener("player_state_changed", async (playerState: any) => {
@@ -123,9 +130,8 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
           const { id, type } = playerState?.track_window.current_track;
 
           if (type !== "track") {
-            alert(
-              `You have selected an ${type}. Please select a track from the spotify app.`
-            );
+            // handles case when podcast is played
+            await playRandomTopTrack();
             return;
           }
 
@@ -174,8 +180,6 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     </PlayerContext.Provider>
   );
 };
-
-export const usePlayer = () => useContext(PlayerContext);
 
 declare global {
   interface Window {

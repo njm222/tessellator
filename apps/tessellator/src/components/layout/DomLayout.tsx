@@ -4,6 +4,10 @@ import React, {
   useImperativeHandle,
   ReactNode,
 } from "react";
+import { AuthProvider } from "../../utils/authContext";
+import { PortalProvider } from "../../utils/portalContext";
+import { ControlsProvider } from "../dom/controls/controlsContext";
+import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
 
 const DomLayout = forwardRef(
   ({ children, ...props }: { children: ReactNode }, ref) => {
@@ -13,7 +17,13 @@ const DomLayout = forwardRef(
 
     return (
       <div className={"domContainer"} ref={localRef} {...props}>
-        {children}
+        <AuthProvider>
+          <ControlsProvider>
+            <MouseActivityProvider>
+              <PortalProvider>{children}</PortalProvider>
+            </MouseActivityProvider>
+          </ControlsProvider>
+        </AuthProvider>
       </div>
     );
   }

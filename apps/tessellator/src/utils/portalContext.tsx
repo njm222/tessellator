@@ -20,6 +20,8 @@ const PortalContext = createContext({
   },
 });
 
+export const usePortal = () => useContext(PortalContext);
+
 export const PortalProvider: FC<PortalProviderProps> = ({
   children,
 }: {
@@ -39,5 +41,3 @@ export const PortalProvider: FC<PortalProviderProps> = ({
     <PortalContext.Provider value={value}>{children}</PortalContext.Provider>
   );
 };
-
-export const usePortal = () => useContext(PortalContext);

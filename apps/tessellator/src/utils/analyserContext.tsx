@@ -28,6 +28,8 @@ const AnalyserContext = createContext({
   analyserOptions: defaultAnalyserOptions,
 });
 
+export const useAnalyser = () => useContext(AnalyserContext);
+
 export const AnalyserProvider: FC<AnalyserProviderProps> = ({
   children,
 }: {
@@ -62,5 +64,3 @@ export const AnalyserProvider: FC<AnalyserProviderProps> = ({
     </AnalyserContext.Provider>
   );
 };
-
-export const useAnalyser = () => useContext(AnalyserContext);

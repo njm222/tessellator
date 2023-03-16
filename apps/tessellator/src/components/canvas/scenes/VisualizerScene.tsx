@@ -1,11 +1,10 @@
 import { memo, useEffect } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 import Portal from "../Portal";
 import Visualizer from "../Visualizer";
 import Bridge from "../../models/Bridge";
 import { usePortal } from "../../../utils/portalContext";
-import { useRouter } from "next/router";
 import { DefaultPageProps } from "../../../pages/_app";
 
 const OuterScene = () => {
@@ -20,18 +19,17 @@ const OuterScene = () => {
 
 const VisualizerScene = (pageProps: DefaultPageProps) => {
   const camera = useThree((state) => state.camera);
-  const router = useRouter();
 
   useEffect(() => {
     camera.position.set(-50, 50, 150);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useFrame(() => {
-    if (camera.position.z > 175) {
-      router.push("/about");
-    }
-  });
+  // useFrame(() => {
+  //   if (camera.position.z > 175) {
+  //     router.push("/about");
+  //   }
+  // });
 
   return (
     <>

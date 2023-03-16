@@ -1,12 +1,13 @@
 import React, { useState, useEffect, memo, Suspense } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
-import { Vector3 } from "three";
+import { Vector2, Vector3 } from "three";
 import { Text } from "../Text";
 import { loginUser } from "core";
 import Particles from "../Particles";
 import { Bounds, Sky } from "@react-three/drei";
 import { useAuth } from "../../../utils/authContext";
 import { useRouter } from "next/router";
+import { EffectComposer, Bloom, Glitch } from "@react-three/postprocessing";
 
 const LandingScene = (props: { r3f?: boolean }) => {
   const { refreshToken } = useAuth();
@@ -25,7 +26,7 @@ const LandingScene = (props: { r3f?: boolean }) => {
 
   useFrame((state, delta) => {
     if (isNavigating) {
-      camera.position.lerp(new Vector3(0, 0, -10), delta);
+      camera.position.lerp(new Vector3(0, 0, -7), delta);
       return;
     }
   });
@@ -63,6 +64,19 @@ const LandingScene = (props: { r3f?: boolean }) => {
         mieCoefficient={0.1}
         mieDirectionalG={0.8}
       />
+      <EffectComposer>
+        <Bloom
+          luminanceThreshold={0.7}
+          luminanceSmoothing={0.2}
+          width={512}
+          height={512}
+        />
+        <Glitch
+          delay={new Vector2(0, 0)}
+          duration={new Vector2(100, 100)}
+          active={isNavigating}
+        />
+      </EffectComposer>
     </>
   );
 };

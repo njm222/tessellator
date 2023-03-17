@@ -53,12 +53,23 @@ var createServer = () => {
 // src/app/authentication/login/loginController.ts
 var import_querystring = require("querystring");
 
+// ../../packages/core/src/primitiveUtils/numberUtils.ts
+function generateRandomInteger(min, max) {
+  checkIfMaxMinValid(min, max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+function checkIfMaxMinValid(min, max) {
+  if (max - min < 0) {
+    throw Error("max cannot be less than min");
+  }
+}
+
 // ../../packages/core/src/primitiveUtils/stringUtils.ts
 function generateRandomString(length) {
   let text = "";
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+    text += possible.charAt(generateRandomInteger(0, possible.length));
   }
   return text;
 }

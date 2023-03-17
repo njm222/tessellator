@@ -1,3 +1,3 @@
-export * from "./primitiveUtils/stringUtils";
+export * from "./primitiveUtils";
 export * from "./colourUtils/hslToHex";
 export * from "./web/auth";

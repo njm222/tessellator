@@ -1,3 +1,5 @@
+import { generateRandomInteger } from ".";
+
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -9,7 +11,7 @@ export function generateRandomString(length: number): string {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+    text += possible.charAt(generateRandomInteger(0, possible.length));
   }
   return text;
 }

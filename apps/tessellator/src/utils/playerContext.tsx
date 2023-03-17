@@ -17,6 +17,7 @@ import { mutations } from "./store";
 import { spotifyClient } from "../spotifyClient";
 import SpotifyAnalyser, { SpotifyAnalyserData } from "spotify-analyser";
 import { Loader } from "ui";
+import { generateRandomInteger } from "core";
 
 type PlayerProviderProps = {
   player?: any;
@@ -180,7 +181,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       {!trackAnalysis ? (
         <Loader
           message="Setting up player"
-          dotVariant={Math.floor(Math.random() * 11)}
+          dotVariant={generateRandomInteger(0, 11)}
         />
       ) : null}
       {children}

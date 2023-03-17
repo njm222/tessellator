@@ -10,6 +10,7 @@ import {
   numColourModes,
   useControls,
 } from "../dom/controls/controlsContext";
+import { generateRandomInteger } from "core";
 
 function Lights() {
   return (
@@ -38,8 +39,8 @@ const Visualizer = () => {
     const sectionStart = spotifyAnalyser.sections?.current?.start;
     if (sectionChangeRef.current !== sectionStart) {
       sectionChangeRef.current = sectionStart;
-      setModeKey(Math.floor(Math.random() * numModes));
-      setColourKey(Math.floor(Math.random() * numColourModes));
+      setModeKey(generateRandomInteger(0, numModes - 1));
+      setColourKey(generateRandomInteger(0, numColourModes - 1));
     }
   });
 

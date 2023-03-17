@@ -1,11 +1,12 @@
+import { generateRandomInteger } from "../primitiveUtils";
 import { hslToHex } from "./hslToHex";
 
 describe("hslToHex", () => {
   it("should return white as a hex string", () => {
     expect(
       hslToHex(
-        Math.round(Math.random() * 360),
-        Math.round(Math.random() * 255),
+        generateRandomInteger(0, 360),
+        generateRandomInteger(0, 255),
         255
       )
     ).toEqual("#ffffff");
@@ -13,11 +14,7 @@ describe("hslToHex", () => {
 
   it("should return black as a hex string", () => {
     expect(
-      hslToHex(
-        Math.round(Math.random() * 360),
-        Math.round(Math.random() * 255),
-        0
-      )
+      hslToHex(generateRandomInteger(0, 360), generateRandomInteger(0, 255), 0)
     ).toEqual("#000000");
   });
   it("should return red as a hex string", () => {

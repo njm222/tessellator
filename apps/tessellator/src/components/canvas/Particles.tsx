@@ -7,7 +7,7 @@ import {
 } from "three";
 import React, { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { hslToHex } from "core";
+import { generateRandomNumber, hslToHex } from "core";
 
 // TODO: decouple isNavigating
 export default function Particles({
@@ -28,15 +28,15 @@ export default function Particles({
   const particles = useMemo(() => {
     const temp = [];
     for (let i = 0; i < count; i++) {
-      const t = Math.random() * 1000;
-      const factor = 10 + Math.random() * 1000;
+      const t = generateRandomNumber(0, 1000);
+      const factor = generateRandomNumber(10, 1000);
       const speed = 0.001 + Math.random() / 5000;
-      const xFactor = -2 + Math.random() * 4;
-      let yFactor = -10 + Math.random() * 20;
+      const xFactor = generateRandomNumber(-2, 2);
+      let yFactor = generateRandomNumber(-10, 10);
 
       // makes a gap in the center
       while (yFactor < 19 && yFactor > -19) {
-        yFactor = -20 + Math.random() * 40;
+        yFactor = generateRandomNumber(-20, 20);
       }
 
       const zFactor = Math.random() * 2;

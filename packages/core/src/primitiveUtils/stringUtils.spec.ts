@@ -1,3 +1,4 @@
+import { generateRandomInteger } from ".";
 import { generateRandomString } from "./stringUtils";
 
 describe("stringUtils", () => {
@@ -5,7 +6,7 @@ describe("stringUtils", () => {
     expect(generateRandomString(0)).toEqual("");
   });
   it("should return a random string of length n", () => {
-    const randomLength = Math.round(Math.random() * 50);
+    const randomLength = generateRandomInteger(0, 50);
     expect(generateRandomString(randomLength).length).toEqual(randomLength);
   });
 });

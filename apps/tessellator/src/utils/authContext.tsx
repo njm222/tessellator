@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { loginUser, updateToken } from "core";
+import { generateRandomInteger, loginUser, updateToken } from "core";
 import { Loader } from "ui";
 import React, {
   createContext,
@@ -107,7 +107,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
   return (
     <AuthContext.Provider value={value}>
       {isLoading && router.pathname !== "/" ? (
-        <Loader dotVariant={Math.floor(Math.random() * 11)} />
+        <Loader dotVariant={generateRandomInteger(0, 11)} />
       ) : null}
       {value.accessToken && router.pathname !== "/" ? ( // TODO: decouple
         <PlayerProvider>

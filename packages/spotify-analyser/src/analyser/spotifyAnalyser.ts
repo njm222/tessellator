@@ -1,5 +1,8 @@
 import AudioProperty from "../audio-property/audioProperty";
-import { SpotifyAudioDataSegment } from "../audio-property/audioPropertyTypes";
+import {
+  SpotifyAudioDataSection,
+  SpotifyAudioDataSegment,
+} from "../audio-property/audioPropertyTypes";
 import {
   SpotifyAnalyserData,
   SpotifyAnalyserUpdateProps,
@@ -43,6 +46,10 @@ export default class SpotifyAnalyser {
     this.sections.updateAudioProperty(this.position);
     this.segments.updateAudioProperty(this.position);
     this.tatums.updateAudioProperty(this.position);
+  }
+
+  getCurrentSection(): SpotifyAudioDataSection {
+    return this.sections.current;
   }
 
   getCurrentSegment(): SpotifyAudioDataSegment {

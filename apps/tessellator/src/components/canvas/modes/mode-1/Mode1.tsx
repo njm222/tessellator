@@ -48,7 +48,9 @@ const Mode1 = () => {
     const tubularSegments = Math.ceil(audioAnalyser.midSection.average);
     const radialSegments = Math.ceil(audioAnalyser.midSection.average);
     const p = getIndexOfChord(trackFeatures.valence < 0.5);
-    const q = getIndexOfChord(true);
+    const q = getIndexOfChord(
+      (spotifyAnalyser.getCurrentSection()?.key ?? 0) % 2 === 0
+    );
 
     return [radius, tube, tubularSegments, radialSegments, p + 1, q + 1];
   };

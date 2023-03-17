@@ -44,9 +44,9 @@ export function Player() {
     <div className={`playerContainer ${!mouseActive && "hidden"}`}>
       <div className="playerLeft">
         <Image
-          width={"50"}
-          height={"50"}
-          alt={"album art"}
+          width="50"
+          height="50"
+          alt="album art"
           src={player?.track_window.current_track.album.images[0].url}
         />
         <div className="trackInfo">
@@ -63,7 +63,7 @@ export function Player() {
           <PlayerControls />
         </div>
         <div className="progress">
-          <div className="progress__bar" ref={progressBarRef} />
+          <div className="progressBar" ref={progressBarRef} />
         </div>
       </div>
       <div className="playerRight"></div>

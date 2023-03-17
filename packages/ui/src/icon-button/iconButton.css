@@ -1,0 +1,10 @@
+.iconButton {
+  border-radius: 100%;
+  transition: all 0.2s;
+  color: hsla(0, 0%, 100%, 0.6);
+}
+
+.iconButton.hover {
+  color: #fff;
+  cursor: pointer;
+}

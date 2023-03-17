@@ -43,11 +43,12 @@ img {
 }
 
 /* ---------- Settings ---------- */
+
 .settings {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  color: #292929;
+  color: hsla(0, 0%, 100%, 0.6);
 }
 
 /* ---------- Player ---------- */
@@ -60,9 +61,9 @@ img {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: #292929;
+  background: #131313;
   transition: all 0.5s;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .playerContainer .playerLeft {
@@ -79,6 +80,7 @@ img {
   flex-direction: column;
   justify-content: center;
   color: #fff;
+  margin-left: 1rem;
 }
 
 .playerContainer .playerCenter {
@@ -92,16 +94,9 @@ img {
 .playerContainer .playerControls {
   display: flex;
   justify-content: space-around;
-}
-
-.playerControls .iconButton {
-  border-radius: 100%;
-  transition: all 0.2s;
-}
-
-.iconButton.hover {
-  color: #fff;
-  cursor: pointer;
+  max-width: 250px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 /** Progress **/
@@ -114,7 +109,7 @@ img {
   overflow: hidden;
 }
 
-.progress__bar {
+.progressBar {
   background-color: green;
   height: 4px;
 }

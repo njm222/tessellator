@@ -4,7 +4,7 @@ import {
   pausePlayer,
   nextTrack,
 } from "../../../spotifyClient";
-import { PlayIcon, PauseIcon, NextIcon, PrevIcon } from "./PlayerIcons";
+import { PlayIcon, PauseIcon, NextIcon, PrevIcon } from "ui";
 import { IconButton } from "ui";
 import { usePlayer } from "../../../utils/playerContext";
 import { useAnalyser } from "../../../utils/analyserContext";

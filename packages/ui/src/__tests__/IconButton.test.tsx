@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { IconButton } from "../IconButton";
+import { IconButton } from "../icon-button/IconButton";
 
 describe("IconButton", () => {
   it("renders without crashing", () => {

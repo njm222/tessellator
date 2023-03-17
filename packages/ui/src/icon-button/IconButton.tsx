@@ -14,7 +14,7 @@ export const IconButton = ({
   return (
     <button
       title={title}
-      className={`iconButton ${title} ${hover ? "hover" : ""}`} // TODO
+      className={`iconButton ${hover ? "hover" : ""}`}
       onClick={onClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}

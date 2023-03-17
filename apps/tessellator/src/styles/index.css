@@ -126,5 +126,5 @@ img {
   right: 1rem;
   top: 1rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }

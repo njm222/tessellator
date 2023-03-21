@@ -1,7 +1,7 @@
 import AudioProperty from "../audio-property/audioProperty";
 import { SpotifyAudioData } from "../audio-property/audioPropertyTypes";
 import SpotifyAnalyser from "./spotifyAnalyser";
-jest.mock("../frequency-section/audioProperty");
+jest.mock("../audio-property/audioProperty");
 
 const mockData: {
   bars: SpotifyAudioData[],
@@ -23,7 +23,7 @@ beforeEach(() => {
 });
 
 it("Should setup the defined audio properties", () => {
-  const spotifyAnalyser = new SpotifyAnalyser();
+  const spotifyAnalyser = new SpotifyAnalyser(mockData);
   expect(AudioProperty).toHaveBeenCalledTimes(5);
 });
 

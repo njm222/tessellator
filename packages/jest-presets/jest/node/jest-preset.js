@@ -10,4 +10,7 @@ module.exports = {
     "<rootDir>/dist",
   ],
   preset: "ts-jest",
+  collectCoverage: true,
+  collectCoverageFrom: ["<rootDir>/src/**"],
+  coverageDirectory: "<rootDir>/coverage",
 };

@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { createServer } from "../server";
+import { createServer } from "../src/server";
 
 describe("server", () => {
   it("should start the server", async () => {

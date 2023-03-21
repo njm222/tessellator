@@ -1,4 +1,4 @@
-import { log } from "..";
+import { log } from "../src";
 
 jest.spyOn(global.console, "log");
 

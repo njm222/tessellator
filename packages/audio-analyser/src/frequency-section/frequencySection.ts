@@ -1,8 +1,11 @@
 import { FrequencySectionProps } from "./frequencySectionTypes";
 
 const defaultCounterLimit = 32;
-
-export default class FrequencySection {
+export interface IFrequencySection {
+  updateSectionLimits: (bucketSize: number) => void,
+  updateFrequencySection: (frequencyData: Uint8Array) => void
+}
+export default class FrequencySection implements IFrequencySection {
   deviation: number;
   average: number;
   energy: number;
@@ -21,7 +24,7 @@ export default class FrequencySection {
     this.energy = 0;
     this.counter = 0;
     this.counterLimit = counterLimit;
-    this.data = new Array(counterLimit).fill(1);
+    this.data = new Array(counterLimit).fill(0);
     this.lowerIndex = 0;
     this.upperIndex = 0;
     this.lowerRange = props.lowerRange;
@@ -62,11 +65,15 @@ export default class FrequencySection {
       totalLevel += this.data[i];
       totalDeviation += Math.pow(this.data[i], 2);
     }
+    console.log(totalLevel)
+    console.log(totalDeviation)
+    console.log(Math.max(totalDeviation / (this.data.length - 1), 0))
+    console.log(Math.sqrt(Math.max(totalDeviation / (this.data.length - 1), 0)))
     // set averages
-    this.average = totalLevel / Math.max(this.data.length, 1);
-    this.deviation =
-      Math.sqrt(Math.max(totalDeviation / this.data.length, 0)) -
-      totalLevel * totalLevel;
+    this.average = totalLevel / Math.max(this.data.length - 1, 1);
+    this.deviation = Math.abs(
+      Math.sqrt(Math.max(totalDeviation / (this.data.length - 1), 0)) -
+      totalLevel * totalLevel);
 
     // reset counter
     if (this.counter >= this.counterLimit) {

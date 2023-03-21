@@ -25,10 +25,3 @@ it("We can check if the class method was called", () => {
   const mockUpdateData = mockAudioAnalyserInstance.updateData;
   expect(mockUpdateData).toHaveBeenCalledTimes(1);
 });
-
-/**
- * Create mocks for following types:
- * analyserData
- * frequencySection
- *
- */

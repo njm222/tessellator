@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import dynamic from "next/dynamic";
 import { Tomorrow } from "next/font/google";
 import Header from "../config";
@@ -47,6 +48,7 @@ export default function App({
           {(Component as any)(pageProps)}
         </DomLayout>
       </main>
+      <Analytics />
     </>
   );
 }

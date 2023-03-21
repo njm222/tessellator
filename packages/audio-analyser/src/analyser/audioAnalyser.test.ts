@@ -1,27 +1,33 @@
+import FrequencySection from "../frequency-section/frequencySection";
 import AudioAnalyser from "./audioAnalyser";
-jest.mock("./audioAnalyser");
+jest.mock("../frequency-section/frequencySection");
 
 beforeEach(() => {
   // Clear all instances and calls to constructor and all methods:
-  (AudioAnalyser as jest.Mock).mockClear();
+  (FrequencySection as jest.Mock).mockClear();
 });
 
-it("We can check if the class constructor was called", () => {
+it("Should setup the defined frequency sections", () => {
   const audioAnalyser = new AudioAnalyser();
-  expect(AudioAnalyser).toHaveBeenCalledTimes(1);
+  expect(FrequencySection).toHaveBeenCalledTimes(5);
 });
 
-it("We can check if the class method was called", () => {
+it("Should update each of the defined frequency sections", () => {
   // Show that mockClear() is working:
-  expect(AudioAnalyser).not.toHaveBeenCalled();
+  expect(FrequencySection).not.toHaveBeenCalled();
 
   const audioAnalyser = new AudioAnalyser();
-  expect(AudioAnalyser as jest.Mock).toHaveBeenCalledTimes(1);
+  // expect(AudioAnalyser as jest.Mock).toHaveBeenCalledTimes(1);
 
   audioAnalyser.updateData();
 
-  const mockAudioAnalyserInstance = (AudioAnalyser as jest.Mock).mock
-    .instances[0];
-  const mockUpdateData = mockAudioAnalyserInstance.updateData;
-  expect(mockUpdateData).toHaveBeenCalledTimes(1);
+  const mockFrequencySectionInstances = (FrequencySection as jest.Mock).mock
+    .instances;
+
+  expect(mockFrequencySectionInstances.length).toBe(5)
+
+  for (const instance of mockFrequencySectionInstances) {
+    const mockUpdateData = instance.updateFrequencySection;
+    expect(mockUpdateData).toHaveBeenCalledTimes(1);
+  }
 });

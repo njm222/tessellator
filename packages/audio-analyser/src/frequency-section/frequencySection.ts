@@ -65,10 +65,6 @@ export default class FrequencySection implements IFrequencySection {
       totalLevel += this.data[i];
       totalDeviation += Math.pow(this.data[i], 2);
     }
-    console.log(totalLevel)
-    console.log(totalDeviation)
-    console.log(Math.max(totalDeviation / (this.data.length - 1), 0))
-    console.log(Math.sqrt(Math.max(totalDeviation / (this.data.length - 1), 0)))
     // set averages
     this.average = totalLevel / Math.max(this.data.length - 1, 1);
     this.deviation = Math.abs(

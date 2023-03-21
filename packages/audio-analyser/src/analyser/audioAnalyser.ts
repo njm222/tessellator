@@ -101,6 +101,8 @@ export default class AudioAnalyser {
   }
 
   private updateAnalyserData() {
+    if (!this.analyser) return
+
     this.analyser.getByteFrequencyData(this.analyserData.frequencyData);
 
     const [totalLevel, totalRms, totalPeak] =

@@ -17,7 +17,6 @@ it("Should update each of the defined frequency sections", () => {
   expect(FrequencySection).not.toHaveBeenCalled();
 
   const audioAnalyser = new AudioAnalyser();
-  // expect(AudioAnalyser as jest.Mock).toHaveBeenCalledTimes(1);
 
   audioAnalyser.updateData();
 

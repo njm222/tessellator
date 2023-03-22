@@ -2,8 +2,8 @@ import { FrequencySectionProps } from "./frequencySectionTypes";
 
 const defaultCounterLimit = 32;
 export interface IFrequencySection {
-  updateSectionLimits: (bucketSize: number) => void,
-  updateFrequencySection: (frequencyData: Uint8Array) => void
+  updateSectionLimits: (bucketSize: number) => void;
+  updateFrequencySection: (frequencyData: Uint8Array) => void;
 }
 export default class FrequencySection implements IFrequencySection {
   deviation: number;
@@ -69,7 +69,8 @@ export default class FrequencySection implements IFrequencySection {
     this.average = totalLevel / Math.max(this.data.length - 1, 1);
     this.deviation = Math.abs(
       Math.sqrt(Math.max(totalDeviation / (this.data.length - 1), 0)) -
-      totalLevel * totalLevel);
+        totalLevel * totalLevel
+    );
 
     // reset counter
     if (this.counter >= this.counterLimit) {

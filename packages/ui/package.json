@@ -15,7 +15,7 @@
     "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
     "clean": "rm -rf dist",
     "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
-    "lint": "eslint \"src/**/*.ts*\"",
+    "lint": "tsc --noEmit && eslint",
     "test": "jest"
   },
   "jest": {

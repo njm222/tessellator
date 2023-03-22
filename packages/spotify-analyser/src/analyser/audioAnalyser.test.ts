@@ -4,18 +4,18 @@ import SpotifyAnalyser from "./spotifyAnalyser";
 jest.mock("../audio-property/audioProperty");
 
 const mockData: {
-  bars: SpotifyAudioData[],
-  beats: SpotifyAudioData[],
-  sections: SpotifyAudioData[],
-  segments: SpotifyAudioData[],
-  tatums: SpotifyAudioData[],
+  bars: SpotifyAudioData[];
+  beats: SpotifyAudioData[];
+  sections: SpotifyAudioData[];
+  segments: SpotifyAudioData[];
+  tatums: SpotifyAudioData[];
 } = {
   bars: [],
   beats: [],
   sections: [],
   segments: [],
   tatums: [],
-}
+};
 
 beforeEach(() => {
   // Clear all instances and calls to constructor and all methods:
@@ -32,14 +32,14 @@ it("Should update each of the defined audio properties", () => {
   expect(AudioProperty).not.toHaveBeenCalled();
 
   const spotifyAnalyser = new SpotifyAnalyser();
-  spotifyAnalyser.setData(mockData)
+  spotifyAnalyser.setData(mockData);
 
   spotifyAnalyser.updateData({ position: 0 });
 
   const mockAudioPropertyInstances = (AudioProperty as jest.Mock).mock
     .instances;
 
-  expect(mockAudioPropertyInstances.length).toBe(5)
+  expect(mockAudioPropertyInstances.length).toBe(5);
 
   for (const instance of mockAudioPropertyInstances) {
     const mockUpdateData = instance.updateAudioProperty;

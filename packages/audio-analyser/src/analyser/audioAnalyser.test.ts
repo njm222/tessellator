@@ -23,7 +23,7 @@ it("Should update each of the defined frequency sections", () => {
   const mockFrequencySectionInstances = (FrequencySection as jest.Mock).mock
     .instances;
 
-  expect(mockFrequencySectionInstances.length).toBe(5)
+  expect(mockFrequencySectionInstances.length).toBe(5);
 
   for (const instance of mockFrequencySectionInstances) {
     const mockUpdateData = instance.updateFrequencySection;

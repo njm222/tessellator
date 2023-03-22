@@ -1,6 +1,6 @@
-import { stringify } from "querystring";
 import { generateRandomString } from "core";
 import { Request, Response } from "express";
+import { stringify } from "querystring";
 
 export function LoginController({
   spotifyAccountUrl,

@@ -1,6 +1,6 @@
-import { stringify } from "querystring";
 import axios, { Method } from "axios";
 import { Request, Response } from "express";
+import { stringify } from "querystring";
 
 export function CallbackController({
   spotifyAccountUrl,

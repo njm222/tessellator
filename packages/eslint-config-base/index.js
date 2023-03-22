@@ -1,5 +1,5 @@
 module.exports = {
-  plugins: ["simple-import-sort"],
+  plugins: ["import", "simple-import-sort"],
   rules: {
     "import/first": "error",
     "import/newline-after-import": "error",

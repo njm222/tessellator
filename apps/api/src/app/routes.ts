@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import { authenticationRoutes } from "./authentication/authenticationRoutes";
 
 const routes = {

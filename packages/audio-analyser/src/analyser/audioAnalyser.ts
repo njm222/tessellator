@@ -1,7 +1,7 @@
-import { AudioAnalyserData, AudioAnalyserProps } from "./audioAnalyserTypes";
-
 import FrequencySection from "../frequency-section/frequencySection";
 import { defaultAnalyserOptions } from "..";
+
+import { AudioAnalyserData, AudioAnalyserProps } from "./audioAnalyserTypes";
 
 export default class AudioAnalyser {
   context!: AudioContext;

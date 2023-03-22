@@ -6,8 +6,8 @@
       "path": "./packages/eslint-config-base"
     },
     {
-      "name": "eslint-config-custom-react",
-      "path": "./packages/eslint-config-custom-react"
+      "name": "eslint-config-custom",
+      "path": "./packages/eslint-config-custom"
     },
     {
       "name": "eslint-config-custom-server",

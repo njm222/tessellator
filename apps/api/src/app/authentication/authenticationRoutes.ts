@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { loginController } from "./login";
 import { callbackController } from "./callback";
+import { loginController } from "./login";
 import { refreshTokenController } from "./refresh-token";
 
 export function authenticationRoutes(app: Router) {

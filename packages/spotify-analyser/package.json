@@ -12,7 +12,8 @@
     "build": "tsup src/index.ts --format esm --dts",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsup src/index.ts --format esm --watch --dts",
-    "lint": "tsc --noEmit && eslint",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "lint:fix": "eslint \"src/**/*.ts*\" --fix",
     "test": "jest"
   },
   "jest": {
@@ -20,7 +21,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
-    "eslint-config-custom-server": "*",
+    "eslint-config-custom": "*",
     "jest": "^29.0.5",
     "jest-presets": "*",
     "tsconfig": "*",

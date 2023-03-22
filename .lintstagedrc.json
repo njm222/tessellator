@@ -1,4 +1,4 @@
 {
-  "*.{ts,tsx}": ["yarn lint --fix", "yarn format"],
-  "*.{css,md}": "yarn format"
+  "*.{ts,tsx}": ["eslint --fix", "prettier --write"],
+  "*.{css,md}": "prettier --write"
 }

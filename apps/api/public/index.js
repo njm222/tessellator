@@ -22,12 +22,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// src/server.ts
-var import_body_parser = require("body-parser");
-var import_express = __toESM(require("express"));
-var import_morgan = __toESM(require("morgan"));
-var import_cors = __toESM(require("cors"));
-
 // src/environments/environment.ts
 var environment = {
   production: process.env.NODE_ENV === "production",
@@ -40,18 +34,58 @@ var environment = {
   frontendUrl: process.env.FRONTEND_URL || ""
 };
 
-// src/server.ts
-var import_cookie_parser = __toESM(require("cookie-parser"));
-var createServer = () => {
-  const app = (0, import_express.default)();
-  app.disable("x-powered-by").use((0, import_morgan.default)("dev")).use((0, import_body_parser.urlencoded)({ extended: true })).use((0, import_body_parser.json)()).use(import_express.default.static(`${__dirname}/public`)).use((0, import_cors.default)({ credentials: true, origin: environment.frontendUrl })).use((0, import_cookie_parser.default)()).get("/", (req, res) => {
-    return res.json({ message: `tessellator-api is running!` });
-  });
-  return app;
-};
-
-// src/app/authentication/login/loginController.ts
+// src/app/authentication/callback/callbackController.ts
+var import_axios = __toESM(require("axios"));
 var import_querystring = require("querystring");
+function CallbackController({
+  spotifyAccountUrl,
+  frontendUrl,
+  clientId,
+  clientSecret,
+  redirectUri,
+  stateKey
+}) {
+  return async function callbackController2(req, res) {
+    const code = req.query.code || null;
+    const state = req.query.state || null;
+    if (state === null) {
+      res.redirect(`/#${(0, import_querystring.stringify)({ error: "state_mismatch" })}`);
+    } else {
+      res.clearCookie(stateKey);
+      const authOptions = {
+        method: "POST",
+        url: `${spotifyAccountUrl}/api/token`,
+        params: {
+          client_id: clientId,
+          code,
+          grant_type: "authorization_code",
+          redirect_uri: redirectUri
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${Buffer.from(
+            `${clientId}:${clientSecret}`
+          ).toString("base64")}`
+        },
+        json: true
+      };
+      (0, import_axios.default)(authOptions).then((response) => {
+        const { data } = response;
+        res.redirect(`${frontendUrl}/visualizer?${(0, import_querystring.stringify)(data)}`);
+      }).catch(console.log);
+    }
+  };
+}
+
+// src/app/authentication/callback/index.ts
+var callbackController = CallbackController({
+  spotifyAccountUrl: environment.spotifyAccountUrl,
+  frontendUrl: environment.frontendUrl,
+  clientId: environment.clientId,
+  clientSecret: environment.clientSecret,
+  redirectUri: environment.redirectUri,
+  stateKey: environment.stateKey
+});
 
 // ../../packages/core/src/primitiveUtils/numberUtils.ts
 function generateRandomInteger(min, max) {
@@ -75,7 +109,7 @@ function generateRandomString(length) {
 }
 
 // ../../packages/core/src/web/apiClient.ts
-var import_axios = __toESM(require("axios"));
+var import_axios2 = __toESM(require("axios"));
 
 // ../../packages/core/src/environments/environment.ts
 var environment2 = {
@@ -85,7 +119,7 @@ var environment2 = {
 };
 
 // ../../packages/core/src/web/apiClient.ts
-var apiClient = import_axios.default.create({
+var apiClient = import_axios2.default.create({
   baseURL: environment2.backendUrl,
   withCredentials: true,
   headers: {
@@ -95,6 +129,7 @@ var apiClient = import_axios.default.create({
 });
 
 // src/app/authentication/login/loginController.ts
+var import_querystring2 = require("querystring");
 function LoginController({
   spotifyAccountUrl,
   clientId,
@@ -105,7 +140,7 @@ function LoginController({
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
     const scope = "user-read-private user-read-email user-top-read user-read-recently-played user-modify-playback-state user-read-playback-state user-read-currently-playing app-remote-control streaming user-library-modify user-library-read";
-    const uri = `${spotifyAccountUrl}/authorize?${(0, import_querystring.stringify)({
+    const uri = `${spotifyAccountUrl}/authorize?${(0, import_querystring2.stringify)({
       response_type: "code",
       client_id: clientId,
       redirect_uri: redirectUri,
@@ -120,59 +155,6 @@ function LoginController({
 var loginController = LoginController({
   spotifyAccountUrl: environment.spotifyAccountUrl,
   clientId: environment.clientId,
-  redirectUri: environment.redirectUri,
-  stateKey: environment.stateKey
-});
-
-// src/app/authentication/callback/callbackController.ts
-var import_querystring2 = require("querystring");
-var import_axios2 = __toESM(require("axios"));
-function CallbackController({
-  spotifyAccountUrl,
-  frontendUrl,
-  clientId,
-  clientSecret,
-  redirectUri,
-  stateKey
-}) {
-  return async function callbackController2(req, res) {
-    const code = req.query.code || null;
-    const state = req.query.state || null;
-    if (state === null) {
-      res.redirect(`/#${(0, import_querystring2.stringify)({ error: "state_mismatch" })}`);
-    } else {
-      res.clearCookie(stateKey);
-      const authOptions = {
-        method: "POST",
-        url: `${spotifyAccountUrl}/api/token`,
-        params: {
-          client_id: clientId,
-          code,
-          grant_type: "authorization_code",
-          redirect_uri: redirectUri
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Basic ${Buffer.from(
-            `${clientId}:${clientSecret}`
-          ).toString("base64")}`
-        },
-        json: true
-      };
-      (0, import_axios2.default)(authOptions).then((response) => {
-        const { data } = response;
-        res.redirect(`${frontendUrl}/visualizer?${(0, import_querystring2.stringify)(data)}`);
-      }).catch(console.log);
-    }
-  };
-}
-
-// src/app/authentication/callback/index.ts
-var callbackController = CallbackController({
-  spotifyAccountUrl: environment.spotifyAccountUrl,
-  frontendUrl: environment.frontendUrl,
-  clientId: environment.clientId,
-  clientSecret: environment.clientSecret,
   redirectUri: environment.redirectUri,
   stateKey: environment.stateKey
 });
@@ -233,6 +215,20 @@ function registerRoutes(app) {
   Object.values(routes).map((endpoint) => endpoint(app));
   return app;
 }
+
+// src/server/server.ts
+var import_body_parser = require("body-parser");
+var import_cookie_parser = __toESM(require("cookie-parser"));
+var import_cors = __toESM(require("cors"));
+var import_express = __toESM(require("express"));
+var import_morgan = __toESM(require("morgan"));
+var createServer = () => {
+  const app = (0, import_express.default)();
+  app.disable("x-powered-by").use((0, import_morgan.default)("dev")).use((0, import_body_parser.urlencoded)({ extended: true })).use((0, import_body_parser.json)()).use(import_express.default.static(`${__dirname}/public`)).use((0, import_cors.default)({ credentials: true, origin: environment.frontendUrl })).use((0, import_cookie_parser.default)()).get("/", (req, res) => {
+    return res.json({ message: `tessellator-api is running!` });
+  });
+  return app;
+};
 
 // src/index.ts
 var port = environment.port;

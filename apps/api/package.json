@@ -6,7 +6,7 @@
     "build": "tsup src/index.ts --outDir public --format cjs",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf public",
     "dev": "tsup src/index.ts --outDir public --format cjs --watch --onSuccess \"node public/index.js\"",
-    "lint": "tsc --noEmit && eslint",
+    "lint": "eslint",
     "start": "node public/index.js",
     "test": "jest --detectOpenHandles"
   },

@@ -8,7 +8,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "eslint": "^8.36.0",
     "eslint-config-base": "*",
     "eslint-config-next": "latest",
     "eslint-plugin-react": "latest"

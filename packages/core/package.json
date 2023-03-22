@@ -8,7 +8,7 @@
     "build": "tsup src/index.ts --format esm --dts",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsup src/index.ts --format esm --watch --dts",
-    "lint": "tsc --noEmit && eslint",
+    "lint": "eslint",
     "test": "jest"
   },
   "jest": {

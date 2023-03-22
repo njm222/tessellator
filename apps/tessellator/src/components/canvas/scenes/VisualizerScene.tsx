@@ -1,10 +1,11 @@
 import { memo, useEffect } from "react";
-import { useThree } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
+
+import { usePortal } from "../../../utils/portalContext";
+import Bridge from "../../models/Bridge";
 import Portal from "../Portal";
 import Visualizer from "../Visualizer";
-import Bridge from "../../models/Bridge";
-import { usePortal } from "../../../utils/portalContext";
 
 const OuterScene = () => {
   const { inPortal } = usePortal();

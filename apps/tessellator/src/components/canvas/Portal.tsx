@@ -1,10 +1,11 @@
-import { Vector3, Quaternion, Mesh } from "three";
 import React, { memo, MutableRefObject, ReactNode, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import { PerspectiveCamera, RenderTexture } from "@react-three/drei";
-import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
-import { usePortal } from "../../utils/portalContext";
+import { useFrame } from "@react-three/fiber";
 import { Camera } from "@react-three/fiber/dist/declarations/src/core/events";
+import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
+import { Mesh,Quaternion, Vector3 } from "three";
+
+import { usePortal } from "../../utils/portalContext";
 
 const [portalWidth, portalHeight] = [3, 7];
 

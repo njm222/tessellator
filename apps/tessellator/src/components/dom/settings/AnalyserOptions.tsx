@@ -1,8 +1,9 @@
-import { button, folder, useControls } from "leva";
 import { useEffect } from "react";
+import { defaultAnalyserOptions } from "audio-analyser";
+import { button, folder, useControls } from "leva";
+
 import { LocalStorageKeys } from "../../../constants";
 import { useAnalyser } from "../../../utils/analyserContext";
-import { defaultAnalyserOptions } from "audio-analyser";
 
 export function AnalyserOptions() {
   const {

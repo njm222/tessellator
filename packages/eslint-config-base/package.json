@@ -4,15 +4,13 @@
   "private": true,
   "license": "MIT",
   "main": "index.js",
-  "dependencies": {
-    "eslint": "latest",
-    "eslint-config-prettier": "latest",
-    "eslint-config-turbo": "latest"
-  },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "eslint": "^8.36.0"
+    "eslint": "latest",
+    "eslint-config-prettier": "latest",
+    "eslint-config-turbo": "latest",
+    "eslint-plugin-simple-import-sort": "^10.0.0"
   }
 }

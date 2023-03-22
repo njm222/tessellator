@@ -1,20 +1,22 @@
-import { useRouter } from "next/router";
-import { generateRandomInteger, loginUser, updateToken } from "core";
-import { Loader } from "ui";
 import React, {
   createContext,
-  useState,
+  FC,
+  ReactNode,
+  useCallback,
   useContext,
   useEffect,
-  useCallback,
   useMemo,
-  ReactNode,
-  FC,
+  useState,
 } from "react";
+import { generateRandomInteger, loginUser, updateToken } from "core";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import { Loader } from "ui";
+
 import { setAccessToken } from "../spotifyClient";
-import { PlayerProvider } from "./playerContext";
+
 import { AnalyserProvider } from "./analyserContext";
+import { PlayerProvider } from "./playerContext";
 
 type AuthProviderProps = {
   isLoading?: boolean;

@@ -1,12 +1,12 @@
 import {
-  useEffect,
-  useRef,
-  MutableRefObject,
   createContext,
+  FC,
+  MutableRefObject,
   ReactNode,
   useContext,
+  useEffect,
+  useRef,
   useState,
-  FC,
 } from "react";
 
 type MouseActivityProviderProps = {

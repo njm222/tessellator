@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { mutations } from "../../../utils/store";
-import PlayerControls from "./PlayerControls";
+
 import { usePlayer } from "../../../utils/playerContext";
+import { mutations } from "../../../utils/store";
 import { useMouseActivity } from "../controls/mouseActivityContext";
+
+import PlayerControls from "./PlayerControls";
 
 export function Player() {
   const { player } = usePlayer();

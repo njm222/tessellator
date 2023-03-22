@@ -1,4 +1,5 @@
 import Head from "next/head";
+
 import { environment } from "./environments/environment";
 
 const titleDefault = "Tessellator";

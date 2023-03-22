@@ -1,17 +1,18 @@
 import {
-  ReactNode,
-  useMemo,
-  useContext,
   createContext,
-  useEffect,
-  useState,
   FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
-import { LocalStorageKeys } from "../constants";
 import AudioAnalyser, {
   AudioAnalyserProps,
   defaultAnalyserOptions,
 } from "audio-analyser";
+
+import { LocalStorageKeys } from "../constants";
 
 type AnalyserProviderProps = {
   audioAnalyser?: AudioAnalyser;

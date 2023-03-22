@@ -1,5 +1,5 @@
-import { ShaderMaterial, Vector3 } from "three";
 import { extend, ReactThreeFiber } from "@react-three/fiber";
+import { ShaderMaterial, Vector3 } from "three";
 
 export default class ParticleMaterial extends ShaderMaterial {
   constructor() {

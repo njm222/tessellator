@@ -1,13 +1,14 @@
-import React, { useState, useEffect, memo, Suspense } from "react";
-import { useThree, useFrame } from "@react-three/fiber";
-import { Vector2, Vector3 } from "three";
-import { Text } from "../Text";
-import { loginUser } from "core";
-import Particles from "../Particles";
+import React, { memo, Suspense,useEffect, useState } from "react";
 import { Bounds, Sky } from "@react-three/drei";
-import { useAuth } from "../../../utils/authContext";
+import { useFrame,useThree } from "@react-three/fiber";
+import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
+import { loginUser } from "core";
 import { useRouter } from "next/router";
-import { EffectComposer, Bloom, Glitch } from "@react-three/postprocessing";
+import { Vector2, Vector3 } from "three";
+
+import { useAuth } from "../../../utils/authContext";
+import Particles from "../Particles";
+import { Text } from "../Text";
 
 const LandingScene = () => {
   const { refreshToken } = useAuth();

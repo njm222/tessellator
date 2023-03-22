@@ -1,4 +1,4 @@
-import { Vector3, Color } from "three";
+import { Color,Vector3 } from "three";
 
 export function hexToVector3(hexStr: string) {
   //check if valid hex value

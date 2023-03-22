@@ -1,16 +1,18 @@
 import React, { memo, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { mutations } from "../../utils/store";
-import Mode0 from "./modes/mode-0/Mode0";
-import Mode1 from "./modes/mode-1/Mode1";
+import { generateRandomInteger } from "core";
+
 import { useAnalyser } from "../../utils/analyserContext";
 import { usePlayer } from "../../utils/playerContext";
+import { mutations } from "../../utils/store";
 import {
-  numModes,
   numColourModes,
+  numModes,
   useControls,
 } from "../dom/controls/controlsContext";
-import { generateRandomInteger } from "core";
+
+import Mode0 from "./modes/mode-0/Mode0";
+import Mode1 from "./modes/mode-1/Mode1";
 
 function Lights() {
   return (

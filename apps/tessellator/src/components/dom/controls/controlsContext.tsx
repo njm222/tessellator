@@ -1,11 +1,12 @@
 import {
-  useState,
-  ReactNode,
   createContext,
+  FC,
+  ReactNode,
   useContext,
   useMemo,
-  FC,
+  useState,
 } from "react";
+
 import { useKeys } from "./useKeys";
 
 const modeMap = [

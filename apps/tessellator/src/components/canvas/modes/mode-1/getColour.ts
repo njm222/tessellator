@@ -1,6 +1,6 @@
+import AudioAnalyser from "audio-analyser";
 import { hslToHex } from "core";
 import SpotifyAnalyser from "spotify-analyser";
-import AudioAnalyser from "audio-analyser";
 
 const minSaturation = 150;
 const minLightness = 200;

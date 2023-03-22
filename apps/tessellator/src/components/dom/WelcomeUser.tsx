@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
+
 import { getMyInfo } from "../../spotifyClient";
 import { usePlayer } from "../../utils/playerContext";
 

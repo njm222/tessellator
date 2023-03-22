@@ -1,13 +1,13 @@
-import {
-  Object3D,
-  Color,
-  PointLight,
-  InstancedMesh,
-  MeshPhongMaterial,
-} from "three";
-import React, { useRef, useMemo } from "react";
+import React, { useMemo,useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { generateRandomNumber, hslToHex } from "core";
+import {
+  Color,
+  InstancedMesh,
+  MeshPhongMaterial,
+  Object3D,
+  PointLight,
+} from "three";
 
 // TODO: decouple isNavigating
 export default function Particles({

@@ -1,13 +1,14 @@
-import {
-  prevTrack,
-  playPlayer,
-  pausePlayer,
-  nextTrack,
-} from "../../../spotifyClient";
-import { PlayIcon, PauseIcon, NextIcon, PrevIcon , IconButton } from "ui";
-import { usePlayer } from "../../../utils/playerContext";
-import { useAnalyser } from "../../../utils/analyserContext";
 import { useEffect } from "react";
+import { IconButton,NextIcon, PauseIcon, PlayIcon, PrevIcon  } from "ui";
+
+import {
+  nextTrack,
+  pausePlayer,
+  playPlayer,
+  prevTrack,
+} from "../../../spotifyClient";
+import { useAnalyser } from "../../../utils/analyserContext";
+import { usePlayer } from "../../../utils/playerContext";
 
 export default function PlayerControls() {
   const { player } = usePlayer();

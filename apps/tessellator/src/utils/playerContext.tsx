@@ -1,22 +1,24 @@
 import {
-  ReactNode,
-  useMemo,
-  useContext,
   createContext,
-  useEffect,
-  useState,
   FC,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
+import { generateRandomInteger } from "core";
+import SpotifyAnalyser, { SpotifyAnalyserData } from "spotify-analyser";
+import { Loader } from "ui";
+
 import {
   getTrackAnalysis,
   getTrackFeatures,
   playTopTracks,
  spotifyClient } from "../spotifyClient";
+
 import { useAuth } from "./authContext";
 import { mutations } from "./store";
-import SpotifyAnalyser, { SpotifyAnalyserData } from "spotify-analyser";
-import { Loader } from "ui";
-import { generateRandomInteger } from "core";
 
 type PlayerProviderProps = {
   player?: any;

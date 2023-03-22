@@ -1,4 +1,5 @@
 import React from "react";
+
 import LandingScene from "../components/canvas/scenes/LandingScene";
 import SocialLinks from "../components/dom/SocialLinks";
 

@@ -4,10 +4,10 @@
   "private": true,
   "license": "MIT",
   "main": "index.js",
-  "dependencies": {
-    "eslint-config-base": "*"
-  },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "eslint-config-base": "*"
   }
 }

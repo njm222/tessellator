@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
-import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload, Stats } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+
 import { environment } from "../../environments/environment";
 
 export default function DefaultScene({ children }: { children: ReactNode }) {

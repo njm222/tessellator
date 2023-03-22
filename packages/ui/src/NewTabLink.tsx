@@ -1,4 +1,5 @@
 import * as React from "react";
+
 export const NewTabLink = ({
   children,
   href,
@@ -8,7 +9,7 @@ export const NewTabLink = ({
   href: string;
 }) => {
   return (
-    <a target="_blank" rel="noreferrer" href={href} {...other}>
+    <a href={href} rel="noreferrer" target="_blank" {...other}>
       {children}
     </a>
   );

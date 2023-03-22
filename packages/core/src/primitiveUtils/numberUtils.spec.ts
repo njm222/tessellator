@@ -1,4 +1,4 @@
-import { generateRandomNumber, generateRandomInteger } from "./numberUtils";
+import { generateRandomInteger, generateRandomNumber } from "./numberUtils";
 
 describe("numberUtils", () => {
   it("should return a random number between", () => {

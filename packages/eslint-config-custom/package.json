@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-custom-react",
+  "name": "eslint-config-custom",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -7,7 +7,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "devDependencies": {
+  "dependencies": {
     "eslint-config-base": "*",
     "eslint-config-next": "latest",
     "eslint-plugin-react": "latest"

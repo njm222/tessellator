@@ -1,5 +1,7 @@
 import FrequencySection from "../frequency-section/frequencySection";
+
 import AudioAnalyser from "./audioAnalyser";
+
 jest.mock("../frequency-section/frequencySection");
 
 beforeEach(() => {

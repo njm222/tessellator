@@ -1,9 +1,10 @@
 import { json, urlencoded } from "body-parser";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import express from "express";
 import morgan from "morgan";
-import cors from "cors";
-import { environment } from "./environments/environment";
-import cookieParser from "cookie-parser";
+
+import { environment } from "../environments/environment";
 
 export const createServer = () => {
   const app = express();

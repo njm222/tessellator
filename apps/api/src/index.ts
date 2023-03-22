@@ -1,6 +1,6 @@
-import { createServer } from "./server";
 import { registerRoutes } from "./app/routes";
 import { environment } from "./environments/environment";
+import { createServer } from "./server/server";
 
 const port = environment.port;
 const server = createServer();

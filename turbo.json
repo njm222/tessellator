@@ -26,15 +26,16 @@
     "start": {},
     "test": {
       "outputs": ["coverage/**"],
-      "dependsOn": ["^build"]
+      "dependsOn": []
     },
     "lint": {
       "dependsOn": ["^build"]
     },
-    "dev": {
-      "cache": false,
-      "persistent": true,
+    "lint:fix": {
       "dependsOn": ["^build"]
+    },
+    "dev": {
+      "cache": false
     },
     "clean": {
       "cache": false

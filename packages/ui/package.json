@@ -15,7 +15,8 @@
     "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
     "clean": "rm -rf dist",
     "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
-    "lint": "eslint",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "lint:fix": "eslint \"src/**/*.ts*\" --fix",
     "test": "jest"
   },
   "jest": {
@@ -27,7 +28,7 @@
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "autoprefixer": "^10.4.14",
-    "eslint-config-custom-react": "*",
+    "eslint-config-custom": "*",
     "jest": "^29.0.5",
     "jest-environment-jsdom": "^29.5.0",
     "jest-presets": "*",

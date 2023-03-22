@@ -1,6 +1,8 @@
 import AudioProperty from "../audio-property/audioProperty";
 import { SpotifyAudioData } from "../audio-property/audioPropertyTypes";
+
 import SpotifyAnalyser from "./spotifyAnalyser";
+
 jest.mock("../audio-property/audioProperty");
 
 const mockData: {

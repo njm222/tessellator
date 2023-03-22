@@ -13,11 +13,11 @@ export const IconButton = ({
 
   return (
     <button
-      title={title}
       className={`iconButton ${hover ? "hover" : ""}`}
       onClick={onClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      title={title}
     >
       {icon}
     </button>

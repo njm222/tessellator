@@ -3,6 +3,7 @@ import {
   SpotifyAudioDataSection,
   SpotifyAudioDataSegment,
 } from "../audio-property/audioPropertyTypes";
+
 import {
   SpotifyAnalyserData,
   SpotifyAnalyserUpdateProps,

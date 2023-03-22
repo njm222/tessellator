@@ -15,7 +15,7 @@ import { generateRandomInteger } from "core";
 function Lights() {
   return (
     <>
-      <color attach="background" args={["#000000"]} />
+      <color args={["#000000"]} attach="background" />
       <ambientLight intensity={0.5} />
       <pointLight intensity={0.5} position={[20, 30, 10]} />
       <pointLight intensity={0.5} position={[-10, -10, -10]} />

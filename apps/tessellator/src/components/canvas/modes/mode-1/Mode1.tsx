@@ -209,7 +209,7 @@ const Mode1 = () => {
   return (
     <points ref={mesh}>
       <bufferGeometry attach="geometry" />
-      <particleMaterial attach="material" transparent depthWrite={false} />
+      <particleMaterial attach="material" depthWrite={false} transparent />
     </points>
   );
 };

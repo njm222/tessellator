@@ -15,9 +15,9 @@ export default function Model(props: GroupProps) {
     <group ref={group} {...props} dispose={null}>
       <mesh
         castShadow
-        receiveShadow
         geometry={nodes.Bridge01.geometry}
         material={materials.Base_Material}
+        receiveShadow
         scale={[bridgeScale, bridgeScale, bridgeScale]}
       />
     </group>

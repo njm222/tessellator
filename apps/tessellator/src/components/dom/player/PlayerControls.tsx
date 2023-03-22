@@ -4,8 +4,7 @@ import {
   pausePlayer,
   nextTrack,
 } from "../../../spotifyClient";
-import { PlayIcon, PauseIcon, NextIcon, PrevIcon } from "ui";
-import { IconButton } from "ui";
+import { PlayIcon, PauseIcon, NextIcon, PrevIcon , IconButton } from "ui";
 import { usePlayer } from "../../../utils/playerContext";
 import { useAnalyser } from "../../../utils/analyserContext";
 import { useEffect } from "react";
@@ -21,10 +20,10 @@ export default function PlayerControls() {
 
   return (
     <>
-      <IconButton title="prev-track" onClick={prevTrack} icon={<PrevIcon />} />
+      <IconButton icon={<PrevIcon />} onClick={prevTrack} title="prev-track" />
       {player?.paused ? (
         <IconButton
-          title="play-track"
+          icon={<PlayIcon />}
           onClick={() => {
             playPlayer();
             if (audioAnalyser.source) {
@@ -32,16 +31,16 @@ export default function PlayerControls() {
             }
             audioAnalyser.setup(analyserOptions);
           }}
-          icon={<PlayIcon />}
+          title="play-track"
         />
       ) : (
         <IconButton
-          title="pause-track"
-          onClick={() => pausePlayer()}
           icon={<PauseIcon />}
+          onClick={() => pausePlayer()}
+          title="pause-track"
         />
       )}
-      <IconButton title="next-track" onClick={nextTrack} icon={<NextIcon />} />
+      <IconButton icon={<NextIcon />} onClick={nextTrack} title="next-track" />
     </>
   );
 }

@@ -14,8 +14,8 @@ export default function DefaultScene({ children }: { children: ReactNode }) {
       }}
     >
       <ambientLight intensity={0.8} />
-      <directionalLight castShadow position={[2.5, 12, 12]} intensity={4} />
-      <pointLight position={[-20, -20, -20]} intensity={5} />
+      <directionalLight castShadow intensity={4} position={[2.5, 12, 12]} />
+      <pointLight intensity={5} position={[-20, -20, -20]} />
       {children}
       <Preload all />
       <OrbitControls />

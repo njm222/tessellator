@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
-    "eslint": "^7.32.0",
     "eslint-config-custom-server": "*",
     "jest": "^29.0.5",
     "jest-presets": "*",

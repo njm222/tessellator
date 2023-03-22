@@ -13,9 +13,9 @@ export function Settings() {
   ) : (
     <div className={`settings ${!mouseActive && "hidden"}`}>
       <IconButton
-        title="settings"
-        onClick={() => setOpen(true)}
         icon={<SettingsIcon />}
+        onClick={() => setOpen(true)}
+        title="settings"
       />
     </div>
   );

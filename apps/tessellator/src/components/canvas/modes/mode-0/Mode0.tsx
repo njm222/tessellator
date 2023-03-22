@@ -90,7 +90,7 @@ function Terrain() {
   });
 
   return (
-    <mesh receiveShadow position={[0, 2, -1]} rotation={[-Math.PI / 5, 0, 0]}>
+    <mesh position={[0, 2, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
       <planeGeometry
         args={[vpWidth, vpHeight, 128, 128]}
         ref={terrainGeometryRef}

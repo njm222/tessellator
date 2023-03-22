@@ -96,14 +96,14 @@ const PortalScene = ({
     <group position={[0, 1, 0]}>
       <EffectComposer>
         <SelectiveBloom
-          selection={meshOutlineRef}
-          luminanceThreshold={0.1}
-          luminanceSmoothing={0.1}
-          width={512}
           height={512}
+          luminanceSmoothing={0.1}
+          luminanceThreshold={0.1}
+          selection={meshOutlineRef}
+          width={512}
         />
       </EffectComposer>
-      <mesh ref={meshOutlineRef} position={[0, 0, -0.02]}>
+      <mesh position={[0, 0, -0.02]} ref={meshOutlineRef}>
         <planeGeometry args={[portalWidth + 0.1, portalHeight + 0.1]} />
         <meshBasicMaterial color="red" />
       </mesh>
@@ -112,16 +112,16 @@ const PortalScene = ({
         <meshStandardMaterial>
           <RenderTexture
             attach="map"
-            width={window.innerWidth}
             height={window.innerHeight}
+            width={window.innerWidth}
           >
             <PerspectiveCamera
+              aspect={portalWidth / portalHeight}
+              fov={50}
               makeDefault
               manual
-              fov={50}
-              aspect={portalWidth / portalHeight}
-              position={[0, 0, 10]}
               onUpdate={(c) => c.updateProjectionMatrix()}
+              position={[0, 0, 10]}
             />
             {children}
           </RenderTexture>

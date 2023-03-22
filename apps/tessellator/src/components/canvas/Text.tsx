@@ -11,16 +11,11 @@ import { Mesh, MeshNormalMaterial } from "three";
 
 const fontUrl = "/fonts/tomorrow_extralight_regular.json";
 
-// eslint-disable-next-line react/display-name
 export function Text({
   children,
-  size = 1,
-  color = "#000000",
   ...props
 }: {
   children: ReactNode | string;
-  size?: number;
-  color?: string;
   onPointerDown: () => Promise<void>;
 }) {
   const meshRef = useRef<Mesh>(new Mesh());
@@ -37,16 +32,16 @@ export function Text({
     <>
       <Float floatIntensity={2} speed={2}>
         <group
-          raycast={meshBounds}
           onPointerEnter={() => handleHover(true)}
           onPointerLeave={() => handleHover(false)}
+          raycast={meshBounds}
           {...props}
         >
           <Center>
             <RoundedBox
-              ref={boxRef}
               args={[70, 15, 5]}
               radius={2}
+              ref={boxRef}
               smoothness={5}
               visible={false}
             >
@@ -55,10 +50,10 @@ export function Text({
           </Center>
           <Center>
             <Text3D
-              ref={meshRef}
-              font={fontUrl}
               bevelEnabled
               bevelSize={0.05}
+              font={fontUrl}
+              ref={meshRef}
               scale={6}
             >
               {children}

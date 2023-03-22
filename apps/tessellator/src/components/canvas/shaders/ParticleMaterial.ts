@@ -45,7 +45,9 @@ export default class ParticleMaterial extends ShaderMaterial {
 extend({ ParticleMaterial });
 
 declare global {
+  // eslint-disable-next-line no-unused-vars
   namespace JSX {
+    // eslint-disable-next-line no-unused-vars
     interface IntrinsicElements {
       particleMaterial: ReactThreeFiber.Object3DNode<
         ParticleMaterial,

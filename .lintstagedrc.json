@@ -1,4 +1,4 @@
 {
-  "*.{ts,tsx}": ["yarn lint", "yarn format"],
+  "*.{ts,tsx}": ["yarn lint --fix", "yarn format"],
   "*.{css,md}": "yarn format"
 }

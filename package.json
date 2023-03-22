@@ -10,7 +10,7 @@
     "clean": "turbo run clean",
     "dev": "dotenv -- turbo run dev --no-cache  --continue",
     "format": "prettier --write",
-    "lint": "turbo run lint -- --fix",
+    "lint": "turbo run lint --",
     "test": "turbo run test"
   },
   "devDependencies": {

@@ -11,10 +11,9 @@ import {
   getTrackAnalysis,
   getTrackFeatures,
   playTopTracks,
-} from "../spotifyClient";
+ spotifyClient } from "../spotifyClient";
 import { useAuth } from "./authContext";
 import { mutations } from "./store";
-import { spotifyClient } from "../spotifyClient";
 import SpotifyAnalyser, { SpotifyAnalyserData } from "spotify-analyser";
 import { Loader } from "ui";
 import { generateRandomInteger } from "core";
@@ -180,8 +179,8 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     <PlayerContext.Provider value={{ ...value, spotifyAnalyser }}>
       {!trackAnalysis ? (
         <Loader
-          message="Setting up player"
           dotVariant={generateRandomInteger(0, 11)}
+          message="Setting up player"
         />
       ) : null}
       {children}

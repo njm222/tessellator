@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["next", "turbo", "prettier"],
+  extends: ["base", "next", "turbo", "prettier"],
   settings: {
     react: {
       version: "detect",
@@ -10,5 +10,9 @@ module.exports = {
       presets: [require.resolve("next/babel")],
     },
   },
-  rules: {},
+  rules: {
+    "react/jsx-sort-props": "error",
+    "react/prop-types": "error",
+    "react/no-unescaped-entities": "error",
+  },
 };

@@ -1,23 +1,22 @@
 import React from "react";
-import { GithubIcon, InstagramIcon } from "ui";
-import { IconButton } from "ui";
+import { GithubIcon, InstagramIcon , IconButton } from "ui";
 
 export default function SocialLinks() {
   return (
     <div className="socialLinks">
       <IconButton
-        title="github"
+        icon={<GithubIcon />}
         onClick={() =>
           window.open("https://github.com/njm222/tessellator", "_blank")
         }
-        icon={<GithubIcon />}
+        title="github"
       />
       <IconButton
-        title="instagram"
+        icon={<InstagramIcon />}
         onClick={() =>
           window.open("https://www.instagram.com/tessellator_space", "_blank")
         }
-        icon={<InstagramIcon />}
+        title="instagram"
       />
     </div>
   );

@@ -5,19 +5,18 @@ import Portal from "../Portal";
 import Visualizer from "../Visualizer";
 import Bridge from "../../models/Bridge";
 import { usePortal } from "../../../utils/portalContext";
-import { DefaultPageProps } from "../../../pages/_app";
 
 const OuterScene = () => {
   const { inPortal } = usePortal();
   return inPortal ? null : (
     <>
-      <Stars radius={10} depth={50} count={5000} factor={2} fade />
+      <Stars count={5000} depth={50} factor={2} fade radius={10} />
       <Bridge position={[0, -2.5, 5]} rotation={[0, Math.PI / 2, 0]} />
     </>
   );
 };
 
-const VisualizerScene = (pageProps: DefaultPageProps) => {
+const VisualizerScene = () => {
   const camera = useThree((state) => state.camera);
 
   useEffect(() => {

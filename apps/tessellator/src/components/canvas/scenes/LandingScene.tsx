@@ -9,7 +9,7 @@ import { useAuth } from "../../../utils/authContext";
 import { useRouter } from "next/router";
 import { EffectComposer, Bloom, Glitch } from "@react-three/postprocessing";
 
-const LandingScene = (props: { r3f?: boolean }) => {
+const LandingScene = () => {
   const { refreshToken } = useAuth();
   const camera = useThree((state) => state.camera);
   const router = useRouter();
@@ -48,7 +48,7 @@ const LandingScene = (props: { r3f?: boolean }) => {
   return (
     <>
       <Suspense fallback={null}>
-        <Bounds fit observe margin={0.8}>
+        <Bounds fit margin={0.8} observe>
           <Text onPointerDown={() => handleClick()}>
             {"t e s s e l l a t o r"}
           </Text>
@@ -57,24 +57,24 @@ const LandingScene = (props: { r3f?: boolean }) => {
       </Suspense>
       <Sky
         azimuth={1}
-        turbidity={10}
-        rayleigh={10}
-        inclination={0}
         distance={1000}
+        inclination={0}
         mieCoefficient={0.1}
         mieDirectionalG={0.8}
+        rayleigh={10}
+        turbidity={10}
       />
       <EffectComposer>
         <Bloom
-          luminanceThreshold={0.7}
-          luminanceSmoothing={0.2}
-          width={512}
           height={512}
+          luminanceSmoothing={0.2}
+          luminanceThreshold={0.7}
+          width={512}
         />
         <Glitch
+          active={isNavigating}
           delay={new Vector2(0, 0)}
           duration={new Vector2(100, 100)}
-          active={isNavigating}
         />
       </EffectComposer>
     </>

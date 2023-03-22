@@ -44,10 +44,10 @@ export function Player() {
     <div className={`playerContainer ${!mouseActive && "hidden"}`}>
       <div className="playerLeft">
         <Image
-          width="50"
-          height="50"
           alt="album art"
+          height="50"
           src={player?.track_window.current_track.album.images[0].url}
+          width="50"
         />
         <div className="trackInfo">
           <div className="trackName">

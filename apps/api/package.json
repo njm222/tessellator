@@ -37,7 +37,6 @@
     "jest": "^29.0.5",
     "jest-presets": "*",
     "nodemon": "^2.0.21",
-    "pre-commit": "^1.2.2",
     "supertest": "^6.2.4",
     "ts-node": "^10.9.1",
     "tsconfig": "*",

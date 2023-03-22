@@ -1,6 +1,5 @@
 import React from "react";
 import { NextPageContext } from "next";
-import { DefaultPageProps } from "./_app";
 import { Settings } from "../components/dom/settings/Settings";
 import { Player } from "../components/dom/player/Player";
 import WelcomeUser from "../components/dom/WelcomeUser";
@@ -17,8 +16,8 @@ export default function Visualizer() {
   );
 }
 
-Visualizer.canvas = (props: DefaultPageProps) => (
-  <VisualizerScene r3f {...props} />
+Visualizer.canvas = () => (
+  <VisualizerScene  />
 );
 
 export const getServerSideProps = withAuthentication(

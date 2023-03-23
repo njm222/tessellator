@@ -8,6 +8,7 @@ export const SettingsIcon = ({
   return (
     <svg
       height={height}
+      role="img"
       viewBox="0 0 26 26"
       width={width}
       xmlSpace="preserve"

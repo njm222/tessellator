@@ -10,7 +10,9 @@ export const Loader = ({
       <div className="loaderText">{message ? message : "Loading"}</div>
       <div
         className={`dots dots-${
-          dotVariant > 10 || !Number.isInteger(dotVariant) ? 1 : dotVariant
+          dotVariant > 10 || dotVariant < 0 || !Number.isInteger(dotVariant)
+            ? 1
+            : dotVariant
         }`}
       />
     </div>

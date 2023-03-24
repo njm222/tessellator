@@ -26,8 +26,6 @@ function Portal({ children }: { children: ReactNode }) {
     ) {
       // position camera center
       camera.position.lerp(new Vector3(0, 0, 2), delta * 5);
-      camera.updateProjectionMatrix();
-      camera.updateMatrixWorld();
     }
     // if camera is very close switch cams
     if (
@@ -50,8 +48,6 @@ function Portal({ children }: { children: ReactNode }) {
       camera.quaternion.slerp(new Quaternion(-Math.PI * 2, 0, 0, 1), delta * 5);
       // position camera center
       camera.position.lerp(new Vector3(0, 0, 10), delta * 5);
-      camera.updateProjectionMatrix();
-      camera.updateMatrixWorld();
     }
     // if cam is very far switch cams
     if (camera.position.z > 8) {
@@ -105,17 +101,19 @@ const PortalScene = ({
           width={512}
         />
       </EffectComposer>
-      <mesh position={[0, 0, -0.02]} ref={meshOutlineRef}>
+      <mesh position={[0, 0, -0.01]} ref={meshOutlineRef}>
         <planeGeometry args={[portalWidth + 0.1, portalHeight + 0.1]} />
         <meshBasicMaterial color="red" />
       </mesh>
       <mesh ref={meshRef}>
         <planeGeometry args={[portalWidth, portalHeight]} />
-        <meshStandardMaterial>
+        <meshBasicMaterial>
           <RenderTexture
             attach="map"
             height={size.height / 3}
             width={size.width / 3}
+            renderPriority={1}
+            eventPriority={1}
           >
             <PerspectiveCamera
               aspect={portalWidth / portalHeight}
@@ -125,10 +123,10 @@ const PortalScene = ({
               onUpdate={(c) => c.updateProjectionMatrix()}
               position={[0, 0, 5]}
             />
-            <ambientLight intensity={0.5} />
+            <ambientLight intensity={0.8} />
             {children}
           </RenderTexture>
-        </meshStandardMaterial>
+        </meshBasicMaterial>
       </mesh>
     </group>
   );

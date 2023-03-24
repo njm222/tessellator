@@ -25,12 +25,6 @@ const VisualizerScene = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useFrame(() => {
-  //   if (camera.position.z > 175) {
-  //     router.push("/about");
-  //   }
-  // });
-
   return (
     <>
       <Portal>

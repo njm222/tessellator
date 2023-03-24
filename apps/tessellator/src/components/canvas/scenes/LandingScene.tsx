@@ -65,12 +65,12 @@ const LandingScene = () => {
         rayleigh={10}
         turbidity={10}
       />
-      <EffectComposer>
+      <EffectComposer disableNormalPass>
         <Bloom
-          height={512}
+          height={256}
           luminanceSmoothing={0.2}
           luminanceThreshold={0.7}
-          width={512}
+          width={256}
         />
         <Glitch
           active={isNavigating}

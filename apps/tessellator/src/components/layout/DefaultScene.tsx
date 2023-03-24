@@ -1,5 +1,11 @@
 import { ReactNode } from "react";
-import { OrbitControls, Preload, Stats } from "@react-three/drei";
+import {
+  AdaptiveEvents,
+  AdaptiveDpr,
+  OrbitControls,
+  Preload,
+  Stats,
+} from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
 import { environment } from "../../environments/environment";
@@ -21,6 +27,8 @@ export default function DefaultScene({ children }: { children: ReactNode }) {
       <Preload all />
       <OrbitControls />
       {environment.production ? null : <Stats />}
+      <AdaptiveDpr />
+      <AdaptiveEvents />
     </Canvas>
   );
 }

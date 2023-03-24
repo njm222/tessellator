@@ -17,7 +17,6 @@ import Mode1 from "./modes/mode-1/Mode1";
 function Lights() {
   return (
     <>
-      <color args={["#000000"]} attach="background" />
       <ambientLight intensity={0.5} />
       <pointLight intensity={0.5} position={[20, 30, 10]} />
       <pointLight intensity={0.5} position={[-10, -10, -10]} />

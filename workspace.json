@@ -5,7 +5,7 @@
     "tessellator": "apps/tessellator",
     "core": "packages/core",
     "eslint-config-base": "packages/eslint-config-base",
-    "eslint-config-custom-react": "packages/eslint-config-custom-react",
+    "eslint-config-custom": "packages/eslint-config-custom",
     "eslint-config-custom-server": "packages/eslint-config-custom-server",
     "jest-presets": "packages/jest-presets",
     "logger": "packages/logger",

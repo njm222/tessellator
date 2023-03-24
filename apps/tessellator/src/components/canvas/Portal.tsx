@@ -110,10 +110,10 @@ const PortalScene = ({
         <meshBasicMaterial>
           <RenderTexture
             attach="map"
-            height={size.height / 3}
-            width={size.width / 3}
-            renderPriority={1}
             eventPriority={1}
+            height={size.height / 3}
+            renderPriority={1}
+            width={size.width / 3}
           >
             <PerspectiveCamera
               aspect={portalWidth / portalHeight}

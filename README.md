@@ -1,6 +1,6 @@
 # Tessellator
 
-A free to use 3-D music visualizer
+A free to use 3-D music visualizer that uses a generative approach to create visualizations, with audio as the data source.
 
 ## Prerequisites
 

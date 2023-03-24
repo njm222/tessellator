@@ -1,9 +1,9 @@
 import React, { memo, MutableRefObject, ReactNode, useRef } from "react";
 import { PerspectiveCamera, RenderTexture } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Camera } from "@react-three/fiber/dist/declarations/src/core/events";
 import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
-import { Mesh,Quaternion, Vector3 } from "three";
+import { Mesh, Quaternion, Vector3 } from "three";
 
 import { usePortal } from "../../utils/portalContext";
 
@@ -92,6 +92,7 @@ const PortalScene = ({
   children: ReactNode;
   meshRef: MutableRefObject<Mesh>;
 }) => {
+  const size = useThree((state) => state.size);
   const meshOutlineRef = useRef(new Mesh());
   return (
     <group position={[0, 1, 0]}>
@@ -113,17 +114,18 @@ const PortalScene = ({
         <meshStandardMaterial>
           <RenderTexture
             attach="map"
-            height={window.innerHeight}
-            width={window.innerWidth}
+            height={size.height / 3}
+            width={size.width / 3}
           >
             <PerspectiveCamera
               aspect={portalWidth / portalHeight}
-              fov={50}
+              fov={85}
               makeDefault
               manual
               onUpdate={(c) => c.updateProjectionMatrix()}
-              position={[0, 0, 10]}
+              position={[0, 0, 5]}
             />
+            <ambientLight intensity={0.5} />
             {children}
           </RenderTexture>
         </meshStandardMaterial>

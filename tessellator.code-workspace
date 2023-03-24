@@ -39,6 +39,12 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "typescript.tsdk": "root/node_modules/typescript/lib",
     "typescript.preferences.importModuleSpecifier": "project-relative",
-    "javascript.preferences.importModuleSpecifier": "project-relative"
+    "javascript.preferences.importModuleSpecifier": "project-relative",
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
   }
 }

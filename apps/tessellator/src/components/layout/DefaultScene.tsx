@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import {
-  AdaptiveEvents,
   AdaptiveDpr,
+  AdaptiveEvents,
   OrbitControls,
   Preload,
   Stats,

@@ -43,7 +43,7 @@ const LandingScene = () => {
     setTimeout(async () => {
       const { uri } = await loginUser();
       window.location.assign(decodeURI(uri));
-    }, 500);
+    }, 200);
   };
 
   return (

@@ -16,7 +16,7 @@ export default class AudioProperty {
       return this;
     }
 
-    while (position >= this.getEnd() && this.counter < this.data.length) {
+    while (position >= this.getEnd() && this.counter < this.data.length - 1) {
       this.current = this.data[++this.counter];
     }
 

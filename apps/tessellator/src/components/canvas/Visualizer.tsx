@@ -14,16 +14,6 @@ import {
 import Mode0 from "./modes/mode-0/Mode0";
 import Mode1 from "./modes/mode-1/Mode1";
 
-function Lights() {
-  return (
-    <>
-      <ambientLight intensity={0.5} />
-      <pointLight intensity={0.5} position={[20, 30, 10]} />
-      <pointLight intensity={0.5} position={[-10, -10, -10]} />
-    </>
-  );
-}
-
 const Visualizer = () => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser } = usePlayer();
@@ -56,12 +46,7 @@ const Visualizer = () => {
     }
   }, [modeKey]);
 
-  return (
-    <>
-      <Lights />
-      {Mode}
-    </>
-  );
+  return <>{Mode}</>;
 };
 
 export default memo(Visualizer);

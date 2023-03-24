@@ -20,8 +20,8 @@ export default function Particles({
   const mesh = useRef(new InstancedMesh(undefined, undefined, count));
   const material = useRef(new MeshPhongMaterial());
   const light = useRef(new PointLight());
-  const { size, viewport } = useThree();
-  const aspect = size.width / viewport.width;
+  const { size } = useThree();
+  const aspect = size.width / size.height;
 
   const dummy = useMemo(() => new Object3D(), []);
   // Generate some random positions, speed factors and timings

@@ -23,7 +23,7 @@
       ],
       "dependsOn": ["^build"]
     },
-    "start": {},
+    "start": {"dependsOn":["build"]},
     "test": {
       "outputs": ["coverage/**"],
       "dependsOn": []

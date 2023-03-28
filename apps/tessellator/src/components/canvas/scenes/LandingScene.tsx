@@ -1,10 +1,11 @@
-import React, { memo, Suspense,useEffect, useState } from "react";
+import React, { memo, Suspense, useEffect, useState } from "react";
+import { SpringValue } from "@react-spring/three";
 import { Bounds, Sky } from "@react-three/drei";
-import { useFrame,useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { loginUser } from "core";
 import { useRouter } from "next/router";
-import { Vector2, Vector3 } from "three";
+import { Vector2 } from "three";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
@@ -16,6 +17,15 @@ const LandingScene = () => {
   const router = useRouter();
 
   const [isNavigating, setIsNavigating] = useState(false);
+  const z = new SpringValue({
+    to: 20,
+    from: 50,
+    config: {
+      tension: 50,
+      friction: 2,
+      precision: 0.0001,
+    },
+  });
 
   useEffect(() => {
     camera.position.set(0, 0, 100);
@@ -27,7 +37,9 @@ const LandingScene = () => {
 
   useFrame((state, delta) => {
     if (isNavigating) {
-      camera.position.lerp(new Vector3(0, 0, -7), delta);
+      z.advance(delta * 1000);
+      // z.advance(delta * (refreshToken ? 1000 : 250));
+      camera.position.setZ(z.animation.values[0].getValue());
       return;
     }
   });
@@ -36,26 +48,28 @@ const LandingScene = () => {
     setIsNavigating(true);
     // check for refreshToken
     if (refreshToken) {
-      router.push("/visualizer");
+      setTimeout(() => {
+        router.push("/visualizer");
+      }, 300);
       return;
     }
     // if no token present login normally
     setTimeout(async () => {
       const { uri } = await loginUser();
       window.location.assign(decodeURI(uri));
-    }, 200);
+    }, 0);
   };
 
   return (
     <>
       <Suspense fallback={null}>
-        <Bounds fit margin={0.8} observe>
+        <Bounds fit={!isNavigating} margin={0.8} observe={!isNavigating}>
           <Text onPointerDown={() => handleClick()}>
             {"t e s s e l l a t o r"}
           </Text>
-          <Particles count={10000} isNavigating={isNavigating} />
         </Bounds>
       </Suspense>
+      <Particles count={10000} isNavigating={isNavigating} />
       <Sky
         azimuth={1}
         distance={1000}

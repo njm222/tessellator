@@ -3,6 +3,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { generateRandomNumber, hslToHex } from "core";
 import {
   Color,
+  ColorRepresentation,
   InstancedMesh,
   MeshPhongMaterial,
   Object3D,
@@ -22,6 +23,7 @@ export default function Particles({
   const light = useRef(new PointLight());
   const { size } = useThree();
   const aspect = size.width / size.height;
+  const particleColour = new Color(getColour(0, 0));
 
   const dummy = useMemo(() => new Object3D(), []);
   // Generate some random positions, speed factors and timings
@@ -118,7 +120,7 @@ export default function Particles({
 
     // update color
     material.current.color.lerp(
-      new Color(getColour(state.mouse.x, state.mouse.y)),
+      particleColour.set(getColour(state.mouse.x, state.mouse.y)),
       delta * 5
     );
   });
@@ -127,12 +129,16 @@ export default function Particles({
       <pointLight color="darkblue" distance={100} intensity={10} ref={light} />
       <instancedMesh args={[undefined, undefined, count]} ref={mesh}>
         <dodecahedronGeometry args={[0.1, 0]} />
-        <meshPhongMaterial color="#FFF" ref={material} />
+        <meshPhongMaterial color="#000" ref={material} />
       </instancedMesh>
     </>
   );
 }
 
 function getColour(x: number, y: number) {
-  return hslToHex(((x + 1) / 2) * 360, ((y + 1) / 2) * 50, 50);
+  return hslToHex(
+    ((x + 1) / 2) * 360,
+    ((y + 1) / 2) * 50,
+    100
+  ) as ColorRepresentation;
 }

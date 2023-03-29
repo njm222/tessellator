@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float32BufferAttribute, Points, ShaderMaterial,Vector3 } from "three";
+import { Float32BufferAttribute, Points, ShaderMaterial, Vector3 } from "three";
 
 import "../../shaders/ParticleMaterial";
 
@@ -11,11 +11,21 @@ import { useControls } from "../../../dom/controls/controlsContext";
 
 import getColour from "./getColour";
 
-const Mode1 = () => {
+const Mode1 = ({ visible }: { visible: boolean }) => {
   const mesh = useRef<Points>(null);
   const { audioAnalyser } = useAnalyser();
   const { colourKey } = useControls();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
+
+  const vertex = new Vector3();
+  const normal = new Vector3();
+
+  const P1 = new Vector3();
+  const P2 = new Vector3();
+
+  const B = new Vector3();
+  const T = new Vector3();
+  const N = new Vector3();
 
   const getIndexOfChord = (max: boolean) => {
     const chords = spotifyAnalyser.getCurrentSegment()?.pitches;
@@ -75,17 +85,17 @@ const Mode1 = () => {
     const normals = [];
     const uvs = [];
 
-    // helper variables
+    // reset variables
 
-    const vertex = new Vector3();
-    const normal = new Vector3();
+    vertex.set(0, 0, 0);
+    normal.set(0, 0, 0);
 
-    const P1 = new Vector3();
-    const P2 = new Vector3();
+    P1.set(0, 0, 0);
+    P2.set(0, 0, 0);
 
-    const B = new Vector3();
-    const T = new Vector3();
-    const N = new Vector3();
+    B.set(0, 0, 0);
+    T.set(0, 0, 0);
+    N.set(0, 0, 0);
 
     // generate vertices, normals and uvs
 
@@ -160,6 +170,7 @@ const Mode1 = () => {
   };
 
   useFrame(() => {
+    if (!visible) return;
     if (!mesh.current) return;
     // update torus attributes
     const [
@@ -210,7 +221,7 @@ const Mode1 = () => {
   });
 
   return (
-    <points ref={mesh}>
+    <points ref={mesh} visible={visible}>
       <bufferGeometry attach="geometry" />
       <particleMaterial attach="material" depthWrite={false} transparent />
     </points>

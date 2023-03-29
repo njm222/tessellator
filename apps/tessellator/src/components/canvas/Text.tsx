@@ -7,7 +7,8 @@ import {
   RoundedBox,
   Text3D,
 } from "@react-three/drei";
-import { Mesh } from "three";
+import { hslToHex } from "core";
+import { ColorRepresentation,Mesh } from "three";
 
 const fontUrl = "/fonts/tomorrow_extralight_regular.json";
 
@@ -16,10 +17,11 @@ export function Text({
   ...props
 }: {
   children: ReactNode | string;
-  onPointerDown: () => Promise<void>;
+  onPointerDown: () => void;
 }) {
   const meshRef = useRef<Mesh>(new Mesh());
   const boxRef = useRef<Mesh>(new Mesh());
+  const colour = hslToHex(Math.random() * 360, 50, 100) as ColorRepresentation;
 
   const [hover, setHover] = useState(false);
 
@@ -34,44 +36,38 @@ export function Text({
   }
 
   return (
-    <>
-      <Float floatIntensity={2} speed={2}>
-        <animated.group
-          onPointerEnter={() => handleHover(true)}
-          onPointerLeave={() => handleHover(false)}
-          raycast={meshBounds}
-          scale={scale}
-          {...props}
-        >
-          <Center>
-            <RoundedBox
-              args={[70, 15, 5]}
-              radius={2}
-              ref={boxRef}
-              smoothness={5}
-            >
-              {/* @ts-ignore */}
-              <animated.meshPhongMaterial
-                opacity={opacity}
-                transparent={true}
-                wireframe={true}
-              />
-            </RoundedBox>
-          </Center>
-          <Center>
-            <Text3D
-              bevelEnabled
-              bevelSize={0.05}
-              font={fontUrl}
-              ref={meshRef}
-              scale={6}
-            >
-              {children}
-              <meshNormalMaterial wireframe={!hover} />
-            </Text3D>
-          </Center>
-        </animated.group>
-      </Float>
-    </>
+    <Float floatIntensity={2} speed={2}>
+      <animated.group
+        onPointerEnter={() => handleHover(true)}
+        onPointerLeave={() => handleHover(false)}
+        raycast={meshBounds}
+        scale={scale}
+        {...props}
+      >
+        <Center>
+          <RoundedBox args={[70, 15, 5]} radius={2} ref={boxRef} smoothness={5}>
+            {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
+            <animated.meshPhongMaterial
+              color={colour}
+              opacity={opacity}
+              transparent={true}
+              wireframe={true}
+            />
+          </RoundedBox>
+        </Center>
+        <Center>
+          <Text3D
+            bevelEnabled
+            bevelSize={0.05}
+            font={fontUrl}
+            ref={meshRef}
+            scale={6}
+          >
+            {children}
+            <meshPhongMaterial color={colour} wireframe={!hover} />
+          </Text3D>
+        </Center>
+      </animated.group>
+    </Float>
   );
 }

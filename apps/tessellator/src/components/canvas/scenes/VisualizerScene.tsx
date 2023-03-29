@@ -1,5 +1,5 @@
-import { memo, useEffect } from "react";
-import { Stars } from "@react-three/drei";
+import { memo, Suspense,useEffect } from "react";
+import { BakeShadows,Stars } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 
 import { usePortal } from "../../../utils/portalContext";
@@ -26,12 +26,13 @@ const VisualizerScene = () => {
   }, []);
 
   return (
-    <>
+    <Suspense fallback={null}>
       <Portal>
         <Visualizer />
       </Portal>
       <OuterScene />
-    </>
+      <BakeShadows />
+    </Suspense>
   );
 };
 

@@ -1,6 +1,12 @@
-import React, { memo, Suspense, useEffect, useState } from "react";
+import React, {
+  memo,
+  Suspense,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import { SpringValue } from "@react-spring/three";
-import { Bounds, Sky } from "@react-three/drei";
+import { Bounds } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { loginUser } from "core";
@@ -12,6 +18,7 @@ import Particles from "../Particles";
 import { Text } from "../Text";
 
 const LandingScene = () => {
+  const [isPending, startTransition] = useTransition();
   const { refreshToken } = useAuth();
   const camera = useThree((state) => state.camera);
   const router = useRouter();
@@ -68,26 +75,25 @@ const LandingScene = () => {
     <>
       <Suspense fallback={null}>
         <Bounds fit={!isNavigating} margin={0.8} observe={!isNavigating}>
-          <Text onPointerDown={() => handleClick()}>
+          <Text
+            onPointerDown={() => {
+              if (isPending) return;
+              startTransition(() => {
+                handleClick();
+              });
+            }}
+          >
             {"t e s s e l l a t o r"}
           </Text>
         </Bounds>
       </Suspense>
       <Particles count={10000} isNavigating={isNavigating} />
-      <Sky
-        azimuth={1}
-        distance={1000}
-        inclination={0}
-        mieCoefficient={0.1}
-        mieDirectionalG={0.8}
-        rayleigh={10}
-        turbidity={10}
-      />
+
       <EffectComposer disableNormalPass>
         <Bloom
           height={256}
-          luminanceSmoothing={0.2}
-          luminanceThreshold={0.7}
+          luminanceSmoothing={0.1}
+          luminanceThreshold={0.2}
           width={256}
         />
         <Glitch

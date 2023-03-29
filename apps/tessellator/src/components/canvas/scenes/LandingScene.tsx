@@ -19,10 +19,10 @@ const LandingScene = () => {
   const [isNavigating, setIsNavigating] = useState(false);
   const z = new SpringValue({
     to: 20,
-    from: 50,
+    from: 70,
     config: {
-      tension: 50,
-      friction: 2,
+      tension: 20,
+      friction: 5,
       precision: 0.0001,
     },
   });
@@ -38,7 +38,6 @@ const LandingScene = () => {
   useFrame((state, delta) => {
     if (isNavigating) {
       z.advance(delta * 1000);
-      // z.advance(delta * (refreshToken ? 1000 : 250));
       camera.position.setZ(z.animation.values[0].getValue());
       return;
     }
@@ -46,18 +45,23 @@ const LandingScene = () => {
 
   const handleClick = async () => {
     setIsNavigating(true);
+    z.start({
+      to: 20,
+      from: camera.position.z,
+      config: {
+        tension: 20,
+        friction: 5,
+        precision: 0.0001,
+      },
+    });
     // check for refreshToken
     if (refreshToken) {
-      setTimeout(() => {
-        router.push("/visualizer");
-      }, 300);
+      router.push("/visualizer");
       return;
     }
     // if no token present login normally
-    setTimeout(async () => {
-      const { uri } = await loginUser();
-      window.location.assign(decodeURI(uri));
-    }, 0);
+    const { uri } = await loginUser();
+    window.location.assign(decodeURI(uri));
   };
 
   return (

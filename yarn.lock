@@ -1886,10 +1886,10 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.7.1.tgz#b540752a479d210c6fb68d2b1d5ff35556df4308"
   integrity sha512-yBcyfKUeZv9wf/ZFrQszvhSPuDx6Py6yMJzpMnS+zxcZmhXPeOCKZSHwqrUz1WxvuRckUhlgb7eNI/x5e1e8CA==
 
-"@react-three/drei@^9.56.5":
-  version "9.58.1"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.58.1.tgz#4d782f85b287d0a7d10d47b31bfa86fc7a1fccee"
-  integrity sha512-CguVIYFX26VG0P31CekUTgQz0MrZb7G2YGiFbkl1BFHZbTYDAPuIZWY5kFT3Q1S8bhcFueDY61nT4tf5t0iI5A==
+"@react-three/drei@^9.58.5":
+  version "9.58.5"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.58.5.tgz#ad57aac5362acf7b4952d0556a38ad29587e3b3f"
+  integrity sha512-2gPwge2SD0Ri2Yv9rmiROONbXGlFBm/zZLUFl9KloaI1TD/we91SDMNsifAWXGaEjIvWzPMXqFw0iWM1r0Lwow==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "~9.6.1"
@@ -1912,7 +1912,7 @@
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
-"@react-three/fiber@^8.11.2":
+"@react-three/fiber@^8.12.0":
   version "8.12.0"
   resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.12.0.tgz#80241992d780d436dfba59d90d9b61e52371fa3e"
   integrity sha512-o6DkNtNHqcOFRbxaiY5xayelE/9+Z0z9wWu5awqjVbc0c/1QM6AttJH6rKW0U/O6LWxSfxDTARXVzknZqpDJ7A==
@@ -1934,12 +1934,12 @@
     "@react-pdf/yoga" "^2.0.4"
     react-merge-refs "^1.1.0"
 
-"@react-three/postprocessing@^2.7.0":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@react-three/postprocessing/-/postprocessing-2.7.0.tgz#bae6be248bdb43cbab3d125b23ba5b0de4d934d2"
-  integrity sha512-lJfV8GYp+L1SlGRcl8QPUg9QMdO+8ojW2kfaEc/MuvoI4rX3TRhVd3qFjjF++0bBmzt8LeQpDHCOHFAaT3MNYA==
+"@react-three/postprocessing@^2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@react-three/postprocessing/-/postprocessing-2.7.1.tgz#b042c974266ff3ce00139766fdd43b39aeaa65ae"
+  integrity sha512-FhmQB7INWKaecxq8u155cpbPWM2AM9SDazGmHMsW1r0IZy5aqsI1IWCxA+jJD1V7p6y0zXabssEqZ7JaANkiig==
   dependencies:
-    postprocessing "^6.29.0"
+    postprocessing "^6.30.1"
     react-merge-refs "^1.1.0"
     screen-space-reflections "2.5.0"
     three-stdlib "^2.8.11"
@@ -7208,7 +7208,7 @@ postcss@^8.4.21:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-postprocessing@^6.29.0:
+postprocessing@^6.30.1:
   version "6.30.1"
   resolved "https://registry.yarnpkg.com/postprocessing/-/postprocessing-6.30.1.tgz#b1739eb78c26730bb86196f7dc8c759237e660b4"
   integrity sha512-GkBrQtX6KjNz+Pz3+ABvP1aXKCCW7h/tuE37wlM90WZLbaGfJ7eSIBN2gPgKExuK584IPde0YOoNiuWMr7PNCQ==
@@ -8482,7 +8482,7 @@ three-mesh-bvh@^0.5.23:
   resolved "https://registry.yarnpkg.com/three-mesh-bvh/-/three-mesh-bvh-0.5.23.tgz#08e5b629144b48b11acbd433519680e457d398ed"
   integrity sha512-nyk+MskdyDgECqkxdv57UjazqqhrMi+Al9PxJN6yFtx1CTW4r0eCQ27FtyYKY5gCIWhxjtNfWYDPVy8lzx6LkA==
 
-three-stdlib@^2.21.8, three-stdlib@^2.8.11, three-stdlib@^2.9.1:
+three-stdlib@^2.21.8, three-stdlib@^2.8.11:
   version "2.21.8"
   resolved "https://registry.yarnpkg.com/three-stdlib/-/three-stdlib-2.21.8.tgz#37b11b7f62d07b10742c212153b14db21433b3c6"
   integrity sha512-kqisiKvO4mSy59v5vWqBQSH8famLxp7Z51LxpMJI9GwDxqODaW02rhIwmjYDEzZWNFpjZpoDHVGbdpeHf8h3SA==
@@ -8499,10 +8499,10 @@ three-stdlib@^2.21.8, three-stdlib@^2.8.11, three-stdlib@^2.9.1:
     potpack "^1.0.1"
     zstddec "^0.0.2"
 
-three@^0.149.0:
-  version "0.149.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.149.0.tgz#a9cf78b17d02f063ffe6dfca1e300eff2eab2927"
-  integrity sha512-tohpUxPDht0qExRLDTM8sjRLc5d9STURNrdnK3w9A+V4pxaTBfKWWT/IqtiLfg23Vfc3Z+ImNfvRw1/0CtxrkQ==
+three@^0.150.1:
+  version "0.150.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.150.1.tgz#870d324a4d2daf1c7d55be97f3f73d83783e28be"
+  integrity sha512-5C1MqKUWaHYo13BX0Q64qcdwImgnnjSOFgBscOzAo8MYCzEtqfQqorEKMcajnA3FHy1yVlIe9AmaMQ0OQracNA==
 
 through2@^0.6.3:
   version "0.6.5"

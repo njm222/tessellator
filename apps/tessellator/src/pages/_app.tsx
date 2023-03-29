@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Globals } from "@react-spring/three";
 import { Analytics } from "@vercel/analytics/react";
 import dynamic from "next/dynamic";
 import { Tomorrow } from "next/font/google";
@@ -7,6 +8,13 @@ import { Loader } from "ui";
 import Header from "../config";
 
 import "../styles/index.css";
+
+/**
+ * workaround from: https://github.com/pmndrs/react-spring/issues/1586
+ */
+Globals.assign({
+  frameLoop: "always",
+});
 
 const DomLayout = dynamic(() => import("../components/layout/DomLayout"), {
   ssr: false,

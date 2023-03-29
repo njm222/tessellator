@@ -1,4 +1,4 @@
-import React, { useMemo,useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { generateRandomNumber, hslToHex } from "core";
 import {

@@ -101,11 +101,11 @@ const PortalScene = ({
           width={512}
         />
       </EffectComposer>
-      <mesh position={[0, 0, -0.01]} ref={meshOutlineRef}>
+      <mesh position={[0, 0, -0.01]} receiveShadow ref={meshOutlineRef}>
         <planeGeometry args={[portalWidth + 0.1, portalHeight + 0.1]} />
         <meshBasicMaterial color="red" />
       </mesh>
-      <mesh ref={meshRef}>
+      <mesh receiveShadow ref={meshRef}>
         <planeGeometry args={[portalWidth, portalHeight]} />
         <meshBasicMaterial>
           <RenderTexture

@@ -35,18 +35,14 @@ const Visualizer = () => {
     }
   });
 
-  const Mode = useMemo(() => {
-    switch (modeKey) {
-      case 0:
-        return <Mode0 />;
-      case 1:
-        return <Mode1 />;
-      default:
-        return null;
-    }
-  }, [modeKey]);
+  if (!audioAnalyser.context || !spotifyAnalyser) return null;
 
-  return <>{Mode}</>;
+  return (
+    <>
+      <Mode0 visible={modeKey === 0} />
+      <Mode1 visible={modeKey === 1} />
+    </>
+  );
 };
 
 export default memo(Visualizer);

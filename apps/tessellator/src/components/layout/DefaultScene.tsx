@@ -4,9 +4,9 @@ import {
   AdaptiveEvents,
   OrbitControls,
   Preload,
-  Stats,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { Perf } from "r3f-perf";
 
 import { environment } from "../../environments/environment";
 
@@ -26,8 +26,10 @@ export default function DefaultScene({ children }: { children: ReactNode }) {
       <pointLight castShadow intensity={1} position={[-10, 5, 20]} />
       {children}
       <OrbitControls />
-      {environment.production ? null : <Stats />}
-      <AdaptiveDpr />
+      {environment.production ? null : (
+        <Perf antialias={false} colorBlind deepAnalyze position="top-left" />
+      )}
+      <AdaptiveDpr pixelated />
       <AdaptiveEvents />
       <Preload all />
     </Canvas>

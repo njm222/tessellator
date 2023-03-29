@@ -1,8 +1,14 @@
-import React, { memo,useRef } from "react";
+import React, { memo, useRef } from "react";
 import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { createNoise3D } from "simplex-noise";
-import * as THREE from "three";
+import {
+  BufferAttribute,
+  Color,
+  ColorRepresentation,
+  MeshPhongMaterial,
+  PlaneGeometry,
+} from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
@@ -12,19 +18,22 @@ import getColour from "./getColour";
 
 let simplexNoise = createNoise3D();
 
-function Terrain() {
+function Terrain({ visible }: { visible: boolean }) {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { colourKey } = useControls();
 
   // Get reference of the terrain
-  const terrainGeometryRef = useRef(new THREE.PlaneGeometry());
-  const terrainMaterialRef = useRef(new THREE.MeshPhongMaterial());
+  const terrainGeometryRef = useRef(new PlaneGeometry());
+  const terrainMaterialRef = useRef(new MeshPhongMaterial());
+  const terrainColour = new Color(0, 0, 0);
   const time = useRef(0);
   const { viewport } = useThree();
   const [vpWidth, vpHeight] = useAspect(viewport.width, viewport.height, 2);
 
   useFrame((_, delta) => {
+    if (!visible) return;
+
     if (!trackFeatures || !spotifyAnalyser?.tatums?.current || !audioAnalyser) {
       return;
     }
@@ -53,7 +62,7 @@ function Terrain() {
     time.current += segment?.timbre?.length ? segment?.timbre[11] / 500 : 1;
 
     // Get the references of the terrain
-    const terrainGeometry: THREE.PlaneGeometry = terrainGeometryRef.current;
+    const terrainGeometry: PlaneGeometry = terrainGeometryRef.current;
     const terrainMaterial = terrainMaterialRef.current;
 
     // Wait for terrain to load
@@ -69,11 +78,11 @@ function Terrain() {
     // For each vertex set the position on the z-axis based on the noise function
     for (let i = 0; i < position.count; i++) {
       const z = simplexNoise(
-        (position as THREE.BufferAttribute).getX(i) / xScale,
-        (position as THREE.BufferAttribute).getY(i) / yScale,
+        (position as BufferAttribute).getX(i) / xScale,
+        (position as BufferAttribute).getY(i) / yScale,
         time.current
       );
-      (position as THREE.BufferAttribute).setZ(
+      (position as BufferAttribute).setZ(
         i,
         Number.isNaN(z) ? 0 : z * nAmplitude
       );
@@ -81,7 +90,13 @@ function Terrain() {
 
     // Update the material colour
     terrainMaterialRef.current.color.lerp(
-      new THREE.Color(getColour(colourKey, spotifyAnalyser, audioAnalyser)),
+      terrainColour.set(
+        getColour(
+          colourKey,
+          spotifyAnalyser,
+          audioAnalyser
+        ) as ColorRepresentation
+      ),
       delta * 5
     );
 
@@ -102,8 +117,12 @@ function Terrain() {
   );
 }
 
-const Mode0 = () => {
-  return <Terrain />;
+const Mode0 = ({ visible }: { visible: boolean }) => {
+  return (
+    <group visible={visible}>
+      <Terrain visible={visible} />
+    </group>
+  );
 };
 
 export default memo(Mode0);

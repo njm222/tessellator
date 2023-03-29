@@ -1,4 +1,10 @@
-import React, { memo, MutableRefObject, ReactNode, useRef } from "react";
+import React, {
+  memo,
+  MutableRefObject,
+  ReactNode,
+  useRef,
+  useTransition,
+} from "react";
 import { PerspectiveCamera, RenderTexture } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Camera } from "@react-three/fiber/dist/declarations/src/core/events";
@@ -10,14 +16,17 @@ import { usePortal } from "../../utils/portalContext";
 const [portalWidth, portalHeight] = [3, 7];
 
 function Portal({ children }: { children: ReactNode }) {
+  const [isPending, startTransition] = useTransition();
   const meshRef = useRef(new Mesh());
   const portalCamRef = useRef(false);
   const { inPortal, setInPortal } = usePortal();
+  const cameraVec = new Vector3(0, 0, 0);
+  const cameraQuat = new Quaternion(0, 0, 0, 0);
 
   function handleOutsidePortal(camera: Camera, delta: number) {
     if (camera.position.distanceTo(meshRef.current.position) > 5) {
       // reset camera if moved / rotated
-      camera.position.lerp(new Vector3(0, 0, 10), delta);
+      camera.position.lerp(cameraVec.set(0, 0, 10), delta);
     }
     // if camera is close enough lerp closer
     if (
@@ -25,34 +34,43 @@ function Portal({ children }: { children: ReactNode }) {
       camera.position.distanceTo(meshRef.current.position) < 5
     ) {
       // position camera center
-      camera.position.lerp(new Vector3(0, 0, 2), delta * 5);
+      camera.position.lerp(cameraVec.set(0, 0, 2), delta * 5);
     }
     // if camera is very close switch cams
     if (
       !portalCamRef.current &&
       camera.position.distanceTo(meshRef.current.position) <= 2.1
     ) {
-      // rotate camera center
-      camera.quaternion.slerp(new Quaternion(-Math.PI * 2, 0, 0, 1), delta * 5);
-      setInPortal(true);
-      portalCamRef.current = true;
+      if (isPending) return;
+      startTransition(() => {
+        // rotate camera center
+        camera.quaternion.slerp(
+          cameraQuat.set(-Math.PI * 2, 0, 0, 1),
+          delta * 5
+        );
+        setInPortal(true);
+        portalCamRef.current = true;
+      });
     }
   }
 
   function handleInsidePortal(camera: Camera, delta: number) {
     // reset camera if moved / rotated
-    camera.position.lerp(new Vector3(0, 0, 3), delta * 2);
+    camera.position.lerp(cameraVec.set(0, 0, 3), delta * 2);
     // if cam is far lerp further
     if (camera.position.z > 5) {
       // rotate camera center
-      camera.quaternion.slerp(new Quaternion(-Math.PI * 2, 0, 0, 1), delta * 5);
+      camera.quaternion.slerp(cameraQuat.set(-Math.PI * 2, 0, 0, 1), delta * 5);
       // position camera center
-      camera.position.lerp(new Vector3(0, 0, 10), delta * 5);
+      camera.position.lerp(cameraVec.set(0, 0, 10), delta * 5);
     }
     // if cam is very far switch cams
     if (camera.position.z > 8) {
-      setInPortal(false);
-      portalCamRef.current = false;
+      if (isPending) return;
+      startTransition(() => {
+        setInPortal(false);
+        portalCamRef.current = false;
+      });
     }
   }
 

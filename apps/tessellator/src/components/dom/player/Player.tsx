@@ -63,7 +63,11 @@ export function Player() {
   if (!player.lastPlayed) return null;
 
   return (
-    <div className={`playerContainer ${!mouseActive && "hidden"}`}>
+    <div
+      className={`playerContainer ${
+        !mouseActive && !player?.paused && "hidden"
+      }`}
+    >
       <div className="playerLeft">
         <Image
           alt="album art"

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { PlayerControls, ProgressBar,TrackDetails } from "ui";
+import { PlayerControls, ProgressBar, TrackDetails } from "ui";
 
 import {
   nextTrack,

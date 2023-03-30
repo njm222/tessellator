@@ -9,8 +9,10 @@ export function TrackDetails({
 }) {
   return (
     <div className="trackDetails">
-      <div className="trackName">{trackName}</div>
-      <div className="trackArtists">
+      <div className="trackName" title="track-name">
+        {trackName}
+      </div>
+      <div className="trackArtists" title="track-artists">
         {trackArtists.map(({ name }) => name).join(", ")}
       </div>
     </div>

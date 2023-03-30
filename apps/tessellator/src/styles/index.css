@@ -75,43 +75,12 @@ img {
   width: 30%;
 }
 
-.playerContainer .trackInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: #fff;
-  margin-left: 1rem;
-}
-
 .playerContainer .playerCenter {
   max-width: 722px;
   width: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-}
-
-.playerContainer .playerControls {
-  display: flex;
-  justify-content: space-around;
-  max-width: 250px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/** Progress **/
-
-.progress {
-  border: 1px solid #212131;
-  background-color: #212131;
-  height: 6px;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.progressBar {
-  background-color: green;
-  height: 4px;
 }
 
 .playerContainer .playerRight {

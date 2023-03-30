@@ -1,0 +1,30 @@
+/* ---------- Player ---------- */
+
+.playerControls {
+  display: flex;
+  justify-content: space-around;
+  max-width: 250px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.trackDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  margin-left: 1rem;
+}
+
+.progress {
+  border: 1px solid #212131;
+  background-color: #212131;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressBar {
+  background-color: green;
+  height: 4px;
+}

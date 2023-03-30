@@ -1,13 +1,20 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
+import { PlayerControls, ProgressBar,TrackDetails } from "ui";
 
+import {
+  nextTrack,
+  pausePlayer,
+  playPlayer,
+  prevTrack,
+} from "../../../spotifyClient";
+import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";
 import { mutations } from "../../../utils/store";
 import { useMouseActivity } from "../controls/mouseActivityContext";
 
-import PlayerControls from "./PlayerControls";
-
 export function Player() {
+  const { audioAnalyser, analyserOptions } = useAnalyser();
   const { player } = usePlayer();
   const { mouseActive } = useMouseActivity();
 
@@ -40,6 +47,19 @@ export function Player() {
     }, 10);
   }, [player]);
 
+  // resolves autoplay podcast issue
+  useEffect(() => {
+    if (!player.paused && !audioAnalyser.source) pausePlayer();
+  }, [audioAnalyser.source, player]);
+
+  function handlePlay() {
+    playPlayer();
+    if (audioAnalyser.source) {
+      return;
+    }
+    audioAnalyser.setup(analyserOptions);
+  }
+
   if (!player.lastPlayed) return null;
 
   return (
@@ -51,22 +71,20 @@ export function Player() {
           src={player?.track_window.current_track.album.images[0].url}
           width="50"
         />
-        <div className="trackInfo">
-          <div className="trackName">
-            {player?.track_window.current_track.name}
-          </div>
-          <div className="trackArtist">
-            {player?.track_window.current_track.artists[0].name}
-          </div>
-        </div>
+        <TrackDetails
+          trackArtists={player?.track_window.current_track.artists}
+          trackName={player?.track_window.current_track.name}
+        />
       </div>
       <div className="playerCenter">
-        <div className="playerControls">
-          <PlayerControls />
-        </div>
-        <div className="progress">
-          <div className="progressBar" ref={progressBarRef} />
-        </div>
+        <PlayerControls
+          onNext={nextTrack}
+          onPause={pausePlayer}
+          onPlay={handlePlay}
+          onPrev={prevTrack}
+          paused={player?.paused}
+        />
+        <ProgressBar ref={progressBarRef} />
       </div>
       <div className="playerRight"></div>
     </div>

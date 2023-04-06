@@ -26,14 +26,14 @@ import { mutations } from "./store";
 
 type PlayerProviderProps = {
   player?: any;
-  setPlayer: any;
+  setPlayer?: any;
   trackFeatures?: SpotifyApi.AudioFeaturesResponse;
   spotifyAnalyser?: SpotifyAnalyser;
   children: ReactNode;
-  play: (props?: SpotifyApi.PlayParameterObject) => void;
-  pause: () => void;
-  next: () => void;
-  prev: () => void;
+  play?: (props?: SpotifyApi.PlayParameterObject) => void;
+  pause?: () => void;
+  next?: () => void;
+  prev?: () => void;
 };
 
 const trackFeaturesSample = {

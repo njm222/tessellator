@@ -62,7 +62,7 @@ const VisualizerScene = () => {
           luminanceThreshold={0.1}
           width={512}
         />
-        <Pixelation ref={pixelationRef} granularity={0} />
+        <Pixelation granularity={0} ref={pixelationRef} />
       </EffectComposer>
     </Suspense>
   );

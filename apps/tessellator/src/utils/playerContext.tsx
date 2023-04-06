@@ -59,7 +59,6 @@ const trackFeaturesSample = {
 };
 
 const playerSample = {
-  lastPlayed: null,
   duration: 0,
   paused: true,
   track_window: {
@@ -73,10 +72,10 @@ const playerSample = {
 
 export const PlayerContext = createContext({
   player: playerSample,
-  setPlayer: (player: any) => {},
+  setPlayer: (_: any) => {},
   trackFeatures: trackFeaturesSample,
   spotifyAnalyser: new SpotifyAnalyser(),
-  play: (props?: SpotifyApi.PlayParameterObject) => {},
+  play: (_?: SpotifyApi.PlayParameterObject) => {},
   pause: () => {},
   next: () => {},
   prev: () => {},
@@ -164,7 +163,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
             return;
           }
 
-          if (id !== player?.lastPlayed) {
+          if (id !== trackId) {
             setTrackId(id);
             setPlayer({ ...playerState, lastPlayed: id });
             return;

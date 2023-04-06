@@ -17,10 +17,6 @@ export function Player() {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!player.lastPlayed) {
-      return;
-    }
-
     clearInterval(timerRef.current);
 
     if (player?.paused) {
@@ -53,8 +49,6 @@ export function Player() {
     }
     audioAnalyser.setup(analyserOptions);
   }
-
-  if (!player.lastPlayed) return null;
 
   return (
     <div

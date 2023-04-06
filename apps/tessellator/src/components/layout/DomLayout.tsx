@@ -3,7 +3,9 @@ import React, {
   ReactNode,
   useImperativeHandle,
   useRef,
+  useState,
 } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { AuthProvider } from "../../utils/authContext";
 import { PortalProvider } from "../../utils/portalContext";
@@ -16,15 +18,19 @@ const DomLayout = forwardRef(
 
     useImperativeHandle(ref, () => localRef.current);
 
+    const [queryClient] = useState(() => new QueryClient());
+
     return (
       <div className={"domContainer"} ref={localRef} {...props}>
-        <AuthProvider>
-          <ControlsProvider>
-            <MouseActivityProvider>
-              <PortalProvider>{children}</PortalProvider>
-            </MouseActivityProvider>
-          </ControlsProvider>
-        </AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <ControlsProvider>
+              <MouseActivityProvider>
+                <PortalProvider>{children}</PortalProvider>
+              </MouseActivityProvider>
+            </ControlsProvider>
+          </AuthProvider>
+        </QueryClientProvider>
       </div>
     );
   }

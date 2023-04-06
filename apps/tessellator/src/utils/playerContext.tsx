@@ -8,14 +8,14 @@ import {
   useState,
 } from "react";
 import { generateRandomInteger } from "core";
-import SpotifyAnalyser, { SpotifyAnalyserData } from "spotify-analyser";
+import SpotifyAnalyser from "spotify-analyser";
 import { Loader } from "ui";
 
 import {
-  getTrackAnalysis,
-  getTrackFeatures,
   playTopTracks,
- spotifyClient } from "../spotifyClient";
+  spotifyClient,
+  useTrackAnalysisAndFeatures,
+} from "../spotifyClient";
 
 import { useAuth } from "./authContext";
 import { mutations } from "./store";
@@ -77,9 +77,10 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
 }) => {
   const { accessToken, handleRefreshToken } = useAuth();
   const [player, setPlayer] = useState(playerSample);
-  const [trackFeatures, setTrackFeatures] = useState(trackFeaturesSample);
-  const [trackAnalysis, setTrackAnalysis] =
-    useState<SpotifyAnalyserData | null>(null);
+  const [trackId, setTrackId] = useState("");
+  const { data = { analysis: null, features: trackFeaturesSample } } =
+    useTrackAnalysisAndFeatures(trackId);
+
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
   useEffect(() => {
@@ -145,13 +146,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
           }
 
           if (id !== player?.lastPlayed) {
-            const [analysis, features] = await Promise.all([
-              getTrackAnalysis(id),
-              getTrackFeatures(id),
-            ]);
-
-            setTrackFeatures(features);
-            setTrackAnalysis(analysis);
+            setTrackId(id);
             setPlayer({ ...playerState, lastPlayed: id });
             return;
           }
@@ -167,19 +162,19 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const value = useMemo(
     () => ({
       player,
-      trackFeatures,
+      trackFeatures: data.features,
     }),
-    [player, trackFeatures]
+    [player, data.features]
   );
 
   useEffect(() => {
-    if (!trackAnalysis) return;
-    spotifyAnalyser.setData(trackAnalysis);
-  }, [spotifyAnalyser, trackAnalysis]);
+    if (!data?.analysis) return;
+    spotifyAnalyser.setData(data.analysis);
+  }, [spotifyAnalyser, data?.analysis]);
 
   return (
     <PlayerContext.Provider value={{ ...value, spotifyAnalyser }}>
-      {!trackAnalysis ? (
+      {!data.analysis ? (
         <Loader
           dotVariant={generateRandomInteger(0, 11)}
           message="Setting up player"

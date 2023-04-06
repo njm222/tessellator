@@ -1891,10 +1891,36 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.7.1.tgz#b540752a479d210c6fb68d2b1d5ff35556df4308"
   integrity sha512-yBcyfKUeZv9wf/ZFrQszvhSPuDx6Py6yMJzpMnS+zxcZmhXPeOCKZSHwqrUz1WxvuRckUhlgb7eNI/x5e1e8CA==
 
-"@react-three/drei@^9.56.10", "@react-three/drei@^9.58.5":
+"@react-three/drei@^9.56.10":
   version "9.58.5"
   resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.58.5.tgz#ad57aac5362acf7b4952d0556a38ad29587e3b3f"
   integrity sha512-2gPwge2SD0Ri2Yv9rmiROONbXGlFBm/zZLUFl9KloaI1TD/we91SDMNsifAWXGaEjIvWzPMXqFw0iWM1r0Lwow==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    "@react-spring/three" "~9.6.1"
+    "@use-gesture/react" "^10.2.24"
+    camera-controls "^2.3.1"
+    detect-gpu "^5.0.14"
+    glsl-noise "^0.0.0"
+    lodash.clamp "^4.0.3"
+    lodash.omit "^4.5.0"
+    lodash.pick "^4.4.0"
+    maath "^0.5.2"
+    meshline "^3.1.6"
+    react-composer "^5.0.3"
+    react-merge-refs "^1.1.0"
+    stats.js "^0.17.0"
+    suspend-react "^0.0.8"
+    three-mesh-bvh "^0.5.23"
+    three-stdlib "^2.21.8"
+    troika-three-text "^0.47.1"
+    utility-types "^3.10.0"
+    zustand "^3.5.13"
+
+"@react-three/drei@^9.64.0":
+  version "9.64.0"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-9.64.0.tgz#f2317257087680d8fdda37be18bb112e6d426bc5"
+  integrity sha512-xkdc26PcNQlp3lXKBV+FUEAbC4zuBugfhkuptJa1Mb2yoDNmsGnIApgWCRR/Wd2zZqU7W9yw/a7derZa1oPQxg==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "~9.6.1"

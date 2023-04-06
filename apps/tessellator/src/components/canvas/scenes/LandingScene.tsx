@@ -89,7 +89,7 @@ const LandingScene = () => {
       </Suspense>
       <Particles count={10000} isNavigating={isNavigating} />
 
-      <EffectComposer disableNormalPass>
+      <EffectComposer disableNormalPass multisampling={0}>
         <Bloom
           height={256}
           luminanceSmoothing={0.1}

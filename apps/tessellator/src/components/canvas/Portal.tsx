@@ -110,7 +110,7 @@ const PortalScene = ({
   const meshOutlineRef = useRef(new Mesh());
   return (
     <group position={[0, 1, 0]}>
-      <EffectComposer disableNormalPass>
+      <EffectComposer disableNormalPass multisampling={0}>
         <SelectiveBloom
           height={512}
           luminanceSmoothing={0.1}

@@ -1,21 +1,14 @@
-import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
 
-import { getMyInfo } from "../../spotifyClient";
+import { useGetUserInformation } from "../../spotifyClient";
 import { usePlayer } from "../../utils/playerContext";
 
 export default function WelcomeUser() {
   const { spotifyAnalyser } = usePlayer();
-  const [name, setName] = useState<string>("");
 
-  useEffect(() => {
-    (async () => {
-      const u = await getMyInfo();
-      setName(u?.display_name ?? "");
-    })();
-  }, [setName]);
+  const { isLoading, data } = useGetUserInformation();
 
-  if (!name || !spotifyAnalyser.sections) return null;
+  if (isLoading || !spotifyAnalyser.sections) return null;
 
   return (
     <div className="welcomeContainer">
@@ -23,7 +16,7 @@ export default function WelcomeUser() {
         onInit={(typewriter) => {
           typewriter
             .start()
-            .typeString(`hello ${name}, `)
+            .typeString(`hello ${data?.display_name}, `)
             .pauseFor(500)
             .typeString("welcome to tessellator...")
             .pauseFor(1000)

@@ -8,23 +8,32 @@ import {
   useState,
 } from "react";
 import { generateRandomInteger } from "core";
-import SpotifyAnalyser, { SpotifyAnalyserData } from "spotify-analyser";
+import SpotifyAnalyser from "spotify-analyser";
 import { Loader } from "ui";
 
 import {
-  getTrackAnalysis,
-  getTrackFeatures,
-  playTopTracks,
- spotifyClient } from "../spotifyClient";
+  spotifyClient,
+  useGetTopTracks,
+  useNextTrack,
+  usePausePlayer,
+  usePlayPlayer,
+  usePrevTrack,
+  useTrackAnalysisAndFeatures,
+} from "../spotifyClient";
 
 import { useAuth } from "./authContext";
 import { mutations } from "./store";
 
 type PlayerProviderProps = {
   player?: any;
+  setPlayer: any;
   trackFeatures?: SpotifyApi.AudioFeaturesResponse;
   spotifyAnalyser?: SpotifyAnalyser;
   children: ReactNode;
+  play: (props?: SpotifyApi.PlayParameterObject) => void;
+  pause: () => void;
+  next: () => void;
+  prev: () => void;
 };
 
 const trackFeaturesSample = {
@@ -50,7 +59,6 @@ const trackFeaturesSample = {
 };
 
 const playerSample = {
-  lastPlayed: null,
   duration: 0,
   paused: true,
   track_window: {
@@ -64,8 +72,13 @@ const playerSample = {
 
 export const PlayerContext = createContext({
   player: playerSample,
+  setPlayer: (_: any) => {},
   trackFeatures: trackFeaturesSample,
   spotifyAnalyser: new SpotifyAnalyser(),
+  play: (_?: SpotifyApi.PlayParameterObject) => {},
+  pause: () => {},
+  next: () => {},
+  prev: () => {},
 });
 
 export const usePlayer = () => useContext(PlayerContext);
@@ -77,9 +90,15 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
 }) => {
   const { accessToken, handleRefreshToken } = useAuth();
   const [player, setPlayer] = useState(playerSample);
-  const [trackFeatures, setTrackFeatures] = useState(trackFeaturesSample);
-  const [trackAnalysis, setTrackAnalysis] =
-    useState<SpotifyAnalyserData | null>(null);
+  const [trackId, setTrackId] = useState("");
+  const { data = { analysis: null, features: trackFeaturesSample } } =
+    useTrackAnalysisAndFeatures(trackId);
+  const { mutate: mutatePlay } = usePlayPlayer();
+  const { mutate: mutatePause } = usePausePlayer();
+  const { mutate: mutateNext } = useNextTrack();
+  const { mutate: mutatePrev } = usePrevTrack();
+  const { data: topTracks } = useGetTopTracks();
+
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
   useEffect(() => {
@@ -140,18 +159,12 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
 
           if (type !== "track") {
             // handles case when podcast is played
-            await playTopTracks();
+            mutatePlay({ uris: topTracks?.items.map(({ uri }) => uri) });
             return;
           }
 
-          if (id !== player?.lastPlayed) {
-            const [analysis, features] = await Promise.all([
-              getTrackAnalysis(id),
-              getTrackFeatures(id),
-            ]);
-
-            setTrackFeatures(features);
-            setTrackAnalysis(analysis);
+          if (id !== trackId) {
+            setTrackId(id);
             setPlayer({ ...playerState, lastPlayed: id });
             return;
           }
@@ -167,19 +180,32 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const value = useMemo(
     () => ({
       player,
-      trackFeatures,
+      setPlayer,
+      trackFeatures: data.features,
+      play: (props?: SpotifyApi.PlayParameterObject) => mutatePlay(props),
+      pause: () => mutatePause(),
+      next: () => mutateNext(),
+      prev: () => mutatePrev(),
     }),
-    [player, trackFeatures]
+    [
+      player,
+      data.features,
+      mutatePlay,
+      mutatePause,
+      mutateNext,
+      mutatePrev,
+      setPlayer,
+    ]
   );
 
   useEffect(() => {
-    if (!trackAnalysis) return;
-    spotifyAnalyser.setData(trackAnalysis);
-  }, [spotifyAnalyser, trackAnalysis]);
+    if (!data.analysis) return;
+    spotifyAnalyser.setData(data.analysis);
+  }, [spotifyAnalyser, data.analysis]);
 
   return (
     <PlayerContext.Provider value={{ ...value, spotifyAnalyser }}>
-      {!trackAnalysis ? (
+      {!data.analysis ? (
         <Loader
           dotVariant={generateRandomInteger(0, 11)}
           message="Setting up player"

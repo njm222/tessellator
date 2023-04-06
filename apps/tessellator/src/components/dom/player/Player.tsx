@@ -2,12 +2,6 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { PlayerControls, ProgressBar, TrackDetails } from "ui";
 
-import {
-  nextTrack,
-  pausePlayer,
-  playPlayer,
-  prevTrack,
-} from "../../../spotifyClient";
 import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";
 import { mutations } from "../../../utils/store";
@@ -15,7 +9,7 @@ import { useMouseActivity } from "../controls/mouseActivityContext";
 
 export function Player() {
   const { audioAnalyser, analyserOptions } = useAnalyser();
-  const { player } = usePlayer();
+  const { player, play, pause, next, prev } = usePlayer();
   const { mouseActive } = useMouseActivity();
 
   const initialTime = useRef(0);
@@ -23,10 +17,6 @@ export function Player() {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!player.lastPlayed) {
-      return;
-    }
-
     clearInterval(timerRef.current);
 
     if (player?.paused) {
@@ -49,18 +39,16 @@ export function Player() {
 
   // resolves autoplay podcast issue
   useEffect(() => {
-    if (!player.paused && !audioAnalyser.source) pausePlayer();
-  }, [audioAnalyser.source, player]);
+    if (!player.paused && !audioAnalyser.source) pause();
+  }, [audioAnalyser.source, player, pause]);
 
   function handlePlay() {
-    playPlayer();
+    play();
     if (audioAnalyser.source) {
       return;
     }
     audioAnalyser.setup(analyserOptions);
   }
-
-  if (!player.lastPlayed) return null;
 
   return (
     <div
@@ -82,10 +70,10 @@ export function Player() {
       </div>
       <div className="playerCenter">
         <PlayerControls
-          onNext={nextTrack}
-          onPause={pausePlayer}
+          onNext={next}
+          onPause={pause}
           onPlay={handlePlay}
-          onPrev={prevTrack}
+          onPrev={prev}
           paused={player?.paused}
         />
         <ProgressBar ref={progressBarRef} />

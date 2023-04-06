@@ -200,7 +200,7 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
     (mesh.current.material as ShaderMaterial).uniforms.uSize.value = Math.max(
       Math.min(
         audioAnalyser.analyserData.averageFrequency * trackFeatures.energy,
-        5.0
+        4.0
       ),
       0.5
     );

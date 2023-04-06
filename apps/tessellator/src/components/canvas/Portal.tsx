@@ -8,7 +8,6 @@ import React, {
 import { PerspectiveCamera, RenderTexture } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Camera } from "@react-three/fiber/dist/declarations/src/core/events";
-import { EffectComposer, SelectiveBloom } from "@react-three/postprocessing";
 import { Mesh, Quaternion, Vector3 } from "three";
 
 import { usePortal } from "../../utils/portalContext";
@@ -110,15 +109,6 @@ const PortalScene = ({
   const meshOutlineRef = useRef(new Mesh());
   return (
     <group position={[0, 1, 0]}>
-      <EffectComposer disableNormalPass multisampling={0}>
-        <SelectiveBloom
-          height={512}
-          luminanceSmoothing={0.1}
-          luminanceThreshold={0.1}
-          selection={meshOutlineRef}
-          width={512}
-        />
-      </EffectComposer>
       <mesh position={[0, 0, -0.01]} receiveShadow ref={meshOutlineRef}>
         <planeGeometry args={[portalWidth + 0.1, portalHeight + 0.1]} />
         <meshBasicMaterial color="red" />

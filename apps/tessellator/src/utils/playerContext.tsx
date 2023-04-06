@@ -175,7 +175,14 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
         player.connect();
       };
     }
-  }, [accessToken, handleRefreshToken]);
+  }, [
+    accessToken,
+    handleRefreshToken,
+    setTrackId,
+    trackId,
+    mutatePlay,
+    topTracks,
+  ]);
 
   const value = useMemo(
     () => ({

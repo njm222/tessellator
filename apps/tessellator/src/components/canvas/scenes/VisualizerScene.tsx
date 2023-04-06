@@ -1,6 +1,7 @@
-import { memo, Suspense,useEffect } from "react";
-import { BakeShadows,Stars } from "@react-three/drei";
+import { memo, Suspense, useEffect } from "react";
+import { BakeShadows, Stars } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
+import { Bloom,EffectComposer } from "@react-three/postprocessing";
 
 import { usePortal } from "../../../utils/portalContext";
 import Bridge from "../../models/Bridge";
@@ -32,6 +33,14 @@ const VisualizerScene = () => {
       </Portal>
       <OuterScene />
       <BakeShadows />
+      <EffectComposer disableNormalPass multisampling={0}>
+        <Bloom
+          height={512}
+          luminanceSmoothing={0.1}
+          luminanceThreshold={0.1}
+          width={512}
+        />
+      </EffectComposer>
     </Suspense>
   );
 };

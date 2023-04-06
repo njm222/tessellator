@@ -12,8 +12,12 @@ import SpotifyAnalyser from "spotify-analyser";
 import { Loader } from "ui";
 
 import {
-  playTopTracks,
   spotifyClient,
+  useGetTopTracks,
+  useNextTrack,
+  usePausePlayer,
+  usePlayPlayer,
+  usePrevTrack,
   useTrackAnalysisAndFeatures,
 } from "../spotifyClient";
 
@@ -22,9 +26,14 @@ import { mutations } from "./store";
 
 type PlayerProviderProps = {
   player?: any;
+  setPlayer: any;
   trackFeatures?: SpotifyApi.AudioFeaturesResponse;
   spotifyAnalyser?: SpotifyAnalyser;
   children: ReactNode;
+  play: (props?: SpotifyApi.PlayParameterObject) => void;
+  pause: () => void;
+  next: () => void;
+  prev: () => void;
 };
 
 const trackFeaturesSample = {
@@ -64,8 +73,13 @@ const playerSample = {
 
 export const PlayerContext = createContext({
   player: playerSample,
+  setPlayer: (player: any) => {},
   trackFeatures: trackFeaturesSample,
   spotifyAnalyser: new SpotifyAnalyser(),
+  play: (props?: SpotifyApi.PlayParameterObject) => {},
+  pause: () => {},
+  next: () => {},
+  prev: () => {},
 });
 
 export const usePlayer = () => useContext(PlayerContext);
@@ -80,6 +94,11 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const [trackId, setTrackId] = useState("");
   const { data = { analysis: null, features: trackFeaturesSample } } =
     useTrackAnalysisAndFeatures(trackId);
+  const { mutate: mutatePlay } = usePlayPlayer();
+  const { mutate: mutatePause } = usePausePlayer();
+  const { mutate: mutateNext } = useNextTrack();
+  const { mutate: mutatePrev } = usePrevTrack();
+  const { data: topTracks } = useGetTopTracks();
 
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
@@ -141,7 +160,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
 
           if (type !== "track") {
             // handles case when podcast is played
-            await playTopTracks();
+            mutatePlay({ uris: topTracks?.items.map(({ uri }) => uri) });
             return;
           }
 
@@ -162,15 +181,28 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const value = useMemo(
     () => ({
       player,
+      setPlayer,
       trackFeatures: data.features,
+      play: (props?: SpotifyApi.PlayParameterObject) => mutatePlay(props),
+      pause: () => mutatePause(),
+      next: () => mutateNext(),
+      prev: () => mutatePrev(),
     }),
-    [player, data.features]
+    [
+      player,
+      data.features,
+      mutatePlay,
+      mutatePause,
+      mutateNext,
+      mutatePrev,
+      setPlayer,
+    ]
   );
 
   useEffect(() => {
-    if (!data?.analysis) return;
+    if (!data.analysis) return;
     spotifyAnalyser.setData(data.analysis);
-  }, [spotifyAnalyser, data?.analysis]);
+  }, [spotifyAnalyser, data.analysis]);
 
   return (
     <PlayerContext.Provider value={{ ...value, spotifyAnalyser }}>

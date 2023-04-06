@@ -1,8 +1,9 @@
 // TODO: separate client api calls => spotify-core
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import SpotifyWebApi from "spotify-web-api-js";
 
 import { useAuth } from "./utils/authContext";
+import { usePlayer } from "./utils/playerContext";
 
 export const spotifyClient = new SpotifyWebApi();
 
@@ -34,32 +35,51 @@ export function useTrackAnalysisAndFeatures(trackId: string) {
   );
 }
 
-export const playTopTracks = async () => {
-  const tracksUri = (await spotifyClient.getMyTopTracks()).items.map(
-    ({ uri }) => uri
-  );
+export function useGetTopTracks() {
+  const { accessToken } = useAuth();
 
-  return await spotifyClient.play({ uris: tracksUri });
-};
+  return useQuery([accessToken], () => spotifyClient.getMyTopTracks(), {
+    staleTime: Infinity,
+  });
+}
 
 /* -------- PLAYER CONTROLS -------- */
 
-export const playPlayer = async () => {
-  const results = await spotifyClient.play();
-  return results;
-};
+export function usePausePlayer() {
+  const { setPlayer } = usePlayer();
+  return useMutation(() => spotifyClient.pause(), {
+    onMutate: () => {
+      setPlayer((prev: any) => ({ ...prev, paused: true }));
+    },
+  });
+}
 
-export const pausePlayer = async () => {
-  const results = await spotifyClient.pause();
-  return results;
-};
+export function usePlayPlayer() {
+  const { setPlayer } = usePlayer();
+  return useMutation(
+    (props?: SpotifyApi.PlayParameterObject) => spotifyClient.play(props),
+    {
+      onMutate: () => {
+        setPlayer((prev: any) => ({ ...prev, paused: false }));
+      },
+    }
+  );
+}
 
-export const nextTrack = async () => {
-  const results = await spotifyClient.skipToNext();
-  return results;
-};
+export function useNextTrack() {
+  const { setPlayer } = usePlayer();
+  return useMutation(() => spotifyClient.skipToNext(), {
+    onMutate: () => {
+      setPlayer((prev: any) => ({ ...prev, paused: false }));
+    },
+  });
+}
 
-export const prevTrack = async () => {
-  const results = await spotifyClient.skipToPrevious();
-  return results;
-};
+export function usePrevTrack() {
+  const { setPlayer } = usePlayer();
+  return useMutation(() => spotifyClient.skipToPrevious(), {
+    onMutate: () => {
+      setPlayer((prev: any) => ({ ...prev, paused: false }));
+    },
+  });
+}

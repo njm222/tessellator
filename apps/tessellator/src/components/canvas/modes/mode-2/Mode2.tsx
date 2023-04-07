@@ -1,11 +1,11 @@
-import { useRef, useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
-  Vector3,
   Color,
-  Object3D,
-  InstancedMesh,
   ColorRepresentation,
+  InstancedMesh,
+  Object3D,
+  Vector3,
 } from "three";
 
 import "../../shaders/ParticleMaterial";
@@ -32,6 +32,7 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
           .fill("")
           .flatMap((_, i) => tempColor.set("#FFF").toArray())
       ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -112,11 +113,11 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
 
   return (
     <group visible={visible}>
-      <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
+      <instancedMesh args={[undefined, undefined, count]} ref={mesh}>
         <boxGeometry args={[0.1, 0.1, 0.1]}>
           <instancedBufferAttribute
-            attach="attributes-color"
             args={[colorArray, 3]}
+            attach="attributes-color"
           />
         </boxGeometry>
         <meshPhongMaterial />

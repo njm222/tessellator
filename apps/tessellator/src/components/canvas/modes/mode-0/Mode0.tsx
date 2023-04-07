@@ -41,6 +41,7 @@ function Terrain({ visible }: { visible: boolean }) {
     const { snareSection, bassSection, kickSection, highSection } =
       audioAnalyser;
     const segment = spotifyAnalyser.getCurrentSegment();
+    const section = spotifyAnalyser.getCurrentSection();
     const { energy, danceability, valence } = trackFeatures;
 
     // Set the variables for simplex
@@ -49,13 +50,19 @@ function Terrain({ visible }: { visible: boolean }) {
         Math.max(highSection?.average * valence, 15),
       0.1
     );
+
+    const limit =
+      section?.key && section?.key_confidence
+        ? (section.key + 1) * section.key_confidence
+        : 1;
+
     const xScale = Math.max(
       danceability * Math.abs(bassSection?.average - kickSection?.average),
-      0.5
+      limit
     );
     const yScale = Math.max(
       energy * Math.abs(bassSection?.average - snareSection?.average),
-      0.5
+      limit
     );
 
     // Get the current time
@@ -97,7 +104,7 @@ function Terrain({ visible }: { visible: boolean }) {
           audioAnalyser
         ) as ColorRepresentation
       ),
-      delta * 5
+      delta * 2
     );
 
     // Update the vertices

@@ -13,6 +13,7 @@ import {
 
 import Mode0 from "./modes/mode-0/Mode0";
 import Mode1 from "./modes/mode-1/Mode1";
+import Mode2 from "./modes/mode-2/Mode2";
 
 const Visualizer = () => {
   const { audioAnalyser } = useAnalyser();
@@ -41,6 +42,7 @@ const Visualizer = () => {
     <>
       <Mode0 visible={modeKey === 0} />
       <Mode1 visible={modeKey === 1} />
+      <Mode2 visible={modeKey === 2} />
     </>
   );
 };

@@ -128,7 +128,7 @@ export default function Particles({
     <>
       <pointLight color="darkblue" distance={100} intensity={10} ref={light} />
       <instancedMesh args={[undefined, undefined, count]} ref={mesh}>
-        <dodecahedronGeometry args={[0.1, 0]} />
+        <dodecahedronGeometry args={[0.05, 0]} />
         <meshPhongMaterial color="#000" ref={material} />
       </instancedMesh>
     </>

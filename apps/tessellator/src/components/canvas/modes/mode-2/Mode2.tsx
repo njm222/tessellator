@@ -82,16 +82,14 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
       }
     }
 
-    if (spotifyAnalyser.beats.current.confidence > 0.7) {
-      mesh.current.position.lerp(
-        tempVector.set(
-          0,
-          0,
-          (zValue * spotifyAnalyser.beats.counter) % 2 !== 0 ? 1 : -1
-        ),
-        delta * (1 - trackFeatures.energy)
-      );
-    }
+    mesh.current.position.lerp(
+      tempVector.set(
+        0,
+        0,
+        zValue * (spotifyAnalyser.beats.counter % 2 === 0 ? 1 : -1)
+      ),
+      delta * (1 - trackFeatures.energy)
+    );
 
     spotifyAnalyser.bars.counter % 2 === 0
       ? (mesh.current.rotation.y += audioAnalyser.midSection.average / 10000) *
@@ -105,6 +103,7 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
       ? 1
       : -1;
 
+    mesh.current.material.wireframe = spotifyAnalyser.beats.counter % 2 === 0;
     mesh.current.instanceMatrix.needsUpdate = true;
 
     if (!mesh.current.instanceColor) return;

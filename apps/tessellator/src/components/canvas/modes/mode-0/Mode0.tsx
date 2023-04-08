@@ -5,23 +5,19 @@ import { createNoise3D } from "simplex-noise";
 import {
   BufferAttribute,
   Color,
-  ColorRepresentation,
-  MeshPhongMaterial,
-  PlaneGeometry,
-} from "three";
+ ColorRepresentation,  MeshPhongMaterial,
+  PlaneGeometry } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import { useControls } from "../../../dom/controls/controlsContext";
-
-import getColour from "./getColour";
+import { useGetColour } from "../useGetColour";
 
 let simplexNoise = createNoise3D();
 
 function Terrain({ visible }: { visible: boolean }) {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
-  const { colourKey } = useControls();
+  const { getColour } = useGetColour();
 
   // Get reference of the terrain
   const terrainGeometryRef = useRef(new PlaneGeometry());
@@ -97,13 +93,7 @@ function Terrain({ visible }: { visible: boolean }) {
 
     // Update the material colour
     terrainMaterialRef.current.color.lerp(
-      terrainColour.set(
-        getColour(
-          colourKey,
-          spotifyAnalyser,
-          audioAnalyser
-        ) as ColorRepresentation
-      ),
+      terrainColour.set(getColour() as ColorRepresentation),
       delta * 2
     );
 

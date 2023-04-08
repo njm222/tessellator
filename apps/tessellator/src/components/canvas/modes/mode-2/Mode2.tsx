@@ -4,16 +4,16 @@ import {
   Color,
   ColorRepresentation,
   InstancedMesh,
- MeshPhongMaterial,  Object3D,
-  Vector3 } from "three";
+  MeshPhongMaterial,
+  Object3D,
+  Vector3,
+} from "three";
 
 import "../../shaders/ParticleMaterial";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import { useControls } from "../../../dom/controls/controlsContext";
-
-import getColour from "./getColour";
+import { useGetColour } from "../useGetColour";
 
 const Mode2 = ({ visible }: { visible: boolean }) => {
   const count = 8000;
@@ -35,20 +35,14 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
     []
   );
 
+  const { getColour } = useGetColour();
   const { audioAnalyser } = useAnalyser();
-  const { colourKey } = useControls();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
   useFrame((state, delta) => {
     if (!visible) return;
 
-    tempColor.set(
-      getColour(
-        colourKey,
-        spotifyAnalyser,
-        audioAnalyser
-      ) as ColorRepresentation
-    );
+    tempColor.set(getColour() as ColorRepresentation);
     const zValue = 10 * trackFeatures.danceability;
     const scale = Math.min(
       Math.max(

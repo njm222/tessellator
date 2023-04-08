@@ -21,6 +21,7 @@ const colourMap = [
   { key: "q", value: 0 },
   { key: "a", value: 1 },
   { key: "z", value: 2 },
+  { key: "w", value: 3 },
 ];
 
 export const numColourModes = colourMap.length;

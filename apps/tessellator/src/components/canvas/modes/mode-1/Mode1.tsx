@@ -7,14 +7,12 @@ import "../../shaders/ParticleMaterial";
 import { hexToVector3 } from "../../../../helpers/hexTo";
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import { useControls } from "../../../dom/controls/controlsContext";
-
-import getColour from "./getColour";
+import { useGetColour } from "../useGetColour";
 
 const Mode1 = ({ visible }: { visible: boolean }) => {
   const mesh = useRef<Points>(null);
   const { audioAnalyser } = useAnalyser();
-  const { colourKey } = useControls();
+  const { getColour } = useGetColour({ minSaturation: 75, minLightness: 150 });
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
   const vertex = new Vector3();
@@ -196,13 +194,13 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       : (mesh.current.rotation.z += audioAnalyser.snareSection.energy / 2000);
 
     (mesh.current.material as ShaderMaterial).uniforms.uColour.value =
-      hexToVector3(getColour(colourKey, spotifyAnalyser, audioAnalyser));
+      hexToVector3(getColour());
     (mesh.current.material as ShaderMaterial).uniforms.uSize.value = Math.max(
       Math.min(
         audioAnalyser.analyserData.averageFrequency * trackFeatures.energy,
         4.0
       ),
-      0.5
+      0.75
     );
 
     mesh.current.geometry.setIndex(indices);

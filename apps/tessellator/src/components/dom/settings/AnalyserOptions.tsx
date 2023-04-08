@@ -21,7 +21,7 @@ export function AnalyserOptions() {
       "Analyzer Options": folder({
         fftSize: {
           value: fftSize,
-          options: [64, 128, 256, 512, 1024, 2048],
+          options: [512, 1024, 2048],
         },
         smoothingTimeConstant: {
           value: smoothingTimeConstant,

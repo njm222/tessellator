@@ -4,9 +4,8 @@ import {
   Color,
   ColorRepresentation,
   InstancedMesh,
-  Object3D,
-  Vector3,
-} from "three";
+ MeshPhongMaterial,  Object3D,
+  Vector3 } from "three";
 
 import "../../shaders/ParticleMaterial";
 
@@ -103,7 +102,8 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
       ? 1
       : -1;
 
-    mesh.current.material.wireframe = spotifyAnalyser.beats.counter % 2 === 0;
+    (mesh.current.material as MeshPhongMaterial).wireframe =
+      spotifyAnalyser.beats.counter % 2 === 0;
     mesh.current.instanceMatrix.needsUpdate = true;
 
     if (!mesh.current.instanceColor) return;

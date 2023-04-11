@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { defaultAnalyserOptions } from "audio-analyser";
-import { button, folder, useControls } from "leva";
+import { button, folder, LevaInputs, useControls } from "leva";
 
 import { LocalStorageKeys } from "../../../constants";
 import { useAnalyser } from "../../../utils/analyserContext";
@@ -22,24 +22,31 @@ export function AnalyserOptions() {
         fftSize: {
           value: fftSize,
           options: [512, 1024, 2048],
+          hint: "size of the FFT (Fast Fourier Transform) to be used to determine the frequency domain.",
         },
         smoothingTimeConstant: {
           value: smoothingTimeConstant,
           min: 0.1,
           max: 1,
           step: 0.01,
+          hint: "Averaging constant with the last analysis frame",
+          type: LevaInputs.NUMBER,
         },
         minDecibels: {
           value: minDecibels,
           min: -200,
           max: maxDecibels - 1,
           step: 1,
+          hint: "Minimum power value in the scaling range for the FFT analysis data",
+          type: LevaInputs.NUMBER,
         },
         maxDecibels: {
           value: maxDecibels,
           min: Math.max(minDecibels + 1, -80),
           max: 0,
           step: 1,
+          hint: "Maximum power value in the scaling range for the FFT analysis data",
+          type: LevaInputs.NUMBER,
         },
         reset: button(() =>
           setAnalyzerValues({
@@ -51,7 +58,7 @@ export function AnalyserOptions() {
         ),
       }),
     }),
-    []
+    [minDecibels, maxDecibels]
   );
 
   useEffect(() => {

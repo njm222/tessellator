@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { defaultAnalyserOptions } from "audio-analyser";
 import { button, folder, LevaInputs, useControls } from "leva";
+import { useToast } from "ui";
 
 import { LocalStorageKeys } from "../../../constants";
 import { useAnalyser } from "../../../utils/analyserContext";
 
 export function AnalyserOptions() {
+  const toast = useToast();
   const {
     analyserOptions: {
       fftSize,
@@ -48,14 +50,15 @@ export function AnalyserOptions() {
           hint: "Maximum power value in the scaling range for the FFT analysis data",
           type: LevaInputs.NUMBER,
         },
-        reset: button(() =>
+        reset: button(() => {
           setAnalyzerValues({
             fftSize: defaultAnalyserOptions.fftSize,
             smoothingTimeConstant: defaultAnalyserOptions.smoothingTimeConstant,
             minDecibels: defaultAnalyserOptions.minDecibels,
             maxDecibels: defaultAnalyserOptions.maxDecibels,
-          })
-        ),
+          });
+          toast.open("Reset analyser options to default");
+        }),
       }),
     }),
     [minDecibels, maxDecibels]

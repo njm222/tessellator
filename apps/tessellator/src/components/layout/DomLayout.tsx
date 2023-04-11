@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastProvider } from "ui";
 
 import { AuthProvider } from "../../utils/authContext";
 import { PortalProvider } from "../../utils/portalContext";
@@ -23,13 +24,15 @@ const DomLayout = forwardRef(
     return (
       <div className={"domContainer"} ref={localRef} {...props}>
         <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <ControlsProvider>
-              <MouseActivityProvider>
-                <PortalProvider>{children}</PortalProvider>
-              </MouseActivityProvider>
-            </ControlsProvider>
-          </AuthProvider>
+          <ToastProvider>
+            <AuthProvider>
+              <ControlsProvider>
+                <MouseActivityProvider>
+                  <PortalProvider>{children}</PortalProvider>
+                </MouseActivityProvider>
+              </ControlsProvider>
+            </AuthProvider>
+          </ToastProvider>
         </QueryClientProvider>
       </div>
     );

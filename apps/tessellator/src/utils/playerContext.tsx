@@ -9,7 +9,7 @@ import {
 } from "react";
 import { generateRandomInteger } from "core";
 import SpotifyAnalyser from "spotify-analyser";
-import { Loader } from "ui";
+import { Loader, useToast } from "ui";
 
 import {
   spotifyClient,
@@ -88,6 +88,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
 }: {
   children: ReactNode;
 }) => {
+  const toast = useToast();
   const { accessToken, handleRefreshToken } = useAuth();
   const [player, setPlayer] = useState(playerSample);
   const [trackId, setTrackId] = useState("");
@@ -106,75 +107,79 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       return;
     }
 
-    if (!document.getElementById("spotify-sdk")) {
-      const sdk = document.createElement("script");
-      sdk.setAttribute("src", "https://sdk.scdn.co/spotify-player.js");
-      sdk.id = "spotify-sdk";
-      sdk.async = true;
-      document.head.appendChild(sdk);
-
-      window.onSpotifyWebPlaybackSDKReady = () => {
-        const player = new window.Spotify.Player({
-          name: "Tessellator Player",
-          getOAuthToken: async (cb: (token: string) => any) => {
-            // check if token is valid
-            // refresh token
-            cb(accessToken);
-          },
-        });
-
-        player.addListener("initialization_error", (data: any) => {
-          alert("initialization_error");
-          console.log(data);
-        });
-        player.addListener("authentication_error", (data: any) => {
-          alert("authentication_error");
-          console.log(data);
-          handleRefreshToken();
-        });
-        player.addListener("account_error", (data: any) => {
-          alert("account_error");
-          console.log(data);
-        });
-        player.addListener("playback_error", (data: any) => {
-          alert("playback_error");
-          console.log(data);
-        });
-        player.addListener("ready", (data: { device_id: string }) => {
-          if (!data.device_id) {
-            // toast message
-            alert("player failed to start");
-            return;
-          }
-
-          spotifyClient.transferMyPlayback([data.device_id], {
-            play: false,
-          });
-        });
-        player.addListener("player_state_changed", async (playerState: any) => {
-          // update track position
-          mutations.position = playerState?.position ?? 0;
-
-          const { id, type } = playerState?.track_window.current_track;
-
-          if (type !== "track") {
-            // handles case when podcast is played
-            mutatePlay({ uris: topTracks?.items.map(({ uri }) => uri) });
-            return;
-          }
-
-          if (id !== trackId) {
-            setTrackId(id);
-            setPlayer({ ...playerState, lastPlayed: id });
-            return;
-          }
-          // update playerState
-          setPlayer((prev) => ({ ...prev, ...playerState }));
-        });
-
-        player.connect();
-      };
+    if (document.getElementById("spotify-sdk")) {
+      return;
     }
+
+    const sdk = document.createElement("script");
+    sdk.setAttribute("src", "https://sdk.scdn.co/spotify-player.js");
+    sdk.id = "spotify-sdk";
+    sdk.async = true;
+    document.head.appendChild(sdk);
+
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      const player = new window.Spotify.Player({
+        name: "Tessellator Player",
+        getOAuthToken: async (cb: (token: string) => any) => {
+          cb(accessToken);
+        },
+      });
+
+      player.addListener(
+        "initialization_error",
+        (data: { message: string }) => {
+          toast.open(data.message);
+        }
+      );
+      player.addListener(
+        "authentication_error",
+        (data: { message: string }) => {
+          toast.open(data.message);
+          handleRefreshToken();
+        }
+      );
+      player.addListener("account_error", (data: { message: string }) => {
+        toast.open(data.message);
+      });
+      player.addListener("playback_error", (data: { message: string }) => {
+        toast.open(data.message);
+      });
+      player.addListener("ready", (data: { device_id: string }) => {
+        if (!data.device_id) {
+          // toast message
+          toast.open("Player failed to start");
+          return;
+        }
+
+        spotifyClient.transferMyPlayback([data.device_id], {
+          play: false,
+        });
+      });
+      player.addListener("player_state_changed", async (playerState: any) => {
+        // update track position
+        mutations.position = playerState?.position ?? 0;
+
+        const { id, type } = playerState?.track_window.current_track;
+
+        if (type !== "track") {
+          toast.open("Podcast cannot be analysed, please queue a track");
+          return;
+          // handles case when podcast is played
+          mutatePlay({ uris: topTracks?.items.map(({ uri }) => uri) });
+          return;
+        }
+
+        if (id !== trackId) {
+          setTrackId(id);
+          setPlayer({ ...playerState, lastPlayed: id });
+          return;
+        }
+        // update playerState
+        setPlayer((prev) => ({ ...prev, ...playerState }));
+      });
+
+      player.connect();
+    };
   }, [
     accessToken,
     handleRefreshToken,
@@ -182,6 +187,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     trackId,
     mutatePlay,
     topTracks,
+    toast,
   ]);
 
   const value = useMemo(

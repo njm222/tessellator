@@ -18,6 +18,7 @@ import {
   usePausePlayer,
   usePlayPlayer,
   usePrevTrack,
+  useLikeTrack,
   useTrackAnalysisAndFeatures,
 } from "../spotifyClient";
 
@@ -34,6 +35,7 @@ type PlayerProviderProps = {
   pause?: () => void;
   next?: () => void;
   prev?: () => void;
+  like?: () => void;
 };
 
 const trackFeaturesSample = {
@@ -98,6 +100,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const { mutate: mutatePause } = usePausePlayer();
   const { mutate: mutateNext } = useNextTrack();
   const { mutate: mutatePrev } = usePrevTrack();
+  const { mutate: mutateLike } = useLikeTrack();
   const { data: topTracks } = useGetTopTracks();
 
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
@@ -199,6 +202,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       pause: () => mutatePause(),
       next: () => mutateNext(),
       prev: () => mutatePrev(),
+      like: (id: string) => mutateLike(id),
     }),
     [
       player,
@@ -207,6 +211,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       mutatePause,
       mutateNext,
       mutatePrev,
+      mutateLike,
       setPlayer,
     ]
   );

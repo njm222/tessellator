@@ -1,6 +1,12 @@
 import React from "react";
 
-import { NextButton, PauseButton, PlayButton, PrevButton } from "./buttons";
+import {
+  LikeButton,
+  NextButton,
+  PauseButton,
+  PlayButton,
+  PrevButton,
+} from "./buttons";
 
 export function PlayerControls({
   paused,
@@ -8,12 +14,14 @@ export function PlayerControls({
   onPlay,
   onPause,
   onNext,
+  onLike,
 }: {
   paused: boolean;
   onPrev: () => void;
   onPlay: () => void;
   onPause: () => void;
   onNext: () => void;
+  onLike: () => void;
 }) {
   return (
     <div className="playerControls">
@@ -24,6 +32,7 @@ export function PlayerControls({
         <PauseButton onClick={onPause} />
       )}
       <NextButton onClick={onNext} />
+      <LikeButton onClick={onLike} />
     </div>
   );
 }

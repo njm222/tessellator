@@ -83,3 +83,12 @@ export function usePrevTrack() {
     },
   });
 }
+
+export function useLikeTrack() {
+  const { setPlayer } = usePlayer();
+  return useMutation((id: string) => spotifyClient.addToMySavedTracks([id]), {
+    onMutate: () => {
+      setPlayer((prev: any) => ({ ...prev, paused: false }));
+    },
+  });
+}

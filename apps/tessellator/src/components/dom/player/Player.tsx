@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { PlayerControls, ProgressBar, TrackDetails } from "ui";
+import { PlayerControls, ProgressBar, TrackDetails, PlayerActions } from "ui";
 
 import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";
@@ -9,7 +9,7 @@ import { useMouseActivity } from "../controls/mouseActivityContext";
 
 export function Player() {
   const { audioAnalyser, analyserOptions } = useAnalyser();
-  const { player, play, pause, next, prev } = usePlayer();
+  const { player, play, pause, next, prev, like } = usePlayer();
   const { mouseActive } = useMouseActivity();
 
   const initialTime = useRef(0);
@@ -68,17 +68,17 @@ export function Player() {
           trackName={player?.track_window.current_track.name}
         />
       </div>
-      <div className="playerCenter">
+      <div className="playerRight">
         <PlayerControls
           onNext={next}
           onPause={pause}
           onPlay={handlePlay}
           onPrev={prev}
+          onLike={like}
           paused={player?.paused}
         />
         <ProgressBar ref={progressBarRef} />
       </div>
-      <div className="playerRight"></div>
     </div>
   );
 }

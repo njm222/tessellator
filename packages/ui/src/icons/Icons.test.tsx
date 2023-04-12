@@ -2,6 +2,7 @@ import { render } from "@testing-library/react";
 
 import {
   GithubIcon,
+  HeartIcon,
   InstagramIcon,
   NextIcon,
   PauseIcon,
@@ -11,6 +12,11 @@ import {
 } from ".";
 
 describe("Icons", () => {
+  it("renders HeartIcon without crashing", () => {
+    const { getByRole } = render(<HeartIcon />);
+
+    expect(getByRole("img")).toBeTruthy();
+  });
   it("renders GithubIcon without crashing", () => {
     const { getByRole } = render(<GithubIcon />);
 

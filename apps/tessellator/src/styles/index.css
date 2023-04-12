@@ -75,17 +75,12 @@ img {
   width: 30%;
 }
 
-.playerContainer .playerCenter {
-  max-width: 722px;
-  width: 40%;
+.playerContainer .playerRight {
+  width: 70%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-}
-
-.playerContainer .playerRight {
-  min-width: 180px;
-  width: 30%;
+  margin: 0 1rem;
 }
 
 /** Social links **/

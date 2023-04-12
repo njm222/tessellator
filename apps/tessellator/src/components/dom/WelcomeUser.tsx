@@ -4,11 +4,11 @@ import { useGetUserInformation } from "../../spotifyClient";
 import { usePlayer } from "../../utils/playerContext";
 
 export default function WelcomeUser() {
-  const { spotifyAnalyser } = usePlayer();
+  const { player } = usePlayer();
 
-  const { isLoading, data } = useGetUserInformation();
+  const { isLoading, data, isError } = useGetUserInformation();
 
-  if (isLoading || !spotifyAnalyser.sections) return null;
+  if (isLoading || isError || !(player as any).context) return null;
 
   return (
     <div className="welcomeContainer">

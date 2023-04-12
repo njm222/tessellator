@@ -12,11 +12,11 @@ import SpotifyAnalyser from "spotify-analyser";
 import { Loader, useToast } from "ui";
 
 import {
-  spotifyClient,
-  useGetTopTracks,
+  spotifyWebClient,
   useNextTrack,
   usePausePlayer,
   usePlayPlayer,
+  usePlayTopTracks,
   usePrevTrack,
   useTrackAnalysisAndFeatures,
 } from "../spotifyClient";
@@ -98,7 +98,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const { mutate: mutatePause } = usePausePlayer();
   const { mutate: mutateNext } = useNextTrack();
   const { mutate: mutatePrev } = usePrevTrack();
-  const { data: topTracks } = useGetTopTracks();
+  const { mutate: mutatePlayTopTracks } = usePlayTopTracks();
 
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
@@ -151,7 +151,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
           return;
         }
 
-        spotifyClient.transferMyPlayback([data.device_id], {
+        spotifyWebClient.transferMyPlayback([data.device_id], {
           play: false,
         });
       });
@@ -162,10 +162,8 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
         const { id, type } = playerState?.track_window.current_track;
 
         if (type !== "track") {
-          toast.open("Podcast cannot be analysed, please queue a track");
-          return;
           // handles case when podcast is played
-          mutatePlay({ uris: topTracks?.items.map(({ uri }) => uri) });
+          mutatePlayTopTracks();
           return;
         }
 
@@ -186,7 +184,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     setTrackId,
     trackId,
     mutatePlay,
-    topTracks,
+    mutatePlayTopTracks,
     toast,
   ]);
 

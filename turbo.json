@@ -10,7 +10,9 @@
     "FRONTEND_URL",
     "SPOTIFY_CLIENT_ID",
     "SPOTIFY_CLIENT_SECRET",
-    "SPOTIFY_ACCOUNT_URL"
+    "SPOTIFY_ACCOUNT_URL",
+    "NEXT_PUBLIC_SPOTIFY_API_URL",
+    "SPOTIFY_API_URL"
   ],
   "pipeline": {
     "build": {

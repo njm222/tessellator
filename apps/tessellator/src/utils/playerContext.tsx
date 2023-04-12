@@ -7,19 +7,23 @@ import {
   useMemo,
   useState,
 } from "react";
-import { generateRandomInteger } from "core";
+import {
+  generateRandomInteger,
+  StartPlaybackOptions,
+  AudioFeatures,
+} from "core";
 import SpotifyAnalyser from "spotify-analyser";
 import { Loader, useToast } from "ui";
 
 import {
-  spotifyWebClient,
   useNextTrack,
   usePausePlayer,
   usePlayPlayer,
   usePlayTopTracks,
   usePrevTrack,
   useTrackAnalysisAndFeatures,
-} from "../spotifyClient";
+  useTransferMyPlayback,
+} from "./spotify";
 
 import { useAuth } from "./authContext";
 import { mutations } from "./store";
@@ -27,10 +31,10 @@ import { mutations } from "./store";
 type PlayerProviderProps = {
   player?: any;
   setPlayer?: any;
-  trackFeatures?: SpotifyApi.AudioFeaturesResponse;
+  trackFeatures?: AudioFeatures;
   spotifyAnalyser?: SpotifyAnalyser;
   children: ReactNode;
-  play?: (props?: SpotifyApi.PlayParameterObject) => void;
+  play?: (props?: StartPlaybackOptions) => void;
   pause?: () => void;
   next?: () => void;
   prev?: () => void;
@@ -75,7 +79,7 @@ export const PlayerContext = createContext({
   setPlayer: (_: any) => {},
   trackFeatures: trackFeaturesSample,
   spotifyAnalyser: new SpotifyAnalyser(),
-  play: (_?: SpotifyApi.PlayParameterObject) => {},
+  play: (_?: StartPlaybackOptions) => {},
   pause: () => {},
   next: () => {},
   prev: () => {},
@@ -99,6 +103,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const { mutate: mutateNext } = useNextTrack();
   const { mutate: mutatePrev } = usePrevTrack();
   const { mutate: mutatePlayTopTracks } = usePlayTopTracks();
+  const { mutate: mutateTransferMyPlayback } = useTransferMyPlayback();
 
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
@@ -151,9 +156,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
           return;
         }
 
-        spotifyWebClient.transferMyPlayback([data.device_id], {
-          play: false,
-        });
+        mutateTransferMyPlayback(data.device_id);
       });
       player.addListener("player_state_changed", async (playerState: any) => {
         // update track position
@@ -185,6 +188,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     trackId,
     mutatePlay,
     mutatePlayTopTracks,
+    mutateTransferMyPlayback,
     toast,
   ]);
 
@@ -193,7 +197,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       player,
       setPlayer,
       trackFeatures: data.features,
-      play: (props?: SpotifyApi.PlayParameterObject) => mutatePlay(props),
+      play: (props?: StartPlaybackOptions) => mutatePlay(props),
       pause: () => mutatePause(),
       next: () => mutateNext(),
       prev: () => mutatePrev(),

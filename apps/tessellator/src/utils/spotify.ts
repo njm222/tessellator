@@ -4,18 +4,17 @@ import {
   getTrackAudioAnalysis,
   getTrackAudioFeatures,
   getUserTopItems,
+  pausePlayback,
+  skipToNext,
+  skipToPrevious,
+  startPlayback,
+  StartPlaybackOptions,
+  transferMyPlayback,
 } from "core";
-import SpotifyWebApi from "spotify-web-api-js";
 import { useToast } from "ui";
 
-import { useAuth } from "./utils/authContext";
-import { usePlayer } from "./utils/playerContext";
-
-export const spotifyWebClient = new SpotifyWebApi();
-
-export const setAccessToken = (accessToken: string) => {
-  spotifyWebClient.setAccessToken(accessToken);
-};
+import { useAuth } from "./authContext";
+import { usePlayer } from "./playerContext";
 
 export function useGetUserInformation() {
   const { accessToken } = useAuth();
@@ -33,6 +32,27 @@ export function useGetUserInformation() {
     }
   );
 }
+
+export type AudioFeatures = {
+  acousticness: number;
+  analysis_url: string;
+  danceability: number;
+  duration_ms: number;
+  energy: number;
+  id: string;
+  instrumentalness: number;
+  key: number;
+  liveness: number;
+  loudness: number;
+  mode: number;
+  speechiness: number;
+  tempo: number;
+  time_signature: number;
+  track_href: string;
+  type: string;
+  uri: string;
+  valence: number;
+};
 
 export function useTrackAnalysisAndFeatures(trackId: string) {
   const { accessToken } = useAuth();
@@ -62,10 +82,24 @@ export function usePlayTopTracks() {
   return useMutation(
     async () => {
       const topTracks = await getUserTopItems(accessToken);
-      await spotifyWebClient.play({
+      await startPlayback(accessToken, {
         uris: topTracks?.items?.map(({ uri }: { uri: string }) => uri),
       });
     },
+    {
+      onError: ({ message }: Error) => {
+        open(message);
+      },
+    }
+  );
+}
+
+export function useTransferMyPlayback() {
+  const { accessToken } = useAuth();
+  const { open } = useToast();
+  return useMutation(
+    async (deviceId: string) =>
+      transferMyPlayback(accessToken, deviceId, false),
     {
       onError: ({ message }: Error) => {
         open(message);
@@ -80,7 +114,7 @@ export function usePausePlayer() {
   const { accessToken } = useAuth();
   const { open } = useToast();
   const { setPlayer } = usePlayer();
-  return useMutation(() => spotifyWebClient.pause(), {
+  return useMutation(async () => pausePlayback(accessToken), {
     onMutate: () => {
       setPlayer((prev: any) => ({ ...prev, paused: true }));
     },
@@ -95,7 +129,7 @@ export function usePlayPlayer() {
   const { open } = useToast();
   const { setPlayer } = usePlayer();
   return useMutation(
-    (props?: SpotifyApi.PlayParameterObject) => spotifyWebClient.play(props),
+    async (props?: StartPlaybackOptions) => startPlayback(accessToken, props),
     {
       onMutate: () => {
         setPlayer((prev: any) => ({ ...prev, paused: false }));
@@ -111,7 +145,7 @@ export function useNextTrack() {
   const { accessToken } = useAuth();
   const { open } = useToast();
   const { setPlayer } = usePlayer();
-  return useMutation(() => spotifyWebClient.skipToNext(), {
+  return useMutation(async () => skipToNext(accessToken), {
     onMutate: () => {
       setPlayer((prev: any) => ({ ...prev, paused: false }));
     },
@@ -125,7 +159,7 @@ export function usePrevTrack() {
   const { accessToken } = useAuth();
   const { open } = useToast();
   const { setPlayer } = usePlayer();
-  return useMutation(() => spotifyWebClient.skipToPrevious(), {
+  return useMutation(async () => skipToPrevious(accessToken), {
     onMutate: () => {
       setPlayer((prev: any) => ({ ...prev, paused: false }));
     },

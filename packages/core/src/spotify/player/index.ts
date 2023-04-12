@@ -1,0 +1,81 @@
+import { getDefaultOptions, spotifyClient } from "../spotifyClient";
+
+export type StartPlaybackOptions = {
+  uris?: string[];
+};
+export async function startPlayback(
+  accessToken: string,
+  options?: StartPlaybackOptions
+) {
+  try {
+    const { data } = await spotifyClient.put(
+      "/me/player/play",
+      options,
+      getDefaultOptions(accessToken)
+    );
+    return data;
+  } catch (err: any) {
+    console.log(err);
+    throw Error(err);
+  }
+}
+
+export async function pausePlayback(accessToken: string) {
+  try {
+    const { data } = await spotifyClient.put(
+      "/me/player/pause",
+      null,
+      getDefaultOptions(accessToken)
+    );
+    return data;
+  } catch (err: any) {
+    console.log(err);
+    throw Error(err);
+  }
+}
+
+export async function skipToPrevious(accessToken: string) {
+  try {
+    const { data } = await spotifyClient.post(
+      "/me/player/previous",
+      null,
+      getDefaultOptions(accessToken)
+    );
+    return data;
+  } catch (err: any) {
+    console.log(err);
+    throw Error(err);
+  }
+}
+
+export async function skipToNext(accessToken: string) {
+  try {
+    const { data } = await spotifyClient.post(
+      "/me/player/next",
+      null,
+      getDefaultOptions(accessToken)
+    );
+    return data;
+  } catch (err: any) {
+    console.log(err);
+    throw Error(err);
+  }
+}
+
+export async function transferMyPlayback(
+  accessToken: string,
+  deviceId: string,
+  play?: boolean
+) {
+  try {
+    const { data } = await spotifyClient.put(
+      "/me/player",
+      { device_ids: [deviceId], play },
+      getDefaultOptions(accessToken)
+    );
+    return data;
+  } catch (err: any) {
+    console.log(err);
+    throw Error(err);
+  }
+}

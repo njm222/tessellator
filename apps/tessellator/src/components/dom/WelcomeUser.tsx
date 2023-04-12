@@ -1,6 +1,6 @@
 import Typewriter from "typewriter-effect";
 
-import { useGetUserInformation } from "../../spotifyClient";
+import { useGetUserInformation } from "../../utils/spotify";
 import { usePlayer } from "../../utils/playerContext";
 
 export default function WelcomeUser() {

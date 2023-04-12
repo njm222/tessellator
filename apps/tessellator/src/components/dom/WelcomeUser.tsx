@@ -1,7 +1,7 @@
 import Typewriter from "typewriter-effect";
 
-import { useGetUserInformation } from "../../utils/spotify";
 import { usePlayer } from "../../utils/playerContext";
+import { useGetUserInformation } from "../../utils/spotify";
 
 export default function WelcomeUser() {
   const { player } = usePlayer();

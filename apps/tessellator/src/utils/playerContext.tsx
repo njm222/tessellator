@@ -8,13 +8,14 @@ import {
   useState,
 } from "react";
 import {
+  AudioFeatures,
   generateRandomInteger,
   StartPlaybackOptions,
-  AudioFeatures,
 } from "core";
 import SpotifyAnalyser from "spotify-analyser";
 import { Loader, useToast } from "ui";
 
+import { useAuth } from "./authContext";
 import {
   useNextTrack,
   usePausePlayer,
@@ -24,8 +25,6 @@ import {
   useTrackAnalysisAndFeatures,
   useTransferMyPlayback,
 } from "./spotify";
-
-import { useAuth } from "./authContext";
 import { mutations } from "./store";
 
 type PlayerProviderProps = {

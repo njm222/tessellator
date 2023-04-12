@@ -7,16 +7,13 @@ import {
   useMemo,
   useState,
 } from "react";
-import {
-  AudioFeatures,
-  generateRandomInteger,
-  StartPlaybackOptions,
-} from "core";
+import { generateRandomInteger, StartPlaybackOptions } from "core";
 import SpotifyAnalyser from "spotify-analyser";
 import { Loader, useToast } from "ui";
 
 import { useAuth } from "./authContext";
 import {
+  AudioFeatures,
   useNextTrack,
   usePausePlayer,
   usePlayPlayer,

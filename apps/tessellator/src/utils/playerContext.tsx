@@ -65,6 +65,7 @@ const playerSample = {
   paused: true,
   track_window: {
     current_track: {
+      id: "",
       name: "",
       artists: [{ name: "", uri: "" }],
       album: { images: [{ url: "" }] },

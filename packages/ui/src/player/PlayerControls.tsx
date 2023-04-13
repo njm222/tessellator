@@ -15,7 +15,9 @@ export function PlayerControls({
   onPause,
   onNext,
   onSave,
+  isSaved,
 }: {
+  isSaved: boolean;
   paused: boolean;
   onPrev: () => void;
   onPlay: () => void;
@@ -32,7 +34,7 @@ export function PlayerControls({
         <PauseButton onClick={onPause} />
       )}
       <NextButton onClick={onNext} />
-      <SaveButton onClick={onSave} />
+      <SaveButton isSaved={isSaved} onClick={onSave} />
     </div>
   );
 }

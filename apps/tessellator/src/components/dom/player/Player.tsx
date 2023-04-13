@@ -5,6 +5,7 @@ import { PlayerControls, ProgressBar, TrackDetails } from "ui";
 
 import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";
+import { useCheckSavedTrack } from "../../../utils/spotify";
 import { mutations } from "../../../utils/store";
 import { useMouseActivity } from "../controls/mouseActivityContext";
 
@@ -12,7 +13,9 @@ export function Player() {
   const { audioAnalyser, analyserOptions } = useAnalyser();
   const { player, play, pause, next, prev, save } = usePlayer();
   const { mouseActive } = useMouseActivity();
-
+  const { data: isSaved } = useCheckSavedTrack(
+    player?.track_window.current_track.id
+  );
   const initialTime = useRef(0);
   const timerRef = useRef<NodeJS.Timer>();
   const progressBarRef = useRef<HTMLDivElement>(null);
@@ -67,11 +70,12 @@ export function Player() {
       </div>
       <div className="playerCenter">
         <PlayerControls
+          isSaved={isSaved}
           onNext={next}
           onPause={pause}
           onPlay={handlePlay}
           onPrev={prev}
-          onSave={save}
+          onSave={() => save(player?.track_window.current_track.name)}
           paused={player?.paused}
         />
         <ProgressBar ref={progressBarRef} />

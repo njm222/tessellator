@@ -1,3 +1,4 @@
+export { FilledHeartIcon } from "./FilledHeartIcon";
 export { HeartIcon } from "./HeartIcon";
 export { SettingsIcon } from "./SettingsIcon";
 export { GithubIcon } from "./GithubIcon";

@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 
 import {
+  FilledHeartIcon,
   GithubIcon,
   HeartIcon,
   InstagramIcon,
@@ -12,6 +13,11 @@ import {
 } from ".";
 
 describe("Icons", () => {
+  it("renders FilledHeartIcon without crashing", () => {
+    const { getByRole } = render(<FilledHeartIcon />);
+
+    expect(getByRole("img")).toBeTruthy();
+  });
   it("renders HeartIcon without crashing", () => {
     const { getByRole } = render(<HeartIcon />);
 

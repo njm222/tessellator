@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  checkSavedTracks,
   getCurrentUserProfile,
   getTrackAudioAnalysis,
   getTrackAudioFeatures,
@@ -59,7 +60,7 @@ export function useTrackAnalysisAndFeatures(trackId: string) {
   const { accessToken } = useAuth();
   const { open } = useToast();
   return useQuery(
-    [trackId],
+    ["me", "tracks", trackId],
     async () => {
       const [analysis, features] = await Promise.all([
         getTrackAudioAnalysis(accessToken, trackId),
@@ -80,15 +81,30 @@ export function useTrackAnalysisAndFeatures(trackId: string) {
 export function useSaveTrack() {
   const { accessToken } = useAuth();
   const { open } = useToast();
-  const { setPlayer } = usePlayer();
   return useMutation(async (id: string) => saveTracks(accessToken, [id]), {
-    onMutate: () => {
-      setPlayer((prev: any) => ({ ...prev, paused: false }));
-    },
     onError: ({ message }: Error) => {
       open(message);
     },
   });
+}
+
+export function useCheckSavedTrack(trackId: string) {
+  const { accessToken } = useAuth();
+  const { open } = useToast();
+  return useQuery(
+    ["me", "tracks", trackId, "contains"],
+    async () => {
+      const [saved] = await checkSavedTracks(accessToken, [trackId]);
+      return saved;
+    },
+    {
+      enabled: !!accessToken && !!trackId,
+      keepPreviousData: true,
+      onError: ({ message }: Error) => {
+        open(message);
+      },
+    }
+  );
 }
 
 export function usePlayTopTracks() {

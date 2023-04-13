@@ -9,7 +9,7 @@ import {
 } from "./buttons";
 
 export function PlayerControls({
-  paused,
+  isPaused,
   onPrev,
   onPlay,
   onPause,
@@ -18,7 +18,7 @@ export function PlayerControls({
   isSaved,
 }: {
   isSaved: boolean;
-  paused: boolean;
+  isPaused: boolean;
   onPrev: () => void;
   onPlay: () => void;
   onPause: () => void;
@@ -28,7 +28,7 @@ export function PlayerControls({
   return (
     <div className="playerControls">
       <PrevButton onClick={onPrev} />
-      {paused ? (
+      {isPaused ? (
         <PlayButton onClick={onPlay} />
       ) : (
         <PauseButton onClick={onPause} />

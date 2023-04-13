@@ -7,12 +7,13 @@ describe("PlayerControls", () => {
     const mockCallBack = jest.fn();
     const { getByTitle } = render(
       <PlayerControls
+        isPaused={true}
+        isSaved={true}
         onNext={mockCallBack}
         onPause={mockCallBack}
         onPlay={mockCallBack}
         onPrev={mockCallBack}
         onSave={mockCallBack}
-        paused={true}
       />
     );
 
@@ -22,12 +23,13 @@ describe("PlayerControls", () => {
     const mockCallBack = jest.fn();
     const { getByTitle } = render(
       <PlayerControls
+        isPaused={false}
+        isSaved={true}
         onNext={mockCallBack}
         onPause={mockCallBack}
         onPlay={mockCallBack}
         onPrev={mockCallBack}
         onSave={mockCallBack}
-        paused={false}
       />
     );
 
@@ -37,12 +39,13 @@ describe("PlayerControls", () => {
     const mockCallBack = jest.fn();
     const { getByTitle } = render(
       <PlayerControls
+        isPaused={true}
+        isSaved={true}
         onNext={mockCallBack}
         onPause={mockCallBack}
         onPlay={mockCallBack}
         onPrev={mockCallBack}
         onSave={mockCallBack}
-        paused={true}
       />
     );
 

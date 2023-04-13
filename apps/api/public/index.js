@@ -115,7 +115,8 @@ var import_axios2 = __toESM(require("axios"));
 var environment2 = {
   production: process.env.NODE_ENV === "production",
   backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL,
-  frontendUrl: process.env.NEXT_PUBLIC_FRONTEND_URL || process.env.FRONTEND_URL
+  frontendUrl: process.env.NEXT_PUBLIC_FRONTEND_URL || process.env.FRONTEND_URL,
+  spotifyApiUrl: process.env.NEXT_PUBLIC_SPOTIFY_API_URL || process.env.SPOTIFY_API_URL
 };
 
 // ../../packages/core/src/web/apiClient.ts
@@ -126,6 +127,12 @@ var apiClient = import_axios2.default.create({
     "Access-Control-Allow-Credentials": true,
     "Access-Control-Allow-Origin": environment2.frontendUrl
   }
+});
+
+// ../../packages/core/src/spotify/spotifyClient.ts
+var import_axios3 = __toESM(require("axios"));
+var spotifyClient = import_axios3.default.create({
+  baseURL: environment2.spotifyApiUrl
 });
 
 // src/app/authentication/login/loginController.ts
@@ -160,7 +167,7 @@ var loginController = LoginController({
 });
 
 // src/app/authentication/refresh-token/refreshTokenController.ts
-var import_axios3 = __toESM(require("axios"));
+var import_axios4 = __toESM(require("axios"));
 function RefreshTokenController({
   spotifyAccountUrl,
   clientId,
@@ -183,7 +190,7 @@ function RefreshTokenController({
       },
       json: true
     };
-    (0, import_axios3.default)(authOptions).then((response) => {
+    (0, import_axios4.default)(authOptions).then((response) => {
       const { data } = response;
       res.send(data);
     }).catch((e) => {

@@ -3,12 +3,12 @@ import { ReactNode, useState } from "react";
 import { useTimeout } from "../hooks/useTimeout";
 
 export type ToastProps = {
-  autoHideDuration: number;
-  resumeHideDuration: number;
-  persistent: boolean;
+  autoHideDuration?: number;
+  resumeHideDuration?: number;
+  persistent?: boolean;
   close: () => void;
   children: ReactNode;
-  variant: string;
+  variant?: string;
 };
 
 export const Toast = (props: ToastProps) => {

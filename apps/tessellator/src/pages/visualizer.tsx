@@ -1,4 +1,3 @@
-import React from "react";
 import { NextPageContext } from "next";
 
 import VisualizerScene from "../components/canvas/scenes/VisualizerScene";
@@ -17,9 +16,7 @@ export default function Visualizer() {
   );
 }
 
-Visualizer.canvas = () => (
-  <VisualizerScene  />
-);
+Visualizer.canvas = () => <VisualizerScene />;
 
 export const getServerSideProps = withAuthentication(
   async (context: NextPageContext) => {

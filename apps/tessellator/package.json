@@ -29,7 +29,6 @@
     "react-dom": "^18.2.0",
     "simplex-noise": "^4.0.1",
     "spotify-analyser": "*",
-    "spotify-web-api-js": "^1.5.2",
     "three": "^0.150.1",
     "three-stdlib": "^2.21.8",
     "typewriter-effect": "^2.12.1",

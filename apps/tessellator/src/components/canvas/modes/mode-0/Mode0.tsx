@@ -5,8 +5,10 @@ import { createNoise3D } from "simplex-noise";
 import {
   BufferAttribute,
   Color,
- ColorRepresentation,  MeshPhongMaterial,
-  PlaneGeometry } from "three";
+  ColorRepresentation,
+  MeshPhongMaterial,
+  PlaneGeometry,
+} from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";

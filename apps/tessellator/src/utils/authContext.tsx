@@ -13,8 +13,6 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { Loader } from "ui";
 
-import { setAccessToken } from "../spotifyClient";
-
 import { AnalyserProvider } from "./analyserContext";
 import { PlayerProvider } from "./playerContext";
 
@@ -57,7 +55,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({
     updateToken(tokens.refreshToken)
       .then((tokens: { accessToken: string; refreshToken: string }) => {
         setTokens(tokens);
-        setAccessToken(tokens.accessToken);
         Cookies.set("accessToken", tokens.accessToken);
         Cookies.set("refreshToken", tokens.refreshToken);
         setIsLoading(false);
@@ -74,7 +71,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({
         accessToken,
         refreshToken,
       });
-      setAccessToken(accessToken);
       setIsLoading(false);
       return;
     }

@@ -7,30 +7,30 @@ import {
   useMemo,
   useState,
 } from "react";
-import { generateRandomInteger } from "core";
+import { generateRandomInteger, StartPlaybackOptions } from "core";
 import SpotifyAnalyser from "spotify-analyser";
 import { Loader, useToast } from "ui";
 
+import { useAuth } from "./authContext";
 import {
-  spotifyClient,
-  useGetTopTracks,
+  AudioFeatures,
   useNextTrack,
   usePausePlayer,
   usePlayPlayer,
+  usePlayTopTracks,
   usePrevTrack,
   useTrackAnalysisAndFeatures,
-} from "../spotifyClient";
-
-import { useAuth } from "./authContext";
+  useTransferMyPlayback,
+} from "./spotify";
 import { mutations } from "./store";
 
 type PlayerProviderProps = {
   player?: any;
   setPlayer?: any;
-  trackFeatures?: SpotifyApi.AudioFeaturesResponse;
+  trackFeatures?: AudioFeatures;
   spotifyAnalyser?: SpotifyAnalyser;
   children: ReactNode;
-  play?: (props?: SpotifyApi.PlayParameterObject) => void;
+  play?: (props?: StartPlaybackOptions) => void;
   pause?: () => void;
   next?: () => void;
   prev?: () => void;
@@ -75,7 +75,7 @@ export const PlayerContext = createContext({
   setPlayer: (_: any) => {},
   trackFeatures: trackFeaturesSample,
   spotifyAnalyser: new SpotifyAnalyser(),
-  play: (_?: SpotifyApi.PlayParameterObject) => {},
+  play: (_?: StartPlaybackOptions) => {},
   pause: () => {},
   next: () => {},
   prev: () => {},
@@ -98,7 +98,8 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const { mutate: mutatePause } = usePausePlayer();
   const { mutate: mutateNext } = useNextTrack();
   const { mutate: mutatePrev } = usePrevTrack();
-  const { data: topTracks } = useGetTopTracks();
+  const { mutate: mutatePlayTopTracks } = usePlayTopTracks();
+  const { mutate: mutateTransferMyPlayback } = useTransferMyPlayback();
 
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
@@ -151,9 +152,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
           return;
         }
 
-        spotifyClient.transferMyPlayback([data.device_id], {
-          play: false,
-        });
+        mutateTransferMyPlayback(data.device_id);
       });
       player.addListener("player_state_changed", async (playerState: any) => {
         // update track position
@@ -162,10 +161,8 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
         const { id, type } = playerState?.track_window.current_track;
 
         if (type !== "track") {
-          toast.open("Podcast cannot be analysed, please queue a track");
-          return;
           // handles case when podcast is played
-          mutatePlay({ uris: topTracks?.items.map(({ uri }) => uri) });
+          mutatePlayTopTracks();
           return;
         }
 
@@ -186,7 +183,8 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     setTrackId,
     trackId,
     mutatePlay,
-    topTracks,
+    mutatePlayTopTracks,
+    mutateTransferMyPlayback,
     toast,
   ]);
 
@@ -195,7 +193,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       player,
       setPlayer,
       trackFeatures: data.features,
-      play: (props?: SpotifyApi.PlayParameterObject) => mutatePlay(props),
+      play: (props?: StartPlaybackOptions) => mutatePlay(props),
       pause: () => mutatePause(),
       next: () => mutateNext(),
       prev: () => mutatePrev(),

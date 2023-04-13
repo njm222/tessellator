@@ -14,8 +14,15 @@ import {
 } from ".";
 
 describe("Icons", () => {
+  it("renders active ShuffleIcon without crashing", () => {
+    const { getByRole } = render(<ShuffleIcon active={true} />);
+
+    expect(
+      getByRole("img").getElementsByTagName("path")[0].getAttribute("fill")
+    ).toEqual("green");
+  });
   it("renders ShuffleIcon without crashing", () => {
-    const { getByRole } = render(<ShuffleIcon />);
+    const { getByRole } = render(<ShuffleIcon active={false} />);
 
     expect(getByRole("img")).toBeTruthy();
   });

@@ -71,7 +71,9 @@ export function Player() {
       </div>
       <div className="playerCenter">
         <PlayerControls
+          isPaused={player?.paused}
           isSaved={isSaved}
+          isShuffle={player?.shuffle}
           onNext={next}
           onPause={pause}
           onPlay={handlePlay}
@@ -81,9 +83,7 @@ export function Player() {
               ? removeSaved(player?.track_window.current_track.id)
               : save(player?.track_window.current_track.id)
           }
-          isShuffle={player?.shuffle}
           onShuffle={() => shuffle(!player?.shuffle)}
-          isPaused={player?.paused}
         />
         <ProgressBar ref={progressBarRef} />
       </div>

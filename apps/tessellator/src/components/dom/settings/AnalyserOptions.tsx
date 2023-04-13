@@ -57,7 +57,7 @@ export function AnalyserOptions() {
             minDecibels: defaultAnalyserOptions.minDecibels,
             maxDecibels: defaultAnalyserOptions.maxDecibels,
           });
-          toast.open("Reset analyser options to default");
+          toast.open("Reset analyser options to default", { variant: "" });
         }),
       }),
     }),

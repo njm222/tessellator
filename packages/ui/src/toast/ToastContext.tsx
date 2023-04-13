@@ -1,10 +1,10 @@
 import { createContext } from "react";
 
 export type ToastOptions = {
-  persistent: boolean;
-  autoHideDuration: number;
-  resumeHideDuration: number;
-  variant: string;
+  persistent?: boolean;
+  autoHideDuration?: number;
+  resumeHideDuration?: number;
+  variant?: string;
 };
 
 export const ToastContext = createContext({

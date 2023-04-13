@@ -19,7 +19,7 @@ import {
   usePlayPlayer,
   usePlayTopTracks,
   usePrevTrack,
-  useLikeTrack,
+  useSaveTrack,
   useTrackAnalysisAndFeatures,
   useTransferMyPlayback,
 } from "./spotify";
@@ -35,7 +35,7 @@ type PlayerProviderProps = {
   pause?: () => void;
   next?: () => void;
   prev?: () => void;
-  like?: () => void;
+  save?: () => void;
 };
 
 const trackFeaturesSample = {
@@ -66,8 +66,9 @@ const playerSample = {
   track_window: {
     current_track: {
       name: "",
-      artists: [{ name: "" }],
+      artists: [{ name: "", uri: "" }],
       album: { images: [{ url: "" }] },
+      uri: "",
     },
   },
 };
@@ -81,6 +82,7 @@ export const PlayerContext = createContext({
   pause: () => {},
   next: () => {},
   prev: () => {},
+  save: (_: string) => {},
 });
 
 export const usePlayer = () => useContext(PlayerContext);
@@ -102,7 +104,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const { mutate: mutatePrev } = usePrevTrack();
   const { mutate: mutatePlayTopTracks } = usePlayTopTracks();
   const { mutate: mutateTransferMyPlayback } = useTransferMyPlayback();
-  const { mutate: mutateLike } = useLikeTrack();
+  const { mutate: mutateSave } = useSaveTrack();
 
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
@@ -200,7 +202,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       pause: () => mutatePause(),
       next: () => mutateNext(),
       prev: () => mutatePrev(),
-      like: (id: string) => mutateLike(id),
+      save: (id: string) => mutateSave(id),
     }),
     [
       player,
@@ -209,7 +211,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       mutatePause,
       mutateNext,
       mutatePrev,
-      mutateLike,
+      mutateSave,
       setPlayer,
     ]
   );

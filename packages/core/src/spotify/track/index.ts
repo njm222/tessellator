@@ -32,10 +32,11 @@ export async function getTrackAudioFeatures(
   }
 }
 
-export async function likeTrack(accessToken: string, trackId: string) {
+export async function saveTracks(accessToken: string, ids: string[]) {
   try {
-    const { data } = await spotifyClient.get(
-      `/audio-features/${trackId}`,
+    const { data } = await spotifyClient.put(
+      `/me/tracks`,
+      { ids },
       getDefaultOptions(accessToken)
     );
     return data;

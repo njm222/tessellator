@@ -3,9 +3,9 @@ import * as React from "react";
 import { IconButton } from "../../icon-button/IconButton";
 import { HeartIcon } from "../../icons/HeartIcon";
 
-export const LikeButton = ({
+export const SaveButton = ({
   onClick,
-  title = "like-track",
+  title = "save-track",
 }: {
   onClick: () => void;
   title?: string;

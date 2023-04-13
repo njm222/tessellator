@@ -7,6 +7,8 @@ export const NewTabLink = ({
 }: {
   children: React.ReactNode;
   href: string;
+  className?: string;
+  title?: string;
 }) => {
   return (
     <a href={href} rel="noreferrer" target="_blank" {...other}>

@@ -5,12 +5,12 @@ import {
   getTrackAudioFeatures,
   getUserTopItems,
   pausePlayback,
+  saveTracks,
   skipToNext,
   skipToPrevious,
   startPlayback,
   StartPlaybackOptions,
   transferMyPlayback,
-  likeTrack,
 } from "core";
 import { useToast } from "ui";
 
@@ -77,11 +77,11 @@ export function useTrackAnalysisAndFeatures(trackId: string) {
   );
 }
 
-export function useLikeTrack() {
+export function useSaveTrack() {
   const { accessToken } = useAuth();
   const { open } = useToast();
   const { setPlayer } = usePlayer();
-  return useMutation((id: string) => likeTrack(accessToken, id), {
+  return useMutation(async (id: string) => saveTracks(accessToken, [id]), {
     onMutate: () => {
       setPlayer((prev: any) => ({ ...prev, paused: false }));
     },

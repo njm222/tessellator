@@ -1,5 +1,5 @@
 export const PauseIcon = ({
-  height = "32px",
+  height = "100%",
   width = "32px",
 }: {
   height?: string;

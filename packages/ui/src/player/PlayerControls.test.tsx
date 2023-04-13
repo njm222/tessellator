@@ -11,6 +11,7 @@ describe("PlayerControls", () => {
         onPause={mockCallBack}
         onPlay={mockCallBack}
         onPrev={mockCallBack}
+        onSave={mockCallBack}
         paused={true}
       />
     );
@@ -25,6 +26,7 @@ describe("PlayerControls", () => {
         onPause={mockCallBack}
         onPlay={mockCallBack}
         onPrev={mockCallBack}
+        onSave={mockCallBack}
         paused={false}
       />
     );
@@ -39,6 +41,7 @@ describe("PlayerControls", () => {
         onPause={mockCallBack}
         onPlay={mockCallBack}
         onPrev={mockCallBack}
+        onSave={mockCallBack}
         paused={true}
       />
     );

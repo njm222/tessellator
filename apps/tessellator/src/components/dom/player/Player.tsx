@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
+import { convertURItoURL } from "core";
 import Image from "next/image";
-import { PlayerControls, ProgressBar, TrackDetails, PlayerActions } from "ui";
+import { PlayerControls, ProgressBar, TrackDetails } from "ui";
 
 import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";
@@ -9,7 +10,7 @@ import { useMouseActivity } from "../controls/mouseActivityContext";
 
 export function Player() {
   const { audioAnalyser, analyserOptions } = useAnalyser();
-  const { player, play, pause, next, prev, like } = usePlayer();
+  const { player, play, pause, next, prev, save } = usePlayer();
   const { mouseActive } = useMouseActivity();
 
   const initialTime = useRef(0);
@@ -59,25 +60,30 @@ export function Player() {
       <div className="playerLeft">
         <Image
           alt="album art"
-          height="50"
+          height="75"
           src={player?.track_window.current_track.album.images[0].url}
-          width="50"
-        />
-        <TrackDetails
-          trackArtists={player?.track_window.current_track.artists}
-          trackName={player?.track_window.current_track.name}
+          width="75"
         />
       </div>
-      <div className="playerRight">
+      <div className="playerCenter">
         <PlayerControls
           onNext={next}
           onPause={pause}
           onPlay={handlePlay}
           onPrev={prev}
-          onLike={like}
+          onSave={save}
           paused={player?.paused}
         />
         <ProgressBar ref={progressBarRef} />
+      </div>
+      <div className="playerRight">
+        <TrackDetails
+          trackArtists={player?.track_window.current_track.artists.map(
+            ({ name, uri }) => ({ name, link: convertURItoURL(uri) })
+          )}
+          trackLink={convertURItoURL(player?.track_window.current_track.uri)}
+          trackName={player?.track_window.current_track.name}
+        />
       </div>
     </div>
   );

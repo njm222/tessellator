@@ -11,7 +11,8 @@ import { useMouseActivity } from "../controls/mouseActivityContext";
 
 export function Player() {
   const { audioAnalyser, analyserOptions } = useAnalyser();
-  const { player, play, pause, next, prev, save } = usePlayer();
+  const { player, play, pause, next, prev, save, shuffle, removeSaved } =
+    usePlayer();
   const { mouseActive } = useMouseActivity();
   const { data: isSaved } = useCheckSavedTrack(
     player?.track_window.current_track.id
@@ -75,8 +76,14 @@ export function Player() {
           onPause={pause}
           onPlay={handlePlay}
           onPrev={prev}
-          onSave={() => save(player?.track_window.current_track.name)}
-          paused={player?.paused}
+          onSave={() =>
+            isSaved
+              ? removeSaved(player?.track_window.current_track.id)
+              : save(player?.track_window.current_track.id)
+          }
+          isShuffle={player?.shuffle}
+          onShuffle={() => shuffle(!player?.shuffle)}
+          isPaused={player?.paused}
         />
         <ProgressBar ref={progressBarRef} />
       </div>

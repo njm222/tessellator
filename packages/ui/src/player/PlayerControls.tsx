@@ -6,6 +6,7 @@ import {
   PlayButton,
   PrevButton,
   SaveButton,
+  ShuffleButton,
 } from "./buttons";
 
 export function PlayerControls({
@@ -15,8 +16,11 @@ export function PlayerControls({
   onPause,
   onNext,
   onSave,
+  onShuffle,
   isSaved,
+  isShuffle,
 }: {
+  isShuffle: boolean;
   isSaved: boolean;
   isPaused: boolean;
   onPrev: () => void;
@@ -24,9 +28,11 @@ export function PlayerControls({
   onPause: () => void;
   onNext: () => void;
   onSave: () => void;
+  onShuffle: () => void;
 }) {
   return (
     <div className="playerControls">
+      <ShuffleButton isShuffle={isShuffle} onClick={onShuffle} />
       <PrevButton onClick={onPrev} />
       {isPaused ? (
         <PlayButton onClick={onPlay} />

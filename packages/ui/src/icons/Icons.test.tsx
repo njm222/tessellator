@@ -10,9 +10,15 @@ import {
   PlayIcon,
   PrevIcon,
   SettingsIcon,
+  ShuffleIcon,
 } from ".";
 
 describe("Icons", () => {
+  it("renders ShuffleIcon without crashing", () => {
+    const { getByRole } = render(<ShuffleIcon />);
+
+    expect(getByRole("img")).toBeTruthy();
+  });
   it("renders FilledHeartIcon without crashing", () => {
     const { getByRole } = render(<FilledHeartIcon />);
 

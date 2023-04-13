@@ -3,3 +3,4 @@ export { PlayButton } from "./PlayButton";
 export { NextButton } from "./NextButton";
 export { PrevButton } from "./PrevButton";
 export { SaveButton } from "./SaveButton";
+export { ShuffleButton } from "./ShuffleButton";

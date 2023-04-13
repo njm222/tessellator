@@ -8,9 +8,9 @@ export const NextIcon = ({
   return (
     <svg height={height} role="img" viewBox="0 0 24 24" width={width}>
       <path
-        d="M7.96 21.15l-.65-.76 9.555-8.16L7.31 4.07l.65-.76 10.445 8.92"
+        d="M6 4h2v2h2v2h2v2h2v4h-2v2h-2v2H8v2H6V4zm12 0h-2v16h2V4z"
         fill="currentColor"
-      ></path>
+      />
     </svg>
   );
 };

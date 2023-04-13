@@ -32,6 +32,19 @@ export async function getTrackAudioFeatures(
   }
 }
 
+export async function removeSavedTracks(accessToken: string, ids: string[]) {
+  try {
+    const { data } = await spotifyClient.delete(
+      `/me/tracks?ids=${ids.join(",")}`,
+      getDefaultOptions(accessToken)
+    );
+    return data;
+  } catch (err: any) {
+    console.log(err);
+    throw Error(err);
+  }
+}
+
 export async function saveTracks(accessToken: string, ids: string[]) {
   try {
     const { data } = await spotifyClient.put(

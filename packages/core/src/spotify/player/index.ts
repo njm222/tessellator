@@ -62,6 +62,20 @@ export async function skipToNext(accessToken: string) {
   }
 }
 
+export async function shufflePlayback(accessToken: string, shuffle: boolean) {
+  try {
+    const { data } = await spotifyClient.put(
+      `/me/player/shuffle?state=${shuffle}`,
+      null,
+      getDefaultOptions(accessToken)
+    );
+    return data;
+  } catch (err: any) {
+    console.log(err);
+    throw Error(err);
+  }
+}
+
 export async function transferMyPlayback(
   accessToken: string,
   deviceId: string,

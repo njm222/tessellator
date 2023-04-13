@@ -9,11 +9,13 @@ describe("PlayerControls", () => {
       <PlayerControls
         isPaused={true}
         isSaved={true}
+        isShuffle={true}
         onNext={mockCallBack}
         onPause={mockCallBack}
         onPlay={mockCallBack}
         onPrev={mockCallBack}
         onSave={mockCallBack}
+        onShuffle={mockCallBack}
       />
     );
 
@@ -25,11 +27,13 @@ describe("PlayerControls", () => {
       <PlayerControls
         isPaused={false}
         isSaved={true}
+        isShuffle={true}
         onNext={mockCallBack}
         onPause={mockCallBack}
         onPlay={mockCallBack}
         onPrev={mockCallBack}
         onSave={mockCallBack}
+        onShuffle={mockCallBack}
       />
     );
 
@@ -41,11 +45,13 @@ describe("PlayerControls", () => {
       <PlayerControls
         isPaused={true}
         isSaved={true}
+        isShuffle={true}
         onNext={mockCallBack}
         onPause={mockCallBack}
         onPlay={mockCallBack}
         onPrev={mockCallBack}
         onSave={mockCallBack}
+        onShuffle={mockCallBack}
       />
     );
 

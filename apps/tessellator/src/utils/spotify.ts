@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   checkSavedTracks,
   getCurrentUserProfile,
@@ -6,7 +6,9 @@ import {
   getTrackAudioFeatures,
   getUserTopItems,
   pausePlayback,
+  removeSavedTracks,
   saveTracks,
+  shufflePlayback,
   skipToNext,
   skipToPrevious,
   startPlayback,
@@ -78,13 +80,38 @@ export function useTrackAnalysisAndFeatures(trackId: string) {
   );
 }
 
+export function useRemoveSavedTrack() {
+  const queryClient = useQueryClient();
+  const { accessToken } = useAuth();
+  const { open } = useToast();
+  return useMutation(
+    async (id: string) => removeSavedTracks(accessToken, [id]),
+    {
+      onError: ({ message }: Error) => {
+        open(message);
+      },
+      onMutate: (id: string) => {
+        queryClient.setQueryData(["me", "tracks", id, "contains"], false);
+      },
+      onSettled: ({ id }) =>
+        queryClient.cancelQueries(["me", "tracks", id, "contains"]),
+    }
+  );
+}
+
 export function useSaveTrack() {
+  const queryClient = useQueryClient();
   const { accessToken } = useAuth();
   const { open } = useToast();
   return useMutation(async (id: string) => saveTracks(accessToken, [id]), {
     onError: ({ message }: Error) => {
       open(message);
     },
+    onMutate: (id: string) => {
+      queryClient.setQueryData(["me", "tracks", id, "contains"], true);
+    },
+    onSettled: ({ id }) =>
+      queryClient.cancelQueries(["me", "tracks", id, "contains"]),
   });
 }
 
@@ -198,4 +225,21 @@ export function usePrevTrack() {
       open(message);
     },
   });
+}
+
+export function useShufflePlayer() {
+  const { accessToken } = useAuth();
+  const { open } = useToast();
+  const { setPlayer } = usePlayer();
+  return useMutation(
+    async (shuffle: boolean) => shufflePlayback(accessToken, shuffle),
+    {
+      onMutate: (shuffle) => {
+        setPlayer((prev: any) => ({ ...prev, shuffle }));
+      },
+      onError: ({ message }: Error) => {
+        open(message);
+      },
+    }
+  );
 }

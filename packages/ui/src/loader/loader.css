@@ -12,12 +12,11 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  font-size: 32px;
   z-index: 100;
 }
 
 .dots {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
 }
 
 /* source: https://css-tricks.com/single-element-loaders-the-dots */

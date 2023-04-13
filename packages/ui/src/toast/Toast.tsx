@@ -11,8 +11,15 @@ export type ToastProps = {
   variant?: string;
 };
 
-export const Toast = (props: ToastProps) => {
-  const [duration, setDuration] = useState(props.autoHideDuration);
+export const Toast = ({
+  autoHideDuration = 5000,
+  resumeHideDuration = 3000,
+  variant = "",
+  close,
+  persistent = false,
+  children,
+}: ToastProps) => {
+  const [duration, setDuration] = useState(autoHideDuration);
   const [mouseOver, setMouseOver] = useState(false);
 
   const handleMouseEnter = () => {
@@ -21,22 +28,22 @@ export const Toast = (props: ToastProps) => {
   };
   const handleMouseLeave = () => {
     setMouseOver(false);
-    setDuration(props.resumeHideDuration);
+    setDuration(resumeHideDuration);
   };
 
   useTimeout(() => {
-    if (!props.persistent && !mouseOver) props.close();
+    if (!persistent && !mouseOver) close();
   }, duration);
 
   return (
     <div
-      className={`toast ${props.variant}`}
+      className={`toast text-sm ${variant}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="toast__text">{props.children}</div>
+      <div className="toast__text">{children}</div>
       <div>
-        <button className="toast__close-btn" onClick={props.close}>
+        <button className="toast__close-btn" onClick={close}>
           x
         </button>
       </div>

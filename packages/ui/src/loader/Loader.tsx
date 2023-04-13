@@ -7,7 +7,7 @@ export const Loader = ({
 }) => {
   return (
     <div className="loader">
-      <div className="loaderText">{message ? message : "Loading"}</div>
+      <h1 className="loaderText">{message ? message : "Loading"}</h1>
       <div
         className={`dots dots-${
           dotVariant > 10 || dotVariant < 0 || !Number.isInteger(dotVariant)

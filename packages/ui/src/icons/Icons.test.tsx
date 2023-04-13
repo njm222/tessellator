@@ -1,16 +1,41 @@
 import { render } from "@testing-library/react";
 
 import {
+  FilledHeartIcon,
   GithubIcon,
+  HeartIcon,
   InstagramIcon,
   NextIcon,
   PauseIcon,
   PlayIcon,
   PrevIcon,
   SettingsIcon,
+  ShuffleIcon,
 } from ".";
 
 describe("Icons", () => {
+  it("renders active ShuffleIcon without crashing", () => {
+    const { getByRole } = render(<ShuffleIcon active={true} />);
+
+    expect(
+      getByRole("img").getElementsByTagName("path")[0].getAttribute("fill")
+    ).toEqual("green");
+  });
+  it("renders ShuffleIcon without crashing", () => {
+    const { getByRole } = render(<ShuffleIcon active={false} />);
+
+    expect(getByRole("img")).toBeTruthy();
+  });
+  it("renders FilledHeartIcon without crashing", () => {
+    const { getByRole } = render(<FilledHeartIcon />);
+
+    expect(getByRole("img")).toBeTruthy();
+  });
+  it("renders HeartIcon without crashing", () => {
+    const { getByRole } = render(<HeartIcon />);
+
+    expect(getByRole("img")).toBeTruthy();
+  });
   it("renders GithubIcon without crashing", () => {
     const { getByRole } = render(<GithubIcon />);
 

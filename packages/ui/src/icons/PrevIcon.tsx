@@ -1,16 +1,16 @@
 export const PrevIcon = ({
-  height = "32px",
+  height = "100%",
   width = "32px",
 }: {
   height?: string;
   width?: string;
 }) => {
   return (
-    <svg role="img" style={{ width, height }} viewBox="0 0 24 24">
+    <svg height={height} role="img" viewBox="0 0 24 24" width={width}>
       <path
-        d="M15.54 21.15L5.095 12.23 15.54 3.31l.65.76-9.555 8.16 9.555 8.16"
+        d="M6 4h2v16H6V4zm12 0h-2v2h-2v3h-2v2h-2v2h2v3h2v2h2v2h2V4z"
         fill="currentColor"
-      ></path>
+      />
     </svg>
   );
 };

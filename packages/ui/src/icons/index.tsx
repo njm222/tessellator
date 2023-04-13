@@ -1,3 +1,6 @@
+export { ShuffleIcon } from "./ShuffleIcon";
+export { FilledHeartIcon } from "./FilledHeartIcon";
+export { HeartIcon } from "./HeartIcon";
 export { SettingsIcon } from "./SettingsIcon";
 export { GithubIcon } from "./GithubIcon";
 export { InstagramIcon } from "./InstagramIcon";

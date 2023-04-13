@@ -11,7 +11,7 @@ export default function WelcomeUser() {
   if (isLoading || isError || !(player as any).context) return null;
 
   return (
-    <div className="welcomeContainer">
+    <div className="text-md welcomeContainer">
       <Typewriter
         onInit={(typewriter) => {
           typewriter

@@ -13,7 +13,14 @@
   flex-direction: column;
   justify-content: center;
   color: #fff;
-  margin-left: 1rem;
+}
+
+.trackName {
+  margin: 0.25rem 0;
+}
+
+.trackArtist:not(:last-child) {
+  margin-right: 0.25rem;
 }
 
 .progress {
@@ -27,4 +34,11 @@
 .progressBar {
   background-color: green;
   height: 4px;
+}
+
+.playerActions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
 }

@@ -76,6 +76,20 @@ export async function shufflePlayback(accessToken: string, shuffle: boolean) {
   }
 }
 
+export async function seekToPosition(accessToken: string, position: number) {
+  try {
+    const { data } = await spotifyClient.put(
+      `/me/player/seek?position_ms=${Math.round(position)}`,
+      null,
+      getDefaultOptions(accessToken)
+    );
+    return data;
+  } catch (err: any) {
+    console.log(err);
+    throw Error(err);
+  }
+}
+
 export async function transferMyPlayback(
   accessToken: string,
   deviceId: string,

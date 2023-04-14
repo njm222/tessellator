@@ -8,6 +8,7 @@ import {
   pausePlayback,
   removeSavedTracks,
   saveTracks,
+  seekToPosition,
   shufflePlayback,
   skipToNext,
   skipToPrevious,
@@ -95,6 +96,9 @@ export function useRemoveSavedTrack() {
       },
       onSettled: ({ id }) =>
         queryClient.cancelQueries(["me", "tracks", id, "contains"]),
+      onSuccess: () => {
+        open("Track removed from Liked Songs", { variant: "" });
+      },
     }
   );
 }
@@ -112,6 +116,9 @@ export function useSaveTrack() {
     },
     onSettled: ({ id }) =>
       queryClient.cancelQueries(["me", "tracks", id, "contains"]),
+    onSuccess: () => {
+      open("Track added to Liked Songs", { variant: "" });
+    },
   });
 }
 
@@ -237,6 +244,19 @@ export function useShufflePlayer() {
       onMutate: (shuffle) => {
         setPlayer((prev: any) => ({ ...prev, shuffle }));
       },
+      onError: ({ message }: Error) => {
+        open(message);
+      },
+    }
+  );
+}
+
+export function useSeekToPosition() {
+  const { accessToken } = useAuth();
+  const { open } = useToast();
+  return useMutation(
+    async (position: number) => seekToPosition(accessToken, position),
+    {
       onError: ({ message }: Error) => {
         open(message);
       },

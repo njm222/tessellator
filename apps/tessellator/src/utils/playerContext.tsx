@@ -21,6 +21,7 @@ import {
   usePrevTrack,
   useRemoveSavedTrack,
   useSaveTrack,
+  useSeekToPosition,
   useShufflePlayer,
   useTrackAnalysisAndFeatures,
   useTransferMyPlayback,
@@ -37,6 +38,7 @@ type PlayerProviderProps = {
   pause?: () => void;
   next?: () => void;
   prev?: () => void;
+  seek?: (_: number) => void;
   save?: (_: string) => void;
   removeSaved?: (_: string) => void;
   shuffle?: (_: boolean) => void;
@@ -88,6 +90,7 @@ export const PlayerContext = createContext({
   pause: () => {},
   next: () => {},
   prev: () => {},
+  seek: (_: number) => {},
   save: (_: string) => {},
   removeSaved: (_: string) => {},
   shuffle: (_: boolean) => {},
@@ -115,6 +118,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const { mutate: mutateSave } = useSaveTrack();
   const { mutate: mutateRemoveSaved } = useRemoveSavedTrack();
   const { mutate: mutateShuffle } = useShufflePlayer();
+  const { mutate: mutateSeek } = useSeekToPosition();
 
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
@@ -212,6 +216,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       pause: () => mutatePause(),
       next: () => mutateNext(),
       prev: () => mutatePrev(),
+      seek: (position: number) => mutateSeek(position),
       save: (id: string) => mutateSave(id),
       removeSaved: (id: string) => mutateRemoveSaved(id),
       shuffle: (shuffle: boolean) => mutateShuffle(shuffle),
@@ -226,6 +231,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       mutateSave,
       mutateRemoveSaved,
       mutateShuffle,
+      mutateSeek,
       setPlayer,
     ]
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { MouseEvent,useEffect, useRef } from "react";
 import { convertURItoURL } from "core";
 import Image from "next/image";
 import { PlayerControls, ProgressBar, TrackDetails } from "ui";
@@ -11,7 +11,7 @@ import { useMouseActivity } from "../controls/mouseActivityContext";
 
 export function Player() {
   const { audioAnalyser, analyserOptions } = useAnalyser();
-  const { player, play, pause, next, prev, save, shuffle, removeSaved } =
+  const { player, play, pause, next, prev, save, shuffle, removeSaved, seek } =
     usePlayer();
   const { mouseActive } = useMouseActivity();
   const { data: isSaved } = useCheckSavedTrack(
@@ -20,6 +20,21 @@ export function Player() {
   const initialTime = useRef(0);
   const timerRef = useRef<NodeJS.Timer>();
   const progressBarRef = useRef<HTMLDivElement>(null);
+
+  function handleSeek({ clientX }: MouseEvent<HTMLElement>) {
+    if (!progressBarRef.current) return;
+    const barProperties = progressBarRef.current?.getBoundingClientRect();
+    const percentageOfBarClicked =
+      (clientX - barProperties.left) / barProperties.width;
+    seek(percentageOfBarClicked * player?.duration);
+    clearInterval(timerRef.current);
+
+    (
+      progressBarRef.current.getElementsByClassName(
+        "progressBar"
+      )[0] as HTMLDivElement
+    ).style.width = (percentageOfBarClicked * 100).toString() + "%";
+  }
 
   useEffect(() => {
     clearInterval(timerRef.current);
@@ -36,8 +51,11 @@ export function Player() {
       mutations.position += delay;
       if (progressBarRef.current) {
         // update progress bar
-        progressBarRef.current.style.width =
-          (mutations.position * 100) / player?.duration + "%";
+        (
+          progressBarRef.current.getElementsByClassName(
+            "progressBar"
+          )[0] as HTMLDivElement
+        ).style.width = (mutations.position * 100) / player?.duration + "%";
       }
     }, 10);
   }, [player]);
@@ -85,7 +103,7 @@ export function Player() {
           }
           onShuffle={() => shuffle(!player?.shuffle)}
         />
-        <ProgressBar ref={progressBarRef} />
+        <ProgressBar onSeek={handleSeek} ref={progressBarRef} />
       </div>
       <div className="playerRight">
         <TrackDetails

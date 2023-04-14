@@ -1,4 +1,4 @@
-import React, { MouseEvent,useEffect, useRef } from "react";
+import React, { MouseEvent, useEffect, useRef } from "react";
 import { convertURItoURL } from "core";
 import Image from "next/image";
 import { PlayerControls, ProgressBar, TrackDetails } from "ui";

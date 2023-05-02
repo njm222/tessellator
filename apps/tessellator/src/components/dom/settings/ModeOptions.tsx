@@ -3,7 +3,14 @@ import { folder, useControls as useLevaControls } from "leva";
 import { modeMap, useControls } from "../controls/controlsContext";
 
 export function ModeOptions() {
-  const { modes, addMode, removeMode, changeMode } = useControls();
+  const {
+    modes,
+    addMode,
+    removeMode,
+    changeMode,
+    randomizeMode,
+    setRandomizeMode,
+  } = useControls();
 
   const options = Object.keys(modeMap).reduce(
     (acc, curr: string) => {
@@ -23,7 +30,15 @@ export function ModeOptions() {
 
   const [modeOptions, setModeOptions] = useLevaControls(
     () => ({
-      Modes: folder(options),
+      Modes: folder({
+        randomizeMode: {
+          value: randomizeMode,
+          onChange: (value: boolean) => {
+            setRandomizeMode(value);
+          },
+        },
+        ...options,
+      }),
     }),
     []
   );

@@ -5,6 +5,7 @@ import { IconButton, SettingsIcon } from "ui";
 import { useMouseActivity } from "../controls/mouseActivityContext";
 
 import { AnalyserOptions } from "./AnalyserOptions";
+import { ModeOptions } from "./ModeOptions";
 
 export function Settings() {
   const { mouseActive } = useMouseActivity();
@@ -26,5 +27,10 @@ export function Settings() {
 function SettingsOptions({ handleClose }: { handleClose: () => void }) {
   useControls({ close: button(handleClose) }, []);
 
-  return <AnalyserOptions />;
+  return (
+    <>
+      <AnalyserOptions />
+      <ModeOptions />
+    </>
+  );
 }

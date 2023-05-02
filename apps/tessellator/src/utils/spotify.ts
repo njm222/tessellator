@@ -33,7 +33,13 @@ export function useGetUserInformation() {
     {
       staleTime: Infinity,
       enabled: !!accessToken,
-      onSuccess: ({ product }: { product: string }) => {
+      onSuccess: ({
+        product,
+        display_name,
+      }: {
+        product: string;
+        display_name: string;
+      }) => {
         if (product === "premium") {
           return;
         }

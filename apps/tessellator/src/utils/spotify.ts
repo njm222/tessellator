@@ -16,6 +16,7 @@ import {
   StartPlaybackOptions,
   transferMyPlayback,
 } from "core";
+import { useRouter } from "next/router";
 import { useToast } from "ui";
 
 import { useAuth } from "./authContext";
@@ -24,6 +25,7 @@ import { usePlayer } from "./playerContext";
 export function useGetUserInformation() {
   const { accessToken } = useAuth();
   const { open } = useToast();
+  const router = useRouter();
 
   return useQuery(
     [accessToken, "me"],
@@ -31,6 +33,13 @@ export function useGetUserInformation() {
     {
       staleTime: Infinity,
       enabled: !!accessToken,
+      onSuccess: ({ product }: { product: string }) => {
+        if (product === "premium") {
+          return;
+        }
+        router.push("/"); // TODO: redirect to "live" visualizer
+        open("Visualizer requires a valid Spotify Premium subscription");
+      },
       onError: ({ message }: Error) => {
         open(message);
       },

@@ -9,10 +9,12 @@ export function ModeOptions() {
     removeMode,
     changeMode,
     randomizeMode,
+    randomizeColourMode,
     setRandomizeMode,
+    setRandomizeColourMode,
   } = useControls();
 
-  const options = Object.keys(modeMap).reduce(
+  const modeOptions = Object.keys(modeMap).reduce(
     (acc, curr: string) => {
       acc[`mode${curr}`] = {
         value: modes.includes(parseInt(curr)),
@@ -28,17 +30,25 @@ export function ModeOptions() {
     }
   );
 
-  const [modeOptions, setModeOptions] = useLevaControls(
+  const visualizerOptions = {
+    randomizeMode: {
+      value: randomizeMode,
+      onChange: (value: boolean) => {
+        setRandomizeMode(value);
+      },
+    },
+    randomizeColourMode: {
+      value: randomizeColourMode,
+      onChange: (value: boolean) => {
+        setRandomizeColourMode(value);
+      },
+    },
+  };
+
+  useLevaControls(
     () => ({
-      Modes: folder({
-        randomizeMode: {
-          value: randomizeMode,
-          onChange: (value: boolean) => {
-            setRandomizeMode(value);
-          },
-        },
-        ...options,
-      }),
+      Visualizer: folder(visualizerOptions, { collapsed: true }),
+      Modes: folder(modeOptions, { collapsed: true }),
     }),
     []
   );

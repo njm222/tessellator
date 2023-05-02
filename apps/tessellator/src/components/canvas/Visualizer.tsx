@@ -13,7 +13,13 @@ import Mode2 from "./modes/mode-2/Mode2";
 const Visualizer = () => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser } = usePlayer();
-  const { randomizeMode, changeColourMode, changeMode } = useControls();
+  const {
+    modeKey,
+    randomizeMode,
+    randomizeColourMode,
+    changeColourMode,
+    changeMode,
+  } = useControls();
   const sectionChangeRef = useRef(spotifyAnalyser?.sections?.current?.start);
 
   useFrame(() => {
@@ -24,10 +30,14 @@ const Visualizer = () => {
 
     // change mode on section change
     const sectionStart = spotifyAnalyser.sections?.current?.start;
-    if (randomizeMode && sectionChangeRef.current !== sectionStart) {
+    if (sectionChangeRef.current !== sectionStart) {
       sectionChangeRef.current = sectionStart;
-      changeMode();
-      changeColourMode();
+      if (randomizeMode) {
+        changeMode();
+      }
+      if (randomizeColourMode) {
+        changeColourMode();
+      }
     }
   });
 

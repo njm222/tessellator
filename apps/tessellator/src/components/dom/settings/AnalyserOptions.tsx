@@ -20,46 +20,50 @@ export function AnalyserOptions() {
 
   const [analyzerValues, setAnalyzerValues] = useControls(
     () => ({
-      "Analyzer Options": folder({
-        fftSize: {
-          value: fftSize,
-          options: [512, 1024, 2048],
-          hint: "size of the FFT (Fast Fourier Transform) to be used to determine the frequency domain.",
+      "Analyzer Options": folder(
+        {
+          fftSize: {
+            value: fftSize,
+            options: [512, 1024, 2048],
+            hint: "size of the FFT (Fast Fourier Transform) to be used to determine the frequency domain.",
+          },
+          smoothingTimeConstant: {
+            value: smoothingTimeConstant,
+            min: 0.1,
+            max: 1,
+            step: 0.01,
+            hint: "Averaging constant with the last analysis frame",
+            type: LevaInputs.NUMBER,
+          },
+          minDecibels: {
+            value: minDecibels,
+            min: -200,
+            max: maxDecibels - 1,
+            step: 1,
+            hint: "Minimum power value in the scaling range for the FFT analysis data",
+            type: LevaInputs.NUMBER,
+          },
+          maxDecibels: {
+            value: maxDecibels,
+            min: Math.max(minDecibels + 1, -80),
+            max: 0,
+            step: 1,
+            hint: "Maximum power value in the scaling range for the FFT analysis data",
+            type: LevaInputs.NUMBER,
+          },
+          reset: button(() => {
+            setAnalyzerValues({
+              fftSize: defaultAnalyserOptions.fftSize,
+              smoothingTimeConstant:
+                defaultAnalyserOptions.smoothingTimeConstant,
+              minDecibels: defaultAnalyserOptions.minDecibels,
+              maxDecibels: defaultAnalyserOptions.maxDecibels,
+            });
+            toast.open("Reset analyser options to default", { variant: "" });
+          }),
         },
-        smoothingTimeConstant: {
-          value: smoothingTimeConstant,
-          min: 0.1,
-          max: 1,
-          step: 0.01,
-          hint: "Averaging constant with the last analysis frame",
-          type: LevaInputs.NUMBER,
-        },
-        minDecibels: {
-          value: minDecibels,
-          min: -200,
-          max: maxDecibels - 1,
-          step: 1,
-          hint: "Minimum power value in the scaling range for the FFT analysis data",
-          type: LevaInputs.NUMBER,
-        },
-        maxDecibels: {
-          value: maxDecibels,
-          min: Math.max(minDecibels + 1, -80),
-          max: 0,
-          step: 1,
-          hint: "Maximum power value in the scaling range for the FFT analysis data",
-          type: LevaInputs.NUMBER,
-        },
-        reset: button(() => {
-          setAnalyzerValues({
-            fftSize: defaultAnalyserOptions.fftSize,
-            smoothingTimeConstant: defaultAnalyserOptions.smoothingTimeConstant,
-            minDecibels: defaultAnalyserOptions.minDecibels,
-            maxDecibels: defaultAnalyserOptions.maxDecibels,
-          });
-          toast.open("Reset analyser options to default", { variant: "" });
-        }),
-      }),
+        { collapsed: true }
+      ),
     }),
     [minDecibels, maxDecibels]
   );

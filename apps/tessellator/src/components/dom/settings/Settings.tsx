@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { button, useControls } from "leva";
+import { button, Leva, useControls } from "leva";
 import { IconButton, SettingsIcon } from "ui";
 
 import { useMouseActivity } from "../controls/mouseActivityContext";
@@ -29,6 +29,11 @@ function SettingsOptions({ handleClose }: { handleClose: () => void }) {
 
   return (
     <>
+      <Leva
+        oneLineLabels
+        hideCopyButton
+        titleBar={{ title: "Settings", drag: false, filter: false }}
+      />
       <AnalyserOptions />
       <ModeOptions />
     </>

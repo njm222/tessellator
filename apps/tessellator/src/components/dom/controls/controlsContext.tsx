@@ -32,6 +32,7 @@ const ControlsContext = createContext({
   modeKey: 0,
   colourKey: 0,
   randomizeMode: true,
+  randomizeColourMode: true,
   addMode: (value: number) => {
     return;
   },
@@ -45,6 +46,9 @@ const ControlsContext = createContext({
     return;
   },
   setRandomizeMode: (value: boolean) => {
+    return;
+  },
+  setRandomizeColourMode: (value: boolean) => {
     return;
   },
 });
@@ -62,6 +66,7 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
   const [modeKey, setModeKey] = useState(0);
   const [randomizeMode, setRandomizeMode] = useState(true);
   const [colourKey, setColourKey] = useState(0);
+  const [randomizeColourMode, setRandomizeColourMode] = useState(true);
 
   useKeys([
     ...modeMap.map(({ key, value }) => ({
@@ -103,9 +108,20 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
         setColourKey(generateRandomInteger(0, colourMap.length - 1));
       },
       randomizeMode,
+      randomizeColourMode,
       setRandomizeMode: (value: boolean) => setRandomizeMode(value),
+      setRandomizeColourMode: (value: boolean) => setRandomizeColourMode(value),
     }),
-    [modes, colourKey, modeKey, setModes, randomizeMode, setRandomizeMode]
+    [
+      modes,
+      colourKey,
+      modeKey,
+      setModes,
+      randomizeMode,
+      setRandomizeMode,
+      randomizeColourMode,
+      setRandomizeColourMode,
+    ]
   );
 
   return (

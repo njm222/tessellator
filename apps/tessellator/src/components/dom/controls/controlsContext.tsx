@@ -1,21 +1,13 @@
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { generateRandomInteger } from "core";
 
 import { useKeys } from "./useKeys";
 
-const modeMap = [
+export const modeMap = [
   { key: "0", value: 0 },
   { key: "1", value: 1 },
   { key: "2", value: 2 },
 ];
-
-export const numModes = modeMap.length;
 
 const colourMap = [
   { key: "q", value: 0 },
@@ -24,36 +16,57 @@ const colourMap = [
   { key: "w", value: 3 },
 ];
 
-export const numColourModes = colourMap.length;
-
 type ControlsProviderProps = {
+  children: ReactNode;
+  modes?: number[];
   modeKey?: number;
   colourKey?: number;
-  setColourKey?: (key: number) => void;
-  setModeKey?: (key: number) => void;
-  children: ReactNode;
+  addMode?: (mode: number) => void;
+  removeMode?: (mode: number) => void;
+  changeColourMode: () => void;
+  changeMode: () => void;
 };
 
 const ControlsContext = createContext({
+  modes: [0],
   modeKey: 0,
   colourKey: 0,
-  setColourKey: (key: number) => {
+  randomizeMode: true,
+  randomizeColourMode: true,
+  addMode: (value: number) => {
     return;
   },
-  setModeKey: (key: number) => {
+  removeMode: (value: number) => {
+    return;
+  },
+  changeColourMode: () => {
+    return;
+  },
+  changeMode: () => {
+    return;
+  },
+  setRandomizeMode: (value: boolean) => {
+    return;
+  },
+  setRandomizeColourMode: (value: boolean) => {
     return;
   },
 });
 
 export const useControls = () => useContext(ControlsContext);
 
-export const ControlsProvider: FC<ControlsProviderProps> = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const ControlsProvider = ({ children }: { children: ReactNode }) => {
+  const [modes, setModes] = useState(
+    modeMap.reduce((acc, curr) => {
+      acc.push(curr.value);
+      return acc;
+    }, [] as number[])
+  );
+
   const [modeKey, setModeKey] = useState(0);
+  const [randomizeMode, setRandomizeMode] = useState(true);
   const [colourKey, setColourKey] = useState(0);
+  const [randomizeColourMode, setRandomizeColourMode] = useState(true);
 
   useKeys([
     ...modeMap.map(({ key, value }) => ({
@@ -68,12 +81,47 @@ export const ControlsProvider: FC<ControlsProviderProps> = ({
 
   const value = useMemo(
     () => ({
+      modes,
       modeKey,
       colourKey,
-      setModeKey: (key: number) => setModeKey(key),
-      setColourKey: (key: number) => setColourKey(key),
+      addMode: (mode: number) => {
+        if (modes.includes(mode)) {
+          return;
+        }
+        setModes((prevState) => [...prevState, mode]);
+      },
+      removeMode: (mode: number) => {
+        setModes((prevState) => {
+          const index = prevState.findIndex((val) => val === mode);
+          if (index >= 0) {
+            prevState.splice(index, 1);
+            return prevState;
+          }
+          return prevState;
+        });
+      },
+      changeMode: () => {
+        const index = generateRandomInteger(0, modes.length - 1);
+        setModeKey(modes[index]);
+      },
+      changeColourMode: () => {
+        setColourKey(generateRandomInteger(0, colourMap.length - 1));
+      },
+      randomizeMode,
+      randomizeColourMode,
+      setRandomizeMode: (value: boolean) => setRandomizeMode(value),
+      setRandomizeColourMode: (value: boolean) => setRandomizeColourMode(value),
     }),
-    [colourKey, modeKey]
+    [
+      modes,
+      colourKey,
+      modeKey,
+      setModes,
+      randomizeMode,
+      setRandomizeMode,
+      randomizeColourMode,
+      setRandomizeColourMode,
+    ]
   );
 
   return (

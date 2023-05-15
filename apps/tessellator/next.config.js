@@ -14,7 +14,7 @@ const nextConfig = {
   // },
   experimental: {},
   images: {},
-  transpilePackages: ['core'],
+  transpilePackages: ['core', '@react-three/postprocessing'],
   reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
   webpack(config, { isServer }) {
     // audio support

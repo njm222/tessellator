@@ -121,6 +121,7 @@ const PortalScene = ({
             eventPriority={1}
             height={size.height / 3}
             renderPriority={1}
+            sourceFile={null}
             width={size.width / 3}
           >
             <PerspectiveCamera

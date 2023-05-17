@@ -64,7 +64,10 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
 
     if (
       spotifyAnalyser.beats.current.confidence >
-      1 - trackFeatures.danceability
+      trackFeatures.danceability >
+      0.5
+        ? 0.85
+        : 0.65
     ) {
       realBeatCounter.current++;
       if (spotifyAnalyser.beats.counter === 0) {

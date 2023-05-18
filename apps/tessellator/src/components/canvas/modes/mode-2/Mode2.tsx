@@ -9,8 +9,6 @@ import {
   Vector3,
 } from "three";
 
-import "../../shaders/ParticleMaterial";
-
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import { useGetColour } from "../useGetColour";

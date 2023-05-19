@@ -11,16 +11,19 @@ export function Settings() {
   const { mouseActive } = useMouseActivity();
 
   const [open, setOpen] = useState(false);
-  return open ? (
-    <SettingsOptions handleClose={() => setOpen(false)} />
-  ) : (
-    <div className={`settings ${!mouseActive && "hidden"}`}>
-      <IconButton
-        icon={<SettingsIcon />}
-        onClick={() => setOpen(true)}
-        title="settings"
-      />
-    </div>
+  return (
+    <>
+      <div className={`settings ${!mouseActive || open ? "hidden" : ""}`}>
+        <IconButton
+          icon={<SettingsIcon />}
+          onClick={() => setOpen(true)}
+          title="settings"
+        />
+      </div>
+      <div className={`${!open ? "hidden" : ""}`}>
+        <SettingsOptions handleClose={() => setOpen(false)} />
+      </div>
+    </>
   );
 }
 
@@ -30,8 +33,8 @@ function SettingsOptions({ handleClose }: { handleClose: () => void }) {
   return (
     <>
       <Leva
-        hideCopyButton
         oneLineLabels
+        hideCopyButton
         titleBar={{ title: "Settings", drag: false, filter: false }}
       />
       <AnalyserOptions />

@@ -1,6 +1,14 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Float32BufferAttribute, Points, ShaderMaterial, Vector3 } from "three";
+import { getIndexOfMax, getIndexOfMin } from "core";
+import {
+  AdditiveBlending,
+  Float32BufferAttribute,
+  MathUtils,
+  Points,
+  ShaderMaterial,
+  Vector3,
+} from "three";
 
 import "../../shaders/ParticleMaterial";
 
@@ -15,6 +23,13 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
   const { getColour } = useGetColour({ minSaturation: 75, minLightness: 150 });
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
+  const radius = useRef(10);
+  const tube = useRef(5);
+  const tubularSegments = useRef(5);
+  const radialSegments = useRef(5);
+  const p = useRef(2);
+  const q = useRef(3);
+
   const vertex = new Vector3();
   const normal = new Vector3();
 
@@ -25,12 +40,7 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
   const T = new Vector3();
   const N = new Vector3();
 
-  const getIndexOfChord = (max: boolean) => {
-    const chords = spotifyAnalyser.getCurrentSegment()?.pitches;
-    if (!chords) return 0;
-    return chords.indexOf(max ? Math.max(...chords) : Math.min(...chords));
-  };
-
+  // TODO: move to utils / helpers
   const calculatePositionOnCurve = (
     u: number,
     p: number,
@@ -48,25 +58,6 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
     position.z = radius * Math.sin(quOverP) * 0.5;
   };
 
-  const updateTorusAttributes = () => {
-    const radius =
-      Math.abs(
-        audioAnalyser.kickSection.average - audioAnalyser.snareSection.average
-      ) / 5;
-    const tube =
-      (audioAnalyser.bassSection.average - audioAnalyser.snareSection.average) /
-      5;
-    const tubularSegments = Math.ceil(audioAnalyser.midSection.average);
-    const radialSegments = Math.ceil(audioAnalyser.midSection.average);
-    const p = getIndexOfChord(trackFeatures.valence < 0.5);
-    const q = getIndexOfChord(
-      (spotifyAnalyser.getCurrentSection()?.key ?? 0) % 2 === 0
-    );
-
-    return [radius, tube, tubularSegments, radialSegments, p + 1, q + 1];
-  };
-
-  // TODO: move to utils / helpers
   const getTorusBufferAttributes = (
     radius: number,
     tube: number,
@@ -167,40 +158,87 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
     return [indices, vertices, normals, uvs];
   };
 
-  useFrame(() => {
-    if (!visible) return;
-    if (!mesh.current) return;
-    // update torus attributes
-    const [
-      radius = 10,
-      tube = 5,
-      tubularSegments = 5,
-      radialSegments = 5,
-      p = 2,
-      q = 3,
-    ] = updateTorusAttributes();
-
-    const [indices, vertices, normals, uvs] = getTorusBufferAttributes(
-      radius,
-      tube,
-      tubularSegments,
-      radialSegments,
-      p,
-      q
+  const updateTorusProperties = (delta: number) => {
+    radius.current = MathUtils.lerp(
+      radius.current,
+      Math.abs(
+        audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
+      ) / 5,
+      delta
     );
 
-    spotifyAnalyser.bars.counter % 2 === 0
-      ? (mesh.current.rotation.z -= audioAnalyser.snareSection.energy / 2000)
-      : (mesh.current.rotation.z += audioAnalyser.snareSection.energy / 2000);
+    tube.current = MathUtils.lerp(
+      tube.current,
+      Math.abs(
+        audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
+      ) / 2,
+      delta
+    );
 
-    (mesh.current.material as ShaderMaterial).uniforms.uColour.value =
-      hexToVector3(getColour());
-    (mesh.current.material as ShaderMaterial).uniforms.uSize.value = Math.max(
-      Math.min(
-        audioAnalyser.analyserData.averageFrequency * trackFeatures.energy,
-        4.0
-      ),
-      0.75
+    tubularSegments.current = Math.ceil(
+      MathUtils.lerp(
+        tubularSegments.current,
+        audioAnalyser.midSection.average,
+        delta
+      )
+    );
+
+    radialSegments.current = Math.ceil(
+      MathUtils.lerp(
+        radialSegments.current,
+        audioAnalyser.analyserData.averageFrequency,
+        delta
+      )
+    );
+
+    p.current = MathUtils.lerp(
+      p.current,
+      getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
+      delta
+    );
+
+    q.current = MathUtils.lerp(
+      q.current,
+      getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
+      delta
+    );
+  };
+
+  useFrame((state, delta) => {
+    if (!visible) return;
+    if (!mesh.current) return;
+
+    const dynamicDelta =
+      delta *
+      (trackFeatures.tempo / 100) *
+      trackFeatures.energy *
+      trackFeatures.danceability *
+      (1 - trackFeatures.valence);
+
+    updateTorusProperties(dynamicDelta);
+
+    const [indices, vertices, normals, uvs] = getTorusBufferAttributes(
+      radius.current,
+      tube.current,
+      tubularSegments.current,
+      radialSegments.current,
+      p.current,
+      q.current
+    );
+
+    const { uColour, uSize, uRadius } = (
+      mesh.current.material as ShaderMaterial
+    ).uniforms;
+
+    const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
+
+    uColour.value = hexToVector3(getColour());
+    uRadius.value = radius.current;
+
+    uSize.value = MathUtils.lerp(
+      uSize.value,
+      Math.abs(timbre?.length ? timbre[11] : 1),
+      dynamicDelta
     );
 
     mesh.current.geometry.setIndex(indices);
@@ -221,7 +259,12 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
   return (
     <points ref={mesh} visible={visible}>
       <bufferGeometry attach="geometry" />
-      <particleMaterial attach="material" depthWrite={false} transparent />
+      <particleMaterial
+        attach="material"
+        blending={AdditiveBlending}
+        depthWrite={false}
+        transparent
+      />
     </points>
   );
 };

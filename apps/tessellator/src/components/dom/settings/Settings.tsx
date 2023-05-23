@@ -33,8 +33,8 @@ function SettingsOptions({ handleClose }: { handleClose: () => void }) {
   return (
     <>
       <Leva
-        oneLineLabels
         hideCopyButton
+        oneLineLabels
         titleBar={{ title: "Settings", drag: false, filter: false }}
       />
       <AnalyserOptions />

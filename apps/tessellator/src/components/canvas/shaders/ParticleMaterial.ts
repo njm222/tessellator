@@ -20,8 +20,8 @@ export default class ParticleMaterial extends ShaderMaterial {
       void main() {
         vUv = position; 
 
-        gl_PointSize = uSize;
-        vDistance = uRadius - distance(position, vec3(0.0));
+        gl_PointSize = clamp(uSize, 0.75, 20.0);
+        vDistance = uRadius - distance(position.xy, vec2(0.0));
         vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.5);
         gl_Position = projectionMatrix * modelViewPosition; 
       }
@@ -34,7 +34,7 @@ export default class ParticleMaterial extends ShaderMaterial {
         float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
         float strength = pow(1.0 - distanceToCenter, 3.0);
 
-        vec3 color = mix(uColour, vec3(0.97, 0.70, 0.45), vDistance);
+        vec3 color = mix(uColour, vec3(0.98, 0.78, 0.39), vDistance * 0.5);
         color = mix(vec3(0.0), color, strength);
         
         gl_FragColor = vec4(color, strength);

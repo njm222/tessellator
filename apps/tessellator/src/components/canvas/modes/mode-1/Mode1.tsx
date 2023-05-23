@@ -1,12 +1,13 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
+import { getIndexOfMax, getIndexOfMin } from "core";
 import {
+  AdditiveBlending,
   Float32BufferAttribute,
   MathUtils,
   Points,
   ShaderMaterial,
   Vector3,
-  AdditiveBlending,
 } from "three";
 
 import "../../shaders/ParticleMaterial";
@@ -38,12 +39,6 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
   const B = new Vector3();
   const T = new Vector3();
   const N = new Vector3();
-
-  const getIndexOfChord = (max: boolean) => {
-    const chords = spotifyAnalyser.getCurrentSegment()?.pitches;
-    if (!chords) return 0;
-    return chords.indexOf(max ? Math.max(...chords) : Math.min(...chords));
-  };
 
   // TODO: move to utils / helpers
   const calculatePositionOnCurve = (
@@ -176,7 +171,7 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       tube.current,
       Math.abs(
         audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
-      ) / 5,
+      ) / 2,
       delta
     );
 
@@ -196,9 +191,17 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       )
     );
 
-    p.current = MathUtils.lerp(p.current, getIndexOfChord(true) + 1, delta);
+    p.current = MathUtils.lerp(
+      p.current,
+      getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
+      delta
+    );
 
-    q.current = MathUtils.lerp(q.current, getIndexOfChord(false) + 1, delta);
+    q.current = MathUtils.lerp(
+      q.current,
+      getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
+      delta
+    );
   };
 
   useFrame((state, delta) => {
@@ -227,14 +230,14 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       mesh.current.material as ShaderMaterial
     ).uniforms;
 
+    const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
+
     uColour.value = hexToVector3(getColour());
     uRadius.value = radius.current;
+
     uSize.value = MathUtils.lerp(
       uSize.value,
-      Math.max(
-        Math.min(Math.abs(spotifyAnalyser.getCurrentSegment().timbre[11])),
-        0.75
-      ),
+      Math.abs(timbre?.length ? timbre[11] : 1),
       dynamicDelta
     );
 
@@ -258,9 +261,9 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       <bufferGeometry attach="geometry" />
       <particleMaterial
         attach="material"
+        blending={AdditiveBlending}
         depthWrite={false}
         transparent
-        blending={AdditiveBlending}
       />
     </points>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
+import { getIndexOfMax, getIndexOfMin } from "core";
 import { Color, MathUtils, ShaderMaterial } from "three";
 
 import "../../shaders/wave/WaveMaterial";
@@ -17,12 +18,6 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
   const realBeatCounter = useRef(0);
   const currentBeatStart = useRef(0);
   const [beatThreshold, setBeatThreshold] = useState(0.5);
-
-  const getIndexOfChord = (max: boolean) => {
-    const chords = spotifyAnalyser.getCurrentSegment()?.pitches;
-    if (!chords) return 0;
-    return chords.indexOf(max ? Math.max(...chords) : Math.min(...chords));
-  };
 
   useEffect(() => {
     if (!materialRef.current) return;
@@ -51,7 +46,10 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
 
     uStrengthFactor.value = MathUtils.lerp(
       uStrengthFactor.value,
-      (getIndexOfChord(spotifyAnalyser.sections.counter % 2 === 0) + 1) *
+      ((spotifyAnalyser.sections.counter % 2 === 0
+        ? getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches)
+        : getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches)) +
+        1) *
         (1 - trackFeatures.danceability) *
         trackFeatures.valence,
       delta * trackFeatures.energy * 10

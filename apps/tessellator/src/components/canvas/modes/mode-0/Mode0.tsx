@@ -3,12 +3,14 @@ import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { createNoise3D } from "simplex-noise";
 import {
+  AdditiveBlending,
   BufferAttribute,
   Color,
-  ColorRepresentation,
-  MeshPhongMaterial,
   PlaneGeometry,
+  ShaderMaterial,
 } from "three";
+
+import "../../shaders/terrain/TerrainMaterial";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
@@ -23,8 +25,7 @@ function Terrain({ visible }: { visible: boolean }) {
 
   // Get reference of the terrain
   const terrainGeometryRef = useRef(new PlaneGeometry());
-  const terrainMaterialRef = useRef(new MeshPhongMaterial());
-  const terrainColour = new Color(0, 0, 0);
+  const terrainMaterialRef = useRef(new ShaderMaterial());
   const time = useRef(0);
   const { viewport } = useThree();
   const [vpWidth, vpHeight] = useAspect(viewport.width, viewport.height, 2);
@@ -67,15 +68,13 @@ function Terrain({ visible }: { visible: boolean }) {
     time.current += segment?.timbre?.length ? segment?.timbre[11] / 500 : 1;
 
     // Get the references of the terrain
-    const terrainGeometry: PlaneGeometry = terrainGeometryRef.current;
+    const terrainGeometry = terrainGeometryRef.current;
     const terrainMaterial = terrainMaterialRef.current;
 
     // Wait for terrain to load
     if (!terrainGeometry || !terrainMaterial) {
       return;
     }
-
-    terrainMaterial.wireframe = true;
 
     // Get the terrain vertices
     const { position } = terrainGeometry.attributes;
@@ -94,15 +93,11 @@ function Terrain({ visible }: { visible: boolean }) {
     }
 
     // Update the material colour
-    terrainMaterialRef.current.color.lerp(
-      terrainColour.set(getColour() as ColorRepresentation),
-      delta * 2
-    );
+    terrainMaterial.uniforms.uColour.value = new Color(getColour());
 
     // Update the vertices
     position.needsUpdate = true;
     terrainGeometry.computeVertexNormals();
-    // terrainGeometry.normalsNeedUpdate = true;
   });
 
   return (
@@ -111,7 +106,12 @@ function Terrain({ visible }: { visible: boolean }) {
         args={[vpWidth, vpHeight, 128, 128]}
         ref={terrainGeometryRef}
       />
-      <meshPhongMaterial ref={terrainMaterialRef} />
+      <terrainMaterial
+        attach="material"
+        ref={terrainMaterialRef}
+        wireframe={true}
+        blending={AdditiveBlending}
+      />
     </mesh>
   );
 }

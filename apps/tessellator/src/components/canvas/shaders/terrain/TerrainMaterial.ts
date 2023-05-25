@@ -6,15 +6,11 @@ import fragment from "./glsl/shader.frag";
 // @ts-ignore
 import vertex from "./glsl/shader.vert";
 
-export default class WaveMaterial extends ShaderMaterial {
+export default class TerrainMaterial extends ShaderMaterial {
   constructor() {
     super({
       uniforms: {
-        uTime: { value: 0 },
-        uResolution: { value: 5.0 },
-        uStrengthFactor: { value: 5.0 },
-        uColorStart: { value: new Color("#fff") },
-        uColorEnd: { value: new Color("#000") },
+        uColour: { value: new Color("#fff") },
       },
       vertexShader: vertex,
       fragmentShader: fragment,
@@ -22,16 +18,16 @@ export default class WaveMaterial extends ShaderMaterial {
   }
 }
 
-extend({ WaveMaterial });
+extend({ TerrainMaterial });
 
 declare global {
   // eslint-disable-next-line no-unused-vars
   namespace JSX {
     // eslint-disable-next-line no-unused-vars
     interface IntrinsicElements {
-      waveMaterial: ReactThreeFiber.Object3DNode<
-        WaveMaterial,
-        typeof WaveMaterial
+      terrainMaterial: ReactThreeFiber.Object3DNode<
+        TerrainMaterial,
+        typeof TerrainMaterial
       >;
     }
   }

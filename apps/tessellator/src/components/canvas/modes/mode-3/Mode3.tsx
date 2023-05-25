@@ -82,7 +82,6 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
     <group visible={visible}>
       <mesh scale={[width, height, 1]}>
         <planeGeometry />
-        {/** @ts-ignore */}
         <waveMaterial ref={materialRef} />
       </mesh>
     </group>

@@ -232,7 +232,7 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
 
     const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
 
-    uColour.value = new Color(getColour());
+    uColour.value.lerp(new Color(getColour()), dynamicDelta);
     uRadius.value = radius.current;
 
     uSize.value = MathUtils.lerp(

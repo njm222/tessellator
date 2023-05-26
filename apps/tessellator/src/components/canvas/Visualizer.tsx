@@ -22,6 +22,7 @@ const Visualizer = () => {
     changeMode,
   } = useControls();
   const sectionChangeRef = useRef(spotifyAnalyser?.sections?.current?.start);
+  const barChangeRef = useRef(spotifyAnalyser?.bars?.current?.start);
 
   useFrame(() => {
     if (!audioAnalyser.context || !spotifyAnalyser) return;
@@ -36,6 +37,11 @@ const Visualizer = () => {
       if (randomizeMode) {
         changeMode();
       }
+    }
+    // change colour mode on bar change
+    const barStart = spotifyAnalyser.bars?.current?.start;
+    if (barChangeRef.current !== barStart) {
+      barChangeRef.current = barStart;
       if (randomizeColourMode) {
         changeColourMode();
       }

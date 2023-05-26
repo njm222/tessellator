@@ -2,7 +2,6 @@ import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
   Color,
-  ColorRepresentation,
   InstancedMesh,
   MeshPhongMaterial,
   Object3D,
@@ -40,7 +39,10 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
   useFrame((state, delta) => {
     if (!visible) return;
 
-    tempColor.set(getColour() as ColorRepresentation);
+    tempColor.lerp(
+      new Color(getColour()),
+      delta * 10 * (1 - trackFeatures.energy)
+    );
     const zValue = 10 * trackFeatures.danceability;
     const scale = Math.min(
       Math.max(

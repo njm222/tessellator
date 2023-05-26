@@ -40,6 +40,13 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
 
     if (!materialRef.current) return;
 
+    const dynamicDelta =
+      delta *
+      (trackFeatures.tempo / 10) *
+      trackFeatures.energy *
+      trackFeatures.danceability *
+      (1 - trackFeatures.valence);
+
     const { uTime, uColorStart, uStrengthFactor } =
       materialRef.current.uniforms;
 
@@ -51,7 +58,7 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
         1) *
         (1 - trackFeatures.danceability) *
         trackFeatures.valence,
-      delta * trackFeatures.energy * 10
+      dynamicDelta
     );
 
     const direction = realBeatCounter.current % 2 === 0 ? 1 : -1;
@@ -62,7 +69,7 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
       direction *
       0.0001;
 
-    uColorStart.value = new Color(getColour());
+    uColorStart.value.lerp(new Color(getColour()), dynamicDelta);
 
     if (spotifyAnalyser.beats.current.start === currentBeatStart.current) {
       return;

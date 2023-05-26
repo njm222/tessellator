@@ -96,7 +96,7 @@ function Terrain({ visible }: { visible: boolean }) {
     );
 
     // Update the material colour
-    uColour.value = new Color(getColour());
+    uColour.value.lerp(new Color(getColour()), dynamicDelta);
   });
 
   return (

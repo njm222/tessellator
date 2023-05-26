@@ -1,4 +1,4 @@
-import { hslToHex } from "core";
+import { getIndexOfMax, getIndexOfMin, hslToHex } from "core";
 
 import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";
@@ -19,9 +19,9 @@ export function useGetColour(
   const { audioAnalyser } = useAnalyser();
   const { colourKey } = useControls();
   const { spotifyAnalyser } = usePlayer();
-  const segment = spotifyAnalyser.getCurrentSegment();
 
   function getColour() {
+    const segment = spotifyAnalyser.getCurrentSegment();
     if (!audioAnalyser || !segment?.timbre?.length) {
       return "#123456";
     }
@@ -29,25 +29,25 @@ export function useGetColour(
     switch (colourKey) {
       case 0:
         return hslToHex(
-          audioAnalyser.midSection.average * 5,
-          Math.max(audioAnalyser.kickSection.average, minSaturation),
-          Math.max(audioAnalyser.snareSection.average, minLightness)
+          360 * ((getIndexOfMax(segment?.pitches) + 1) / 13),
+          Math.max(Math.abs(segment.timbre[2] * 2), minSaturation),
+          Math.max(Math.abs(segment.timbre[1] * 2), minLightness)
         );
       case 1:
         return hslToHex(
-          audioAnalyser.bassSection.average * 4,
+          audioAnalyser.midSection.energy,
           Math.max(Math.abs(segment.timbre[2] * 2), minSaturation),
           Math.max(Math.abs(segment.timbre[1] * 2), minLightness)
         );
       case 2:
         return hslToHex(
-          audioAnalyser.analyserData.averageFrequency * 7,
+          360 * ((getIndexOfMin(segment?.pitches) + 1) / 13),
           Math.max(Math.abs(segment.timbre[2] * 2), minSaturation),
           Math.max(Math.abs(segment.timbre[1] * 2), minLightness)
         );
       default:
         return hslToHex(
-          audioAnalyser.snareSection.average * 6,
+          audioAnalyser.analyserData.rms,
           Math.max(Math.abs(segment.timbre[2] * 2), minSaturation),
           Math.max(Math.abs(segment.timbre[1] * 2), minLightness)
         );

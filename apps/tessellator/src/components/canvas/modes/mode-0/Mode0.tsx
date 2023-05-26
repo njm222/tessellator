@@ -1,14 +1,13 @@
 import React, { memo, useRef } from "react";
 import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Color, MathUtils, ShaderMaterial } from "three";
-
-import "../../shaders/terrain/TerrainMaterial";
+import { getIndexOfMax, getIndexOfMin } from "core";
+import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import TerrainMaterial from "../../shaders/terrain/TerrainMaterial";
 import { useGetColour } from "../useGetColour";
-import { getIndexOfMax, getIndexOfMin } from "core";
 
 function Terrain({ visible }: { visible: boolean }) {
   const { audioAnalyser } = useAnalyser();
@@ -16,7 +15,7 @@ function Terrain({ visible }: { visible: boolean }) {
   const { getColour } = useGetColour();
 
   // Get reference of the terrain
-  const terrainMaterialRef = useRef(new ShaderMaterial());
+  const terrainMaterialRef = useRef(new TerrainMaterial());
   const { viewport } = useThree();
   const [vpWidth, vpHeight] = useAspect(viewport.width, viewport.height, 2);
 

@@ -1,5 +1,5 @@
 import { extend, ReactThreeFiber } from "@react-three/fiber";
-import { ShaderMaterial, Vector3 } from "three";
+import { Color,ShaderMaterial } from "three";
 
 export default class ParticleMaterial extends ShaderMaterial {
   constructor() {
@@ -9,7 +9,7 @@ export default class ParticleMaterial extends ShaderMaterial {
         uRadius: { value: 1.0 },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uSize: { value: 4.0 },
-        uColour: { value: new Vector3(1.0, 1.0, 1.0) },
+        uColour: { value: new Color("#fff") },
       },
       vertexShader: `
       varying vec3 vUv; 

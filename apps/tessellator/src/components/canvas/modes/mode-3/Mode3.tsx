@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { getIndexOfMax, getIndexOfMin } from "core";
-import { Color, MathUtils, ShaderMaterial } from "three";
-
-import "../../shaders/wave/WaveMaterial";
+import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import WaveMaterial from "../../shaders/wave/WaveMaterial";
 import { useGetColour } from "../useGetColour";
 
 const Mode3 = ({ visible }: { visible: boolean }) => {
@@ -14,7 +13,7 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
-  const materialRef = useRef<ShaderMaterial>();
+  const materialRef = useRef(new WaveMaterial());
   const realBeatCounter = useRef(0);
   const currentBeatStart = useRef(0);
   const [beatThreshold, setBeatThreshold] = useState(0.5);
@@ -82,7 +81,6 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
     <group visible={visible}>
       <mesh scale={[width, height, 1]}>
         <planeGeometry />
-        {/** @ts-ignore */}
         <waveMaterial ref={materialRef} />
       </mesh>
     </group>

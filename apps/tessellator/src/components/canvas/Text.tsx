@@ -8,7 +8,7 @@ import {
   Text3D,
 } from "@react-three/drei";
 import { hslToHex } from "core";
-import { ColorRepresentation,Mesh } from "three";
+import { ColorRepresentation, Mesh } from "three";
 
 const fontUrl = "/fonts/tomorrow_extralight_regular.json";
 

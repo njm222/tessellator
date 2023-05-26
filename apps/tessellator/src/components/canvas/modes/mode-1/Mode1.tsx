@@ -3,6 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { getIndexOfMax, getIndexOfMin } from "core";
 import {
   AdditiveBlending,
+  Color,
   Float32BufferAttribute,
   MathUtils,
   Points,
@@ -12,7 +13,6 @@ import {
 
 import "../../shaders/ParticleMaterial";
 
-import { hexToVector3 } from "../../../../helpers/hexTo";
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import { useGetColour } from "../useGetColour";
@@ -232,7 +232,7 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
 
     const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
 
-    uColour.value = hexToVector3(getColour());
+    uColour.value = new Color(getColour());
     uRadius.value = radius.current;
 
     uSize.value = MathUtils.lerp(

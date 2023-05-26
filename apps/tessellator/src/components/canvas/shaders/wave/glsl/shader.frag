@@ -1,4 +1,4 @@
-#pragma glslify: noise = require('glsl-noise/simplex/3d')
+#pragma glslify: noise = require('glsl-noise/classic/3d')
 uniform float uTime;
 uniform float uStrengthFactor;
 uniform float uResolution;

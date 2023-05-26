@@ -1,20 +1,13 @@
 import React, { memo, useRef } from "react";
 import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { createNoise3D } from "simplex-noise";
-import {
-  BufferAttribute,
-  Color,
-  ColorRepresentation,
-  MeshPhongMaterial,
-  PlaneGeometry,
-} from "three";
+import { getIndexOfMax, getIndexOfMin } from "core";
+import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import TerrainMaterial from "../../shaders/terrain/TerrainMaterial";
 import { useGetColour } from "../useGetColour";
-
-let simplexNoise = createNoise3D();
 
 function Terrain({ visible }: { visible: boolean }) {
   const { audioAnalyser } = useAnalyser();
@@ -22,96 +15,98 @@ function Terrain({ visible }: { visible: boolean }) {
   const { getColour } = useGetColour();
 
   // Get reference of the terrain
-  const terrainGeometryRef = useRef(new PlaneGeometry());
-  const terrainMaterialRef = useRef(new MeshPhongMaterial());
-  const terrainColour = new Color(0, 0, 0);
-  const time = useRef(0);
+  const terrainMaterialRef = useRef(new TerrainMaterial());
   const { viewport } = useThree();
   const [vpWidth, vpHeight] = useAspect(viewport.width, viewport.height, 2);
 
   useFrame((_, delta) => {
     if (!visible) return;
 
+    // Wait for material to load
+    if (!terrainMaterialRef.current) {
+      return;
+    }
+
+    // Wait for spotify data to load
     if (!trackFeatures || !spotifyAnalyser?.tatums?.current || !audioAnalyser) {
       return;
     }
 
-    const { snareSection, bassSection, kickSection, highSection } =
-      audioAnalyser;
-    const segment = spotifyAnalyser.getCurrentSegment();
-    const section = spotifyAnalyser.getCurrentSection();
+    const {
+      snareSection,
+      bassSection,
+      kickSection,
+      highSection,
+      midSection,
+      analyserData,
+    } = audioAnalyser;
     const { energy, danceability, valence } = trackFeatures;
 
+    const { uTime, uXScale, uYScale, uAmplitude, uColour } =
+      terrainMaterialRef.current.uniforms;
+
+    const dynamicDelta =
+      delta *
+      (trackFeatures.tempo / 10) *
+      trackFeatures.energy *
+      trackFeatures.danceability *
+      (1 - trackFeatures.valence);
+
+    const limit = 0.5;
+
+    const midDifference = Math.abs(midSection?.average - midSection?.energy);
     // Set the variables for simplex
-    const nAmplitude = Math.max(
-      Math.abs(snareSection?.average - kickSection?.average) /
-        Math.max(highSection?.average * valence, 15),
-      0.1
+    uTime.value = MathUtils.lerp(
+      uTime.value,
+      uTime.value +
+        Math.min(analyserData.averageFrequency, analyserData.rms) *
+          dynamicDelta,
+      dynamicDelta
     );
-
-    const limit =
-      section?.key && section?.key_confidence
-        ? (section.key + 1) * section.key_confidence
-        : 1;
-
-    const xScale = Math.max(
-      danceability * Math.abs(bassSection?.average - kickSection?.average),
-      limit
+    uXScale.value = MathUtils.lerp(
+      uXScale.value,
+      Math.max(
+        danceability *
+          (getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) -
+          Math.abs(bassSection?.average - kickSection?.energy) +
+          midDifference,
+        limit
+      ),
+      dynamicDelta
     );
-    const yScale = Math.max(
-      energy * Math.abs(bassSection?.average - snareSection?.average),
-      limit
+    uYScale.value = MathUtils.lerp(
+      uYScale.value,
+      Math.max(
+        energy *
+          (getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) -
+          Math.abs(bassSection?.average - snareSection?.energy) +
+          midDifference,
+        limit
+      ),
+      dynamicDelta
     );
-
-    // Get the current time
-    time.current += segment?.timbre?.length ? segment?.timbre[11] / 500 : 1;
-
-    // Get the references of the terrain
-    const terrainGeometry: PlaneGeometry = terrainGeometryRef.current;
-    const terrainMaterial = terrainMaterialRef.current;
-
-    // Wait for terrain to load
-    if (!terrainGeometry || !terrainMaterial) {
-      return;
-    }
-
-    terrainMaterial.wireframe = true;
-
-    // Get the terrain vertices
-    const { position } = terrainGeometry.attributes;
-
-    // For each vertex set the position on the z-axis based on the noise function
-    for (let i = 0; i < position.count; i++) {
-      const z = simplexNoise(
-        (position as BufferAttribute).getX(i) / xScale,
-        (position as BufferAttribute).getY(i) / yScale,
-        time.current
-      );
-      (position as BufferAttribute).setZ(
-        i,
-        Number.isNaN(z) ? 0 : z * nAmplitude
-      );
-    }
+    uAmplitude.value = MathUtils.lerp(
+      uAmplitude.value,
+      Math.max(
+        Math.abs(midSection?.average - midSection?.energy) /
+          Math.max(highSection?.average * valence, 15),
+        0.1
+      ),
+      dynamicDelta
+    );
 
     // Update the material colour
-    terrainMaterialRef.current.color.lerp(
-      terrainColour.set(getColour() as ColorRepresentation),
-      delta * 2
-    );
-
-    // Update the vertices
-    position.needsUpdate = true;
-    terrainGeometry.computeVertexNormals();
-    // terrainGeometry.normalsNeedUpdate = true;
+    uColour.value = new Color(getColour());
   });
 
   return (
     <mesh position={[0, 2, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
-      <planeGeometry
-        args={[vpWidth, vpHeight, 128, 128]}
-        ref={terrainGeometryRef}
+      <planeGeometry args={[vpWidth, vpHeight, 512, 512]} />
+      <terrainMaterial
+        attach="material"
+        ref={terrainMaterialRef}
+        wireframe={true}
       />
-      <meshPhongMaterial ref={terrainMaterialRef} />
     </mesh>
   );
 }

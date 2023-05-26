@@ -43,6 +43,9 @@ function Terrain({ visible }: { visible: boolean }) {
     } = audioAnalyser;
     const { energy, danceability, valence } = trackFeatures;
 
+    const { uTime, uXScale, uYScale, uAmplitude, uColour } =
+      terrainMaterialRef.current.uniforms;
+
     const dynamicDelta =
       delta *
       (trackFeatures.tempo / 10) *
@@ -52,10 +55,7 @@ function Terrain({ visible }: { visible: boolean }) {
 
     const limit = 0.5;
 
-    const { uTime, uXScale, uYScale, uAmplitude, uColour } =
-      terrainMaterialRef.current.uniforms;
-
-    const a = Math.abs(midSection?.average - midSection?.energy);
+    const midDifference = Math.abs(midSection?.average - midSection?.energy);
     // Set the variables for simplex
     uTime.value = MathUtils.lerp(
       uTime.value,
@@ -70,7 +70,7 @@ function Terrain({ visible }: { visible: boolean }) {
         danceability *
           (getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) -
           Math.abs(bassSection?.average - kickSection?.energy) +
-          a,
+          midDifference,
         limit
       ),
       dynamicDelta
@@ -81,7 +81,7 @@ function Terrain({ visible }: { visible: boolean }) {
         energy *
           (getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) -
           Math.abs(bassSection?.average - snareSection?.energy) +
-          a,
+          midDifference,
         limit
       ),
       dynamicDelta

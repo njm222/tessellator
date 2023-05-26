@@ -11,6 +11,10 @@ export default class TerrainMaterial extends ShaderMaterial {
     super({
       uniforms: {
         uColour: { value: new Color("#fff") },
+        uTime: { value: 0 },
+        uXScale: { value: 1 },
+        uYScale: { value: 1 },
+        uAmplitude: { value: 1 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,

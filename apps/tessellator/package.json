@@ -28,7 +28,6 @@
     "postprocessing": "^6.31.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "simplex-noise": "^4.0.1",
     "spotify-analyser": "*",
     "three": "^0.152.2",
     "three-stdlib": "^2.21.11",

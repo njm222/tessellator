@@ -27,18 +27,9 @@ jobs:
           commit_message: "chore: update app visualization"
           root_path: "apps/tessellator/"
           output_file: "./apps/tessellator/readme/app-visualization.svg"
-          branch: "repo-visualization"
       - name: Update api visualization
         uses: githubocto/repo-visualizer@main
         with:
           commit_message: "chore: update api visualization"
           root_path: "apps/api/"
           output_file: "./apps/api/readme/api-visualization.svg"
-          branch: "repo-visualization"
-      - name: Update api visualization
-        uses: githubocto/repo-visualizer@main
-        with:
-          commit_message: "chore: update api visualization"
-          root_path: "apps/api/"
-          output_file: "./apps/api/readme/api-visualization.svg"
-          branch: "repo-visualization"

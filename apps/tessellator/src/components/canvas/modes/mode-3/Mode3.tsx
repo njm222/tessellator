@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { getIndexOfMax, getIndexOfMin } from "core";
 import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
@@ -14,9 +13,9 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
   const materialRef = useRef(new WaveMaterial());
-  const realBeatCounter = useRef(0);
-  const currentBeatStart = useRef(0);
-  const [beatThreshold, setBeatThreshold] = useState(0.5);
+  const realBarCounter = useRef(0);
+  const currentBarStart = useRef(0);
+  const [barThreshold, setBarThreshold] = useState(0.7);
 
   useEffect(() => {
     if (!materialRef.current) return;
@@ -26,10 +25,10 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
   }, [trackFeatures.speechiness, trackFeatures.energy, height]);
 
   useEffect(() => {
-    setBeatThreshold(
+    setBarThreshold(
       trackFeatures.danceability > 0.5
         ? trackFeatures.danceability > 0.75
-          ? 0.85
+          ? 0.95
           : 0.8
         : 0.65
     );
@@ -40,55 +39,56 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
 
     if (!materialRef.current) return;
 
-    const dynamicDelta =
-      delta *
-      (trackFeatures.tempo / 10) *
+    const factor =
       trackFeatures.energy *
       trackFeatures.danceability *
-      (1 - trackFeatures.valence);
+      (1 - trackFeatures.valence) *
+      0.1;
+
+    const dynamicDelta = delta * trackFeatures.tempo * factor;
 
     const { uTime, uColorStart, uStrengthFactor } =
       materialRef.current.uniforms;
 
+    const timbre = spotifyAnalyser.getCurrentSegment().timbre;
+
     uStrengthFactor.value = MathUtils.lerp(
       uStrengthFactor.value,
-      ((spotifyAnalyser.sections.counter % 2 === 0
-        ? getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches)
-        : getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches)) +
-        1) *
-        audioAnalyser.analyserData.rms *
-        trackFeatures.energy *
-        trackFeatures.danceability *
-        0.1,
+      (audioAnalyser.analyserData.rms +
+        Math.abs(
+          audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
+        )) *
+        Math.abs(timbre?.length ? timbre[0] : 1) *
+        factor *
+        trackFeatures.speechiness,
       dynamicDelta
     );
 
-    const direction = realBeatCounter.current % 2 === 0 ? 1 : -1;
+    const direction = realBarCounter.current % 2 === 0 ? 1 : -1;
 
     uTime.value = MathUtils.lerp(
       uTime.value,
       uTime.value +
-        audioAnalyser.midSection.average *
-          0.01 *
-          (1 - trackFeatures.valence) *
-          trackFeatures.energy *
-          trackFeatures.danceability *
+        Math.abs(
+          audioAnalyser.bassSection.average - audioAnalyser.midSection.average
+        ) *
+          factor *
           direction,
       dynamicDelta
     );
 
     uColorStart.value.lerp(new Color(getColour()), dynamicDelta);
 
-    if (spotifyAnalyser.beats.current.start === currentBeatStart.current) {
+    if (spotifyAnalyser.bars.current.start === currentBarStart.current) {
       return;
     }
 
-    if (spotifyAnalyser.beats.current.confidence > beatThreshold) {
-      realBeatCounter.current++;
-      if (spotifyAnalyser.beats.counter === 0) {
-        realBeatCounter.current = 0;
+    if (spotifyAnalyser.bars.current.confidence > barThreshold) {
+      realBarCounter.current++;
+      if (spotifyAnalyser.bars.counter === 0) {
+        realBarCounter.current = 0;
       }
-      currentBeatStart.current = spotifyAnalyser.beats.current.start;
+      currentBarStart.current = spotifyAnalyser.bars.current.start;
     }
   });
 

@@ -33,9 +33,3 @@ jobs:
           commit_message: "chore: update api visualization"
           root_path: "apps/api/"
           output_file: "./apps/api/readme/api-visualization.svg"
-      - name: Update api visualization
-        uses: githubocto/repo-visualizer@main
-        with:
-          commit_message: "chore: update api visualization"
-          root_path: "apps/api/"
-          output_file: "./apps/api/readme/api-visualization.svg"

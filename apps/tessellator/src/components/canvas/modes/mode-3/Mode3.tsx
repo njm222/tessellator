@@ -56,18 +56,26 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
         ? getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches)
         : getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches)) +
         1) *
-        (1 - trackFeatures.danceability) *
-        trackFeatures.valence,
+        audioAnalyser.analyserData.rms *
+        trackFeatures.energy *
+        trackFeatures.danceability *
+        0.1,
       dynamicDelta
     );
 
     const direction = realBeatCounter.current % 2 === 0 ? 1 : -1;
 
-    uTime.value +=
-      audioAnalyser.midSection.average *
-      (1 - trackFeatures.valence) *
-      direction *
-      0.0001;
+    uTime.value = MathUtils.lerp(
+      uTime.value,
+      uTime.value +
+        audioAnalyser.midSection.average *
+          0.01 *
+          (1 - trackFeatures.valence) *
+          trackFeatures.energy *
+          trackFeatures.danceability *
+          direction,
+      dynamicDelta
+    );
 
     uColorStart.value.lerp(new Color(getColour()), dynamicDelta);
 

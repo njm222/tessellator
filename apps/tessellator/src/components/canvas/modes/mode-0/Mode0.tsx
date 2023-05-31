@@ -32,14 +32,8 @@ function Terrain({ visible }: { visible: boolean }) {
       return;
     }
 
-    const {
-      snareSection,
-      bassSection,
-      kickSection,
-      highSection,
-      midSection,
-      analyserData,
-    } = audioAnalyser;
+    const { snareSection, bassSection, kickSection, highSection, midSection } =
+      audioAnalyser;
     const { energy, danceability, valence } = trackFeatures;
 
     const { uTime, uXScale, uYScale, uAmplitude, uColour } =
@@ -47,28 +41,27 @@ function Terrain({ visible }: { visible: boolean }) {
 
     const dynamicDelta =
       delta *
-      (trackFeatures.tempo / 10) *
+      (trackFeatures.tempo / 20) *
       trackFeatures.energy *
       trackFeatures.danceability *
       (1 - trackFeatures.valence);
 
     const limit = 0.5;
-
+    const timbre = spotifyAnalyser.getCurrentSegment().timbre;
     const midDifference = Math.abs(midSection?.average - midSection?.energy);
+
     // Set the variables for simplex
     uTime.value = MathUtils.lerp(
       uTime.value,
-      uTime.value +
-        Math.min(analyserData.averageFrequency, analyserData.rms) *
-          dynamicDelta,
+      uTime.value + Math.max(timbre?.length ? timbre[0] / 100 : 0.0001, 0.0001),
       dynamicDelta
     );
     uXScale.value = MathUtils.lerp(
       uXScale.value,
       Math.max(
         danceability *
-          (getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) -
-          Math.abs(bassSection?.average - kickSection?.energy) +
+          (getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) +
+          Math.abs(bassSection?.average - kickSection?.energy) -
           midDifference,
         limit
       ),
@@ -78,8 +71,8 @@ function Terrain({ visible }: { visible: boolean }) {
       uYScale.value,
       Math.max(
         energy *
-          (getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) -
-          Math.abs(bassSection?.average - snareSection?.energy) +
+          (getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) +
+          Math.abs(bassSection?.average - snareSection?.energy) -
           midDifference,
         limit
       ),
@@ -92,7 +85,7 @@ function Terrain({ visible }: { visible: boolean }) {
           Math.max(highSection?.average * valence, 15),
         0.1
       ),
-      dynamicDelta
+      dynamicDelta * 10
     );
 
     // Update the material colour

@@ -23,6 +23,7 @@ import { useAuth } from "./authContext";
 import { usePlayer } from "./playerContext";
 
 type TError = {
+  status?: number;
   message: string;
   response?: {
     status: number;
@@ -34,7 +35,7 @@ async function handleError(
   open: (message: string) => void,
   handleRefreshToken: () => Promise<void>
 ) {
-  if (error.response?.status === 401) {
+  if (error.status === 401 || error.response?.status === 401) {
     // handle refresh
     await handleRefreshToken();
     return;

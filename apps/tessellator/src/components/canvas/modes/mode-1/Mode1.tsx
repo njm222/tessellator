@@ -210,12 +210,12 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
 
     const dynamicDelta =
       delta *
-      (trackFeatures.tempo / 100) *
+      (trackFeatures.tempo / 10) *
       trackFeatures.energy *
       trackFeatures.danceability *
       (1 - trackFeatures.valence);
 
-    updateTorusProperties(dynamicDelta);
+    updateTorusProperties(dynamicDelta / 10);
 
     const [indices, vertices, normals, uvs] = getTorusBufferAttributes(
       radius.current,

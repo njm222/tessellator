@@ -1,5 +1,5 @@
 import axios, { Method } from "axios";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 export function RefreshTokenController({
   spotifyAccountUrl,
@@ -10,11 +10,7 @@ export function RefreshTokenController({
   clientId: string;
   clientSecret: string;
 }) {
-  return async function refreshTokenController(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  return async function refreshTokenController(req: Request, res: Response) {
     const authOptions = {
       method: "POST" as Method,
       url: `${spotifyAccountUrl}/api/token`,
@@ -39,7 +35,6 @@ export function RefreshTokenController({
       })
       .catch((e) => {
         console.log(e);
-        next(e);
       });
   };
 }

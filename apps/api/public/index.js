@@ -192,7 +192,6 @@ function RefreshTokenController({
     };
     (0, import_axios4.default)(authOptions).then((response) => {
       const { data } = response;
-      console.log(data);
       res.send(data);
     }).catch((e) => {
       console.log(e);

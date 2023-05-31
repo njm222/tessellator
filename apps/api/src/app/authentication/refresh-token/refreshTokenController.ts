@@ -10,11 +10,7 @@ export function RefreshTokenController({
   clientId: string;
   clientSecret: string;
 }) {
-  return async function refreshTokenController(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  return async function refreshTokenController(req: Request, res: Response) {
     const authOptions = {
       method: "POST" as Method,
       url: `${spotifyAccountUrl}/api/token`,
@@ -35,11 +31,11 @@ export function RefreshTokenController({
     axios(authOptions)
       .then((response) => {
         const { data } = response;
+        console.log(data);
         res.send(data);
       })
       .catch((e) => {
         console.log(e);
-        next(e);
       });
   };
 }

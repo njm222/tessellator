@@ -173,7 +173,7 @@ function RefreshTokenController({
   clientId,
   clientSecret
 }) {
-  return async function refreshTokenController2(req, res, next) {
+  return async function refreshTokenController2(req, res) {
     const authOptions = {
       method: "POST",
       url: `${spotifyAccountUrl}/api/token`,
@@ -192,10 +192,10 @@ function RefreshTokenController({
     };
     (0, import_axios4.default)(authOptions).then((response) => {
       const { data } = response;
+      console.log(data);
       res.send(data);
     }).catch((e) => {
       console.log(e);
-      next(e);
     });
   };
 }

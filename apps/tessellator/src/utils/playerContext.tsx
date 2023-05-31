@@ -155,7 +155,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
         "authentication_error",
         (data: { message: string }) => {
           toast.open(data.message);
-          handleRefreshToken();
+          handleRefreshToken(true);
         }
       );
       player.addListener("account_error", (data: { message: string }) => {

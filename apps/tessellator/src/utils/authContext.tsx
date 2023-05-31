@@ -20,7 +20,7 @@ type AuthProviderProps = {
   isLoading?: boolean;
   accessToken?: string;
   refreshToken?: string;
-  handleRefreshToken?: () => void;
+  handleRefreshToken?: (refreshPage?: boolean) => Promise<void>;
   children: ReactNode;
 };
 
@@ -28,7 +28,7 @@ const AuthContext = createContext({
   isLoading: false,
   accessToken: "",
   refreshToken: "",
-  handleRefreshToken: () => {
+  handleRefreshToken: async (refreshPage?: boolean) => {
     return;
   },
 });
@@ -51,17 +51,22 @@ export const AuthProvider: FC<AuthProviderProps> = ({
     router.push("/");
   }, [router]);
 
-  const handleRefreshToken = useCallback(async () => {
-    updateToken(tokens.refreshToken)
-      .then((tokens: { accessToken: string; refreshToken: string }) => {
-        setTokens(tokens);
-        Cookies.set("accessToken", tokens.accessToken);
-        Cookies.set("refreshToken", tokens.refreshToken);
+  const handleRefreshToken = useCallback(
+    async (refreshPage = false) => {
+      try {
+        const { accessToken } = await updateToken(tokens.refreshToken);
+        setTokens((prev) => ({ ...prev, accessToken }));
+        Cookies.set("accessToken", accessToken);
         setIsLoading(false);
-        window.location.reload();
-      })
-      .catch(logoutUser);
-  }, [logoutUser, tokens?.refreshToken]);
+        if (refreshPage) {
+          window.location.reload(); // might make sense here
+        }
+      } catch (e) {
+        logoutUser();
+      }
+    },
+    [logoutUser, tokens?.refreshToken]
+  );
 
   useEffect(() => {
     const { accessToken, refreshToken } = getTokens();
@@ -119,8 +124,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({
 };
 
 function getTokens() {
-  const accessToken = Cookies.get("accessToken");
-  const refreshToken = Cookies.get("refreshToken");
+  function getTokenFromCookies(key: string) {
+    const token = Cookies.get(key);
 
-  return { accessToken, refreshToken };
+    return !!token && token !== "undefined" ? token : null;
+  }
+  const accessToken = getTokenFromCookies("accessToken");
+  const refreshToken = getTokenFromCookies("refreshToken");
+
+  return {
+    accessToken,
+    refreshToken,
+  };
 }

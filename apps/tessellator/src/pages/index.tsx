@@ -11,7 +11,7 @@ export default function Page() {
   );
 }
 
-Page.canvas = () => <LandingScene  />;
+Page.canvas = () => <LandingScene />;
 
 export async function getStaticProps() {
   return {

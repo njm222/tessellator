@@ -19,6 +19,7 @@ jobs:
         with:
           commit_message: "chore: update root visualization"
           root_path: "/"
+          excluded_globs: "**/!(*.{gitignore,json,md,txt,ui})"
           output_file: "./readme/root-visualization.svg"
           branch: "repo-visualization"
       - name: Update app visualization
@@ -26,10 +27,12 @@ jobs:
         with:
           commit_message: "chore: update app visualization"
           root_path: "apps/tessellator/"
-          output_file: "./apps/tessellator/readme/app-visualization.svg"
+          excluded_globs: "**/!(*.{gitignore,json,md,txt,ui})"
+output_file: "./apps/tessellator/readme/app-visualization.svg"
       - name: Update api visualization
         uses: githubocto/repo-visualizer@main
         with:
           commit_message: "chore: update api visualization"
           root_path: "apps/api/"
+          excluded_globs: "**/!(*.{gitignore,json,md,txt,ui})"
           output_file: "./apps/api/readme/api-visualization.svg"

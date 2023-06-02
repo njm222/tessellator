@@ -18,16 +18,16 @@ describe("Loader", () => {
   it("renders correct loading dots", () => {
     const { getByText } = render(<Loader dotVariant={2} />);
 
-    expect(getByText("Loading").nextSibling).toHaveClass("dots dots-2");
+    expect(getByText("Loading").nextSibling?.firstChild).toHaveClass("dots-2");
   });
   it("should not break component if dotVaraint is lower than the bounds", () => {
     const { getByText } = render(<Loader dotVariant={-1} />);
 
-    expect(getByText("Loading").nextSibling).toHaveClass("dots dots-1");
+    expect(getByText("Loading").nextSibling?.firstChild).toHaveClass("dots-1");
   });
   it("should not break component if dotVaraint is greater than the bounds", () => {
     const { getByText } = render(<Loader dotVariant={1000} />);
 
-    expect(getByText("Loading").nextSibling).toHaveClass("dots dots-1");
+    expect(getByText("Loading").nextSibling?.firstChild).toHaveClass("dots-1");
   });
 });

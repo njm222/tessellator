@@ -108,6 +108,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   const { accessToken, handleRefreshToken } = useAuth();
   const { setIsLoading } = useLoader();
   const [player, setPlayer] = useState(playerSample);
+  const [spotifyPlayer, setSpotifyPlayer] = useState<any>(null);
   const [trackId, setTrackId] = useState("");
   const { data = { analysis: null, features: trackFeaturesSample } } =
     useTrackAnalysisAndFeatures(trackId);
@@ -198,6 +199,13 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       });
 
       player.connect();
+      setSpotifyPlayer(player);
+    };
+
+    () => {
+      if (!spotifyPlayer) return;
+      spotifyPlayer.pause();
+      spotifyPlayer.disconnect();
     };
   }, [
     accessToken,

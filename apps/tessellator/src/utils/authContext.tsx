@@ -8,13 +8,13 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { generateRandomInteger, loginUser, updateToken } from "core";
+import { loginUser, updateToken } from "core";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { Loader } from "ui";
 
 import { AnalyserProvider } from "./analyserContext";
 import { PlayerProvider } from "./playerContext";
+import { useLoader } from "./loaderContext";
 
 type AuthProviderProps = {
   isLoading?: boolean;
@@ -41,7 +41,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
   children: ReactNode;
 }) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, setIsLoading } = useLoader();
   const [tokens, setTokens] = useState({ accessToken: "", refreshToken: "" });
 
   const logoutUser = useCallback(() => {
@@ -69,6 +69,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
   );
 
   useEffect(() => {
+    setIsLoading(true, "Authenticating user");
     const { accessToken, refreshToken } = getTokens();
 
     if (accessToken && refreshToken) {
@@ -109,9 +110,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({
 
   return (
     <AuthContext.Provider value={value}>
-      {isLoading && router.pathname !== "/" ? (
-        <Loader dotVariant={generateRandomInteger(0, 11)} />
-      ) : null}
       {value.accessToken && router.pathname !== "/" ? ( // TODO: decouple
         <PlayerProvider>
           <AnalyserProvider>{children}</AnalyserProvider>

@@ -7,9 +7,9 @@ import {
   useMemo,
   useState,
 } from "react";
-import { generateRandomInteger, StartPlaybackOptions } from "core";
+import { StartPlaybackOptions } from "core";
 import SpotifyAnalyser from "spotify-analyser";
-import { Loader, useToast } from "ui";
+import { useToast } from "ui";
 
 import { useAuth } from "./authContext";
 import {
@@ -27,6 +27,7 @@ import {
   useTransferMyPlayback,
 } from "./spotify";
 import { mutations } from "./store";
+import { useLoader } from "./loaderContext";
 
 type PlayerProviderProps = {
   player?: any;
@@ -105,6 +106,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
 }) => {
   const toast = useToast();
   const { accessToken, handleRefreshToken } = useAuth();
+  const { setIsLoading } = useLoader();
   const [player, setPlayer] = useState(playerSample);
   const [trackId, setTrackId] = useState("");
   const { data = { analysis: null, features: trackFeaturesSample } } =
@@ -130,6 +132,8 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     if (document.getElementById("spotify-sdk")) {
       return;
     }
+
+    setIsLoading(true, "Setting up player");
 
     const sdk = document.createElement("script");
     sdk.setAttribute("src", "https://sdk.scdn.co/spotify-player.js");
@@ -170,7 +174,6 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
           toast.open("Player failed to start");
           return;
         }
-
         mutateTransferMyPlayback(data.device_id);
       });
       player.addListener("player_state_changed", async (playerState: any) => {
@@ -239,16 +242,11 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   useEffect(() => {
     if (!data.analysis) return;
     spotifyAnalyser.setData(data.analysis);
+    setIsLoading(false);
   }, [spotifyAnalyser, data.analysis]);
 
   return (
     <PlayerContext.Provider value={{ ...value, spotifyAnalyser }}>
-      {!data.analysis ? (
-        <Loader
-          dotVariant={generateRandomInteger(0, 11)}
-          message="Setting up player"
-        />
-      ) : null}
       {children}
     </PlayerContext.Provider>
   );

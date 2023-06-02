@@ -12,6 +12,7 @@ import { AuthProvider } from "../../utils/authContext";
 import { PortalProvider } from "../../utils/portalContext";
 import { ControlsProvider } from "../dom/controls/controlsContext";
 import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
+import { LoaderProvider } from "../../utils/loaderContext";
 
 const DomLayout = forwardRef(
   ({ children, ...props }: { children: ReactNode }, ref) => {
@@ -23,17 +24,19 @@ const DomLayout = forwardRef(
 
     return (
       <div className={"domContainer"} ref={localRef} {...props}>
-        <QueryClientProvider client={queryClient}>
-          <ToastProvider>
-            <AuthProvider>
-              <ControlsProvider>
-                <MouseActivityProvider>
-                  <PortalProvider>{children}</PortalProvider>
-                </MouseActivityProvider>
-              </ControlsProvider>
-            </AuthProvider>
-          </ToastProvider>
-        </QueryClientProvider>
+        <LoaderProvider>
+          <QueryClientProvider client={queryClient}>
+            <ToastProvider>
+              <AuthProvider>
+                <ControlsProvider>
+                  <MouseActivityProvider>
+                    <PortalProvider>{children}</PortalProvider>
+                  </MouseActivityProvider>
+                </ControlsProvider>
+              </AuthProvider>
+            </ToastProvider>
+          </QueryClientProvider>
+        </LoaderProvider>
       </div>
     );
   }

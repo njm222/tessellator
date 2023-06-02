@@ -24,7 +24,7 @@ const DefaultScene = dynamic(
   () => import("../components/layout/DefaultScene"),
   {
     ssr: false,
-    loading: () => <Loader dotVariant={4} />,
+    loading: () => <Loader dotVariant={4} message="Building scene" />,
   }
 );
 

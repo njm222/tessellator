@@ -17,6 +17,7 @@
 
 .dots {
   margin-top: 2rem;
+  min-height: 32px;
 }
 
 /* source: https://css-tricks.com/single-element-loaders-the-dots */

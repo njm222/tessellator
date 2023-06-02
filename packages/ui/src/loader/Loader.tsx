@@ -8,13 +8,15 @@ export const Loader = ({
   return (
     <div className="loader">
       <h1 className="loaderText">{message ? message : "Loading"}</h1>
-      <div
-        className={`dots dots-${
-          dotVariant > 10 || dotVariant < 0 || !Number.isInteger(dotVariant)
-            ? 1
-            : dotVariant
-        }`}
-      />
+      <div className="dots">
+        <div
+          className={`dots-${
+            dotVariant > 10 || dotVariant < 0 || !Number.isInteger(dotVariant)
+              ? 1
+              : dotVariant
+          }`}
+        />
+      </div>
     </div>
   );
 };

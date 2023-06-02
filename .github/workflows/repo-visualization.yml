@@ -28,7 +28,7 @@ jobs:
           commit_message: "chore: update app visualization"
           root_path: "apps/tessellator/"
           excluded_globs: "**/!(*.{gitignore,json,md,txt,ui})"
-output_file: "./apps/tessellator/readme/app-visualization.svg"
+          output_file: "./apps/tessellator/readme/app-visualization.svg"
       - name: Update api visualization
         uses: githubocto/repo-visualizer@main
         with:

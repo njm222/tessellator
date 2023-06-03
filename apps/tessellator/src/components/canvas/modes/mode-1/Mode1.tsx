@@ -191,21 +191,28 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       )
     );
 
-    const factor = 1.5;
+    if (trackFeatures.valence > 0.5) {
+      p.current =
+        getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1;
+      q.current =
+        getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1;
+      return;
+    }
+
     p.current = MathUtils.lerp(
       p.current,
-      (getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) *
-        factor,
+      getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
       delta * 10
     );
 
     q.current = MathUtils.lerp(
       q.current,
-      (getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) *
-        factor,
+      getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
       delta * 10
     );
   };
+
+  console.log(trackFeatures);
 
   useFrame((state, delta) => {
     if (!visible) return;

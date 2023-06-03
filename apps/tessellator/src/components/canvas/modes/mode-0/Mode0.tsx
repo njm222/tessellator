@@ -41,7 +41,7 @@ function Terrain({ visible }: { visible: boolean }) {
 
     const dynamicDelta =
       delta *
-      (trackFeatures.tempo / 20) *
+      (trackFeatures.tempo / 10) *
       trackFeatures.energy *
       trackFeatures.danceability *
       (1 - trackFeatures.valence);

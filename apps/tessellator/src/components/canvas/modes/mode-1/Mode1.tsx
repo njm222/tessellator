@@ -162,7 +162,7 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
     radius.current = MathUtils.lerp(
       radius.current,
       Math.abs(
-        audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
+        audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
       ) / 5,
       delta
     );
@@ -170,7 +170,7 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
     tube.current = MathUtils.lerp(
       tube.current,
       Math.abs(
-        audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
+        audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
       ) / 2,
       delta
     );
@@ -191,16 +191,19 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       )
     );
 
+    const factor = 1.5;
     p.current = MathUtils.lerp(
       p.current,
-      getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
-      delta
+      (getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) *
+        factor,
+      delta * 10
     );
 
     q.current = MathUtils.lerp(
       q.current,
-      getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
-      delta
+      (getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1) *
+        factor,
+      delta * 10
     );
   };
 
@@ -215,7 +218,7 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       trackFeatures.danceability *
       (1 - trackFeatures.valence);
 
-    updateTorusProperties(dynamicDelta / 10);
+    updateTorusProperties(dynamicDelta);
 
     const [indices, vertices, normals, uvs] = getTorusBufferAttributes(
       radius.current,

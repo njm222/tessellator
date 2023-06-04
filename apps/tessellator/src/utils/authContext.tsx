@@ -86,6 +86,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
       return;
     }
 
+    setIsLoading(false);
     router.push("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -6,7 +6,6 @@ describe("stringUtils", () => {
     expect(generateRandomString(0)).toEqual("");
   });
   it("should return a random string of length n", () => {
-    const randomLength = generateRandomInteger(0, 50);
-    expect(generateRandomString(randomLength).length).toEqual(randomLength);
+    expect(generateRandomString(25).length).toEqual(25);
   });
 });

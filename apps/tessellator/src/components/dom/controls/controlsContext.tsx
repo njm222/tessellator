@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
-import { generateRandomInteger } from "core";
+import { generateRandomInteger, generateRandomNumber } from "core";
 
 import { useKeys } from "./useKeys";
 
@@ -89,19 +89,29 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
         if (modes.includes(mode)) {
           return;
         }
-        setModes((prevState) => [...prevState, mode]);
+        setModes((prevState) => {
+          prevState.push(mode);
+          return prevState;
+        });
       },
       removeMode: (mode: number) => {
         setModes((prevState) => {
           const index = prevState.findIndex((val) => val === mode);
           if (index >= 0) {
             prevState.splice(index, 1);
-            return prevState;
           }
           return prevState;
         });
       },
       changeMode: () => {
+        if (modes.length === 0) {
+          setModeKey(0);
+          return;
+        }
+        if (modes.length <= 1) {
+          setModeKey(modes[0]);
+          return;
+        }
         const index = generateRandomInteger(0, modes.length - 1);
         setModeKey(modes[index]);
       },

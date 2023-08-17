@@ -212,8 +212,6 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
     );
   };
 
-  console.log(trackFeatures);
-
   useFrame((state, delta) => {
     if (!visible) return;
     if (!mesh.current) return;

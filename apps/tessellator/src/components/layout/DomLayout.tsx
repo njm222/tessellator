@@ -9,10 +9,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastProvider } from "ui";
 
 import { AuthProvider } from "../../utils/authContext";
+import { LoaderProvider } from "../../utils/loaderContext";
 import { PortalProvider } from "../../utils/portalContext";
 import { ControlsProvider } from "../dom/controls/controlsContext";
 import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
-import { LoaderProvider } from "../../utils/loaderContext";
 
 const DomLayout = forwardRef(
   ({ children, ...props }: { children: ReactNode }, ref) => {

@@ -47,8 +47,8 @@ export const LoaderProvider: FC<LoaderProviderProps> = ({
     <LoaderContext.Provider value={value}>
       {isLoading ? (
         <Loader
-          message={loadingMessage}
           dotVariant={generateRandomInteger(0, 11)}
+          message={loadingMessage}
         />
       ) : null}
       {children}

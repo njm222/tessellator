@@ -33,18 +33,22 @@ type TError = {
 async function handleError(
   error: TError,
   open: (message: string) => void,
-  handleRefreshToken: () => Promise<void>
+  handleRefreshToken: (
+    refreshToken: string,
+    refreshPage?: boolean
+  ) => Promise<void>,
+  refreshToken: string
 ) {
   if (error.status === 401 || error.response?.status === 401) {
     // handle refresh
-    await handleRefreshToken();
+    await handleRefreshToken(refreshToken);
     return;
   }
   open(error.message);
 }
 
 export function useGetUserInformation() {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   const router = useRouter();
 
@@ -62,7 +66,7 @@ export function useGetUserInformation() {
         open("Visualizer requires a valid Spotify Premium subscription");
       },
       onError: (error: TError) => {
-        handleError(error, open, handleRefreshToken);
+        handleError(error, open, handleRefreshToken, refreshToken);
       },
     }
   );
@@ -90,7 +94,7 @@ export type AudioFeatures = {
 };
 
 export function useTrackAnalysisAndFeatures(trackId: string) {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   return useQuery(
     ["me", "tracks", trackId],
@@ -105,7 +109,7 @@ export function useTrackAnalysisAndFeatures(trackId: string) {
       enabled: !!accessToken && !!trackId,
       keepPreviousData: true,
       onError: (error: TError) => {
-        handleError(error, open, handleRefreshToken);
+        handleError(error, open, handleRefreshToken, refreshToken);
       },
     }
   );
@@ -113,13 +117,13 @@ export function useTrackAnalysisAndFeatures(trackId: string) {
 
 export function useRemoveSavedTrack() {
   const queryClient = useQueryClient();
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   return useMutation(
     async (id: string) => removeSavedTracks(accessToken, [id]),
     {
       onError: (error: TError) => {
-        handleError(error, open, handleRefreshToken);
+        handleError(error, open, handleRefreshToken, refreshToken);
       },
       onMutate: (id: string) => {
         queryClient.setQueryData(["me", "tracks", id, "contains"], false);
@@ -135,11 +139,11 @@ export function useRemoveSavedTrack() {
 
 export function useSaveTrack() {
   const queryClient = useQueryClient();
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   return useMutation(async (id: string) => saveTracks(accessToken, [id]), {
     onError: (error: TError) => {
-      handleError(error, open, handleRefreshToken);
+      handleError(error, open, handleRefreshToken, refreshToken);
     },
     onMutate: (id: string) => {
       queryClient.setQueryData(["me", "tracks", id, "contains"], true);
@@ -153,7 +157,7 @@ export function useSaveTrack() {
 }
 
 export function useCheckSavedTrack(trackId: string) {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   return useQuery(
     ["me", "tracks", trackId, "contains"],
@@ -165,14 +169,14 @@ export function useCheckSavedTrack(trackId: string) {
       enabled: !!accessToken && !!trackId,
       keepPreviousData: true,
       onError: (error: TError) => {
-        handleError(error, open, handleRefreshToken);
+        handleError(error, open, handleRefreshToken, refreshToken);
       },
     }
   );
 }
 
 export function usePlayTopTracks() {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   return useMutation(
     async () => {
@@ -183,21 +187,21 @@ export function usePlayTopTracks() {
     },
     {
       onError: (error: TError) => {
-        handleError(error, open, handleRefreshToken);
+        handleError(error, open, handleRefreshToken, refreshToken);
       },
     }
   );
 }
 
 export function useTransferMyPlayback() {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   return useMutation(
     async (deviceId: string) =>
       transferMyPlayback(accessToken, deviceId, false),
     {
       onError: (error: TError) => {
-        handleError(error, open, handleRefreshToken);
+        handleError(error, open, handleRefreshToken, refreshToken);
       },
     }
   );
@@ -206,7 +210,7 @@ export function useTransferMyPlayback() {
 /* -------- PLAYER CONTROLS -------- */
 
 export function usePausePlayer() {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   const { setPlayer } = usePlayer();
   return useMutation(async () => pausePlayback(accessToken), {
@@ -214,13 +218,13 @@ export function usePausePlayer() {
       setPlayer((prev: any) => ({ ...prev, paused: true }));
     },
     onError: (error: TError) => {
-      handleError(error, open, handleRefreshToken);
+      handleError(error, open, handleRefreshToken, refreshToken);
     },
   });
 }
 
 export function usePlayPlayer() {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   const { setPlayer } = usePlayer();
   return useMutation(
@@ -230,14 +234,14 @@ export function usePlayPlayer() {
         setPlayer((prev: any) => ({ ...prev, paused: false }));
       },
       onError: (error: TError) => {
-        handleError(error, open, handleRefreshToken);
+        handleError(error, open, handleRefreshToken, refreshToken);
       },
     }
   );
 }
 
 export function useNextTrack() {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   const { setPlayer } = usePlayer();
   return useMutation(async () => skipToNext(accessToken), {
@@ -245,13 +249,13 @@ export function useNextTrack() {
       setPlayer((prev: any) => ({ ...prev, paused: false }));
     },
     onError: (error: TError) => {
-      handleError(error, open, handleRefreshToken);
+      handleError(error, open, handleRefreshToken, refreshToken);
     },
   });
 }
 
 export function usePrevTrack() {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   const { setPlayer } = usePlayer();
   return useMutation(async () => skipToPrevious(accessToken), {
@@ -259,13 +263,13 @@ export function usePrevTrack() {
       setPlayer((prev: any) => ({ ...prev, paused: false }));
     },
     onError: (error: TError) => {
-      handleError(error, open, handleRefreshToken);
+      handleError(error, open, handleRefreshToken, refreshToken);
     },
   });
 }
 
 export function useShufflePlayer() {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   const { setPlayer } = usePlayer();
   return useMutation(
@@ -275,20 +279,20 @@ export function useShufflePlayer() {
         setPlayer((prev: any) => ({ ...prev, shuffle }));
       },
       onError: (error: TError) => {
-        handleError(error, open, handleRefreshToken);
+        handleError(error, open, handleRefreshToken, refreshToken);
       },
     }
   );
 }
 
 export function useSeekToPosition() {
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { open } = useToast();
   return useMutation(
     async (position: number) => seekToPosition(accessToken, position),
     {
       onError: (error: TError) => {
-        handleError(error, open, handleRefreshToken);
+        handleError(error, open, handleRefreshToken, refreshToken);
       },
     }
   );

@@ -12,6 +12,7 @@ import SpotifyAnalyser from "spotify-analyser";
 import { useToast } from "ui";
 
 import { useAuth } from "./authContext";
+import { useLoader } from "./loaderContext";
 import {
   AudioFeatures,
   useNextTrack,
@@ -27,7 +28,6 @@ import {
   useTransferMyPlayback,
 } from "./spotify";
 import { mutations } from "./store";
-import { useLoader } from "./loaderContext";
 
 type PlayerProviderProps = {
   player?: any;
@@ -105,7 +105,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   children: ReactNode;
 }) => {
   const toast = useToast();
-  const { accessToken, handleRefreshToken } = useAuth();
+  const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { setIsLoading } = useLoader();
   const [player, setPlayer] = useState(playerSample);
   const [spotifyPlayer, setSpotifyPlayer] = useState<any>(null);
@@ -160,7 +160,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
         "authentication_error",
         (data: { message: string }) => {
           toast.open(data.message);
-          handleRefreshToken(true);
+          handleRefreshToken(refreshToken, true);
         }
       );
       player.addListener("account_error", (data: { message: string }) => {
@@ -216,6 +216,9 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     mutatePlayTopTracks,
     mutateTransferMyPlayback,
     toast,
+    refreshToken,
+    setIsLoading,
+    spotifyPlayer,
   ]);
 
   const value = useMemo(
@@ -251,7 +254,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     if (!data.analysis) return;
     spotifyAnalyser.setData(data.analysis);
     setIsLoading(false);
-  }, [spotifyAnalyser, data.analysis]);
+  }, [spotifyAnalyser, data.analysis, setIsLoading]);
 
   return (
     <PlayerContext.Provider value={{ ...value, spotifyAnalyser }}>

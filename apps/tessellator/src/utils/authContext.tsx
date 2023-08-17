@@ -13,14 +13,17 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
 import { AnalyserProvider } from "./analyserContext";
-import { PlayerProvider } from "./playerContext";
 import { useLoader } from "./loaderContext";
+import { PlayerProvider } from "./playerContext";
 
 type AuthProviderProps = {
   isLoading?: boolean;
   accessToken?: string;
   refreshToken?: string;
-  handleRefreshToken?: (refreshPage?: boolean) => Promise<void>;
+  handleRefreshToken?: (
+    refreshToken: string,
+    refreshPage?: boolean
+  ) => Promise<void>;
   children: ReactNode;
 };
 
@@ -28,7 +31,7 @@ const AuthContext = createContext({
   isLoading: false,
   accessToken: "",
   refreshToken: "",
-  handleRefreshToken: async (refreshPage?: boolean) => {
+  handleRefreshToken: async (refreshToken: string, refreshPage?: boolean) => {
     return;
   },
 });
@@ -52,9 +55,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({
   }, [router]);
 
   const handleRefreshToken = useCallback(
-    async (refreshPage = false) => {
+    async (refreshToken: string, refreshPage = false) => {
       try {
-        const { accessToken } = await updateToken(tokens.refreshToken);
+        const { accessToken } = await updateToken(refreshToken);
         setTokens((prev) => ({ ...prev, accessToken }));
         Cookies.set("accessToken", accessToken);
         setIsLoading(false);
@@ -65,7 +68,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
         logoutUser();
       }
     },
-    [logoutUser, tokens?.refreshToken]
+    [logoutUser, setIsLoading]
   );
 
   useEffect(() => {
@@ -82,7 +85,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
     }
 
     if (refreshToken) {
-      handleRefreshToken();
+      handleRefreshToken(refreshToken);
       return;
     }
 

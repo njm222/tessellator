@@ -6,6 +6,7 @@ import { useMouseActivity } from "../controls/mouseActivityContext";
 
 import { AnalyserOptions } from "./AnalyserOptions";
 import { ModeOptions } from "./ModeOptions";
+import { VisualizerOptions } from "./VisualizerOptions";
 
 export function Settings() {
   const { mouseActive } = useMouseActivity();
@@ -38,6 +39,7 @@ function SettingsOptions({ handleClose }: { handleClose: () => void }) {
         titleBar={{ title: "Settings", drag: false, filter: false }}
       />
       <AnalyserOptions />
+      <VisualizerOptions />
       <ModeOptions />
     </>
   );

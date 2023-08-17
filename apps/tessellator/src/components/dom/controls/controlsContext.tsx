@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
-import { generateRandomInteger, generateRandomNumber } from "core";
+import { generateRandomInteger } from "core";
+
+import { LocalStorageKeys } from "../../../constants";
 
 import { useKeys } from "./useKeys";
 
@@ -65,9 +67,21 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const [modeKey, setModeKey] = useState(0);
-  const [randomizeMode, setRandomizeMode] = useState(true);
+  const [randomizeMode, setRandomizeMode] = useState(
+    localStorage.getItem(LocalStorageKeys.VISUALIZER_OPTIONS)
+      ? JSON.parse(
+          localStorage.getItem(LocalStorageKeys.VISUALIZER_OPTIONS) ?? ""
+        )?.randomizeMode ?? true
+      : true
+  );
   const [colourKey, setColourKey] = useState(0);
-  const [randomizeColourMode, setRandomizeColourMode] = useState(true);
+  const [randomizeColourMode, setRandomizeColourMode] = useState(
+    localStorage.getItem(LocalStorageKeys.VISUALIZER_OPTIONS)
+      ? JSON.parse(
+          localStorage.getItem(LocalStorageKeys.VISUALIZER_OPTIONS) ?? ""
+        )?.randomizeColourMode ?? true
+      : true
+  );
 
   useKeys([
     ...modeMap.map(({ key, value }) => ({

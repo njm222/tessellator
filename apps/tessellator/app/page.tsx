@@ -23,9 +23,17 @@ const View = dynamic(
   { ssr: false, loading: () => <Loader /> }
 );
 
+const DefaultLayout = dynamic(
+  () =>
+    import("../src/components/layout/DefaultLayout").then(
+      (mod) => mod.DefaultLayout
+    ),
+  { ssr: false }
+);
+
 export default function Page() {
   return (
-    <>
+    <DefaultLayout>
       <SocialLinks />
       <View>
         <Suspense fallback={null}>
@@ -33,6 +41,6 @@ export default function Page() {
           <Common />
         </Suspense>
       </View>
-    </>
+    </DefaultLayout>
   );
 }

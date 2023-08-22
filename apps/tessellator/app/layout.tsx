@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Tomorrow } from "next/font/google";
 
-import { DefaultLayout } from "../src/components/layout/DefaultLayout";
+import { Analytics } from "@vercel/analytics/react";
 import { Layout } from "../src/components/layout/Layout";
 
 import "./global.css";
@@ -16,9 +16,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html>
       <head />
       <body className={tomorrow.className}>
-        <Layout>
-          <DefaultLayout>{children}</DefaultLayout>
-        </Layout>
+        <Layout>{children}</Layout>
+        <Analytics />
       </body>
     </html>
   );

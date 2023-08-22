@@ -2,7 +2,6 @@
 
 import React, { ReactNode, useRef } from "react";
 import { Globals } from "@react-spring/three";
-import { Analytics } from "@vercel/analytics/react";
 import dynamic from "next/dynamic";
 
 /**
@@ -20,21 +19,18 @@ export const DefaultLayout = ({ children }: { children: ReactNode }) => {
   const ref = useRef(null);
 
   return (
-    <>
-      <div className="domContainer" ref={ref}>
-        {children}
-        <Scene
-          eventPrefix="client"
-          eventSource={ref}
-          shadows="soft"
-          style={{
-            position: "absolute",
-            top: 0,
-            background: "#000",
-          }}
-        />
-      </div>
-      <Analytics />
-    </>
+    <div className="domContainer" ref={ref}>
+      {children}
+      <Scene
+        eventPrefix="client"
+        eventSource={ref}
+        shadows="soft"
+        style={{
+          position: "absolute",
+          top: 0,
+          background: "#000",
+        }}
+      />
+    </div>
   );
 };

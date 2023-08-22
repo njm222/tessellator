@@ -1,3 +1,5 @@
+"use client";
+
 import {
   createContext,
   FC,
@@ -13,6 +15,8 @@ import AudioAnalyser, {
 } from "audio-analyser";
 
 import { LocalStorageKeys } from "../constants";
+
+import { getLocalStorageItem } from "./store";
 
 type AnalyserProviderProps = {
   audioAnalyser?: AudioAnalyser;
@@ -37,11 +41,8 @@ export const AnalyserProvider: FC<AnalyserProviderProps> = ({
   children: ReactNode;
 }) => {
   const [analyserOptions, setAnalyserOptions] = useState(
-    localStorage.getItem(LocalStorageKeys.AUDIO_ANALYSER_OPTIONS)
-      ? JSON.parse(
-          localStorage.getItem(LocalStorageKeys.AUDIO_ANALYSER_OPTIONS) ?? ""
-        )
-      : defaultAnalyserOptions
+    getLocalStorageItem(LocalStorageKeys.AUDIO_ANALYSER_OPTIONS) ??
+      defaultAnalyserOptions
   );
 
   const value = useMemo(

@@ -1,3 +1,5 @@
+"use client";
+
 import { memo, Suspense, useEffect, useRef } from "react";
 import { BakeShadows, Stars } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -19,7 +21,7 @@ const OuterScene = () => {
   );
 };
 
-const VisualizerScene = () => {
+export const VisualizerScene = () => {
   const camera = useThree((state) => state.camera);
   const { inPortal } = usePortal();
   const pixelationRef = useRef(new PixelationEffect());
@@ -68,4 +70,4 @@ const VisualizerScene = () => {
   );
 };
 
-export default memo(VisualizerScene);
+VisualizerScene.displayName = "VisualizerScene";

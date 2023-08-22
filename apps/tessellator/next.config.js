@@ -12,7 +12,9 @@ const nextConfig = {
   // compiler: {
   //   styledComponents: true,
   // },
-  experimental: {},
+  experimental: {
+    appDir: true
+  },
   images: {},
   transpilePackages: ['core', '@react-three/postprocessing'],
   reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.

@@ -10,11 +10,9 @@ import React, {
 } from "react";
 import { loginUser, updateToken } from "core";
 import Cookies from "js-cookie";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
-import { AnalyserProvider } from "./analyserContext";
 import { useLoader } from "./loaderContext";
-import { PlayerProvider } from "./playerContext";
 
 type AuthProviderProps = {
   isLoading?: boolean;
@@ -112,17 +110,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
     ]
   );
 
-  return (
-    <AuthContext.Provider value={value}>
-      {value.accessToken && router.pathname !== "/" ? ( // TODO: decouple
-        <PlayerProvider>
-          <AnalyserProvider>{children}</AnalyserProvider>
-        </PlayerProvider>
-      ) : (
-        children
-      )}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 function getTokens() {

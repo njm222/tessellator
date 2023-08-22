@@ -10,14 +10,14 @@ import { Bounds } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { loginUser } from "core";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Vector2 } from "three";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
 import { Text } from "../Text";
 
-const LandingScene = () => {
+export const LandingScene = () => {
   const [isPending, startTransition] = useTransition();
   const { refreshToken } = useAuth();
   const camera = useThree((state) => state.camera);
@@ -105,5 +105,3 @@ const LandingScene = () => {
     </>
   );
 };
-
-export default memo(LandingScene);

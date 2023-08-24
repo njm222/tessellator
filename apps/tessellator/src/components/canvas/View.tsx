@@ -27,19 +27,20 @@ export const Common = () => (
   </Suspense>
 );
 
-const View = forwardRef<unknown, { children: ReactNode }>(
-  ({ children, ...props }, ref) => {
-    const localRef = useRef(null);
-    useImperativeHandle(ref, () => localRef.current);
+export type ViewProps = {
+  children: ReactNode;
+};
 
-    return (
-      <>
-        <div ref={localRef} {...props} />
-        <Three>{children}</Three>
-      </>
-    );
-  }
-);
+const View = ({ children, ...props }: ViewProps) => {
+  const localRef = useRef(null);
+
+  return (
+    <>
+      <div ref={localRef} {...props} />
+      <Three>{children}</Three>
+    </>
+  );
+};
 
 View.displayName = "View";
 

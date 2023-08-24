@@ -1,10 +1,4 @@
-import React, {
-  memo,
-  Suspense,
-  useEffect,
-  useState,
-  useTransition,
-} from "react";
+import React, { Suspense, useEffect, useState, useTransition } from "react";
 import { SpringValue } from "@react-spring/three";
 import { Bounds } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";

@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  FC,
   ReactNode,
   useCallback,
   useContext,
@@ -36,11 +35,7 @@ const AuthContext = createContext({
 
 export const useAuth = () => useContext(AuthContext);
 
-export const AuthProvider: FC<AuthProviderProps> = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
   const { isLoading, setIsLoading } = useLoader();
   const [tokens, setTokens] = useState({ accessToken: "", refreshToken: "" });

@@ -1,6 +1,5 @@
 import {
   createContext,
-  FC,
   ReactNode,
   useContext,
   useEffect,
@@ -99,11 +98,7 @@ export const PlayerContext = createContext({
 
 export const usePlayer = () => useContext(PlayerContext);
 
-export const PlayerProvider: FC<PlayerProviderProps> = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const PlayerProvider = ({ children }: PlayerProviderProps) => {
   const toast = useToast();
   const { accessToken, handleRefreshToken, refreshToken } = useAuth();
   const { setIsLoading } = useLoader();

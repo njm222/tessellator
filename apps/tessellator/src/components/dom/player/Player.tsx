@@ -18,7 +18,7 @@ export function Player() {
     player?.track_window.current_track.id
   );
   const initialTime = useRef(0);
-  const timerRef = useRef<NodeJS.Timer>();
+  const timerRef = useRef<NodeJS.Timeout>();
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   function handleSeek({ clientX }: MouseEvent<HTMLElement>) {

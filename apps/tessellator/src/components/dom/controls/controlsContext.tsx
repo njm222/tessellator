@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import { generateRandomInteger } from "core";
 
 import { LocalStorageKeys } from "../../../constants";
@@ -29,7 +22,7 @@ const colourMap = [
   { key: "w", value: 3 },
 ];
 
-type ControlsProviderProps = {
+export type ControlsProviderProps = {
   children: ReactNode;
   modes?: number[];
   modeKey?: number;
@@ -68,11 +61,7 @@ const ControlsContext = createContext({
 
 export const useControls = () => useContext(ControlsContext);
 
-export const ControlsProvider: FC<ControlsProviderProps> = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const ControlsProvider = ({ children }: ControlsProviderProps) => {
   const [modes, setModes] = useState(
     modeMap.reduce((acc, curr) => {
       acc.push(curr.value);

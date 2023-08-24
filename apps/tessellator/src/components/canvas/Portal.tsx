@@ -124,16 +124,18 @@ const PortalScene = ({
             sourceFile={null}
             width={size.width / 3}
           >
-            <PerspectiveCamera
-              aspect={portalWidth / portalHeight}
-              fov={85}
-              makeDefault
-              manual
-              onUpdate={(c) => c.updateProjectionMatrix()}
-              position={[0, 0, 5]}
-            />
-            <ambientLight intensity={0.8} />
-            {children}
+            <>
+              <PerspectiveCamera
+                aspect={portalWidth / portalHeight}
+                fov={85}
+                makeDefault
+                manual
+                onUpdate={(c) => c.updateProjectionMatrix()}
+                position={[0, 0, 5]}
+              />
+              <ambientLight intensity={0.8} />
+              {children}
+            </>
           </RenderTexture>
         </meshBasicMaterial>
       </mesh>

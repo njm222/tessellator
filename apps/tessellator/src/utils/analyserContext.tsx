@@ -2,7 +2,6 @@
 
 import {
   createContext,
-  FC,
   ReactNode,
   useContext,
   useEffect,
@@ -18,7 +17,7 @@ import { LocalStorageKeys } from "../constants";
 
 import { getLocalStorageItem } from "./store";
 
-type AnalyserProviderProps = {
+export type AnalyserProviderProps = {
   audioAnalyser?: AudioAnalyser;
   analyserOptions?: AudioAnalyserProps;
   setAnalyserOptions?: (options: AudioAnalyserProps) => void;
@@ -35,11 +34,7 @@ const AnalyserContext = createContext({
 
 export const useAnalyser = () => useContext(AnalyserContext);
 
-export const AnalyserProvider: FC<AnalyserProviderProps> = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const AnalyserProvider = ({ children }: AnalyserProviderProps) => {
   const [analyserOptions, setAnalyserOptions] = useState(
     getLocalStorageItem(LocalStorageKeys.AUDIO_ANALYSER_OPTIONS) ??
       defaultAnalyserOptions

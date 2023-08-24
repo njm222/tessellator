@@ -3,16 +3,18 @@
 import React, { ReactNode } from "react";
 import dynamic from "next/dynamic";
 
+import { AnalyserProviderProps } from "../../utils/analyserContext";
 import { PlayerProvider } from "../../utils/playerContext";
 import { PortalProvider } from "../../utils/portalContext";
+import { ControlsProviderProps } from "../dom/controls/controlsContext";
 import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
 
-const AnalyserProvider = dynamic(
+const AnalyserProvider = dynamic<AnalyserProviderProps>(
   () =>
     import("../../utils/analyserContext").then((mod) => mod.AnalyserProvider),
   { ssr: false }
 );
-const ControlsProvider = dynamic(
+const ControlsProvider = dynamic<ControlsProviderProps>(
   () =>
     import("../dom/controls/controlsContext").then(
       (mod) => mod.ControlsProvider

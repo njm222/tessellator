@@ -1,11 +1,4 @@
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import { generateRandomInteger } from "core";
 import { Loader } from "ui";
 
@@ -24,11 +17,7 @@ const LoaderContext = createContext({
 
 export const useLoader = () => useContext(LoaderContext);
 
-export const LoaderProvider: FC<LoaderProviderProps> = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const LoaderProvider = ({ children }: LoaderProviderProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
 

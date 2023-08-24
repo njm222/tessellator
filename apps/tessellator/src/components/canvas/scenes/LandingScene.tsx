@@ -77,7 +77,7 @@ export const LandingScene = () => {
               });
             }}
           >
-            {"t e s s e l l a t o r"}
+            t e s s e l l a t o r
           </Text>
         </Bounds>
       </Suspense>

@@ -16,7 +16,7 @@ export function Text({
   children,
   ...props
 }: {
-  children: ReactNode | string;
+  children: string;
   onPointerDown: () => void;
 }) {
   const meshRef = useRef<Mesh>(new Mesh());
@@ -63,10 +63,8 @@ export function Text({
             ref={meshRef}
             scale={6}
           >
-            <>
-              {children}
-              <meshPhongMaterial color={colour} wireframe={!hover} />
-            </>
+            {children}
+            <meshPhongMaterial color={colour} wireframe={!hover} />
           </Text3D>
         </Center>
       </animated.group>

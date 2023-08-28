@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useTransition } from "react";
+import React, { Suspense, useEffect, useState, useTransition } from "react";
 import { SpringValue } from "@react-spring/three";
 import { Bounds } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -69,16 +69,18 @@ export const LandingScene = () => {
 
   return (
     <>
-      <Bounds fit={!isNavigating} margin={0.8} observe={!isNavigating}>
-        <Text
-          onPointerDown={() => {
-            if (isPending) return;
-            handleClick();
-          }}
-        >
-          t e s s e l l a t o r
-        </Text>
-      </Bounds>
+      <Suspense>
+        <Bounds fit={!isNavigating} margin={0.8} observe={!isNavigating}>
+          <Text
+            onPointerDown={() => {
+              if (isPending) return;
+              handleClick();
+            }}
+          >
+            t e s s e l l a t o r
+          </Text>
+        </Bounds>
+      </Suspense>
       <Particles count={20000} isNavigating={isNavigating} />
 
       <EffectComposer disableNormalPass multisampling={0}>

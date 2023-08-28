@@ -18,7 +18,7 @@ const tomorrow = Tomorrow({
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <head />
       <body className={tomorrow.className}>
         <Layout>{children}</Layout>

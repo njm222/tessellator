@@ -8,10 +8,9 @@ import {
 } from "react";
 import { StartPlaybackOptions } from "core";
 import SpotifyAnalyser from "spotify-analyser";
-import { useToast } from "ui";
+import { Loader, useToast } from "ui";
 
 import { useAuth } from "./authContext";
-import { useLoader } from "./loaderContext";
 import {
   AudioFeatures,
   useNextTrack,
@@ -101,7 +100,6 @@ export const usePlayer = () => useContext(PlayerContext);
 export const PlayerProvider = ({ children }: PlayerProviderProps) => {
   const toast = useToast();
   const { accessToken, handleRefreshToken, refreshToken } = useAuth();
-  const { setIsLoading } = useLoader();
   const [player, setPlayer] = useState(playerSample);
   const [spotifyPlayer, setSpotifyPlayer] = useState<any>(null);
   const [trackId, setTrackId] = useState("");
@@ -128,8 +126,6 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     if (document.getElementById("spotify-sdk")) {
       return;
     }
-
-    setIsLoading(true, "Setting up player");
 
     const sdk = document.createElement("script");
     sdk.setAttribute("src", "https://sdk.scdn.co/spotify-player.js");
@@ -212,7 +208,6 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     mutateTransferMyPlayback,
     toast,
     refreshToken,
-    setIsLoading,
     spotifyPlayer,
   ]);
 
@@ -248,8 +243,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
   useEffect(() => {
     if (!data.analysis) return;
     spotifyAnalyser.setData(data.analysis);
-    setIsLoading(false);
-  }, [spotifyAnalyser, data.analysis, setIsLoading]);
+  }, [spotifyAnalyser, data.analysis]);
 
   return (
     <PlayerContext.Provider value={{ ...value, spotifyAnalyser }}>

@@ -45,15 +45,17 @@ export const LandingScene = () => {
   });
 
   const handleClick = async () => {
-    setIsNavigating(true);
-    z.start({
-      to: 20,
-      from: camera.position.z,
-      config: {
-        tension: 20,
-        friction: 5,
-        precision: 0.0001,
-      },
+    startTransition(() => {
+      z.start({
+        to: 20,
+        from: camera.position.z,
+        config: {
+          tension: 20,
+          friction: 5,
+          precision: 0.0001,
+        },
+      });
+      setIsNavigating(true);
     });
     // check for refreshToken
     if (refreshToken) {
@@ -71,9 +73,7 @@ export const LandingScene = () => {
         <Text
           onPointerDown={() => {
             if (isPending) return;
-            startTransition(() => {
-              handleClick();
-            });
+            handleClick();
           }}
         >
           t e s s e l l a t o r

@@ -7,8 +7,9 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { getCookie, setCookie, deleteCookie } from "cookies-next";
+
 import { loginUser, updateToken } from "core";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
 import { useLoader } from "./loaderContext";
@@ -41,8 +42,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [tokens, setTokens] = useState({ accessToken: "", refreshToken: "" });
 
   const logoutUser = useCallback(() => {
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
+    deleteCookie("accessToken");
+    deleteCookie("refreshToken");
     setTokens({ accessToken: "", refreshToken: "" });
     router.push("/");
   }, [router]);
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       try {
         const { accessToken } = await updateToken(refreshToken);
         setTokens((prev) => ({ ...prev, accessToken }));
-        Cookies.set("accessToken", accessToken);
+        setCookie("accessToken", accessToken);
         setIsLoading(false);
         if (refreshPage) {
           window.location.reload(); // might make sense here
@@ -110,7 +111,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 function getTokens() {
   function getTokenFromCookies(key: string) {
-    const token = Cookies.get(key);
+    const token = getCookie(key);
 
     return !!token && token !== "undefined" ? token : null;
   }

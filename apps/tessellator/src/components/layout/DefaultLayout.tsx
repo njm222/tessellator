@@ -1,8 +1,7 @@
-"use client";
-
 import React, { ReactNode, useRef } from "react";
 import { Globals } from "@react-spring/three";
 import dynamic from "next/dynamic";
+import { Loader } from "ui";
 
 /**
  * workaround from: https://github.com/pmndrs/react-spring/issues/1586
@@ -13,6 +12,7 @@ Globals.assign({
 
 const Scene = dynamic(() => import("../canvas/Scene"), {
   ssr: false,
+  loading: () => <Loader message="Loading scene" />,
 });
 
 export type DefaultLayoutProps = {

@@ -1,5 +1,3 @@
-"use client";
-
 import React, { ReactNode, useRef } from "react";
 import { AdaptiveDpr, AdaptiveEvents, OrbitControls } from "@react-three/drei";
 import { Perf } from "r3f-perf";

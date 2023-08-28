@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef } from "react";
 import { BakeShadows, Stars } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";

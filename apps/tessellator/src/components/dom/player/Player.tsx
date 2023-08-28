@@ -21,7 +21,7 @@ export function Player() {
     shuffle,
     removeSaved,
     seek,
-    spotifyAnalyser,
+    spotifyAnalyser: { tatums },
   } = usePlayer();
   const { mouseActive } = useMouseActivity();
   const { data: isSaved } = useCheckSavedTrack(
@@ -83,7 +83,16 @@ export function Player() {
     audioAnalyser.setup(analyserOptions);
   }
 
-  if (!spotifyAnalyser?.tatums) return;
+  if (!tatums)
+    return (
+      <div
+        className={`playerContainer ${
+          !mouseActive && !player?.paused && "hidden"
+        }`}
+      >
+        <h4 className="loading">loading player</h4>
+      </div>
+    );
 
   return (
     <div

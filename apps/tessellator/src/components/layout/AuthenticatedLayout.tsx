@@ -14,6 +14,7 @@ const AnalyserProvider = dynamic<AnalyserProviderProps>(
     import("../../utils/analyserContext").then((mod) => mod.AnalyserProvider),
   { ssr: false }
 );
+
 const ControlsProvider = dynamic<ControlsProviderProps>(
   () =>
     import("../dom/controls/controlsContext").then(

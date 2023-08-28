@@ -1,8 +1,7 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
-import { Loader } from "ui";
 
 import { ViewProps } from "../components/canvas/View";
 import SocialLinks from "../components/dom/SocialLinks";
@@ -15,6 +14,7 @@ const LandingScene = dynamic<{}>(
     ),
   { ssr: false }
 );
+
 const Common = dynamic<{}>(
   () => import("../components/canvas/View").then((mod) => mod.Common),
   { ssr: false }
@@ -22,7 +22,7 @@ const Common = dynamic<{}>(
 
 const View = dynamic<ViewProps>(
   () => import("../components/canvas/View").then((mod) => mod.View),
-  { ssr: false, loading: () => <Loader /> }
+  { ssr: false }
 );
 
 const DefaultLayout = dynamic<DefaultLayoutProps>(
@@ -38,10 +38,8 @@ export default function Page() {
     <DefaultLayout>
       <SocialLinks />
       <View>
-        <Suspense fallback={null}>
-          <LandingScene />
-          <Common />
-        </Suspense>
+        <LandingScene />
+        <Common />
       </View>
     </DefaultLayout>
   );

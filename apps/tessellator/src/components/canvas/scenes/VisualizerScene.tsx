@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { BakeShadows, Stars } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer, Pixelation } from "@react-three/postprocessing";
@@ -51,7 +51,7 @@ export const VisualizerScene = () => {
   });
 
   return (
-    <Suspense fallback={null}>
+    <>
       <Portal>
         <Visualizer />
       </Portal>
@@ -66,7 +66,7 @@ export const VisualizerScene = () => {
         />
         <Pixelation granularity={0} ref={pixelationRef} />
       </EffectComposer>
-    </Suspense>
+    </>
   );
 };
 

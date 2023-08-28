@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  forwardRef,
-  ReactNode,
-  Suspense,
-  useImperativeHandle,
-  useRef,
-} from "react";
+import React, { ReactNode, useRef } from "react";
 import { AdaptiveDpr, AdaptiveEvents, OrbitControls } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 
@@ -14,7 +8,7 @@ import { environment } from "../../environments/environment";
 import { Three } from "../../helpers/Three";
 
 export const Common = () => (
-  <Suspense fallback={null}>
+  <>
     <ambientLight intensity={0.5} />
     <directionalLight intensity={1} position={[2.5, 2, 12]} />
     <pointLight castShadow intensity={1} position={[-10, 5, 20]} />
@@ -24,7 +18,7 @@ export const Common = () => (
     )}
     <AdaptiveDpr pixelated />
     <AdaptiveEvents />
-  </Suspense>
+  </>
 );
 
 export type ViewProps = {

@@ -10,7 +10,8 @@
     ".": "./dist",
     "./index.css": "./dist/index.css"
   },
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
   "scripts": {
     "build": "tsup src/index.tsx --format esm,cjs --dts --external react",
     "clean": "rm -rf dist",
@@ -27,8 +28,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^26.0.22",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
     "autoprefixer": "^10.4.14",
     "eslint-config-custom": "*",
     "jest": "^29.0.5",
@@ -38,7 +39,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tsconfig": "*",
-    "tsup": "^6.2.3",
+    "tsup": "^7.2.0",
     "typescript": "^5.1.6"
   }
 }

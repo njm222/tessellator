@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { animated, useSpring } from "@react-spring/three";
 import {
   Center,

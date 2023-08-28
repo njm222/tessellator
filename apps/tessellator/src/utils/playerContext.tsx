@@ -8,7 +8,7 @@ import {
 } from "react";
 import { StartPlaybackOptions } from "core";
 import SpotifyAnalyser from "spotify-analyser";
-import { Loader, useToast } from "ui";
+import { useToast } from "ui";
 
 import { useAuth } from "./authContext";
 import {

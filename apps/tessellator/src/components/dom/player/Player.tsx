@@ -1,7 +1,7 @@
-import React, { MouseEvent, Suspense, useEffect, useRef } from "react";
+import React, { MouseEvent, useEffect, useRef } from "react";
 import { convertURItoURL } from "core";
 import Image from "next/image";
-import { Loader, PlayerControls, ProgressBar, TrackDetails } from "ui";
+import { PlayerControls, ProgressBar, TrackDetails } from "ui";
 
 import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";
@@ -83,53 +83,49 @@ export function Player() {
     audioAnalyser.setup(analyserOptions);
   }
 
+  if (!spotifyAnalyser?.tatums) return;
+
   return (
-    <Suspense fallback={<Loader message="Setting up player" />}>
-      {spotifyAnalyser.tatums ? (
-        <div
-          className={`playerContainer ${
-            !mouseActive && !player?.paused && "hidden"
-          }`}
-        >
-          <div className="playerLeft">
-            <Image
-              alt="album art"
-              height="75"
-              src={player?.track_window.current_track.album.images[0].url}
-              width="75"
-            />
-          </div>
-          <div className="playerCenter">
-            <PlayerControls
-              isPaused={player?.paused}
-              isSaved={isSaved}
-              isShuffle={player?.shuffle}
-              onNext={next}
-              onPause={pause}
-              onPlay={handlePlay}
-              onPrev={prev}
-              onSave={() =>
-                isSaved
-                  ? removeSaved(player?.track_window.current_track.id)
-                  : save(player?.track_window.current_track.id)
-              }
-              onShuffle={() => shuffle(!player?.shuffle)}
-            />
-            <ProgressBar onSeek={handleSeek} ref={progressBarRef} />
-          </div>
-          <div className="playerRight">
-            <TrackDetails
-              trackArtists={player?.track_window.current_track.artists.map(
-                ({ name, uri }) => ({ name, link: convertURItoURL(uri) })
-              )}
-              trackLink={convertURItoURL(
-                player?.track_window.current_track.uri
-              )}
-              trackName={player?.track_window.current_track.name}
-            />
-          </div>
-        </div>
-      ) : null}
-    </Suspense>
+    <div
+      className={`playerContainer ${
+        !mouseActive && !player?.paused && "hidden"
+      }`}
+    >
+      <div className="playerLeft">
+        <Image
+          alt="album art"
+          height="75"
+          src={player?.track_window.current_track.album.images[0].url}
+          width="75"
+        />
+      </div>
+      <div className="playerCenter">
+        <PlayerControls
+          isPaused={player?.paused}
+          isSaved={isSaved}
+          isShuffle={player?.shuffle}
+          onNext={next}
+          onPause={pause}
+          onPlay={handlePlay}
+          onPrev={prev}
+          onSave={() =>
+            isSaved
+              ? removeSaved(player?.track_window.current_track.id)
+              : save(player?.track_window.current_track.id)
+          }
+          onShuffle={() => shuffle(!player?.shuffle)}
+        />
+        <ProgressBar onSeek={handleSeek} ref={progressBarRef} />
+      </div>
+      <div className="playerRight">
+        <TrackDetails
+          trackArtists={player?.track_window.current_track.artists.map(
+            ({ name, uri }) => ({ name, link: convertURItoURL(uri) })
+          )}
+          trackLink={convertURItoURL(player?.track_window.current_track.uri)}
+          trackName={player?.track_window.current_track.name}
+        />
+      </div>
+    </div>
   );
 }

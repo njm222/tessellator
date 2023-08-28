@@ -7,12 +7,9 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { getCookie, setCookie, deleteCookie } from "cookies-next";
-
+import { deleteCookie,getCookie, setCookie } from "cookies-next";
 import { loginUser, updateToken } from "core";
 import { useRouter } from "next/navigation";
-
-import { useLoader } from "./loaderContext";
 
 type AuthProviderProps = {
   isLoading?: boolean;
@@ -26,7 +23,6 @@ type AuthProviderProps = {
 };
 
 const AuthContext = createContext({
-  isLoading: false,
   accessToken: "",
   refreshToken: "",
   handleRefreshToken: async (refreshToken: string, refreshPage?: boolean) => {
@@ -38,7 +34,6 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
-  const { isLoading, setIsLoading } = useLoader();
   const [tokens, setTokens] = useState({ accessToken: "", refreshToken: "" });
 
   const logoutUser = useCallback(() => {
@@ -54,7 +49,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const { accessToken } = await updateToken(refreshToken);
         setTokens((prev) => ({ ...prev, accessToken }));
         setCookie("accessToken", accessToken);
-        setIsLoading(false);
         if (refreshPage) {
           window.location.reload(); // might make sense here
         }
@@ -62,11 +56,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         logoutUser();
       }
     },
-    [logoutUser, setIsLoading]
+    [logoutUser]
   );
 
   useEffect(() => {
-    setIsLoading(true, "Authenticating user");
     const { accessToken, refreshToken } = getTokens();
 
     if (accessToken && refreshToken) {
@@ -74,7 +67,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         accessToken,
         refreshToken,
       });
-      setIsLoading(false);
       return;
     }
 
@@ -83,7 +75,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       return;
     }
 
-    setIsLoading(false);
     router.push("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -93,17 +84,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
       loginUser,
-      isLoading,
       logoutUser,
       handleRefreshToken,
     }),
-    [
-      isLoading,
-      logoutUser,
-      handleRefreshToken,
-      tokens?.accessToken,
-      tokens?.refreshToken,
-    ]
+    [logoutUser, handleRefreshToken, tokens?.accessToken, tokens?.refreshToken]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -2,11 +2,11 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
+import { Loader } from "ui";
 
 import { ViewProps } from "../components/canvas/View";
 import SocialLinks from "../components/dom/SocialLinks";
 import { DefaultLayoutProps } from "../components/layout/DefaultLayout";
-import { Loader } from "ui";
 
 const LandingScene = dynamic<{}>(
   () =>

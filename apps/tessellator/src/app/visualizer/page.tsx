@@ -2,13 +2,13 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
+import { Loader } from "ui";
 
 import { ViewProps } from "../../components/canvas/View";
 import { Player } from "../../components/dom/player/Player";
 import { Settings } from "../../components/dom/settings/Settings";
 import { WelcomeUser } from "../../components/dom/WelcomeUser";
 import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
-import { Loader } from "ui";
 
 const VisualizerScene = dynamic<{}>(
   () =>

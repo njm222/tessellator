@@ -193,7 +193,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
       setSpotifyPlayer(player);
     };
 
-    () => {
+    return () => {
       if (!spotifyPlayer) return;
       spotifyPlayer.pause();
       spotifyPlayer.disconnect();

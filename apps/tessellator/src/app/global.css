@@ -79,6 +79,7 @@ img {
 
 .settings {
   position: absolute;
+  z-index: inherit;
   top: 1rem;
   right: 1rem;
   color: hsla(0, 0%, 100%, 0.6);

@@ -13,7 +13,7 @@ import AudioAnalyser, {
   defaultAnalyserOptions,
 } from "audio-analyser";
 
-import { LocalStorageKeys } from "../constants";
+import { LocalStorageKeys } from "../config/constants";
 
 import { getLocalStorageItem } from "./store";
 

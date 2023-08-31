@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { folder, useControls as useLevaControls } from "leva";
 
-import { LocalStorageKeys } from "../../../constants";
+import { LocalStorageKeys } from "../../../config/constants";
 import { useControls } from "../controls/controlsContext";
 
 export function VisualizerOptions() {

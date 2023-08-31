@@ -3,7 +3,7 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import { generateRandomInteger } from "core";
 
-import { LocalStorageKeys } from "../../../constants";
+import { LocalStorageKeys } from "../../../config/constants";
 import { getLocalStorageItem } from "../../../utils/store";
 
 import { useKeys } from "./useKeys";

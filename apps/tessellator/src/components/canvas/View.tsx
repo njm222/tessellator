@@ -2,7 +2,7 @@ import React, { ReactNode, useRef } from "react";
 import { AdaptiveDpr, AdaptiveEvents, OrbitControls } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 
-import { environment } from "../../environments/environment";
+import { environment } from "../../config/environment";
 import { Three } from "../../helpers/Three";
 
 export const Common = () => (

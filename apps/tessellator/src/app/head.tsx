@@ -1,4 +1,4 @@
-import { environment } from "../environments/environment";
+import { environment } from "../config/environment";
 
 const titleDefault = "Tessellator";
 const url = environment.frontendUrl;

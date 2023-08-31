@@ -16,7 +16,7 @@ import {
   StartPlaybackOptions,
   transferMyPlayback,
 } from "core";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useToast } from "ui";
 
 import { useAuth } from "./authContext";

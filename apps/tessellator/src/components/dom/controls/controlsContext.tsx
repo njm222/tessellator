@@ -1,7 +1,10 @@
+"use client";
+
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import { generateRandomInteger } from "core";
 
 import { LocalStorageKeys } from "../../../constants";
+import { getLocalStorageItem } from "../../../utils/store";
 
 import { useKeys } from "./useKeys";
 
@@ -19,15 +22,15 @@ const colourMap = [
   { key: "w", value: 3 },
 ];
 
-type ControlsProviderProps = {
+export type ControlsProviderProps = {
   children: ReactNode;
   modes?: number[];
   modeKey?: number;
   colourKey?: number;
   addMode?: (mode: number) => void;
   removeMode?: (mode: number) => void;
-  changeColourMode: () => void;
-  changeMode: () => void;
+  changeColourMode?: () => void;
+  changeMode?: () => void;
 };
 
 const ControlsContext = createContext({
@@ -58,7 +61,7 @@ const ControlsContext = createContext({
 
 export const useControls = () => useContext(ControlsContext);
 
-export const ControlsProvider = ({ children }: { children: ReactNode }) => {
+export const ControlsProvider = ({ children }: ControlsProviderProps) => {
   const [modes, setModes] = useState(
     modeMap.reduce((acc, curr) => {
       acc.push(curr.value);
@@ -68,19 +71,13 @@ export const ControlsProvider = ({ children }: { children: ReactNode }) => {
 
   const [modeKey, setModeKey] = useState(0);
   const [randomizeMode, setRandomizeMode] = useState(
-    localStorage.getItem(LocalStorageKeys.VISUALIZER_OPTIONS)
-      ? JSON.parse(
-          localStorage.getItem(LocalStorageKeys.VISUALIZER_OPTIONS) ?? ""
-        )?.randomizeMode ?? true
-      : true
+    getLocalStorageItem(LocalStorageKeys.VISUALIZER_OPTIONS)?.randomizeMode ??
+      true
   );
   const [colourKey, setColourKey] = useState(0);
   const [randomizeColourMode, setRandomizeColourMode] = useState(
-    localStorage.getItem(LocalStorageKeys.VISUALIZER_OPTIONS)
-      ? JSON.parse(
-          localStorage.getItem(LocalStorageKeys.VISUALIZER_OPTIONS) ?? ""
-        )?.randomizeColourMode ?? true
-      : true
+    getLocalStorageItem(LocalStorageKeys.VISUALIZER_OPTIONS)
+      ?.randomizeColourMode ?? true
   );
 
   useKeys([

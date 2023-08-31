@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { animated, useSpring } from "@react-spring/three";
 import {
   Center,
@@ -16,7 +16,7 @@ export function Text({
   children,
   ...props
 }: {
-  children: ReactNode | string;
+  children: string;
   onPointerDown: () => void;
 }) {
   const meshRef = useRef<Mesh>(new Mesh());

@@ -1,6 +1,5 @@
 import {
   createContext,
-  FC,
   ReactNode,
   useContext,
   useEffect,
@@ -12,7 +11,6 @@ import SpotifyAnalyser from "spotify-analyser";
 import { useToast } from "ui";
 
 import { useAuth } from "./authContext";
-import { useLoader } from "./loaderContext";
 import {
   AudioFeatures,
   useNextTrack,
@@ -99,14 +97,9 @@ export const PlayerContext = createContext({
 
 export const usePlayer = () => useContext(PlayerContext);
 
-export const PlayerProvider: FC<PlayerProviderProps> = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const PlayerProvider = ({ children }: PlayerProviderProps) => {
   const toast = useToast();
   const { accessToken, handleRefreshToken, refreshToken } = useAuth();
-  const { setIsLoading } = useLoader();
   const [player, setPlayer] = useState(playerSample);
   const [spotifyPlayer, setSpotifyPlayer] = useState<any>(null);
   const [trackId, setTrackId] = useState("");
@@ -133,8 +126,6 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     if (document.getElementById("spotify-sdk")) {
       return;
     }
-
-    setIsLoading(true, "Setting up player");
 
     const sdk = document.createElement("script");
     sdk.setAttribute("src", "https://sdk.scdn.co/spotify-player.js");
@@ -202,7 +193,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
       setSpotifyPlayer(player);
     };
 
-    () => {
+    return () => {
       if (!spotifyPlayer) return;
       spotifyPlayer.pause();
       spotifyPlayer.disconnect();
@@ -217,7 +208,6 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
     mutateTransferMyPlayback,
     toast,
     refreshToken,
-    setIsLoading,
     spotifyPlayer,
   ]);
 
@@ -253,8 +243,7 @@ export const PlayerProvider: FC<PlayerProviderProps> = ({
   useEffect(() => {
     if (!data.analysis) return;
     spotifyAnalyser.setData(data.analysis);
-    setIsLoading(false);
-  }, [spotifyAnalyser, data.analysis, setIsLoading]);
+  }, [spotifyAnalyser, data.analysis]);
 
   return (
     <PlayerContext.Provider value={{ ...value, spotifyAnalyser }}>

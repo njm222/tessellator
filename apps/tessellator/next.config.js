@@ -8,13 +8,11 @@ const withPWA = require('next-pwa')({
 })
 
 const nextConfig = {
-  // uncomment the following snippet if using styled components
-  // compiler: {
-  //   styledComponents: true,
-  // },
-  experimental: {},
+  experimental: {
+    appDir: true
+  },
   images: {},
-  transpilePackages: ['core', '@react-three/postprocessing'],
+  transpilePackages: ['core', 'ui', '@react-three/postprocessing'],
   reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
   webpack(config, { isServer }) {
     // audio support

@@ -11,14 +11,24 @@ import { useMouseActivity } from "../controls/mouseActivityContext";
 
 export function Player() {
   const { audioAnalyser, analyserOptions } = useAnalyser();
-  const { player, play, pause, next, prev, save, shuffle, removeSaved, seek } =
-    usePlayer();
+  const {
+    player,
+    play,
+    pause,
+    next,
+    prev,
+    save,
+    shuffle,
+    removeSaved,
+    seek,
+    spotifyAnalyser,
+  } = usePlayer();
   const { mouseActive } = useMouseActivity();
   const { data: isSaved } = useCheckSavedTrack(
     player?.track_window.current_track.id
   );
   const initialTime = useRef(0);
-  const timerRef = useRef<NodeJS.Timer>();
+  const timerRef = useRef<NodeJS.Timeout>();
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   function handleSeek({ clientX }: MouseEvent<HTMLElement>) {
@@ -72,6 +82,17 @@ export function Player() {
     }
     audioAnalyser.setup(analyserOptions);
   }
+
+  if (!spotifyAnalyser.tatums)
+    return (
+      <div
+        className={`playerContainer ${
+          !mouseActive && !player?.paused && "hidden"
+        }`}
+      >
+        <h5 className="loading">loading player</h5>
+      </div>
+    );
 
   return (
     <div

@@ -1,11 +1,4 @@
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 
 type PortalProviderProps = {
   inPortal?: boolean;
@@ -22,11 +15,7 @@ const PortalContext = createContext({
 
 export const usePortal = () => useContext(PortalContext);
 
-export const PortalProvider: FC<PortalProviderProps> = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const PortalProvider = ({ children }: PortalProviderProps) => {
   const [inPortal, setInPortal] = useState(false);
 
   const value = useMemo(

@@ -20,10 +20,10 @@
     "audio-analyser": "*",
     "core": "*",
     "glsl-noise": "^0.0.0",
-    "js-cookie": "^3.0.5",
+    "cookies-next": "^3.0.0",
     "leva": "^0.9.34",
     "logger": "*",
-    "next": "latest",
+    "next": "^13.4.19",
     "next-pwa": "^5.6.0",
     "postprocessing": "^6.33.0",
     "react": "^18.2.0",
@@ -31,17 +31,17 @@
     "spotify-analyser": "*",
     "three": "^0.154.0",
     "three-stdlib": "^2.24.2",
+    "tunnel-rat": "^0.1.2",
     "typewriter-effect": "^2.20.1",
     "ui": "*"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.4.16",
-    "@testing-library/react": "^14.0.0",
     "@types/jest": "^26.0.22",
     "@types/js-cookie": "^3.0.3",
-    "@types/node": "^17.0.12",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11",
+    "@types/node": "^20.5.0",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
     "@types/three": "^0.150.2",
     "eslint-config-custom": "*",
     "file-loader": "^6.2.0",
@@ -52,7 +52,7 @@
     "r3f-perf": "^7.1.2",
     "raw-loader": "^4.0.2",
     "tsconfig": "*",
-    "typescript": "^4.8.3",
+    "typescript": "^5.1.6",
     "url-loader": "^4.1.1"
   }
 }

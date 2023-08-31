@@ -1,4 +1,4 @@
-import { memo, Suspense, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { BakeShadows, Stars } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer, Pixelation } from "@react-three/postprocessing";
@@ -19,7 +19,7 @@ const OuterScene = () => {
   );
 };
 
-const VisualizerScene = () => {
+export const VisualizerScene = () => {
   const camera = useThree((state) => state.camera);
   const { inPortal } = usePortal();
   const pixelationRef = useRef(new PixelationEffect());
@@ -49,7 +49,7 @@ const VisualizerScene = () => {
   });
 
   return (
-    <Suspense fallback={null}>
+    <>
       <Portal>
         <Visualizer />
       </Portal>
@@ -64,8 +64,8 @@ const VisualizerScene = () => {
         />
         <Pixelation granularity={0} ref={pixelationRef} />
       </EffectComposer>
-    </Suspense>
+    </>
   );
 };
 
-export default memo(VisualizerScene);
+VisualizerScene.displayName = "VisualizerScene";

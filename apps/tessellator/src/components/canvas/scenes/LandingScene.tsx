@@ -1,23 +1,17 @@
-import React, {
-  memo,
-  Suspense,
-  useEffect,
-  useState,
-  useTransition,
-} from "react";
+import React, { Suspense, useEffect, useState, useTransition } from "react";
 import { SpringValue } from "@react-spring/three";
 import { Bounds } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { loginUser } from "core";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Vector2 } from "three";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
 import { Text } from "../Text";
 
-const LandingScene = () => {
+export const LandingScene = () => {
   const [isPending, startTransition] = useTransition();
   const { refreshToken } = useAuth();
   const camera = useThree((state) => state.camera);
@@ -51,15 +45,17 @@ const LandingScene = () => {
   });
 
   const handleClick = async () => {
-    setIsNavigating(true);
-    z.start({
-      to: 20,
-      from: camera.position.z,
-      config: {
-        tension: 20,
-        friction: 5,
-        precision: 0.0001,
-      },
+    startTransition(() => {
+      z.start({
+        to: 20,
+        from: camera.position.z,
+        config: {
+          tension: 20,
+          friction: 5,
+          precision: 0.0001,
+        },
+      });
+      setIsNavigating(true);
     });
     // check for refreshToken
     if (refreshToken) {
@@ -73,17 +69,15 @@ const LandingScene = () => {
 
   return (
     <>
-      <Suspense fallback={null}>
+      <Suspense>
         <Bounds fit={!isNavigating} margin={0.8} observe={!isNavigating}>
           <Text
             onPointerDown={() => {
               if (isPending) return;
-              startTransition(() => {
-                handleClick();
-              });
+              handleClick();
             }}
           >
-            {"t e s s e l l a t o r"}
+            t e s s e l l a t o r
           </Text>
         </Bounds>
       </Suspense>
@@ -105,5 +99,3 @@ const LandingScene = () => {
     </>
   );
 };
-
-export default memo(LandingScene);

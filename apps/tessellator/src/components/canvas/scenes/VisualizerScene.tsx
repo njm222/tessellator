@@ -14,7 +14,11 @@ const OuterScene = () => {
   return inPortal ? null : (
     <>
       <Stars count={5000} depth={50} factor={2} fade radius={10} />
-      <Bridge position={[0, -2.5, 5]} rotation={[0, Math.PI / 2, 0]} />
+      <Bridge
+        scale={2}
+        position={[0, -2.5, 5]}
+        rotation={[0, Math.PI / 2, 0]}
+      />
     </>
   );
 };

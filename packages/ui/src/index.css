@@ -43,6 +43,10 @@ h5,
   font-size: 1.333rem;
 }
 
+.text {
+  font-size: 1rem;
+}
+
 .text-sm {
   font-size: 0.75rem;
 }

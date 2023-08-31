@@ -69,7 +69,7 @@ img {
 
 .welcomeContainer {
   position: relative;
-  padding: 1em;
+  padding: 2rem;
   text-align: center;
   color: #fff;
   z-index: inherit;
@@ -97,7 +97,7 @@ img {
   bottom: 0;
   width: 100%;
   background: #131313;
-  color: #fff;
+  color: hsla(0, 0%, 100%, 0.8);
   transition: all 0.5s;
   opacity: 0.8;
   padding: 0.5rem;
@@ -128,6 +128,15 @@ img {
   align-items: center;
   justify-content: center;
   margin: 0 0.5rem;
+}
+
+.playerContainer .playerLoader {
+  display: flex;
+  justify-content: center;
+}
+
+.playerContainer .playerLoader .dots {
+  margin-top: 1rem;
 }
 
 /** Social links **/

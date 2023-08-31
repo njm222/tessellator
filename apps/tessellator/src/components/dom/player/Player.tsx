@@ -1,8 +1,8 @@
 import React, { MouseEvent, useEffect, useRef } from "react";
 import { convertURItoURL } from "core";
-import Image from "next/image";
-import { PlayerControls, ProgressBar, TrackDetails } from "ui";
+import { LoaderDots, PlayerControls, ProgressBar, TrackDetails } from "ui";
 
+import { ImageWrapper } from "../../../helpers/ImageWrapper";
 import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";
 import { useCheckSavedTrack } from "../../../utils/spotify";
@@ -83,16 +83,16 @@ export function Player() {
     audioAnalyser.setup(analyserOptions);
   }
 
-  if (!spotifyAnalyser.tatums)
-    return (
-      <div
-        className={`playerContainer ${
-          !mouseActive && !player?.paused && "hidden"
-        }`}
-      >
-        <h5 className="loading">loading player</h5>
-      </div>
-    );
+  // if (!spotifyAnalyser.tatums)
+  //   return (
+  //     <div
+  //       className={`playerContainer ${
+  //         !mouseActive && !player?.paused && "hidden"
+  //       }`}
+  //     >
+  //       <h5 className="loading">loading player</h5>
+  //     </div>
+  //   );
 
   return (
     <div
@@ -101,7 +101,7 @@ export function Player() {
       }`}
     >
       <div className="playerLeft">
-        <Image
+        <ImageWrapper
           alt="album art"
           height="75"
           src={player?.track_window.current_track.album.images[0].url}
@@ -109,21 +109,27 @@ export function Player() {
         />
       </div>
       <div className="playerCenter">
-        <PlayerControls
-          isPaused={player?.paused}
-          isSaved={isSaved}
-          isShuffle={player?.shuffle}
-          onNext={next}
-          onPause={pause}
-          onPlay={handlePlay}
-          onPrev={prev}
-          onSave={() =>
-            isSaved
-              ? removeSaved(player?.track_window.current_track.id)
-              : save(player?.track_window.current_track.id)
-          }
-          onShuffle={() => shuffle(!player?.shuffle)}
-        />
+        {spotifyAnalyser.tatums ? (
+          <PlayerControls
+            isPaused={player?.paused}
+            isSaved={isSaved}
+            isShuffle={player?.shuffle}
+            onNext={next}
+            onPause={pause}
+            onPlay={handlePlay}
+            onPrev={prev}
+            onSave={() =>
+              isSaved
+                ? removeSaved(player?.track_window.current_track.id)
+                : save(player?.track_window.current_track.id)
+            }
+            onShuffle={() => shuffle(!player?.shuffle)}
+          />
+        ) : (
+          <div className="playerLoader">
+            <LoaderDots dotVariant={3} />
+          </div>
+        )}
         <ProgressBar onSeek={handleSeek} ref={progressBarRef} />
       </div>
       <div className="playerRight">

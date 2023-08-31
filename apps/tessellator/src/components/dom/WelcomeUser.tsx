@@ -11,22 +11,26 @@ export function WelcomeUser() {
   if (isLoading || isError || !(player as any).context) return null;
 
   return (
-    <div className="text-md welcomeContainer">
+    <div className="text welcomeContainer">
       <Typewriter
         onInit={(typewriter) => {
           typewriter
             .start()
-            .typeString(`hello ${data?.display_name}, `)
+            .typeString(`hello <strong>${data?.display_name}</strong>, `)
             .pauseFor(500)
             .typeString("welcome to tessellator...")
             .pauseFor(1000)
             .deleteAll()
             .pauseFor(250)
-            .typeString("click play on the player below to begin")
+            .typeString(
+              "click <strong>play</strong> on the player below to begin"
+            )
             .pauseFor(2500)
             .deleteAll()
             .pauseFor(250)
-            .typeString("then jump [scroll] into the portal below")
+            .typeString(
+              "then jump <strong>[scroll]</strong> into the portal below"
+            )
             .pauseFor(3500)
             .deleteAll()
             .pauseFor(250)

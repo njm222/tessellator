@@ -1,6 +1,8 @@
+import { LoaderDots } from "./LoaderDots";
+
 export const Loader = ({
   message,
-  dotVariant = 1,
+  dotVariant,
 }: {
   message?: string;
   dotVariant?: number;
@@ -8,15 +10,7 @@ export const Loader = ({
   return (
     <div className="loader">
       <h1 className="loaderText">{message ? message : "Loading"}</h1>
-      <div className="dots">
-        <div
-          className={`dots-${
-            dotVariant > 10 || dotVariant < 0 || !Number.isInteger(dotVariant)
-              ? 1
-              : dotVariant
-          }`}
-        />
-      </div>
+      <LoaderDots dotVariant={dotVariant} />
     </div>
   );
 };

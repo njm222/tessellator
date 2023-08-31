@@ -8,6 +8,7 @@ const author = "njm222";
 export default function Head({ title = titleDefault }: { title: string }) {
   return (
     <>
+      ``
       {/* Recommended Meta Tags */}
       <meta charSet="utf-8" />
       <meta content="english" name="language" />
@@ -15,7 +16,6 @@ export default function Head({ title = titleDefault }: { title: string }) {
       <meta content={author} name="author" />
       <meta content={author} name="designer" />
       <meta content={author} name="publisher" />
-
       {/* Search Engine Optimization Meta Tags */}
       <title>{title}</title>
       <meta content={description} name="description" />
@@ -34,7 +34,6 @@ export default function Head({ title = titleDefault }: { title: string }) {
       <meta content={"/icons/share.png"} name="og:image" />
       <meta content={title} name="og:site_name" />
       <meta content={description} name="og:description" />
-
       <link href="/icons/apple-touch-icon.png" rel="apple-touch-icon" />
       <link
         href="/icons/favicon-16x16.png"
@@ -58,7 +57,6 @@ export default function Head({ title = titleDefault }: { title: string }) {
         rel="mask-icon"
       />
       <link href="/startup.png" rel="apple-touch-startup-image" />
-
       {/* Meta Tags for HTML pages on Mobile */}
       {/* <meta name="format-detection" content="telephone=yes"/>
         <meta name="HandheldFriendly" content="true"/>  */}
@@ -67,7 +65,7 @@ export default function Head({ title = titleDefault }: { title: string }) {
         name="viewport"
       />
       <meta content="#000" name="theme-color" />
-      <link href="/icons/favicon.ico" rel="shortcut icon" />
+      <link href="/favicon.ico" rel="shortcut icon" />
     </>
   );
 }

@@ -24,4 +24,4 @@ export default function Model(props: GroupProps) {
   );
 }
 
-useGLTF.preload("/bridge.glb");
+useGLTF.preload("/models/bridge.glb");

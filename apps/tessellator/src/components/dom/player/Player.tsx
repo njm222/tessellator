@@ -127,7 +127,8 @@ export function Player() {
           />
         ) : (
           <div className="playerLoader">
-            <LoaderDots dotVariant={3} />
+            <p className="loading text">loading player</p>
+            <LoaderDots dotVariant={6} />
           </div>
         )}
         <ProgressBar onSeek={handleSeek} ref={progressBarRef} />

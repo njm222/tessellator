@@ -39,7 +39,7 @@ export const MouseActivityProvider: FC<MouseActivityProviderProps> = ({
   };
 
   useEffect(() => {
-    document.addEventListener("mousemove", mouseMoveHandler);
+    document.addEventListener("mousemove", mouseMoveHandler, { passive: true });
 
     return () => {
       if (!mouseTimeout.current) return;

@@ -6,10 +6,10 @@ const defaultPlaceholder =
 export function ImageWrapper({ src, alt, height, width }: ImageProps) {
   return (
     <Image
-      placeholder={defaultPlaceholder}
-      src={src || defaultPlaceholder}
       alt={alt}
       height={height}
+      placeholder={defaultPlaceholder}
+      src={src || defaultPlaceholder}
       width={width}
     />
   );

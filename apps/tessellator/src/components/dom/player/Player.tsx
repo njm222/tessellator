@@ -83,17 +83,6 @@ export function Player() {
     audioAnalyser.setup(analyserOptions);
   }
 
-  // if (!spotifyAnalyser.tatums)
-  //   return (
-  //     <div
-  //       className={`playerContainer ${
-  //         !mouseActive && !player?.paused && "hidden"
-  //       }`}
-  //     >
-  //       <h5 className="loading">loading player</h5>
-  //     </div>
-  //   );
-
   return (
     <div
       className={`playerContainer ${

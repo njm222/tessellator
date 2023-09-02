@@ -93,7 +93,7 @@ function Terrain({ visible }: { visible: boolean }) {
   });
 
   return (
-    <mesh position={[0, 2, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
+    <mesh position={[0, 1, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
       <planeGeometry args={[vpWidth, vpHeight, 512, 512]} />
       <terrainMaterial
         attach="material"

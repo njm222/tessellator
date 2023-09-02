@@ -6,7 +6,6 @@ import { Loader } from "ui";
 
 import { AnalyserProviderProps } from "../../utils/analyserContext";
 import { PlayerProvider } from "../../utils/playerContext";
-import { PortalProvider } from "../../utils/portalContext";
 import { ControlsProviderProps } from "../dom/controls/controlsContext";
 import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
 
@@ -29,9 +28,7 @@ export const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
     <PlayerProvider>
       <AnalyserProvider>
         <ControlsProvider>
-          <MouseActivityProvider>
-            <PortalProvider>{children}</PortalProvider>
-          </MouseActivityProvider>
+          <MouseActivityProvider>{children}</MouseActivityProvider>
         </ControlsProvider>
       </AnalyserProvider>
     </PlayerProvider>

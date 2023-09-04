@@ -1,4 +1,5 @@
 import { getDefaultOptions, spotifyClient } from "../spotifyClient";
+import { handleError } from "../utils";
 
 export async function getUserTopItems(accessToken: string, type = "tracks") {
   try {
@@ -7,9 +8,8 @@ export async function getUserTopItems(accessToken: string, type = "tracks") {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -20,8 +20,7 @@ export async function getCurrentUserProfile(accessToken: string) {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }

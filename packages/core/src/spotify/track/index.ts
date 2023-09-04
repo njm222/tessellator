@@ -1,4 +1,5 @@
 import { getDefaultOptions, spotifyClient } from "../spotifyClient";
+import { handleError } from "../utils";
 
 export async function getTrackAudioAnalysis(
   accessToken: string,
@@ -10,9 +11,8 @@ export async function getTrackAudioAnalysis(
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -26,9 +26,8 @@ export async function getTrackAudioFeatures(
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -39,9 +38,8 @@ export async function removeSavedTracks(accessToken: string, ids: string[]) {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -53,9 +51,8 @@ export async function saveTracks(accessToken: string, ids: string[]) {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -66,8 +63,7 @@ export async function checkSavedTracks(accessToken: string, ids: string[]) {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }

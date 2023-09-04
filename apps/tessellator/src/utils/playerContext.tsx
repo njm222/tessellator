@@ -144,22 +144,25 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
       player.addListener(
         "initialization_error",
         (data: { message: string }) => {
-          toast.open(data.message);
+          toast.open(`Player initialization error (${data.message})`);
         }
       );
       player.addListener(
         "authentication_error",
         (data: { message: string }) => {
-          toast.open(data.message);
-          handleRefreshToken(refreshToken, true);
+          if (!refreshToken) {
+            toast.open(`Player authentication error (${data.message})`);
+          }
+          handleRefreshToken(refreshToken);
+          document.getElementById("spotify-sdk")?.remove();
         }
       );
       player.addListener("account_error", (data: { message: string }) => {
-        toast.open(data.message);
+        toast.open(`Player account error (${data.message})`);
       });
-      player.addListener("playback_error", (data: { message: string }) => {
-        toast.open(data.message);
-      });
+      // player.addListener("playback_error", (data: { message: string }) => {
+      //   toast.open(`playback_error - ${data.message}`);
+      // });
       player.addListener("ready", (data: { device_id: string }) => {
         if (!data.device_id) {
           // toast message

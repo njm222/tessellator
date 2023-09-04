@@ -135,6 +135,9 @@ var spotifyClient = import_axios3.default.create({
   baseURL: environment2.spotifyApiUrl
 });
 
+// ../../packages/core/src/spotify/utils.ts
+var import_axios4 = require("axios");
+
 // src/app/authentication/login/loginController.ts
 var import_querystring2 = require("querystring");
 function LoginController({
@@ -167,7 +170,7 @@ var loginController = LoginController({
 });
 
 // src/app/authentication/refresh-token/refreshTokenController.ts
-var import_axios4 = __toESM(require("axios"));
+var import_axios5 = __toESM(require("axios"));
 function RefreshTokenController({
   spotifyAccountUrl,
   clientId,
@@ -190,7 +193,7 @@ function RefreshTokenController({
       },
       json: true
     };
-    (0, import_axios4.default)(authOptions).then((response) => {
+    (0, import_axios5.default)(authOptions).then((response) => {
       const { data } = response;
       res.send(data);
     }).catch((e) => {

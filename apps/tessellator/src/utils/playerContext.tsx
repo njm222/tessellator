@@ -118,21 +118,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
 
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
-  useEffect(() => {
-    if (!accessToken) {
-      return;
-    }
-
-    if (document.getElementById("spotify-sdk")) {
-      return;
-    }
-
-    const sdk = document.createElement("script");
-    sdk.setAttribute("src", "https://sdk.scdn.co/spotify-player.js");
-    sdk.id = "spotify-sdk";
-    sdk.async = true;
-    document.head.appendChild(sdk);
-
+  function handlePlayerSetup() {
     window.onSpotifyWebPlaybackSDKReady = () => {
       const player = new window.Spotify.Player({
         name: "Tessellator Player",
@@ -154,7 +140,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
             toast.open(`Player authentication error (${data.message})`);
           }
           handleRefreshToken(refreshToken);
-          document.getElementById("spotify-sdk")?.remove();
+          // document.getElementById("spotify-sdk")?.remove();
         }
       );
       player.addListener("account_error", (data: { message: string }) => {
@@ -195,24 +181,25 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
       player.connect();
       setSpotifyPlayer(player);
     };
+  }
 
-    return () => {
-      if (!spotifyPlayer) return;
-      spotifyPlayer.pause();
-      spotifyPlayer.disconnect();
+  useEffect(() => {
+    if (!accessToken) {
+      return;
+    }
+
+    if (!spotifyPlayer?._options?.getOAuthToken) {
+      handlePlayerSetup();
+      return;
+    }
+
+    // refresh playerToken
+    spotifyPlayer._options.getOAuthToken = async (
+      cb: (token: string) => any
+    ) => {
+      cb(accessToken);
     };
-  }, [
-    accessToken,
-    handleRefreshToken,
-    setTrackId,
-    trackId,
-    mutatePlay,
-    mutatePlayTopTracks,
-    mutateTransferMyPlayback,
-    toast,
-    refreshToken,
-    spotifyPlayer,
-  ]);
+  }, [accessToken, spotifyPlayer?._options?.getOAuthToken]);
 
   const value = useMemo(
     () => ({

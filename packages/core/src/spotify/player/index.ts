@@ -1,4 +1,5 @@
 import { getDefaultOptions, spotifyClient } from "../spotifyClient";
+import { handleError } from "../utils";
 
 export type StartPlaybackOptions = {
   uris?: string[];
@@ -14,9 +15,8 @@ export async function startPlayback(
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -28,9 +28,8 @@ export async function pausePlayback(accessToken: string) {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -42,9 +41,8 @@ export async function skipToPrevious(accessToken: string) {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -56,9 +54,8 @@ export async function skipToNext(accessToken: string) {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -70,9 +67,8 @@ export async function shufflePlayback(accessToken: string, shuffle: boolean) {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -84,9 +80,8 @@ export async function seekToPosition(accessToken: string, position: number) {
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }
 
@@ -102,8 +97,7 @@ export async function transferMyPlayback(
       getDefaultOptions(accessToken)
     );
     return data;
-  } catch (err: any) {
-    console.log(err);
-    throw Error(err);
+  } catch (err: unknown) {
+    handleError(err);
   }
 }

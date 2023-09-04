@@ -7,9 +7,10 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { deleteCookie,getCookie, setCookie } from "cookies-next";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 import { loginUser, updateToken } from "core";
 import { useRouter } from "next/navigation";
+import { useToast } from "ui";
 
 type AuthProviderProps = {
   isLoading?: boolean;
@@ -34,6 +35,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
+  const toast = useToast();
   const [tokens, setTokens] = useState({ accessToken: "", refreshToken: "" });
 
   const logoutUser = useCallback(() => {
@@ -46,9 +48,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const handleRefreshToken = useCallback(
     async (refreshToken: string, refreshPage = false) => {
       try {
+        toast.open("Refreshing access token", { variant: "" });
         const { accessToken } = await updateToken(refreshToken);
         setTokens((prev) => ({ ...prev, accessToken }));
         setCookie("accessToken", accessToken);
+
         if (refreshPage) {
           window.location.reload(); // might make sense here
         }
@@ -56,7 +60,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         logoutUser();
       }
     },
-    [logoutUser]
+    [logoutUser, toast]
   );
 
   useEffect(() => {

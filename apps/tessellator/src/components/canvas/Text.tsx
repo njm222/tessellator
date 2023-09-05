@@ -19,8 +19,6 @@ export function Text({
 }: {
   children: string;
   onPointerDown: () => void;
-  onPointerOver: () => void;
-  onPointerOut: () => void;
 }) {
   const meshRef = useRef<Mesh>(new Mesh());
   const boxRef = useRef<Mesh>(new Mesh());

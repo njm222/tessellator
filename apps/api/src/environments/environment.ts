@@ -7,4 +7,5 @@ export const environment = {
   spotifyAccountUrl: process.env.SPOTIFY_ACCOUNT_URL || "",
   stateKey: "spotify_auth_state",
   frontendUrl: process.env.FRONTEND_URL || "",
+  sentryDSN: process.env.SENTRY_DSN_API || "",
 };

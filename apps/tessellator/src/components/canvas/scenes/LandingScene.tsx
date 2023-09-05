@@ -30,9 +30,6 @@ export const LandingScene = () => {
 
   useEffect(() => {
     camera.position.set(0, 0, 100);
-    return () => {
-      document.documentElement.style.cursor = "unset";
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

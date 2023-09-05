@@ -6,6 +6,7 @@ import {
   meshBounds,
   RoundedBox,
   Text3D,
+  useCursor,
 } from "@react-three/drei";
 import { hslToHex } from "core";
 import { ColorRepresentation, Mesh } from "three";
@@ -18,28 +19,26 @@ export function Text({
 }: {
   children: string;
   onPointerDown: () => void;
+  onPointerOver: () => void;
+  onPointerOut: () => void;
 }) {
   const meshRef = useRef<Mesh>(new Mesh());
   const boxRef = useRef<Mesh>(new Mesh());
   const colour = hslToHex(Math.random() * 360, 50, 100) as ColorRepresentation;
 
   const [hover, setHover] = useState(false);
+  useCursor(hover);
 
   const { opacity, scale } = useSpring({
     opacity: hover ? 1 : 0,
     scale: hover ? 1 : 0.9,
   });
 
-  function handleHover(isHover: boolean) {
-    setHover(isHover);
-    document.documentElement.style.cursor = isHover ? "pointer" : "unset";
-  }
-
   return (
     <Float floatIntensity={2} speed={2}>
       <animated.group
-        onPointerEnter={() => handleHover(true)}
-        onPointerLeave={() => handleHover(false)}
+        onPointerEnter={() => setHover(true)}
+        onPointerLeave={() => setHover(false)}
         raycast={meshBounds}
         scale={scale}
         {...props}

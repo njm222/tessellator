@@ -9,7 +9,7 @@ import { Vector2 } from "three";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
-import { Text } from "../Text";
+import { NavigationText } from "../text/NavigationText";
 
 export const LandingScene = () => {
   const [isPending, startTransition] = useTransition();
@@ -68,14 +68,14 @@ export const LandingScene = () => {
     <>
       <Suspense>
         <Bounds fit={!isNavigating} margin={0.8} observe={!isNavigating}>
-          <Text
+          <NavigationText
             onPointerDown={() => {
               if (isPending) return;
               handleClick();
             }}
           >
             t e s s e l l a t o r
-          </Text>
+          </NavigationText>
         </Bounds>
       </Suspense>
       <Particles count={20000} isNavigating={isNavigating} />

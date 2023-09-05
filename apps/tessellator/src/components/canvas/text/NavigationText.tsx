@@ -5,22 +5,21 @@ import {
   Float,
   meshBounds,
   RoundedBox,
-  Text3D,
   useCursor,
 } from "@react-three/drei";
 import { hslToHex } from "core";
 import { ColorRepresentation, Mesh } from "three";
+import { Text } from "./Text";
 
 const fontUrl = "/fonts/tomorrow_extralight_regular.json";
 
-export function Text({
+export function NavigationText({
   children,
   ...props
 }: {
   children: string;
   onPointerDown: () => void;
 }) {
-  const meshRef = useRef<Mesh>(new Mesh());
   const boxRef = useRef<Mesh>(new Mesh());
   const colour = hslToHex(Math.random() * 360, 50, 100) as ColorRepresentation;
 
@@ -53,16 +52,9 @@ export function Text({
           </RoundedBox>
         </Center>
         <Center>
-          <Text3D
-            bevelEnabled
-            bevelSize={0.05}
-            font={fontUrl}
-            ref={meshRef}
-            scale={6}
-          >
+          <Text bevelEnabled colour={colour} hover>
             {children}
-            <meshPhongMaterial color={colour} wireframe={!hover} />
-          </Text3D>
+          </Text>
         </Center>
       </animated.group>
     </Float>

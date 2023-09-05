@@ -6,6 +6,7 @@ import { environment } from "../environments/environment";
 
 export function setupSentry(app: Express) {
   Sentry.init({
+    enabled: environment.production,
     dsn: environment.sentryDSN,
     integrations: [
       // enable HTTP calls tracing

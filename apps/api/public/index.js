@@ -231,6 +231,7 @@ var Sentry = __toESM(require("@sentry/node"));
 var import_profiling_node = require("@sentry/profiling-node");
 function setupSentry(app) {
   Sentry.init({
+    enabled: environment.production,
     dsn: environment.sentryDSN,
     integrations: [
       // enable HTTP calls tracing

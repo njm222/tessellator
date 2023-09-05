@@ -15,6 +15,8 @@
     "preset": "jest-presets/jest/node"
   },
   "dependencies": {
+    "@sentry/node": "^7.67.0",
+    "@sentry/profiling-node": "^1.2.1",
     "axios": "^1.3.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.6",

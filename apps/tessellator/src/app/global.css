@@ -116,6 +116,7 @@ img {
 
 .socialLinks {
   position: relative;
+  z-index: inherit;
   right: 1rem;
   top: 1rem;
   display: flex;

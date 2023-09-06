@@ -5,9 +5,12 @@ import express from "express";
 import morgan from "morgan";
 
 import { environment } from "../environments/environment";
+import { setupSentry } from "../sentry/sentry";
 
 export const createServer = () => {
   const app = express();
+  setupSentry(app);
+
   app
     .disable("x-powered-by")
     .use(morgan("dev"))

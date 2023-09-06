@@ -84,3 +84,5 @@ dist/
 # macOS
 .DS_Store
 
+# Sentry Auth Token
+.sentryclirc

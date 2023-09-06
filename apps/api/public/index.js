@@ -31,7 +31,8 @@ var environment = {
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET || "",
   spotifyAccountUrl: process.env.SPOTIFY_ACCOUNT_URL || "",
   stateKey: "spotify_auth_state",
-  frontendUrl: process.env.FRONTEND_URL || ""
+  frontendUrl: process.env.FRONTEND_URL || "",
+  sentryDSN: process.env.SENTRY_DSN_API || ""
 };
 
 // src/app/authentication/callback/callbackController.ts
@@ -225,6 +226,34 @@ function registerRoutes(app) {
   return app;
 }
 
+// src/sentry/sentry.ts
+var Sentry = __toESM(require("@sentry/node"));
+var import_profiling_node = require("@sentry/profiling-node");
+function setupSentry(app) {
+  Sentry.init({
+    enabled: environment.production,
+    dsn: environment.sentryDSN,
+    integrations: [
+      // enable HTTP calls tracing
+      new Sentry.Integrations.Http({ tracing: true }),
+      // enable Express.js middleware tracing
+      new Sentry.Integrations.Express({ app }),
+      new import_profiling_node.ProfilingIntegration()
+    ],
+    // Performance Monitoring
+    tracesSampleRate: 1,
+    // Capture 100% of the transactions, reduce in production!
+    // Set sampling rate for profiling - this is relative to tracesSampleRate
+    profilesSampleRate: 1
+    // Capture 100% of the transactions, reduce in production!
+  });
+  app.use(Sentry.Handlers.requestHandler());
+  app.use(Sentry.Handlers.tracingHandler());
+}
+function registerErrorHandler(app) {
+  app.use(Sentry.Handlers.errorHandler());
+}
+
 // src/server/server.ts
 var import_body_parser = require("body-parser");
 var import_cookie_parser = __toESM(require("cookie-parser"));
@@ -233,6 +262,7 @@ var import_express = __toESM(require("express"));
 var import_morgan = __toESM(require("morgan"));
 var createServer = () => {
   const app = (0, import_express.default)();
+  setupSentry(app);
   app.disable("x-powered-by").use((0, import_morgan.default)("dev")).use((0, import_body_parser.urlencoded)({ extended: true })).use((0, import_body_parser.json)()).use(import_express.default.static(`${__dirname}/public`)).use((0, import_cors.default)({ credentials: true, origin: environment.frontendUrl })).use((0, import_cookie_parser.default)()).get("/", (req, res) => {
     return res.json({ message: `tessellator-api is running!` });
   });
@@ -243,6 +273,7 @@ var createServer = () => {
 var port = environment.port;
 var server = createServer();
 registerRoutes(server);
+registerErrorHandler(server);
 server.listen(port, () => {
   console.log(`api running on ${port}`);
 });

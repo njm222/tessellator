@@ -30,9 +30,13 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
         eventSource={ref}
         shadows="soft"
         style={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
-          background: "#000",
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          pointerEvents: "none",
+          zIndex: -1,
         }}
       />
     </div>

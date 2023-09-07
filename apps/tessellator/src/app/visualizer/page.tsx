@@ -44,7 +44,7 @@ export default function Page() {
       <WelcomeUser />
       <Player />
       <Settings />
-      <View>
+      <View className="fullscreenView" orbit>
         <VisualizerScene />
         <Common />
       </View>

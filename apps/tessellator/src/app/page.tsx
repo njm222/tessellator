@@ -4,7 +4,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { Loader } from "ui";
 
-import { ViewProps } from "../components/canvas/View";
+import { CommonProps, ViewProps } from "../components/canvas/View";
 import SocialLinks from "../components/dom/SocialLinks";
 import { DefaultLayoutProps } from "../components/layout/DefaultLayout";
 
@@ -16,7 +16,7 @@ const LandingScene = dynamic<{}>(
   { ssr: false }
 );
 
-const Common = dynamic<{}>(
+const Common = dynamic<CommonProps>(
   () => import("../components/canvas/View").then((mod) => mod.Common),
   { ssr: false }
 );
@@ -37,11 +37,11 @@ const DefaultLayout = dynamic<DefaultLayoutProps>(
 export default function Page() {
   return (
     <DefaultLayout>
-      <SocialLinks />
-      <View>
+      <View className="fullscreenView" orbit>
         <LandingScene />
         <Common />
       </View>
+      <SocialLinks />
     </DefaultLayout>
   );
 }

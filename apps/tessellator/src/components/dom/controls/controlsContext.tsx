@@ -4,6 +4,7 @@ import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import { generateRandomInteger } from "core";
 
 import { LocalStorageKeys } from "../../../config/constants";
+import { toggleFullScreen } from "../../../helpers/global";
 import { getLocalStorageItem } from "../../../utils/store";
 
 import { useKeys } from "./useKeys";
@@ -24,7 +25,7 @@ const colourMap = [
 
 export type ControlsProviderProps = {
   children: ReactNode;
-  modes?: number[];
+  enabledModes?: number[];
   modeKey?: number;
   colourKey?: number;
   addMode?: (mode: number) => void;
@@ -34,7 +35,7 @@ export type ControlsProviderProps = {
 };
 
 const ControlsContext = createContext({
-  modes: [0],
+  enabledModes: [0],
   modeKey: 0,
   colourKey: 0,
   randomizeMode: true,
@@ -62,7 +63,7 @@ const ControlsContext = createContext({
 export const useControls = () => useContext(ControlsContext);
 
 export const ControlsProvider = ({ children }: ControlsProviderProps) => {
-  const [modes, setModes] = useState(
+  const [enabledModes, setEnabledModes] = useState(
     modeMap.reduce((acc, curr) => {
       acc.push(curr.value);
       return acc;
@@ -89,24 +90,25 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
       keys: [key],
       fn: () => setColourKey(value),
     })),
+    { keys: ["f", "F"], fn: () => toggleFullScreen() },
   ]);
 
   const value = useMemo(
     () => ({
-      modes,
+      enabledModes,
       modeKey,
       colourKey,
       addMode: (mode: number) => {
-        if (modes.includes(mode)) {
+        if (enabledModes.includes(mode)) {
           return;
         }
-        setModes((prevState) => {
+        setEnabledModes((prevState) => {
           prevState.push(mode);
           return prevState;
         });
       },
       removeMode: (mode: number) => {
-        setModes((prevState) => {
+        setEnabledModes((prevState) => {
           const index = prevState.findIndex((val) => val === mode);
           if (index >= 0) {
             prevState.splice(index, 1);
@@ -115,16 +117,16 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
         });
       },
       changeMode: () => {
-        if (modes.length === 0) {
+        if (enabledModes.length === 0) {
           setModeKey(0);
           return;
         }
-        if (modes.length <= 1) {
-          setModeKey(modes[0]);
+        if (enabledModes.length <= 1) {
+          setModeKey(enabledModes[0]);
           return;
         }
-        const index = generateRandomInteger(0, modes.length - 1);
-        setModeKey(modes[index]);
+        const index = generateRandomInteger(0, enabledModes.length - 1);
+        setModeKey(enabledModes[index]);
       },
       changeColourMode: () => {
         setColourKey(generateRandomInteger(0, colourMap.length - 1));
@@ -135,10 +137,10 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
       setRandomizeColourMode: (value: boolean) => setRandomizeColourMode(value),
     }),
     [
-      modes,
+      enabledModes,
       colourKey,
       modeKey,
-      setModes,
+      setEnabledModes,
       randomizeMode,
       setRandomizeMode,
       randomizeColourMode,

@@ -3,12 +3,12 @@ import { folder, useControls as useLevaControls } from "leva";
 import { modeMap, useControls } from "../controls/controlsContext";
 
 export function ModeOptions() {
-  const { modes, addMode, removeMode, changeMode } = useControls();
+  const { enabledModes, addMode, removeMode, changeMode } = useControls();
 
   const modeOptions = Object.keys(modeMap).reduce(
     (acc, curr: string) => {
       acc[`mode${curr}`] = {
-        value: modes.includes(parseInt(curr)),
+        value: enabledModes.includes(parseInt(curr)),
         onChange: (value: boolean) => {
           value ? addMode(parseInt(curr)) : removeMode(parseInt(curr));
           changeMode();

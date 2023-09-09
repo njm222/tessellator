@@ -4,10 +4,10 @@ import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import { generateRandomInteger } from "core";
 
 import { LocalStorageKeys } from "../../../config/constants";
+import { toggleFullScreen } from "../../../helpers/global";
 import { getLocalStorageItem } from "../../../utils/store";
 
 import { useKeys } from "./useKeys";
-import { toggleFullScreen } from "../../../helpers/global";
 
 export const modeMap = [
   { key: "0", value: 0 },

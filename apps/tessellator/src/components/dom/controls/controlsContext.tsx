@@ -7,6 +7,7 @@ import { LocalStorageKeys } from "../../../config/constants";
 import { getLocalStorageItem } from "../../../utils/store";
 
 import { useKeys } from "./useKeys";
+import { toggleFullScreen } from "../../../helpers/global";
 
 export const modeMap = [
   { key: "0", value: 0 },
@@ -153,14 +154,3 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
     </ControlsContext.Provider>
   );
 };
-
-function toggleFullScreen() {
-  console.log("toggleFullScreen");
-  if (!document.fullscreenElement) {
-    console.log("no fullscreen element found");
-    document.documentElement.requestFullscreen();
-  } else if (document.exitFullscreen) {
-    console.log("found fullscreen element");
-    document.exitFullscreen();
-  }
-}

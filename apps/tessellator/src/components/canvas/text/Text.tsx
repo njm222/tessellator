@@ -11,6 +11,7 @@ export function Text({
   scale = 6,
   bevelSize = 0.05,
   bevelEnabled = true,
+  letterSpacing = 0.3,
 }: {
   children: string;
   colour: ColorRepresentation;
@@ -18,6 +19,7 @@ export function Text({
   scale?: number;
   bevelSize?: number;
   bevelEnabled?: boolean;
+  letterSpacing?: number;
 }) {
   return (
     <Text3D
@@ -25,6 +27,7 @@ export function Text({
       bevelSize={bevelSize}
       scale={scale}
       font={fontUrl}
+      letterSpacing={letterSpacing}
     >
       {children}
       <meshPhongMaterial color={colour} wireframe={!hover} />

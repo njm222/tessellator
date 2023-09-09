@@ -38,7 +38,7 @@ export default function Page() {
   return (
     <DefaultLayout>
       <SocialLinks />
-      <View>
+      <View className="fullscreenView">
         <AboutScene />
         <Common />
       </View>

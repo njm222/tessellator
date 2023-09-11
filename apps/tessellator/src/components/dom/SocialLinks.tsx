@@ -1,20 +1,19 @@
 import React from "react";
 import { GithubIcon, IconButton, InstagramIcon } from "ui";
+import { openNewTabLink } from "../../helpers/global";
 
 export default function SocialLinks() {
   return (
     <div className="socialLinks">
       <IconButton
         icon={<GithubIcon />}
-        onClick={() =>
-          window.open("https://github.com/njm222/tessellator", "_blank")
-        }
+        onClick={() => openNewTabLink("https://github.com/njm222/tessellator")}
         title="github"
       />
       <IconButton
         icon={<InstagramIcon />}
         onClick={() =>
-          window.open("https://www.instagram.com/tessellator_space", "_blank")
+          openNewTabLink("https://www.instagram.com/tessellator_space")
         }
         title="instagram"
       />

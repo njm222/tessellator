@@ -1,21 +1,18 @@
 import React, { Suspense, useEffect, useLayoutEffect, useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { Color, Group } from "three";
 
 import Particles from "../Particles";
 import { Text } from "../text/Text";
-import { Billboard, useAspect } from "@react-three/drei";
-import { Box, Flex, useFlexSize } from "@react-three/flex";
+import { useAspect } from "@react-three/drei";
+import { Box, Flex } from "@react-three/flex";
+import { FlexLink, FlexText } from "../text/FlexText";
 
 export const AboutScene = () => {
-  const { camera, size } = useThree();
+  const { camera, size, setSize } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
   const ref = useRef<Group>(null);
-  const flexSize = useFlexSize();
-
-  console.log(vpWidth, vpHeight);
-  console.log(flexSize);
 
   useEffect(() => {
     camera.position.set(100, 0, 0);
@@ -23,93 +20,119 @@ export const AboutScene = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useFrame((_, delta) => {
-    if (!ref.current) {
-      return;
-    }
+  // needed for flex to work
+  useLayoutEffect(() => {
+    setSize(size.width, size.height, size.updateStyle, size.top, size.left);
+  }, []);
 
-    // ref.current.position.y += 0.1;
-  });
+  const textColour = new Color();
 
   return (
     <>
-      <Suspense>
-        <Billboard>
-          <group ref={ref}>
-            <Flex
-              flexDirection="column"
-              size={[vpWidth, vpHeight, 0]}
-              position={[-vpWidth / 2, vpHeight / 2, 0]}
-            >
-              <Title />
-              {/* <Content /> */}
-            </Flex>
-          </group>
-        </Billboard>
-      </Suspense>
+      <group ref={ref} rotation={[0, Math.PI / 2, 0]}>
+        <Flex
+          flexDirection="column"
+          size={[vpWidth, vpHeight, 0]}
+          position={[-vpWidth / 2, vpHeight / 2, 0]}
+        >
+          <Suspense>
+            <Title colour={textColour} />
+            <Content colour={textColour} />
+          </Suspense>
+        </Flex>
+      </group>
       <Particles count={20000} isNavigating={false} />
 
       <EffectComposer disableNormalPass multisampling={0}>
-        <Bloom
-          height={256}
-          luminanceSmoothing={0.1}
-          luminanceThreshold={0.2}
-          width={256}
-        />
+        <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
       </EffectComposer>
     </>
   );
 };
 
-function Content() {
-  const contentScale = 2;
+function Content({ colour }: { colour: Color }) {
+  const preLinkContent = "The inspiration for Tessellator came after a";
+  const linkContent = "Christian Löffler";
+  const postLinkContent =
+    "set in SF. Tessellator is an interactive 3D music visualizer that has been developed to enhance your experience while listening to your favourite tracks. Tessellator uses the live audio to draw the visualizations in real-time. No loops / static content.";
+
   return (
-    <Box flexDirection="column" width="100%">
-      <Box flexDirection="row" width="100%" alignItems="center" wrap="wrap">
-        <Box>
-          <Text colour={new Color()} scale={contentScale}>
-            The inspiration for Tessellator came after a
-          </Text>
-        </Box>
-        <Box>
-          <Text colour={new Color("yellow")} scale={contentScale}>
-            Christian Löffler
-          </Text>
-        </Box>
-        <Box>
-          <Text colour={new Color()} scale={contentScale}>
-            set in SF.
-          </Text>
-        </Box>
-      </Box>
+    <Box
+      margin={20}
+      flexDirection="row"
+      alignItems="center"
+      justifyContent="center"
+      wrap="wrap"
+    >
+      {preLinkContent.split(" ").map((word, index) => (
+        <FlexText
+          key={`about-pre-link-content-flex-text-${word}-${index}`}
+          colour={colour}
+        >
+          {word}
+        </FlexText>
+      ))}
+      {linkContent.split(" ").map((word, index) => (
+        <FlexLink
+          key={`link-content-flex-link-${word}-${index}`}
+          colour={new Color("yellow")}
+          link="https://www.christian-loeffler.net/"
+        >
+          {word}
+        </FlexLink>
+      ))}
+      {postLinkContent.split(" ").map((word, index) => (
+        <FlexText
+          key={`about-post-link-content-flex-text-${word}-${index}`}
+          colour={colour}
+        >
+          {word}
+        </FlexText>
+      ))}
     </Box>
   );
 }
 
-function Title() {
-  const titleColour = new Color();
+function Title({ colour }: { colour: Color }) {
+  const titleScale = 10;
   return (
     <Box
+      marginTop={30}
       flexDirection="column"
-      alignItems="flex-start"
+      alignItems="center"
       justifyContent="flex-start"
-      width="100%"
-      height="100%"
     >
-      <Box margin={5}>
-        <Text colour={titleColour}>A</Text>
+      <Box marginBottom={15}>
+        <Text colour={colour} scale={titleScale}>
+          A
+        </Text>
       </Box>
-      <Box marginLeft={20}>
-        <Text colour={titleColour}>| free to use |</Text>
+      <Box marginBottom={5}>
+        <Text colour={colour} scale={titleScale}>
+          | free |
+        </Text>
       </Box>
-      <Box marginLeft={92}>
-        <Text colour={titleColour}>| real-time |</Text>
+      <Box marginBottom={5}>
+        <Text colour={colour} scale={titleScale}>
+          | realtime |
+        </Text>
       </Box>
-      <Box margin={5}>
-        <Text colour={titleColour}>| 3-D |</Text>
+      <Box>
+        <Text colour={colour} scale={titleScale}>
+          | 3-D |
+        </Text>
       </Box>
-      <Box margin={5}>
-        <Text colour={titleColour}>music visualizer</Text>
+      <Box flexDirection="row" justify="space-around" width="100%" wrap="wrap">
+        <Box marginTop={15}>
+          <Text colour={colour} scale={titleScale}>
+            music
+          </Text>
+        </Box>
+        <Box marginTop={15}>
+          <Text colour={colour} scale={titleScale}>
+            visualizer
+          </Text>
+        </Box>
       </Box>
     </Box>
   );

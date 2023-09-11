@@ -9,3 +9,8 @@ export function toggleFullScreen() {
     document.exitFullscreen();
   }
 }
+
+export function openNewTabLink(link: string) {
+  // validate
+  window.open(link, "_blank");
+}

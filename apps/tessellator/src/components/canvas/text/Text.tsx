@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Text3D } from "@react-three/drei";
 import { ColorRepresentation } from "three";
 

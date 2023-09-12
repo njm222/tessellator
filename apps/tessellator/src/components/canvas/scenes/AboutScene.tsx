@@ -1,11 +1,16 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { a } from "@react-spring/three";
 import { Plane, useAspect } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import {
+  Bloom,
+  EffectComposer,
+  Glitch,
+  Pixelation,
+} from "@react-three/postprocessing";
 import { useGesture } from "@use-gesture/react";
-import { Color, Group, Vector3 } from "three";
+import { Color, Group, Vector2, Vector3 } from "three";
 
 import Particles from "../Particles";
 import { FlexLink, FlexText } from "../text/FlexText";
@@ -13,6 +18,10 @@ import { Text } from "../text/Text";
 
 export const AboutScene = () => {
   const { camera, size, setSize } = useThree();
+  const [vpWidth, vpHeight] = useAspect(size.width, size.height);
+  const ref = useRef<Group>(null);
+  const vec = new Vector3();
+  const [isScrolling, setIsScrolling] = useState(0);
 
   useEffect(() => {
     camera.position.set(100, 0, 0);
@@ -26,13 +35,47 @@ export const AboutScene = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const bind = useGesture(
+    {
+      onScroll: (state) => {
+        setIsScrolling(state.velocity[1]);
+        ref.current?.position.lerp(vec.set(0, state.offset[1], 0), 0.05);
+      },
+      onScrollEnd: () => setTimeout(() => setIsScrolling(0), 250),
+      onWheel: (state) => {
+        setIsScrolling(state.velocity[1]);
+        ref.current?.position.lerp(vec.set(0, state.offset[1], 0), 0.05);
+      },
+      onWheelEnd: () => setTimeout(() => setIsScrolling(0), 250),
+    },
+    {
+      eventOptions: { passive: false },
+      wheel: {
+        bounds: { top: 0, bottom: vpHeight, left: 0, right: 0 },
+      },
+      scroll: {
+        bounds: { top: 0, bottom: vpHeight, left: 0, right: 0 },
+      },
+    }
+  );
+
   return (
     <>
-      <AboutContent />
-      <Particles count={20000} isNavigating={false} />
+      {/** @ts-ignore incompatible types */}
+      <a.group ref={ref} rotation={[0, Math.PI / 2, 0]} {...bind()}>
+        <AboutContent />
+      </a.group>
+      <Particles count={10000} isNavigating={false} />
 
       <EffectComposer disableNormalPass multisampling={0}>
         <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
+        <Glitch
+          active={isScrolling > 0}
+          strength={new Vector2(isScrolling, isScrolling)}
+          delay={new Vector2(0, 0)}
+          duration={new Vector2(200, 200)}
+        />
+        {/* <Pixelation granularity={isScrolling} /> */}
       </EffectComposer>
     </>
   );
@@ -41,36 +84,20 @@ export const AboutScene = () => {
 function AboutContent() {
   const { size } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
-  const ref = useRef<Group>(null);
 
   const textColour = new Color();
-  const vec = new Vector3();
-
-  const bind = useGesture(
-    {
-      onWheel: (state) =>
-        ref.current?.position.lerp(vec.set(0, state.offset[1], 0), 0.1),
-    },
-    {
-      eventOptions: { passive: false },
-      wheel: { bounds: { top: 0, bottom: vpHeight * 1.5, left: 0, right: 0 } },
-    }
-  );
 
   return (
     <>
-      {/** @ts-ignore incompatible types */}
-      <a.group ref={ref} rotation={[0, Math.PI / 2, 0]} {...bind()}>
-        <Plane args={[vpWidth, vpHeight * 4]} visible={false} />
-        <Flex
-          flexDirection="column"
-          position={[-vpWidth / 2, vpHeight / 2, 0]}
-          size={[vpWidth, vpHeight, 0]}
-        >
-          <Title colour={textColour} />
-          <Content colour={textColour} />
-        </Flex>
-      </a.group>
+      <Plane args={[vpWidth, vpHeight * 4]} visible={false} />
+      <Flex
+        flexDirection="column"
+        position={[-vpWidth / 2, vpHeight / 2, 0]}
+        size={[vpWidth, vpHeight, 0]}
+      >
+        <Title colour={textColour} />
+        <Content colour={textColour} />
+      </Flex>
     </>
   );
 }

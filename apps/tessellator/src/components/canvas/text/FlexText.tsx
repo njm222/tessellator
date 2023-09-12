@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSpring, animated } from "@react-spring/three";
 import { RoundedBox, useCursor } from "@react-three/drei";
 import { Box, BoxProps } from "@react-three/flex";
@@ -6,7 +6,6 @@ import { Color, Group, Mesh } from "three";
 
 import { openNewTabLink } from "../../../helpers/global";
 import { Text } from "../text/Text";
-import { useFrame } from "@react-three/fiber";
 
 type FlexTextProps = BoxProps & {
   children: string;
@@ -53,7 +52,7 @@ export function FlexLink({
     opacity: hover ? 1 : 0,
   });
 
-  useFrame(() => {
+  useEffect(() => {
     if (!boxRef.current) return;
     if (!ref.current) return;
 
@@ -62,7 +61,7 @@ export function FlexLink({
       ref.current.position.y + 2,
       ref.current.position.z
     );
-  });
+  }, [ref.current, boxRef.current, hover]);
 
   return (
     <>

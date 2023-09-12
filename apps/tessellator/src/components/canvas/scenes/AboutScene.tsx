@@ -1,18 +1,18 @@
-import React, { Suspense, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
+import { useGesture } from "@use-gesture/react";
 import { useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { Color, Group } from "three";
+import { Color, Group, Vector3 } from "three";
 
 import Particles from "../Particles";
 import { Text } from "../text/Text";
-import { useAspect } from "@react-three/drei";
+import { Plane, useAspect } from "@react-three/drei";
 import { Box, Flex } from "@react-three/flex";
 import { FlexLink, FlexText } from "../text/FlexText";
+import { a } from "@react-spring/three";
 
 export const AboutScene = () => {
   const { camera, size, setSize } = useThree();
-  const [vpWidth, vpHeight] = useAspect(size.width, size.height);
-  const ref = useRef<Group>(null);
 
   useEffect(() => {
     camera.position.set(100, 0, 0);
@@ -25,22 +25,9 @@ export const AboutScene = () => {
     setSize(size.width, size.height, size.updateStyle, size.top, size.left);
   }, []);
 
-  const textColour = new Color();
-
   return (
     <>
-      <group ref={ref} rotation={[0, Math.PI / 2, 0]}>
-        <Flex
-          flexDirection="column"
-          size={[vpWidth, vpHeight, 0]}
-          position={[-vpWidth / 2, vpHeight / 2, 0]}
-        >
-          <Suspense>
-            <Title colour={textColour} />
-            <Content colour={textColour} />
-          </Suspense>
-        </Flex>
-      </group>
+      <AboutContent />
       <Particles count={20000} isNavigating={false} />
 
       <EffectComposer disableNormalPass multisampling={0}>
@@ -49,6 +36,45 @@ export const AboutScene = () => {
     </>
   );
 };
+
+function AboutContent() {
+  const { size } = useThree();
+  const [vpWidth, vpHeight] = useAspect(size.width, size.height);
+  const ref = useRef<Group>(null);
+
+  const textColour = new Color();
+  const vec = new Vector3();
+
+  const bind = useGesture(
+    {
+      onWheel: (state) =>
+        ref.current?.position.lerp(vec.set(0, state.offset[1], 0), 0.1),
+      onDrag: (state) =>
+        ref.current?.position.lerp(vec.set(0, -state.offset[1], 0), 0.1),
+    },
+    {
+      eventOptions: { passive: false },
+      wheel: { bounds: { top: 0, bottom: vpHeight * 1.5, left: 0, right: 0 } },
+    }
+  );
+
+  return (
+    <>
+      {/** @ts-ignore */}
+      <a.group ref={ref} rotation={[0, Math.PI / 2, 0]} {...bind()}>
+        <Plane args={[vpWidth, vpHeight * 4]} visible={false} />
+        <Flex
+          flexDirection="column"
+          size={[vpWidth, vpHeight, 0]}
+          position={[-vpWidth / 2, vpHeight / 2, 0]}
+        >
+          <Title colour={textColour} />
+          <Content colour={textColour} />
+        </Flex>
+      </a.group>
+    </>
+  );
+}
 
 function Content({ colour }: { colour: Color }) {
   const preLinkContent = "The inspiration for Tessellator came after a";

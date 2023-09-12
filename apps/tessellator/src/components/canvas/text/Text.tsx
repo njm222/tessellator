@@ -25,9 +25,9 @@ export function Text({
     <Text3D
       bevelEnabled={bevelEnabled}
       bevelSize={bevelSize}
-      scale={scale}
       font={fontUrl}
       letterSpacing={letterSpacing}
+      scale={scale}
     >
       {children}
       <meshPhongMaterial color={colour} wireframe={!hover} />

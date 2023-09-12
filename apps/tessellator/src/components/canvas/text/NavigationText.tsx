@@ -9,6 +9,7 @@ import {
 } from "@react-three/drei";
 import { hslToHex } from "core";
 import { ColorRepresentation, Mesh } from "three";
+
 import { Text } from "./Text";
 
 const fontUrl = "/fonts/tomorrow_extralight_regular.json";

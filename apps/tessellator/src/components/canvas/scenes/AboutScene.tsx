@@ -1,15 +1,15 @@
 import React, { useEffect, useLayoutEffect, useRef } from "react";
-import { useGesture } from "@use-gesture/react";
+import { a } from "@react-spring/three";
+import { Plane, useAspect } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
+import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { useGesture } from "@use-gesture/react";
 import { Color, Group, Vector3 } from "three";
 
 import Particles from "../Particles";
-import { Text } from "../text/Text";
-import { Plane, useAspect } from "@react-three/drei";
-import { Box, Flex } from "@react-three/flex";
 import { FlexLink, FlexText } from "../text/FlexText";
-import { a } from "@react-spring/three";
+import { Text } from "../text/Text";
 
 export const AboutScene = () => {
   const { camera, size, setSize } = useThree();
@@ -49,8 +49,8 @@ function AboutContent() {
     {
       onWheel: (state) =>
         ref.current?.position.lerp(vec.set(0, state.offset[1], 0), 0.1),
-      onDrag: (state) =>
-        ref.current?.position.lerp(vec.set(0, -state.offset[1], 0), 0.1),
+      // onDrag: (state) =>
+      //   ref.current?.position.lerp(vec.set(0, -state.offset[1], 0), 0.1),
     },
     {
       eventOptions: { passive: false },
@@ -65,8 +65,8 @@ function AboutContent() {
         <Plane args={[vpWidth, vpHeight * 4]} visible={false} />
         <Flex
           flexDirection="column"
-          size={[vpWidth, vpHeight, 0]}
           position={[-vpWidth / 2, vpHeight / 2, 0]}
+          size={[vpWidth, vpHeight, 0]}
         >
           <Title colour={textColour} />
           <Content colour={textColour} />
@@ -84,24 +84,24 @@ function Content({ colour }: { colour: Color }) {
 
   return (
     <Box
-      margin={20}
-      flexDirection="row"
       alignItems="center"
+      flexDirection="row"
       justifyContent="center"
+      margin={20}
       wrap="wrap"
     >
       {preLinkContent.split(" ").map((word, index) => (
         <FlexText
-          key={`about-pre-link-content-flex-text-${word}-${index}`}
           colour={colour}
+          key={`about-pre-link-content-flex-text-${word}-${index}`}
         >
           {word}
         </FlexText>
       ))}
       {linkContent.split(" ").map((word, index) => (
         <FlexLink
-          key={`link-content-flex-link-${word}-${index}`}
           colour={new Color("yellow")}
+          key={`link-content-flex-link-${word}-${index}`}
           link="https://www.christian-loeffler.net/"
         >
           {word}
@@ -109,8 +109,8 @@ function Content({ colour }: { colour: Color }) {
       ))}
       {postLinkContent.split(" ").map((word, index) => (
         <FlexText
-          key={`about-post-link-content-flex-text-${word}-${index}`}
           colour={colour}
+          key={`about-post-link-content-flex-text-${word}-${index}`}
         >
           {word}
         </FlexText>
@@ -123,10 +123,10 @@ function Title({ colour }: { colour: Color }) {
   const titleScale = 10;
   return (
     <Box
-      marginTop={30}
-      flexDirection="column"
       alignItems="center"
+      flexDirection="column"
       justifyContent="flex-start"
+      marginTop={30}
     >
       <Box marginBottom={15}>
         <Text colour={colour} scale={titleScale}>

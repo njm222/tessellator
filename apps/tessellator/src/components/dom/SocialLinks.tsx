@@ -1,5 +1,6 @@
 import React from "react";
 import { GithubIcon, IconButton, InstagramIcon } from "ui";
+
 import { openNewTabLink } from "../../helpers/global";
 
 export default function SocialLinks() {

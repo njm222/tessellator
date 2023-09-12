@@ -42,7 +42,12 @@ export function NavigationText({
         {...props}
       >
         <Center>
-          <RoundedBox args={[70, 15, 5]} radius={2} ref={boxRef} smoothness={5}>
+          <RoundedBox
+            args={[100, 15, 5]}
+            radius={2}
+            ref={boxRef}
+            smoothness={5}
+          >
             {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
             <animated.meshPhongMaterial
               color={colour}

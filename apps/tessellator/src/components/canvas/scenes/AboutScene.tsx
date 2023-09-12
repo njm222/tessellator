@@ -106,7 +106,7 @@ function Content({ colour }: { colour: Color }) {
   const preLinkContent = "The inspiration for Tessellator came after a";
   const linkContent = "Christian Löffler";
   const postLinkContent =
-    "set in SF. Tessellator is an interactive 3D music visualizer that has been developed to enhance your experience while listening to your favourite tracks. Tessellator uses the live audio to draw the visualizations in real-time. No loops / static content.";
+    "set in SF. Tessellator is an interactive 3D music visualizer that has been developed to enhance your experience while listening to your favourite tracks. Tessellator uses live audio to draw the visualizations in real-time.";
 
   return (
     <Box

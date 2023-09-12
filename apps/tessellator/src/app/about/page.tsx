@@ -37,11 +37,11 @@ const AboutScene = dynamic<{}>(
 export default function Page() {
   return (
     <DefaultLayout>
-      <SocialLinks />
       <View className="fullscreenView">
         <AboutScene />
         <Common />
       </View>
+      <SocialLinks />
     </DefaultLayout>
   );
 }

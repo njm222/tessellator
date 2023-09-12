@@ -25,7 +25,7 @@ export const Common = ({ color = "#000" }: CommonProps) => (
     <ambientLight intensity={0.5} />
     <directionalLight intensity={1} position={[2.5, 2, 12]} />
     <pointLight castShadow intensity={1} position={[-10, 5, 20]} />
-    {false && environment.production ? null : (
+    {environment.production ? null : (
       <Perf antialias={false} colorBlind deepAnalyze position="top-left" />
     )}
     <AdaptiveDpr pixelated />

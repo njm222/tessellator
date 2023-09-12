@@ -23,6 +23,7 @@ export const AboutScene = () => {
   // needed for flex to work
   useLayoutEffect(() => {
     setSize(size.width, size.height, size.updateStyle, size.top, size.left);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -49,8 +50,6 @@ function AboutContent() {
     {
       onWheel: (state) =>
         ref.current?.position.lerp(vec.set(0, state.offset[1], 0), 0.1),
-      // onDrag: (state) =>
-      //   ref.current?.position.lerp(vec.set(0, -state.offset[1], 0), 0.1),
     },
     {
       eventOptions: { passive: false },
@@ -60,7 +59,7 @@ function AboutContent() {
 
   return (
     <>
-      {/** @ts-ignore */}
+      {/** @ts-ignore incompatible types */}
       <a.group ref={ref} rotation={[0, Math.PI / 2, 0]} {...bind()}>
         <Plane args={[vpWidth, vpHeight * 4]} visible={false} />
         <Flex

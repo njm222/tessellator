@@ -48,7 +48,6 @@ export function FlexLink({
   const ref = useRef<Group>(null);
   const [hover, setHover] = useState(false);
   useCursor(hover);
-  console.log(children, hover);
 
   const { opacity } = useSpring({
     opacity: hover ? 1 : 0,

@@ -199,6 +199,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     ) => {
       cb(accessToken);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken, spotifyPlayer?._options?.getOAuthToken]);
 
   const value = useMemo(

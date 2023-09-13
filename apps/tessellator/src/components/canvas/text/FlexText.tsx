@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSpring, animated } from "@react-spring/three";
+import { animated, useSpring } from "@react-spring/three";
 import { RoundedBox, useCursor } from "@react-three/drei";
 import { Box, BoxProps } from "@react-three/flex";
 import { Color, Group, Mesh } from "three";
@@ -61,7 +61,7 @@ export function FlexLink({
       ref.current.position.y + 2,
       ref.current.position.z
     );
-  }, [ref.current, boxRef.current, hover]);
+  }, [children.length, hover]);
 
   return (
     <>
@@ -69,10 +69,10 @@ export function FlexLink({
         marginRight={marginRight}
         marginTop={marginTop}
         {...props}
-        ref={ref}
-        onPointerOver={() => setHover(true)}
-        onPointerOut={() => setHover(false)}
         onClick={() => openNewTabLink(link)}
+        onPointerOut={() => setHover(false)}
+        onPointerOver={() => setHover(true)}
+        ref={ref}
       >
         <Text colour={colour} hover scale={scale}>
           {children}

@@ -71,11 +71,10 @@ export const AboutScene = () => {
         <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
         <Glitch
           active={isScrolling > 0}
-          strength={new Vector2(isScrolling, isScrolling)}
           delay={new Vector2(0, 0)}
           duration={new Vector2(200, 200)}
+          strength={new Vector2(isScrolling, isScrolling)}
         />
-        {/* <Pixelation granularity={isScrolling} /> */}
       </EffectComposer>
     </>
   );
@@ -106,13 +105,12 @@ function Content({ colour }: { colour: Color }) {
   const preLinkContent = "The inspiration for Tessellator came after a";
   const linkContent = "Christian Löffler";
   const postLinkContent =
-    "set in SF. Tessellator is an interactive 3D music visualizer that has been developed to enhance your experience while listening to your favourite tracks. Tessellator uses live audio to draw the visualizations in real-time.";
+    "set in San Francisco. Tessellator is an interactive 3D music visualizer that has been developed to enhance your experience while listening to your favourite tracks. Tessellator uses live audio to draw the visualizations in real-time.";
 
   return (
     <Box
-      alignItems="center"
       flexDirection="row"
-      justifyContent="center"
+      justifyContent="flex-start"
       margin={20}
       wrap="wrap"
     >

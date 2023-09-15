@@ -15,7 +15,7 @@ import { Text } from "../text/Text";
 
 export const AboutScene = () => {
   const { camera, size, setSize } = useThree();
-  const [vpWidth, vpHeight] = useAspect(size.width, size.height);
+  const [, vpHeight] = useAspect(size.width, size.height);
   const ref = useRef<Group>(null);
   const vec = new Vector3();
   const [isScrolling, setIsScrolling] = useState(0);
@@ -196,12 +196,12 @@ function Title({ colour }: { colour: Color }) {
         </Text>
       </Box>
       <Box flexDirection="row" justify="space-around" width="100%" wrap="wrap">
-        <Box marginTop={15}>
+        <Box marginTop={15} marginLeft={10} marginRight={10}>
           <Text colour={colour} scale={titleScale}>
             music
           </Text>
         </Box>
-        <Box marginTop={15}>
+        <Box marginTop={15} marginLeft={10} marginRight={10}>
           <Text colour={colour} scale={titleScale}>
             visualizer
           </Text>

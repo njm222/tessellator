@@ -42,7 +42,7 @@ export const LandingScene = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (isNavigating) {
       z.advance(delta * 1000);
       camera.position.setZ(z.animation.values[0].getValue());
@@ -94,7 +94,7 @@ export const LandingScene = () => {
           handleSpotifyNavigation={handleSpotifyNavigation}
         />
       </Suspense>
-      <Particles count={20000} isNavigating={isNavigating} />
+      <Particles count={10000} isNavigating={isNavigating} />
 
       <EffectComposer disableNormalPass multisampling={0}>
         <Bloom

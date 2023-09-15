@@ -1,11 +1,12 @@
 import React from "react";
+import { animated, SpringValue } from "@react-spring/three";
 import { Text3D } from "@react-three/drei";
-import { ColorRepresentation } from "three";
 import { extend, Object3DNode } from "@react-three/fiber";
+import { ColorRepresentation } from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
+
 import myFont from "../../../../public/fonts/tomorrow_extralight_regular.json";
-import { animated, SpringValue } from "@react-spring/three";
 
 extend({ TextGeometry });
 
@@ -60,10 +61,10 @@ export function TextGeo({
       <textGeometry args={[children, { font, size, height: 1 }]} />
       {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
       <animated.meshPhongMaterial
+        color={colour}
         transparent={true}
         // wireframe={true}
         opacity={opacity}
-        color={colour}
       />
     </>
   );

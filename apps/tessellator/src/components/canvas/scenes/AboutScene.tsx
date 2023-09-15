@@ -7,11 +7,11 @@ import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { useGesture } from "@use-gesture/react";
 import { Color, Group, Vector2, Vector3 } from "three";
 
-import Particles from "../Particles";
-import { FlexText } from "../text/FlexText";
-import { FlexLink } from "../text/FlexLink";
-import { Text } from "../text/Text";
 import { openNewTabLink } from "../../../helpers/global";
+import Particles from "../Particles";
+import { FlexLink } from "../text/FlexLink";
+import { FlexText } from "../text/FlexText";
+import { Text } from "../text/Text";
 
 export const AboutScene = () => {
   const { camera, size, setSize } = useThree();

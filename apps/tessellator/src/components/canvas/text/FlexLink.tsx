@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { animated, useSpring, config } from "@react-spring/three";
+import { animated, config,useSpring } from "@react-spring/three";
 import { Instance, Instances, RoundedBox, useCursor } from "@react-three/drei";
+import { GroupProps, useFrame } from "@react-three/fiber";
 import { Box } from "@react-three/flex";
 import { Color, Group, Mesh } from "three";
 
-import { Text, TextGeo } from "./Text";
-import { GroupProps, useFrame } from "@react-three/fiber";
 import { FlexTextProps } from "./FlexText";
+import { Text, TextGeo } from "./Text";
 
 type FlexLinkProps = FlexTextProps & {
   onClick: () => void;
@@ -59,11 +59,11 @@ export function FlexLink({
         </Box>
         {overlayText ? (
           <Instances
-            visible={!!overlayText}
             limit={instanceLimit}
             range={instanceLimit}
+            visible={!!overlayText}
           >
-            <TextGeo opacity={opacity} colour={colour}>
+            <TextGeo colour={colour} opacity={opacity}>
               {overlayText}
             </TextGeo>
             {getFibonacciSpherePosition(instanceLimit, instanceRadius).map(
@@ -75,10 +75,10 @@ export function FlexLink({
         ) : null}
       </Box>
       <RoundedBox
+        args={[10 + 3.5 * children.length, 10, 5]}
         onPointerDown={() => (disabled ? null : onClick())}
         onPointerOut={() => setHover(false)}
         onPointerOver={() => setHover(true)}
-        args={[10 + 3.5 * children.length, 10, 5]}
         radius={2}
         ref={boxRef}
         smoothness={5}

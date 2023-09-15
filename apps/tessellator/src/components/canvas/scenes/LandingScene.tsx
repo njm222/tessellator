@@ -8,6 +8,7 @@ import React, {
 import { SpringValue } from "@react-spring/three";
 import { Float, useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
+import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { hslToHex, loginUser } from "core";
 import { useRouter } from "next/navigation";
@@ -15,7 +16,6 @@ import { Color, Vector2 } from "three";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
-import { Box, Flex } from "@react-three/flex";
 import { FlexLink } from "../text/FlexLink";
 import { Text } from "../text/Text";
 
@@ -118,51 +118,51 @@ function LandingContent({ handleNavigation }: { handleNavigation: any }) {
 
   return (
     <Flex
+      align="center"
       flexDirection="column"
       justify="center"
-      align="center"
       position={[-vpWidth / 2, vpHeight / 2, 0]}
       size={[vpWidth, vpHeight, 0]}
     >
       {/* <Float floatIntensity={3} speed={3}> */}
       <Box alignItems="center" justifyContent="center">
-        <Text scale={10} colour={textColour}>
+        <Text colour={textColour} scale={10}>
           t e s s e l l a t o r
         </Text>
       </Box>
       {/* </Float> */}
       <Box
         flexDirection="row"
-        width="100%"
         justify="space-around"
         marginTop={40}
+        width="100%"
       >
         <FlexLink
+          colour={new Color("#1DB954")}
           marginRight={0}
           marginTop={0}
           onClick={() => handleNavigation("/visualizer")}
-          colour={new Color("#1DB954")}
           overlayText="login"
         >
           Spotify
         </FlexLink>
         <FlexLink
+          colour={new Color("#5A5A5A")}
+          disabled
           marginRight={0}
           marginTop={0}
           onClick={() => handleNavigation("/live")}
-          colour={new Color("#5A5A5A")}
-          disabled
           overlayText="coming soon"
         >
           Live audio
         </FlexLink>
       </Box>
-      <Box flexDirection="row" width="100%" justify="center" marginTop={20}>
+      <Box flexDirection="row" justify="center" marginTop={20} width="100%">
         <FlexLink
+          colour={textColour}
           marginRight={0}
           marginTop={0}
           onClick={() => handleNavigation("/about")}
-          colour={textColour}
           overlayText="us"
         >
           About

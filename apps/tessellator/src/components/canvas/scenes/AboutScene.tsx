@@ -3,18 +3,15 @@ import { a } from "@react-spring/three";
 import { Plane, useAspect } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
-import {
-  Bloom,
-  EffectComposer,
-  Glitch,
-  Pixelation,
-} from "@react-three/postprocessing";
+import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { useGesture } from "@use-gesture/react";
 import { Color, Group, Vector2, Vector3 } from "three";
 
 import Particles from "../Particles";
-import { FlexLink, FlexText } from "../text/FlexText";
+import { FlexText } from "../text/FlexText";
+import { FlexLink } from "../text/FlexLink";
 import { Text } from "../text/Text";
+import { openNewTabLink } from "../../../helpers/global";
 
 export const AboutScene = () => {
   const { camera, size, setSize } = useThree();
@@ -102,44 +99,70 @@ function AboutContent() {
 }
 
 function Content({ colour }: { colour: Color }) {
-  const preLinkContent = "The inspiration for Tessellator came after a";
+  const preLinkContent =
+    "The inspiration for Tessellator came after a live A/V";
   const linkContent = "Christian Löffler";
   const postLinkContent =
-    "set in San Francisco. Tessellator is an interactive 3D music visualizer that has been developed to enhance your experience while listening to your favourite tracks. Tessellator uses live audio to draw the visualizations in real-time.";
+    "set in San Francisco, where I was blown away and knew I had to bring something like it to everyone.";
+  const aboutContent =
+    "Tessellator is an interactive 3D music visualizer that has been developed to enhance your experience while listening to your favourite tracks. Tessellator uses the live audio from your microphone to draw the visualizations in realtime.";
 
   return (
-    <Box
-      flexDirection="row"
-      justifyContent="flex-start"
-      margin={20}
-      wrap="wrap"
-    >
-      {preLinkContent.split(" ").map((word, index) => (
-        <FlexText
-          colour={colour}
-          key={`about-pre-link-content-flex-text-${word}-${index}`}
-        >
-          {word}
-        </FlexText>
-      ))}
-      {linkContent.split(" ").map((word, index) => (
-        <FlexLink
-          colour={new Color("yellow")}
-          key={`link-content-flex-link-${word}-${index}`}
-          link="https://www.christian-loeffler.net/"
-        >
-          {word}
-        </FlexLink>
-      ))}
-      {postLinkContent.split(" ").map((word, index) => (
-        <FlexText
-          colour={colour}
-          key={`about-post-link-content-flex-text-${word}-${index}`}
-        >
-          {word}
-        </FlexText>
-      ))}
-    </Box>
+    <>
+      <Box
+        flexDirection="row"
+        justifyContent="flex-start"
+        marginLeft={20}
+        marginRight={20}
+        marginTop={30}
+        wrap="wrap"
+      >
+        {preLinkContent.split(" ").map((word, index) => (
+          <FlexText
+            colour={colour}
+            key={`about-pre-link-content-flex-text-${word}-${index}`}
+          >
+            {word}
+          </FlexText>
+        ))}
+        {linkContent.split(" ").map((word, index) => (
+          <FlexLink
+            colour={new Color("yellow")}
+            key={`link-content-flex-link-${word}-${index}`}
+            onClick={() =>
+              openNewTabLink("https://www.christian-loeffler.net/")
+            }
+          >
+            {word}
+          </FlexLink>
+        ))}
+        {postLinkContent.split(" ").map((word, index) => (
+          <FlexText
+            colour={colour}
+            key={`about-post-link-content-flex-text-${word}-${index}`}
+          >
+            {word}
+          </FlexText>
+        ))}
+      </Box>
+      <Box
+        flexDirection="row"
+        justifyContent="flex-start"
+        marginLeft={20}
+        marginRight={20}
+        marginTop={10}
+        wrap="wrap"
+      >
+        {aboutContent.split(" ").map((word, index) => (
+          <FlexText
+            colour={colour}
+            key={`about-content-flex-text-${word}-${index}`}
+          >
+            {word}
+          </FlexText>
+        ))}
+      </Box>
+    </>
   );
 }
 

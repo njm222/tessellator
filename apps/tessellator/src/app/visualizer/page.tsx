@@ -46,9 +46,9 @@ export default function Page() {
         <VisualizerScene />
         <Common />
       </View>
-      <BackNavigationButton />
       <WelcomeUser />
       <Player />
+      <BackNavigationButton />
       <Settings />
     </DefaultLayout>
   );

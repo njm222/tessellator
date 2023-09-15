@@ -41,13 +41,13 @@ const DefaultLayout = dynamic<DefaultLayoutProps>(
 export default function Page() {
   return (
     <DefaultLayout>
-      <WelcomeUser />
-      <Player />
-      <Settings />
       <View className="fullscreenView" orbit>
         <VisualizerScene />
         <Common />
       </View>
+      <WelcomeUser />
+      <Player />
+      <Settings />
     </DefaultLayout>
   );
 }

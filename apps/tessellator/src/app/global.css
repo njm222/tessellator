@@ -61,7 +61,6 @@ img {
 /* ---------- Player ---------- */
 
 .playerContainer {
-  z-index: 10;
   min-height: 91px;
   pointer-events: auto;
   display: flex;

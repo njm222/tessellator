@@ -50,7 +50,13 @@ export const LandingScene = () => {
     }
   });
 
-  const handleNavigation = () => {
+  const handleSpotifyNavigation = async () => {
+    if (!refreshToken) {
+      // if no token present login normally
+      const { uri } = await loginUser();
+      window.location.assign(decodeURI(uri));
+    }
+    if (isPending) return;
     startTransition(() => {
       z.start({
         to: 20,
@@ -62,28 +68,26 @@ export const LandingScene = () => {
         },
       });
       setIsNavigating(true);
-    });
-  };
 
-  const handleSpotifyNavigation = async () => {
-    if (isPending) return;
-    handleNavigation();
-
-    // check for refreshToken
-    if (refreshToken) {
       router.push("/visualizer");
-      return;
-    }
-    // if no token present login normally
-    const { uri } = await loginUser();
-    window.location.assign(decodeURI(uri));
+    });
   };
 
   const handleAboutNavigation = () => {
     if (isPending) return;
-    handleNavigation();
-
-    router.push("/about");
+    startTransition(() => {
+      z.start({
+        to: 20,
+        from: camera.position.z,
+        config: {
+          tension: 20,
+          friction: refreshToken ? 5 : 200,
+          precision: 0.0001,
+        },
+      });
+      setIsNavigating(true);
+      router.push("/about");
+    });
   };
 
   return (

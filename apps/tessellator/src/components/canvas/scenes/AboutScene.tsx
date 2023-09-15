@@ -196,12 +196,12 @@ function Title({ colour }: { colour: Color }) {
         </Text>
       </Box>
       <Box flexDirection="row" justify="space-around" width="100%" wrap="wrap">
-        <Box marginTop={15} marginLeft={10} marginRight={10}>
+        <Box marginLeft={10} marginRight={10} marginTop={15}>
           <Text colour={colour} scale={titleScale}>
             music
           </Text>
         </Box>
-        <Box marginTop={15} marginLeft={10} marginRight={10}>
+        <Box marginLeft={10} marginRight={10} marginTop={15}>
           <Text colour={colour} scale={titleScale}>
             visualizer
           </Text>

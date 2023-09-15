@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { animated, config,useSpring } from "@react-spring/three";
+import { animated, config, useSpring } from "@react-spring/three";
 import { Instance, Instances, RoundedBox, useCursor } from "@react-three/drei";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { Box } from "@react-three/flex";

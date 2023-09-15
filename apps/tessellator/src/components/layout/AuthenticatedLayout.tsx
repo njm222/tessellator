@@ -8,7 +8,6 @@ import { AnalyserProviderProps } from "../../utils/analyserContext";
 import { PlayerProvider } from "../../utils/playerContext";
 import { PortalProvider } from "../../utils/portalContext";
 import { ControlsProviderProps } from "../dom/controls/controlsContext";
-import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
 
 const AnalyserProvider = dynamic<AnalyserProviderProps>(
   () =>
@@ -29,9 +28,7 @@ export const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
     <PlayerProvider>
       <AnalyserProvider>
         <ControlsProvider>
-          <MouseActivityProvider>
-            <PortalProvider>{children}</PortalProvider>
-          </MouseActivityProvider>
+          <PortalProvider>{children}</PortalProvider>
         </ControlsProvider>
       </AnalyserProvider>
     </PlayerProvider>

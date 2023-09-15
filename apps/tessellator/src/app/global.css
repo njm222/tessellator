@@ -126,3 +126,11 @@ img {
   display: flex;
   justify-content: flex-end;
 }
+
+/** Back button **/
+
+.backNavigationButton {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+}

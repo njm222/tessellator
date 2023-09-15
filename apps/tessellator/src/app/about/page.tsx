@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Loader } from "ui";
 
 import { ViewProps } from "../../components/canvas/View";
+import BackNavigationButton from "../../components/dom/BackNavigationButton";
 import SocialLinks from "../../components/dom/SocialLinks";
 import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
 
@@ -41,6 +42,7 @@ export default function Page() {
         <AboutScene />
         <Common />
       </View>
+      <BackNavigationButton />
       <SocialLinks />
     </DefaultLayout>
   );

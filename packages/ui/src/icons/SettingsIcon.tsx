@@ -1,6 +1,6 @@
 export const SettingsIcon = ({
   height = "100%",
-  width = "32px",
+  width = "48px",
 }: {
   height?: string;
   width?: string;

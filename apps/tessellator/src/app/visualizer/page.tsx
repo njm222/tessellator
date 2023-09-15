@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Loader } from "ui";
 
 import { ViewProps } from "../../components/canvas/View";
+import BackNavigationButton from "../../components/dom/BackNavigationButton";
 import { Player } from "../../components/dom/player/Player";
 import { Settings } from "../../components/dom/settings/Settings";
 import { WelcomeUser } from "../../components/dom/WelcomeUser";
@@ -45,6 +46,7 @@ export default function Page() {
         <VisualizerScene />
         <Common />
       </View>
+      <BackNavigationButton />
       <WelcomeUser />
       <Player />
       <Settings />

@@ -62,9 +62,9 @@ export function TextGeo({
       {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
       <animated.meshPhongMaterial
         color={colour}
-        transparent={true}
-        // wireframe={true}
         opacity={opacity}
+        transparent={true}
+        wireframe={true}
       />
     </>
   );

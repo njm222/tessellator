@@ -6,7 +6,7 @@ import React, {
   useTransition,
 } from "react";
 import { SpringValue } from "@react-spring/three";
-import { Float, useAspect } from "@react-three/drei";
+import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
@@ -50,27 +50,28 @@ export const LandingScene = () => {
     }
   });
 
-  const handleNavigation = async (route: string) => {
-    if (isPending) return;
+  const handleNavigation = () => {
     startTransition(() => {
       z.start({
         to: 20,
         from: camera.position.z,
         config: {
           tension: 20,
-          friction: 5,
+          friction: refreshToken ? 5 : 200,
           precision: 0.0001,
         },
       });
       setIsNavigating(true);
     });
-    if (route === "/about") {
-      router.push(route);
-      return;
-    }
+  };
+
+  const handleSpotifyNavigation = async () => {
+    if (isPending) return;
+    handleNavigation();
+
     // check for refreshToken
     if (refreshToken) {
-      router.push(route);
+      router.push("/visualizer");
       return;
     }
     // if no token present login normally
@@ -78,12 +79,20 @@ export const LandingScene = () => {
     window.location.assign(decodeURI(uri));
   };
 
+  const handleAboutNavigation = () => {
+    if (isPending) return;
+    handleNavigation();
+
+    router.push("/about");
+  };
+
   return (
     <>
       <Suspense>
-        {/* <Float floatIntensity={2} speed={2}> */}
-        <LandingContent handleNavigation={handleNavigation} />
-        {/* </Float> */}
+        <LandingContent
+          handleAboutNavigation={handleAboutNavigation}
+          handleSpotifyNavigation={handleSpotifyNavigation}
+        />
       </Suspense>
       <Particles count={20000} isNavigating={isNavigating} />
 
@@ -104,7 +113,13 @@ export const LandingScene = () => {
   );
 };
 
-function LandingContent({ handleNavigation }: { handleNavigation: any }) {
+function LandingContent({
+  handleAboutNavigation,
+  handleSpotifyNavigation,
+}: {
+  handleAboutNavigation: () => void;
+  handleSpotifyNavigation: () => void;
+}) {
   const { size, setSize } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
 
@@ -124,13 +139,11 @@ function LandingContent({ handleNavigation }: { handleNavigation: any }) {
       position={[-vpWidth / 2, vpHeight / 2, 0]}
       size={[vpWidth, vpHeight, 0]}
     >
-      {/* <Float floatIntensity={3} speed={3}> */}
       <Box alignItems="center" justifyContent="center">
         <Text colour={textColour} scale={10}>
           t e s s e l l a t o r
         </Text>
       </Box>
-      {/* </Float> */}
       <Box
         flexDirection="row"
         justify="space-around"
@@ -141,7 +154,7 @@ function LandingContent({ handleNavigation }: { handleNavigation: any }) {
           colour={new Color("#1DB954")}
           marginRight={0}
           marginTop={0}
-          onClick={() => handleNavigation("/visualizer")}
+          onClick={() => handleSpotifyNavigation()}
           overlayText="login"
         >
           Spotify
@@ -151,7 +164,7 @@ function LandingContent({ handleNavigation }: { handleNavigation: any }) {
           disabled
           marginRight={0}
           marginTop={0}
-          onClick={() => handleNavigation("/live")}
+          onClick={() => {}}
           overlayText="coming soon"
         >
           Live audio
@@ -162,7 +175,7 @@ function LandingContent({ handleNavigation }: { handleNavigation: any }) {
           colour={textColour}
           marginRight={0}
           marginTop={0}
-          onClick={() => handleNavigation("/about")}
+          onClick={() => handleAboutNavigation()}
           overlayText="us"
         >
           About

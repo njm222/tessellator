@@ -1,15 +1,23 @@
-import React, { Suspense, useEffect, useState, useTransition } from "react";
+import React, {
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useTransition,
+} from "react";
 import { SpringValue } from "@react-spring/three";
-import { Bounds } from "@react-three/drei";
+import { Float, useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
+import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
-import { loginUser } from "core";
+import { hslToHex, loginUser } from "core";
 import { useRouter } from "next/navigation";
-import { Vector2 } from "three";
+import { Color, Vector2 } from "three";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
-import { Text } from "../Text";
+import { FlexLink } from "../text/FlexLink";
+import { Text } from "../text/Text";
 
 export const LandingScene = () => {
   const [isPending, startTransition] = useTransition();
@@ -30,6 +38,7 @@ export const LandingScene = () => {
 
   useEffect(() => {
     camera.position.set(0, 0, 100);
+    camera.lookAt(0, 0, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -41,7 +50,8 @@ export const LandingScene = () => {
     }
   });
 
-  const handleClick = async () => {
+  const handleNavigation = async (route: string) => {
+    if (isPending) return;
     startTransition(() => {
       z.start({
         to: 20,
@@ -54,9 +64,13 @@ export const LandingScene = () => {
       });
       setIsNavigating(true);
     });
+    if (route === "/about") {
+      router.push(route);
+      return;
+    }
     // check for refreshToken
     if (refreshToken) {
-      router.push("/visualizer");
+      router.push(route);
       return;
     }
     // if no token present login normally
@@ -67,16 +81,9 @@ export const LandingScene = () => {
   return (
     <>
       <Suspense>
-        <Bounds fit={!isNavigating} margin={0.8} observe={!isNavigating}>
-          <Text
-            onPointerDown={() => {
-              if (isPending) return;
-              handleClick();
-            }}
-          >
-            t e s s e l l a t o r
-          </Text>
-        </Bounds>
+        {/* <Float floatIntensity={2} speed={2}> */}
+        <LandingContent handleNavigation={handleNavigation} />
+        {/* </Float> */}
       </Suspense>
       <Particles count={20000} isNavigating={isNavigating} />
 
@@ -96,3 +103,71 @@ export const LandingScene = () => {
     </>
   );
 };
+
+function LandingContent({ handleNavigation }: { handleNavigation: any }) {
+  const { size, setSize } = useThree();
+  const [vpWidth, vpHeight] = useAspect(size.width, size.height);
+
+  const textColour = new Color(hslToHex(Math.random() * 360, 100, 100));
+
+  // needed for flex to work
+  useLayoutEffect(() => {
+    setSize(size.width, size.height, size.updateStyle, size.top, size.left);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <Flex
+      align="center"
+      flexDirection="column"
+      justify="center"
+      position={[-vpWidth / 2, vpHeight / 2, 0]}
+      size={[vpWidth, vpHeight, 0]}
+    >
+      {/* <Float floatIntensity={3} speed={3}> */}
+      <Box alignItems="center" justifyContent="center">
+        <Text colour={textColour} scale={10}>
+          t e s s e l l a t o r
+        </Text>
+      </Box>
+      {/* </Float> */}
+      <Box
+        flexDirection="row"
+        justify="space-around"
+        marginTop={40}
+        width="100%"
+      >
+        <FlexLink
+          colour={new Color("#1DB954")}
+          marginRight={0}
+          marginTop={0}
+          onClick={() => handleNavigation("/visualizer")}
+          overlayText="login"
+        >
+          Spotify
+        </FlexLink>
+        <FlexLink
+          colour={new Color("#5A5A5A")}
+          disabled
+          marginRight={0}
+          marginTop={0}
+          onClick={() => handleNavigation("/live")}
+          overlayText="coming soon"
+        >
+          Live audio
+        </FlexLink>
+      </Box>
+      <Box flexDirection="row" justify="center" marginTop={20} width="100%">
+        <FlexLink
+          colour={textColour}
+          marginRight={0}
+          marginTop={0}
+          onClick={() => handleNavigation("/about")}
+          overlayText="us"
+        >
+          About
+        </FlexLink>
+      </Box>
+    </Flex>
+  );
+}

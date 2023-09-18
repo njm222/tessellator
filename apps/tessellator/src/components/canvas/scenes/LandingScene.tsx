@@ -10,7 +10,7 @@ import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
-import { hslToHex, loginUser } from "core";
+import { loginUser } from "core";
 import { useRouter } from "next/navigation";
 import { Color, Vector2 } from "three";
 
@@ -127,7 +127,7 @@ function LandingContent({
   const { size, setSize } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
 
-  const textColour = new Color(hslToHex(Math.random() * 360, 100, 100));
+  const textColour = new Color("#B91D82");
 
   // needed for flex to work
   useLayoutEffect(() => {
@@ -169,7 +169,7 @@ function LandingContent({
           marginRight={0}
           marginTop={0}
           onClick={() => {}}
-          overlayText="coming soon"
+          overlayText="upcoming"
         >
           Live audio
         </FlexLink>

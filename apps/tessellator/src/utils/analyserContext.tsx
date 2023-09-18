@@ -55,6 +55,12 @@ export const AnalyserProvider = ({ children }: AnalyserProviderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [analyserOptions]);
 
+  useEffect(() => {
+    return () => {
+      value.audioAnalyser.destroy();
+    };
+  }, [value.audioAnalyser]);
+
   return (
     <AnalyserContext.Provider value={{ ...value, analyserOptions }}>
       {children}

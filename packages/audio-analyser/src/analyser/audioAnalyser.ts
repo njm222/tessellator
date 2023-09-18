@@ -74,7 +74,6 @@ export default class AudioAnalyser {
             this.source = this.context.createMediaStreamSource(stream);
             // connect source to the analyser
             this.source.connect(this.analyser);
-            // update object limits
           });
         })
         .catch(function (err) {
@@ -83,6 +82,13 @@ export default class AudioAnalyser {
     } else {
       console.log("getUserMedia not supported on your browser!");
     }
+  }
+
+  destroy() {
+    this.analyser?.disconnect();
+    this.source?.mediaStream.getTracks().forEach((track) => track.stop());
+    this.source?.disconnect();
+    this.context?.close();
   }
 
   updateAnalyserOptions(options: AudioAnalyserProps) {

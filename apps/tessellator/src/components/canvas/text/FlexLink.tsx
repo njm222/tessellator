@@ -5,6 +5,8 @@ import { GroupProps, useFrame } from "@react-three/fiber";
 import { Box } from "@react-three/flex";
 import { Color, Group, Mesh } from "three";
 
+import { getFibonacciSpherePosition } from "../../../helpers/getFibonacciSpherePosition";
+
 import { FlexTextProps } from "./FlexText";
 import { Text, TextGeo } from "./Text";
 
@@ -28,6 +30,7 @@ export function FlexLink({
   overlayText,
   ...props
 }: FlexLinkProps) {
+  const overlayRef = useRef<any>(null);
   const boxRef = useRef<Mesh>(null);
   const ref = useRef<Group>(null);
   const [hover, setHover] = useState(false);
@@ -47,6 +50,13 @@ export function FlexLink({
       ref.current.position.y + 2,
       ref.current.position.z
     );
+
+    if (!overlayRef.current) return;
+    overlayRef.current.position.set(
+      boxRef.current.position.x,
+      boxRef.current.position.y,
+      boxRef.current.position.z
+    );
   }, [children.length, hover]);
 
   return (
@@ -57,23 +67,19 @@ export function FlexLink({
             {children}
           </Text>
         </Box>
-        {overlayText ? (
-          <Instances
-            limit={instanceLimit}
-            range={instanceLimit}
-            visible={!!overlayText}
-          >
-            <TextGeo colour={colour} opacity={opacity}>
-              {overlayText}
-            </TextGeo>
-            {getFibonacciSpherePosition(instanceLimit, instanceRadius).map(
-              ({ x, y, z }) => (
-                <Bubbles key={`${x}${y}${z}`} x={x} y={y} z={z} />
-              )
-            )}
-          </Instances>
-        ) : null}
       </Box>
+      {overlayText ? (
+        <Instances limit={instanceLimit} range={instanceLimit} ref={overlayRef}>
+          <TextGeo colour={colour} opacity={opacity}>
+            {overlayText}
+          </TextGeo>
+          {getFibonacciSpherePosition(instanceLimit, instanceRadius).map(
+            ({ x, y, z }) => (
+              <Bubbles key={`${x}${y}${z}`} x={x} y={y} z={z} />
+            )
+          )}
+        </Instances>
+      ) : null}
       <RoundedBox
         args={[10 + 3.5 * children.length, 10, 5]}
         onPointerDown={() => (disabled ? null : onClick())}
@@ -102,63 +108,24 @@ type BubblesProp = GroupProps & {
 };
 
 function Bubbles({ x, y, z, ...props }: BubblesProp) {
-  const ref = useRef<any>(null);
   const groupRef = useRef<Group>(null);
 
   useFrame((state) => {
-    if (!ref.current) {
-      return;
-    }
     if (!groupRef.current) {
       return;
     }
-    const t = state.clock.getElapsedTime() + y * 10000;
+    const t = state.clock.getElapsedTime() + x + y + z * 10000;
     groupRef.current.rotation.set(
       Math.cos(t / 4) / 2,
       Math.sin(t / 4) / 2,
       Math.cos(t / 1.5) / 2
     );
 
-    ref.current.position.set(x, y, z);
+    groupRef.current.position.set(x, y, z);
   });
   return (
     <group {...props} ref={groupRef}>
-      <Instance ref={ref} />
+      <Instance />
     </group>
   );
-}
-
-// adapted from https://gist.github.com/stephanbogner/a5f50548a06bec723dcb0991dcbb0856 by https://twitter.com/st_phan
-function getFibonacciSpherePosition(
-  samples = 100,
-  radius = 50,
-  randomize = false
-) {
-  var random = 1;
-  if (randomize === true) {
-    random = Math.random() * samples;
-  }
-
-  const points = [];
-  const offset = 2 / samples;
-  const increment = Math.PI * (3 - Math.sqrt(5));
-
-  for (let i = 0; i < samples; i++) {
-    let y = i * offset - 1 + offset / 2;
-    const distance = Math.sqrt(1 - Math.pow(y, 2));
-    const phi = ((i + random) % samples) * increment;
-    let x = Math.cos(phi) * distance;
-    let z = Math.sin(phi) * distance;
-    x = x * radius;
-    y = y * radius;
-    z = z * radius;
-
-    const point = {
-      x: x,
-      y: y,
-      z: z,
-    };
-    points.push(point);
-  }
-  return points;
 }

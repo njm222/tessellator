@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   checkSavedTracks,
@@ -38,6 +39,7 @@ async function handleError(
   }
 
   open(error.message);
+  captureException(error.message);
 }
 
 function handleRetry(failureCount: number, error: TError) {
@@ -68,7 +70,10 @@ export function useGetUserInformation() {
           return;
         }
         router.push("/"); // TODO: redirect to "live" visualizer
-        open("Visualizer requires a valid Spotify Premium subscription");
+        const errorMessage =
+          "Visualizer requires a valid Spotify Premium subscription";
+        open(errorMessage);
+        captureException(errorMessage);
       },
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);

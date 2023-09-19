@@ -33,8 +33,8 @@ export function RefreshTokenController({
         const { data } = response;
         res.send(data);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        throw new Error(error);
       });
   };
 }

@@ -13,6 +13,7 @@ import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { loginUser } from "core";
 import { useRouter } from "next/navigation";
 import { Color, Vector2 } from "three";
+import { useToast } from "ui";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
@@ -21,6 +22,7 @@ import { Text } from "../text/Text";
 
 export const LandingScene = () => {
   const [isPending, startTransition] = useTransition();
+  const toast = useToast();
   const { refreshToken } = useAuth();
   const camera = useThree((state) => state.camera);
   const router = useRouter();
@@ -53,8 +55,13 @@ export const LandingScene = () => {
   const handleSpotifyNavigation = async () => {
     if (!refreshToken) {
       // if no token present login normally
-      const { uri } = await loginUser();
-      window.location.assign(decodeURI(uri));
+      try {
+        const { uri } = await loginUser();
+        window.location.assign(decodeURI(uri));
+      } catch (e: unknown) {
+        toast.open((e as { message: string }).message);
+        return;
+      }
     }
     if (isPending) return;
     startTransition(() => {

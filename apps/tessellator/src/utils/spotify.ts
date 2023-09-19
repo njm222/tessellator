@@ -1,4 +1,4 @@
-import { captureException } from "@sentry/nextjs";
+import { captureException, setTag } from "@sentry/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   checkSavedTracks,
@@ -66,14 +66,12 @@ export function useGetUserInformation() {
       staleTime: Infinity,
       enabled: !!accessToken,
       onSuccess: ({ product }: { product: string; display_name: string }) => {
+        setTag("spotify_account_type", product);
         if (product === "premium") {
           return;
         }
         router.push("/"); // TODO: redirect to "live" visualizer
-        const errorMessage =
-          "Visualizer requires a valid Spotify Premium subscription";
-        open(errorMessage);
-        captureException(errorMessage);
+        open("Visualizer requires a valid Spotify Premium subscription");
       },
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);

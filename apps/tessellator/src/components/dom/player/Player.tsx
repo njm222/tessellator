@@ -1,4 +1,5 @@
 import React, { MouseEvent, useEffect, useRef } from "react";
+import { captureException } from "@sentry/nextjs";
 import { convertURItoURL } from "core";
 import {
   LoaderDots,
@@ -88,10 +89,13 @@ export function Player() {
     }
     try {
       audioAnalyser.setup(analyserOptions);
-      play();
     } catch (e: unknown) {
-      toast.open((e as { message: string }).message);
+      const errorMessage = (e as { message: string }).message;
+      toast.open(errorMessage);
+      captureException(errorMessage);
+      return;
     }
+    play();
   }
 
   return (

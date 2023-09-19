@@ -10,6 +10,7 @@ import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
+import { captureException } from "@sentry/nextjs";
 import { loginUser } from "core";
 import { useRouter } from "next/navigation";
 import { Color, Vector2 } from "three";
@@ -59,7 +60,9 @@ export const LandingScene = () => {
         const { uri } = await loginUser();
         window.location.assign(decodeURI(uri));
       } catch (e: unknown) {
-        toast.open((e as { message: string }).message);
+        const errorMessage = (e as { message: string }).message;
+        toast.open(errorMessage);
+        captureException(errorMessage);
         return;
       }
     }

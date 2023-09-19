@@ -24,6 +24,25 @@ img {
   visibility: hidden;
 }
 
+.errorContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background: #131313;
+}
+
+.errorContainer button {
+  color: #fff;
+  border: 1px solid #fff;
+  margin-top: 2rem;
+  padding: 1rem;
+  cursor: pointer;
+}
+
 .domContainer {
   position: relative;
   width: 100%;

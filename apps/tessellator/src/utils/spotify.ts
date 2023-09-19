@@ -1,3 +1,4 @@
+import { captureException, setTag } from "@sentry/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   checkSavedTracks,
@@ -38,6 +39,7 @@ async function handleError(
   }
 
   open(error.message);
+  captureException(error.message);
 }
 
 function handleRetry(failureCount: number, error: TError) {
@@ -64,6 +66,7 @@ export function useGetUserInformation() {
       staleTime: Infinity,
       enabled: !!accessToken,
       onSuccess: ({ product }: { product: string; display_name: string }) => {
+        setTag("spotify_account_type", product);
         if (product === "premium") {
           return;
         }

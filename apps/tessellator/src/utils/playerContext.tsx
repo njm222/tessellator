@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { captureException } from "@sentry/nextjs";
 import { StartPlaybackOptions } from "core";
 import SpotifyAnalyser from "spotify-analyser";
 import { useToast } from "ui";
@@ -128,24 +129,29 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
 
     player.addListener("initialization_error", (data: { message: string }) => {
       toast.open(`Player initialization error (${data.message})`);
+      captureException(data.message);
     });
     player.addListener("authentication_error", (data: { message: string }) => {
       if (!refreshToken) {
         toast.open(`Player authentication error (${data.message})`);
+        captureException(data.message);
       }
       handleRefreshToken(refreshToken);
-      // document.getElementById("spotify-sdk")?.remove();
     });
     player.addListener("account_error", (data: { message: string }) => {
       toast.open(`Player account error (${data.message})`);
+      captureException(data.message);
     });
-    // player.addListener("playback_error", (data: { message: string }) => {
-    //   toast.open(`playback_error - ${data.message}`);
-    // });
+    player.addListener("playback_error", (data: { message: string }) => {
+      toast.open(`playback_error - ${data.message}`);
+      captureException(data.message);
+    });
     player.addListener("ready", (data: { device_id: string }) => {
       if (!data.device_id) {
         // toast message
-        toast.open("Player failed to start");
+        const errorMessage = "Player failed to start";
+        toast.open(errorMessage);
+        captureException(errorMessage);
         return;
       }
       mutateTransferMyPlayback(data.device_id);

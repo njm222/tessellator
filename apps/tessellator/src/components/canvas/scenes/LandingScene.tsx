@@ -10,9 +10,11 @@ import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
+import { captureException } from "@sentry/nextjs";
 import { loginUser } from "core";
 import { useRouter } from "next/navigation";
 import { Color, Vector2 } from "three";
+import { useToast } from "ui";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
@@ -21,6 +23,7 @@ import { Text } from "../text/Text";
 
 export const LandingScene = () => {
   const [isPending, startTransition] = useTransition();
+  const toast = useToast();
   const { refreshToken } = useAuth();
   const camera = useThree((state) => state.camera);
   const router = useRouter();
@@ -53,8 +56,15 @@ export const LandingScene = () => {
   const handleSpotifyNavigation = async () => {
     if (!refreshToken) {
       // if no token present login normally
-      const { uri } = await loginUser();
-      window.location.assign(decodeURI(uri));
+      try {
+        const { uri } = await loginUser();
+        window.location.assign(decodeURI(uri));
+      } catch (e: unknown) {
+        const errorMessage = (e as { message: string }).message;
+        toast.open(errorMessage);
+        captureException(errorMessage);
+        return;
+      }
     }
     if (isPending) return;
     startTransition(() => {

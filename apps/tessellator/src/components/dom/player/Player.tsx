@@ -1,6 +1,13 @@
 import React, { MouseEvent, useEffect, useRef } from "react";
+import { captureException } from "@sentry/nextjs";
 import { convertURItoURL } from "core";
-import { LoaderDots, PlayerControls, ProgressBar, TrackDetails } from "ui";
+import {
+  LoaderDots,
+  PlayerControls,
+  ProgressBar,
+  TrackDetails,
+  useToast,
+} from "ui";
 
 import { ImageWrapper } from "../../../helpers/ImageWrapper";
 import { useAnalyser } from "../../../utils/analyserContext";
@@ -10,6 +17,7 @@ import { mutations } from "../../../utils/store";
 import { useMouseActivity } from "../controls/mouseActivityContext";
 
 export function Player() {
+  const toast = useToast();
   const { audioAnalyser, analyserOptions } = useAnalyser();
   const {
     player,
@@ -76,11 +84,18 @@ export function Player() {
   }, [audioAnalyser.source, player, pause]);
 
   function handlePlay() {
-    play();
     if (audioAnalyser.source) {
       return;
     }
-    audioAnalyser.setup(analyserOptions);
+    try {
+      audioAnalyser.setup(analyserOptions);
+    } catch (e: unknown) {
+      const errorMessage = (e as { message: string }).message;
+      toast.open(errorMessage);
+      captureException(errorMessage);
+      return;
+    }
+    play();
   }
 
   return (

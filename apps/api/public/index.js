@@ -73,7 +73,9 @@ function CallbackController({
       (0, import_axios.default)(authOptions).then((response) => {
         const { data } = response;
         res.redirect(`${frontendUrl}/visualizer?${(0, import_querystring.stringify)(data)}`);
-      }).catch(console.log);
+      }).catch((error) => {
+        throw new Error(error);
+      });
     }
   };
 }
@@ -197,8 +199,8 @@ function RefreshTokenController({
     (0, import_axios5.default)(authOptions).then((response) => {
       const { data } = response;
       res.send(data);
-    }).catch((e) => {
-      console.log(e);
+    }).catch((error) => {
+      throw new Error(error);
     });
   };
 }

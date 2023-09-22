@@ -28,7 +28,7 @@ const View = dynamic<ViewProps>(
   {
     ssr: false,
     loading: () => (
-      <Loader dotVariant={3} hintVariant={1} message="Building scene" />
+      <Loader dotVariant={3} hintVariant={2} message="Building scene" />
     ),
   }
 );

@@ -23,7 +23,12 @@ const Common = dynamic<CommonProps>(
 
 const View = dynamic<ViewProps>(
   () => import("../components/canvas/View").then((mod) => mod.View),
-  { ssr: false, loading: () => <Loader message="Building scene" /> }
+  {
+    ssr: false,
+    loading: () => (
+      <Loader dotVariant={3} hintVariant={1} message="Building scene" />
+    ),
+  }
 );
 
 const DefaultLayout = dynamic<DefaultLayoutProps>(

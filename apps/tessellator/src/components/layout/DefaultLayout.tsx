@@ -2,6 +2,7 @@ import React, { ReactNode, useRef } from "react";
 import { Globals } from "@react-spring/three";
 import dynamic from "next/dynamic";
 import { Loader } from "ui";
+import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
 
 /**
  * workaround from: https://github.com/pmndrs/react-spring/issues/1586
@@ -26,7 +27,7 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
 
   return (
     <div className="domContainer" ref={ref}>
-      {children}
+      <MouseActivityProvider>{children}</MouseActivityProvider>
       <Scene
         eventPrefix="client"
         eventSource={ref}

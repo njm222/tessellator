@@ -15,6 +15,7 @@ export default class TerrainMaterial extends ShaderMaterial {
         uXScale: { value: 1 },
         uYScale: { value: 1 },
         uAmplitude: { value: 1 },
+        uOpacity: { value: 1 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,

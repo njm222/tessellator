@@ -1,6 +1,16 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  createRef,
+  ReactNode,
+  Ref,
+  RefObject,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { generateRandomInteger } from "core";
 
 import { LocalStorageKeys } from "../../../config/constants";
@@ -27,7 +37,11 @@ export type ControlsProviderProps = {
   children: ReactNode;
   enabledModes?: number[];
   modeKey?: number;
-  colourKey?: number;
+  colourKey?: RefObject<number>;
+  randomizeMode?: boolean;
+  randomizeColourMode?: boolean;
+  setRandomizeMode?: (value: boolean) => void;
+  setRandomizeColourMode?: (value: boolean) => void;
   addMode?: (mode: number) => void;
   removeMode?: (mode: number) => void;
   changeColourMode?: () => void;
@@ -37,7 +51,7 @@ export type ControlsProviderProps = {
 const ControlsContext = createContext({
   enabledModes: [0],
   modeKey: 0,
-  colourKey: 0,
+  colourKey: createRef(),
   randomizeMode: true,
   randomizeColourMode: true,
   addMode: (value: number) => {
@@ -75,7 +89,7 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
     getLocalStorageItem(LocalStorageKeys.VISUALIZER_OPTIONS)?.randomizeMode ??
       true
   );
-  const [colourKey, setColourKey] = useState(0);
+  const colourKey = useRef(0);
   const [randomizeColourMode, setRandomizeColourMode] = useState(
     getLocalStorageItem(LocalStorageKeys.VISUALIZER_OPTIONS)
       ?.randomizeColourMode ?? true
@@ -88,7 +102,7 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
     })),
     ...colourMap.map(({ key, value }) => ({
       keys: [key],
-      fn: () => setColourKey(value),
+      fn: () => (colourKey.current = value),
     })),
     { keys: ["f", "F"], fn: () => toggleFullScreen() },
   ]);
@@ -129,7 +143,7 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
         setModeKey(enabledModes[index]);
       },
       changeColourMode: () => {
-        setColourKey(generateRandomInteger(0, colourMap.length - 1));
+        colourKey.current = generateRandomInteger(0, colourMap.length - 1);
       },
       randomizeMode,
       randomizeColourMode,

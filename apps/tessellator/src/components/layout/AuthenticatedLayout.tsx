@@ -27,9 +27,9 @@ export const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
   return (
     <PlayerProvider>
       <AnalyserProvider>
-        <ControlsProvider>
-          <PortalProvider>{children}</PortalProvider>
-        </ControlsProvider>
+        <PortalProvider>
+          <ControlsProvider>{children}</ControlsProvider>
+        </PortalProvider>
       </AnalyserProvider>
     </PlayerProvider>
   );

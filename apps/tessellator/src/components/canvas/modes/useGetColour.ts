@@ -26,7 +26,7 @@ export function useGetColour(
       return "#123456";
     }
 
-    switch (colourKey) {
+    switch (colourKey?.current) {
       case 0:
         return hslToHex(
           360 * ((getIndexOfMax(segment?.pitches) + 1) / 13),

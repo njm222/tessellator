@@ -1,4 +1,5 @@
 import React, { memo, useRef } from "react";
+import { a, SpringValue } from "@react-spring/three";
 import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { getIndexOfMax, getIndexOfMin } from "core";
@@ -9,7 +10,7 @@ import { usePlayer } from "../../../../utils/playerContext";
 import TerrainMaterial from "../../shaders/terrain/TerrainMaterial";
 import { useGetColour } from "../useGetColour";
 
-function Terrain({ visible }: { visible: boolean }) {
+const Mode0 = ({ opacity }: { opacity: SpringValue<number> }) => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { getColour } = useGetColour();
@@ -20,8 +21,6 @@ function Terrain({ visible }: { visible: boolean }) {
   const [vpWidth, vpHeight] = useAspect(viewport.width, viewport.height, 2);
 
   useFrame((_, delta) => {
-    if (!visible) return;
-
     // Wait for material to load
     if (!terrainMaterialRef.current) {
       return;
@@ -36,7 +35,7 @@ function Terrain({ visible }: { visible: boolean }) {
       audioAnalyser;
     const { energy, danceability, valence } = trackFeatures;
 
-    const { uTime, uXScale, uYScale, uAmplitude, uColour } =
+    const { uTime, uXScale, uYScale, uAmplitude, uColour, uOpacity } =
       terrainMaterialRef.current.uniforms;
 
     const dynamicDelta =
@@ -90,25 +89,16 @@ function Terrain({ visible }: { visible: boolean }) {
 
     // Update the material colour
     uColour.value.lerp(new Color(getColour()), dynamicDelta);
+
+    // Update the material opacity
+    uOpacity.value = opacity.get();
   });
 
   return (
     <mesh position={[0, 2, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
       <planeGeometry args={[vpWidth, vpHeight, 512, 512]} />
-      <terrainMaterial
-        attach="material"
-        ref={terrainMaterialRef}
-        wireframe={true}
-      />
+      <terrainMaterial ref={terrainMaterialRef} transparent wireframe />
     </mesh>
-  );
-}
-
-const Mode0 = ({ visible }: { visible: boolean }) => {
-  return (
-    <group visible={visible}>
-      <Terrain visible={visible} />
-    </group>
   );
 };
 

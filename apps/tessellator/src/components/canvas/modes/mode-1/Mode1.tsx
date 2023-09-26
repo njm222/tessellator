@@ -15,9 +15,10 @@ import "../../shaders/ParticleMaterial";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
-const Mode1 = ({ visible }: { visible: boolean }) => {
+const Mode1 = ({ opacity, ...props }: ModeProps) => {
   const mesh = useRef<Points>(null);
   const { audioAnalyser } = useAnalyser();
   const { getColour } = useGetColour({ minSaturation: 75, minLightness: 150 });
@@ -213,7 +214,6 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
   };
 
   useFrame((state, delta) => {
-    if (!visible) return;
     if (!mesh.current) return;
 
     const dynamicDelta =
@@ -234,7 +234,7 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       q.current
     );
 
-    const { uColour, uSize, uRadius } = (
+    const { uColour, uSize, uRadius, uOpacity } = (
       mesh.current.material as ShaderMaterial
     ).uniforms;
 
@@ -248,6 +248,9 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       Math.abs(timbre?.length ? timbre[11] : 1),
       dynamicDelta
     );
+
+    // Update the material opacity
+    uOpacity.value = opacity.get();
 
     mesh.current.geometry.setIndex(indices);
     mesh.current.geometry.setAttribute(
@@ -265,15 +268,17 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
   });
 
   return (
-    <points ref={mesh} visible={visible}>
-      <bufferGeometry attach="geometry" />
-      <particleMaterial
-        attach="material"
-        blending={AdditiveBlending}
-        depthWrite={false}
-        transparent
-      />
-    </points>
+    <group {...props}>
+      <points ref={mesh}>
+        <bufferGeometry attach="geometry" />
+        <particleMaterial
+          attach="material"
+          blending={AdditiveBlending}
+          depthWrite={false}
+          transparent
+        />
+      </points>
+    </group>
   );
 };
 

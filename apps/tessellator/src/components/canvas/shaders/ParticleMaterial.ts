@@ -1,5 +1,5 @@
 import { extend, ReactThreeFiber } from "@react-three/fiber";
-import { Color,ShaderMaterial } from "three";
+import { Color, ShaderMaterial } from "three";
 
 export default class ParticleMaterial extends ShaderMaterial {
   constructor() {
@@ -10,6 +10,7 @@ export default class ParticleMaterial extends ShaderMaterial {
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
         uSize: { value: 4.0 },
         uColour: { value: new Color("#fff") },
+        uOpacity: { value: 1.0 },
       },
       vertexShader: `
       varying vec3 vUv; 
@@ -29,6 +30,7 @@ export default class ParticleMaterial extends ShaderMaterial {
       fragmentShader: `
       varying float vDistance;
       uniform vec3 uColour;
+      uniform float uOpacity;
 
       void main() {
         float distanceToCenter = distance(gl_PointCoord, vec2(0.5));
@@ -37,7 +39,7 @@ export default class ParticleMaterial extends ShaderMaterial {
         vec3 color = mix(uColour, vec3(0.98, 0.78, 0.39), vDistance * 0.5);
         color = mix(vec3(0.0), color, strength);
         
-        gl_FragColor = vec4(color, strength);
+        gl_FragColor = vec4(color, uOpacity);
       }`,
     });
   }

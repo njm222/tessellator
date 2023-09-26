@@ -5,9 +5,10 @@ import { Color, MathUtils } from "three";
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import WaveMaterial from "../../shaders/wave/WaveMaterial";
+import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
-const Mode3 = ({ visible }: { visible: boolean }) => {
+const Mode3 = ({ opacity, ...props }: ModeProps) => {
   const { getColour } = useGetColour({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
@@ -35,8 +36,6 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
   }, [trackFeatures.danceability]);
 
   useFrame((state, delta) => {
-    if (!visible) return;
-
     if (!materialRef.current) return;
 
     const factor =
@@ -47,7 +46,7 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
 
     const dynamicDelta = delta * trackFeatures.tempo * factor;
 
-    const { uTime, uColorStart, uStrengthFactor } =
+    const { uTime, uColorStart, uStrengthFactor, uOpacity } =
       materialRef.current.uniforms;
 
     const timbre = spotifyAnalyser.getCurrentSegment().timbre;
@@ -78,6 +77,8 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
     );
 
     uColorStart.value.lerp(new Color(getColour()), dynamicDelta);
+    // Update the material opacity
+    uOpacity.value = opacity.get();
 
     if (spotifyAnalyser.bars.current.start === currentBarStart.current) {
       return;
@@ -93,10 +94,10 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
   });
 
   return (
-    <group visible={visible}>
+    <group {...props}>
       <mesh scale={[width, height, 1]}>
         <planeGeometry />
-        <waveMaterial ref={materialRef} />
+        <waveMaterial ref={materialRef} transparent />
       </mesh>
     </group>
   );

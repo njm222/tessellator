@@ -15,6 +15,7 @@ export default class WaveMaterial extends ShaderMaterial {
         uStrengthFactor: { value: 5.0 },
         uColorStart: { value: new Color("#fff") },
         uColorEnd: { value: new Color("#000") },
+        uOpacity: { value: 1 },
       },
       vertexShader: vertex,
       fragmentShader: fragment,

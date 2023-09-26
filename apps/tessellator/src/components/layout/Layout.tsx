@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastProvider } from "ui";
 
 import { AuthProvider } from "../../utils/authContext";
-import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const [queryClient] = useState(() => new QueryClient());
@@ -13,9 +12,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
-        <AuthProvider>
-          <MouseActivityProvider>{children}</MouseActivityProvider>
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </ToastProvider>
     </QueryClientProvider>
   );

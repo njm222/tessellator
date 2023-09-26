@@ -1,4 +1,5 @@
 import { useMemo, useRef } from "react";
+import { a } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
 import {
   Color,
@@ -10,9 +11,10 @@ import {
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
-const Mode2 = ({ visible }: { visible: boolean }) => {
+const Mode2 = ({ opacity, ...props }: ModeProps) => {
   const count = 8000;
   const tempObject = new Object3D();
   const mesh = useRef<InstancedMesh>(
@@ -37,8 +39,6 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
   useFrame((state, delta) => {
-    if (!visible) return;
-
     tempColor.lerp(
       new Color(getColour()),
       delta * 10 * (1 - trackFeatures.energy)
@@ -105,7 +105,7 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
   });
 
   return (
-    <group visible={visible}>
+    <group {...props}>
       <instancedMesh args={[undefined, undefined, count]} ref={mesh}>
         <boxGeometry args={[0.1, 0.1, 0.1]}>
           <instancedBufferAttribute
@@ -113,7 +113,8 @@ const Mode2 = ({ visible }: { visible: boolean }) => {
             attach="attributes-color"
           />
         </boxGeometry>
-        <meshPhongMaterial />
+        {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
+        <a.meshPhongMaterial opacity={opacity} transparent />
       </instancedMesh>
     </group>
   );

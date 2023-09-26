@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { SpringValue } from "@react-spring/three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import WaveMaterial from "../../shaders/wave/WaveMaterial";
+import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
-const Mode3 = ({ opacity }: { opacity: SpringValue<number> }) => {
+const Mode3 = ({ opacity, ...props }: ModeProps) => {
   const { getColour } = useGetColour({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
@@ -94,7 +94,7 @@ const Mode3 = ({ opacity }: { opacity: SpringValue<number> }) => {
   });
 
   return (
-    <group>
+    <group {...props}>
       <mesh scale={[width, height, 1]}>
         <planeGeometry />
         <waveMaterial ref={materialRef} transparent />

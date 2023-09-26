@@ -1,5 +1,5 @@
 import { useMemo, useRef } from "react";
-import { a, SpringValue } from "@react-spring/three";
+import { a } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
 import {
   Color,
@@ -11,9 +11,10 @@ import {
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
-const Mode2 = ({ opacity }: { opacity: SpringValue<number> }) => {
+const Mode2 = ({ opacity, ...props }: ModeProps) => {
   const count = 8000;
   const tempObject = new Object3D();
   const mesh = useRef<InstancedMesh>(
@@ -104,7 +105,7 @@ const Mode2 = ({ opacity }: { opacity: SpringValue<number> }) => {
   });
 
   return (
-    <group>
+    <group {...props}>
       <instancedMesh args={[undefined, undefined, count]} ref={mesh}>
         <boxGeometry args={[0.1, 0.1, 0.1]}>
           <instancedBufferAttribute

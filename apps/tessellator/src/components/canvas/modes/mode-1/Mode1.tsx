@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import { a, SpringValue } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
 import { getIndexOfMax, getIndexOfMin } from "core";
 import {
@@ -16,9 +15,10 @@ import "../../shaders/ParticleMaterial";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
-const Mode1 = ({ opacity }: { opacity: SpringValue<number> }) => {
+const Mode1 = ({ opacity, ...props }: ModeProps) => {
   const mesh = useRef<Points>(null);
   const { audioAnalyser } = useAnalyser();
   const { getColour } = useGetColour({ minSaturation: 75, minLightness: 150 });
@@ -268,15 +268,17 @@ const Mode1 = ({ opacity }: { opacity: SpringValue<number> }) => {
   });
 
   return (
-    <points ref={mesh}>
-      <bufferGeometry attach="geometry" />
-      <particleMaterial
-        attach="material"
-        blending={AdditiveBlending}
-        depthWrite={false}
-        transparent
-      />
-    </points>
+    <group {...props}>
+      <points ref={mesh}>
+        <bufferGeometry attach="geometry" />
+        <particleMaterial
+          attach="material"
+          blending={AdditiveBlending}
+          depthWrite={false}
+          transparent
+        />
+      </points>
+    </group>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { Suspense,useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import {
   a,
   SpringValue,
@@ -13,6 +13,7 @@ import Mode0 from "./mode-0/Mode0";
 import Mode1 from "./mode-1/Mode1";
 import Mode2 from "./mode-2/Mode2";
 import Mode3 from "./mode-3/Mode3";
+import Mode4 from "./mode-4/Mode4";
 
 export function Modes() {
   const { modeKey } = useControls();
@@ -87,6 +88,14 @@ function getModeByIndex(index: number) {
         return (
           <a.group {...props}>
             <Mode3 opacity={props.opacity} />
+          </a.group>
+        );
+      };
+    case 4:
+      return function AnimatedMode4(props: AnimatedModeProps) {
+        return (
+          <a.group {...props}>
+            <Mode4 opacity={props.opacity} />
           </a.group>
         );
       };

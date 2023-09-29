@@ -4,7 +4,7 @@ import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import WaveMaterial from "../../shaders/wave/WaveMaterial";
+import { WaveMaterial } from "../../shaders/wave/WaveMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 

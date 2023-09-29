@@ -6,7 +6,7 @@ import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import TerrainMaterial from "../../shaders/terrain/TerrainMaterial";
+import { TerrainMaterial } from "../../shaders/terrain/TerrainMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 

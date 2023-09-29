@@ -11,15 +11,15 @@ import {
   Vector3,
 } from "three";
 
-import "../../shaders/ParticleMaterial";
-
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import { ParticleMaterial } from "../../shaders/particle/ParticleMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
 const Mode1 = ({ opacity, ...props }: ModeProps) => {
   const mesh = useRef<Points>(null);
+  const materialRef = useRef(new ParticleMaterial());
   const { audioAnalyser } = useAnalyser();
   const { getColour } = useGetColour({ minSaturation: 75, minLightness: 150 });
   const { spotifyAnalyser, trackFeatures } = usePlayer();
@@ -234,9 +234,7 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
       q.current
     );
 
-    const { uColour, uSize, uRadius, uOpacity } = (
-      mesh.current.material as ShaderMaterial
-    ).uniforms;
+    const { uColour, uSize, uRadius, uOpacity } = materialRef.current.uniforms;
 
     const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
 
@@ -275,6 +273,7 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
           attach="material"
           blending={AdditiveBlending}
           depthWrite={false}
+          ref={materialRef}
           transparent
         />
       </points>

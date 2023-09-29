@@ -66,18 +66,17 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
 
     const segment = spotifyAnalyser.getCurrentSegment();
 
-    uFactor.value = MathUtils.lerp(
-      uFactor.value,
+    const pitchTotal =
       segment?.pitches?.reduce((acc, curr) => {
         acc += curr / 10;
         return acc;
-      }, 1),
-      dynamicDelta
-    );
+      }, 1) || 1;
 
-    const timbre = segment?.timbre;
+    uFactor.value = MathUtils.lerp(uFactor.value, pitchTotal, dynamicDelta);
 
-    uIterations.value = Math.floor(Math.abs(timbre[0] / 10)) + 1;
+    const numIteration = segment?.timbre?.length ? segment.timbre[0] : 1;
+
+    uIterations.value = Math.floor(Math.abs(numIteration / 10)) + 1;
 
     if (spotifyAnalyser.beats.current.start === currentBeatStart.current) {
       return;

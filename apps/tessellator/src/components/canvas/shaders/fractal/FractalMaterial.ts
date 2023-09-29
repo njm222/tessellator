@@ -1,27 +1,25 @@
+import { shaderMaterial } from "@react-three/drei";
 import { extend, ReactThreeFiber } from "@react-three/fiber";
-import { Color, ShaderMaterial } from "three";
+import { Color } from "three";
 
 // @ts-ignore
 import fragment from "./glsl/shader.frag";
 // @ts-ignore
 import vertex from "./glsl/shader.vert";
 
-export default class FractalMaterial extends ShaderMaterial {
-  constructor() {
-    super({
-      uniforms: {
-        uColour: { value: new Color("#fff") },
-        uTime: { value: 0 },
-        uXScale: { value: 1 },
-        uYScale: { value: 1 },
-        uAmplitude: { value: 1 },
-        uOpacity: { value: 1 },
-      },
-      vertexShader: vertex,
-      fragmentShader: fragment,
-    });
-  }
-}
+export const FractalMaterial = shaderMaterial(
+  {
+    uOpacity: 1,
+    uColour: new Color("#fff"),
+    uTime: 0,
+    uIterations: 1,
+    uEnergy: 1,
+    uValence: 1,
+    uFactor: 1,
+  },
+  vertex,
+  fragment
+);
 
 extend({ FractalMaterial });
 
@@ -30,7 +28,7 @@ declare global {
   namespace JSX {
     // eslint-disable-next-line no-unused-vars
     interface IntrinsicElements {
-      FractalMaterial: ReactThreeFiber.Object3DNode<
+      fractalMaterial: ReactThreeFiber.Object3DNode<
         FractalMaterial,
         typeof FractalMaterial
       >;

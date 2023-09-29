@@ -1,12 +1,39 @@
-varying vec3 vUv;
+varying vec2 vUv;
 uniform vec3 uColour;
 uniform float uOpacity;
+uniform float uTime;
+uniform float uIterations;
+uniform float uEnergy;
+uniform float uValence;
+uniform float uFactor;
+
+vec3 palette( float t, vec3 baseColour ) {
+    vec3 a = vec3(0.5, 0.5, 0.5);
+    vec3 b = vec3(1.0, 1.0, 1.0);
+
+    return a*cos( 6.28318*(b*t+baseColour) );
+}
 
 void main()
 {
-  vec3 complimentaryColour = vec3(1.0 - uColour.x, 1.0 - uColour.y, 1.0 - uColour.z);
-  vec3 color = mix(uColour, complimentaryColour, vUv.z);
-  color = mix(vec3(0.0), color, vUv.z + 0.9);
 
-  gl_FragColor = vec4(color, uOpacity);
+  vec2 vUv0 = vUv - 0.5;
+  vec2 vUv1 = vUv - 0.5;
+  vec3 finalColor = vec3(0.0);
+    
+  for (float i = 0.0; i < uIterations; i++) {
+    vUv1 = fract(vUv1 * uFactor) - 0.5;
+
+    float d = length(vUv1) * exp(-length(vUv0));
+
+    vec3 col = palette(length(vUv0) + i * uEnergy + uTime * uEnergy, uColour);
+
+    d = abs(sin(d*uValence + uTime)/uValence);
+
+    d = pow(0.01 / d, uFactor);
+
+    finalColor += col * d;
+  }
+
+  gl_FragColor = vec4(finalColor, uOpacity);
 }

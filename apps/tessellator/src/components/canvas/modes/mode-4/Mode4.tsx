@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
+import { getIndexOfMax } from "core";
 import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import WaveMaterial from "../../shaders/wave/WaveMaterial";
+import { FractalMaterial } from "../../shaders/fractal/FractalMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
@@ -13,23 +14,81 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
-  const materialRef = useRef(new WaveMaterial());
-  const realBarCounter = useRef(0);
-  const currentBarStart = useRef(0);
-  const [barThreshold, setBarThreshold] = useState(0.7);
+  const materialRef = useRef(new FractalMaterial());
+  const realBeatCounter = useRef(0);
+  const currentBeatStart = useRef(0);
+  const [beatThreshold, setBeatThreshold] = useState(0.7);
 
   useEffect(() => {
-    setBarThreshold(
+    setBeatThreshold(
       trackFeatures.danceability > 0.5
         ? trackFeatures.danceability > 0.75
-          ? 0.95
-          : 0.8
-        : 0.65
+          ? 0.8
+          : 0.65
+        : 0.5
     );
   }, [trackFeatures.danceability]);
 
+  useEffect(() => {
+    materialRef.current.uniforms.uEnergy.value = trackFeatures.energy;
+  }, [trackFeatures.energy]);
+
+  useEffect(() => {
+    materialRef.current.uniforms.uValence.value = trackFeatures.valence * 10;
+  }, [trackFeatures.valence]);
+
   useFrame((state, delta) => {
     if (!materialRef.current) return;
+
+    const factor =
+      trackFeatures.energy *
+      trackFeatures.danceability *
+      (1 - trackFeatures.valence) *
+      0.1;
+
+    const dynamicDelta = delta * trackFeatures.tempo * factor;
+
+    const { uTime, uOpacity, uIterations, uFactor, uColour } =
+      materialRef.current.uniforms;
+
+    // Update the material opacity
+    uOpacity.value = opacity.get();
+
+    // Update the material colour
+    uColour.value.lerp(new Color(getColour()), dynamicDelta);
+
+    const direction = realBeatCounter.current % 2 === 0 ? 1 : -1;
+
+    uTime.value = MathUtils.lerp(
+      uTime.value,
+      uTime.value + audioAnalyser.midSection.average * factor * direction,
+      dynamicDelta
+    );
+
+    uFactor.value = MathUtils.lerp(
+      uFactor.value,
+      spotifyAnalyser.getCurrentSegment().pitches.reduce((acc, curr) => {
+        acc += curr / 10;
+        return acc;
+      }, 1),
+      dynamicDelta
+    );
+
+    const timbre = spotifyAnalyser.getCurrentSegment().timbre;
+
+    uIterations.value = Math.floor(Math.abs(timbre[0] / 10)) + 1;
+
+    if (spotifyAnalyser.beats.current.start === currentBeatStart.current) {
+      return;
+    }
+
+    if (spotifyAnalyser.beats.current.confidence > beatThreshold) {
+      realBeatCounter.current++;
+      if (spotifyAnalyser.beats.counter === 0) {
+        realBeatCounter.current = 0;
+      }
+      currentBeatStart.current = spotifyAnalyser.beats.current.start;
+    }
   });
 
   return (

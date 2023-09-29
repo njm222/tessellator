@@ -17,8 +17,8 @@ vec3 palette( float t, vec3 baseColour ) {
 void main()
 {
 
-  vec2 vUv0 = vUv - 0.5;
-  vec2 vUv1 = vUv - 0.5;
+  vec2 vUv0 = (vUv - 0.5);
+  vec2 vUv1 = vUv0;
   vec3 finalColor = vec3(0.0);
     
   for (float i = 0.0; i < uIterations; i++) {
@@ -30,7 +30,7 @@ void main()
 
     d = abs(sin(d*uValence + uTime)/uValence);
 
-    d = pow(0.01 / d, uFactor);
+    d = pow(0.01 / d, 0.5 + uFactor);
 
     finalColor += col * d;
   }

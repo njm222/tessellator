@@ -51,6 +51,9 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
     const { uTime, uColorStart, uStrengthFactor, uOpacity } =
       materialRef.current.uniforms;
 
+    // Update material opacity
+    uOpacity.value = opacity.get();
+
     const timbre = spotifyAnalyser.getCurrentSegment().timbre;
 
     uStrengthFactor.value = MathUtils.lerp(
@@ -78,9 +81,8 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
       dynamicDelta
     );
 
+    // Update material colouor
     uColorStart.value.lerp(new Color(getColour()), dynamicDelta);
-    // Update the material opacity
-    uOpacity.value = opacity.get();
 
     if (spotifyAnalyser.bars.current.start === currentBarStart.current) {
       return;

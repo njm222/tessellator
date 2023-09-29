@@ -62,7 +62,12 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
 
     uTime.value = MathUtils.lerp(
       uTime.value,
-      uTime.value + audioAnalyser.midSection.average * factor * direction,
+      uTime.value +
+        (trackFeatures.danceability > 0.5
+          ? audioAnalyser.snareSection.average
+          : audioAnalyser.midSection.average) *
+          factor *
+          direction,
       dynamicDelta
     );
 
@@ -96,7 +101,7 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
   return (
     <group {...props}>
       <mesh scale={[vpWidth, vpHeight, 1]}>
-        <planeGeometry />
+        <planeGeometry args={[1, 1, 1024, 1024]} />
         <fractalMaterial ref={materialRef} transparent />
       </mesh>
     </group>

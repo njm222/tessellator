@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { getIndexOfMax } from "core";
 import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
@@ -65,16 +64,18 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
       dynamicDelta
     );
 
+    const segment = spotifyAnalyser.getCurrentSegment();
+
     uFactor.value = MathUtils.lerp(
       uFactor.value,
-      spotifyAnalyser.getCurrentSegment().pitches.reduce((acc, curr) => {
+      segment?.pitches.reduce((acc, curr) => {
         acc += curr / 10;
         return acc;
       }, 1),
       dynamicDelta
     );
 
-    const timbre = spotifyAnalyser.getCurrentSegment().timbre;
+    const timbre = segment?.timbre;
 
     uIterations.value = Math.floor(Math.abs(timbre[0] / 10)) + 1;
 

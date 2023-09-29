@@ -17,8 +17,8 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
 
   // Get reference of the terrain
   const terrainMaterialRef = useRef(new TerrainMaterial());
-  const { viewport } = useThree();
-  const [vpWidth, vpHeight] = useAspect(viewport.width, viewport.height, 2);
+  const { width, height } = useThree((state) => state.viewport);
+  const [vpWidth, vpHeight] = useAspect(width, height, 2);
 
   useFrame((_, delta) => {
     // Wait for material to load

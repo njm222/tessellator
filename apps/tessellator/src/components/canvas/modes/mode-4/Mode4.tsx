@@ -7,12 +7,14 @@ import { usePlayer } from "../../../../utils/playerContext";
 import { FractalMaterial } from "../../shaders/fractal/FractalMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
+import { useAspect } from "@react-three/drei";
 
 const Mode4 = ({ opacity, ...props }: ModeProps) => {
   const { getColour } = useGetColour({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
+  const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const materialRef = useRef(new FractalMaterial());
   const realBeatCounter = useRef(0);
   const currentBeatStart = useRef(0);
@@ -93,7 +95,7 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
 
   return (
     <group {...props}>
-      <mesh scale={[width, height, 1]}>
+      <mesh scale={[vpWidth, vpHeight, 1]}>
         <planeGeometry />
         <fractalMaterial ref={materialRef} transparent />
       </mesh>

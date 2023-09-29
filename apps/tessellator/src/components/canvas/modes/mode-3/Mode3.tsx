@@ -7,12 +7,14 @@ import { usePlayer } from "../../../../utils/playerContext";
 import { WaveMaterial } from "../../shaders/wave/WaveMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
+import { useAspect } from "@react-three/drei";
 
 const Mode3 = ({ opacity, ...props }: ModeProps) => {
   const { getColour } = useGetColour({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
+  const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const materialRef = useRef(new WaveMaterial());
   const realBarCounter = useRef(0);
   const currentBarStart = useRef(0);
@@ -95,7 +97,7 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
 
   return (
     <group {...props}>
-      <mesh scale={[width, height, 1]}>
+      <mesh scale={[vpWidth, vpHeight, 1]}>
         <planeGeometry />
         <waveMaterial ref={materialRef} transparent />
       </mesh>

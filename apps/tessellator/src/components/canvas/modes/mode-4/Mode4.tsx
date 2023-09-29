@@ -68,7 +68,7 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
 
     uFactor.value = MathUtils.lerp(
       uFactor.value,
-      segment?.pitches.reduce((acc, curr) => {
+      segment?.pitches?.reduce((acc, curr) => {
         acc += curr / 10;
         return acc;
       }, 1),

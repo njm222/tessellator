@@ -92,17 +92,20 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
 
     // Update the material opacity
     uOpacity.value = opacity.get();
+
+    // Update the material wireframe
+    terrainMaterialRef.current.wireframe =
+      spotifyAnalyser.beats.counter % 2 === 0;
   });
 
   return (
     <group {...props}>
       <mesh position={[0, 2, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
-        <planeGeometry args={[vpWidth, vpHeight, 512, 512]} />
+        <planeGeometry args={[vpWidth, vpHeight, 256, 256]} />
         <terrainMaterial
           depthWrite={false}
           ref={terrainMaterialRef}
           transparent
-          wireframe
         />
       </mesh>
     </group>

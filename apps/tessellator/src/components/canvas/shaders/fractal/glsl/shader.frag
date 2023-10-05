@@ -24,16 +24,16 @@ void main()
   for (float i = 0.0; i < uIterations; i++) {
     vUv1 = fract(vUv1 * uFactor) - 0.5;
 
-    float d = length(vUv1) * exp(-length(vUv0));
+    float d = (length(vUv1) * exp(-length(vUv0)));
 
     vec3 col = palette(length(vUv0) + i * uEnergy + uTime * uEnergy, uColour);
 
     d = abs(sin(d*uValence + uTime)/uValence);
 
-    d = pow(0.01 / d, 0.5 + uFactor);
+    d = pow(0.0001 / d, 0.25 + uFactor);
 
     finalColor += col * d;
   }
 
-  gl_FragColor = vec4(finalColor, uOpacity);
+  gl_FragColor = vec4(finalColor, 1.0);
 }

@@ -98,7 +98,12 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
     <group {...props}>
       <mesh position={[0, 2, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
         <planeGeometry args={[vpWidth, vpHeight, 512, 512]} />
-        <terrainMaterial ref={terrainMaterialRef} transparent wireframe />
+        <terrainMaterial
+          depthWrite={false}
+          ref={terrainMaterialRef}
+          transparent
+          wireframe
+        />
       </mesh>
     </group>
   );

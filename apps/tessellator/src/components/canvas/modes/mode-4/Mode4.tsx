@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Color, MathUtils } from "three";
 
@@ -7,7 +8,6 @@ import { usePlayer } from "../../../../utils/playerContext";
 import { FractalMaterial } from "../../shaders/fractal/FractalMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
-import { useAspect } from "@react-three/drei";
 
 const Mode4 = ({ opacity, ...props }: ModeProps) => {
   const { getColour } = useGetColour({ minLightness: 125, minSaturation: 100 });
@@ -35,19 +35,20 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
   }, [trackFeatures.energy]);
 
   useEffect(() => {
-    materialRef.current.uniforms.uValence.value = trackFeatures.valence * 10;
+    materialRef.current.uniforms.uValence.value =
+      (1.5 - trackFeatures.valence) * 10;
   }, [trackFeatures.valence]);
 
   useFrame((state, delta) => {
     if (!materialRef.current) return;
 
+    const dynamicDelta = delta * trackFeatures.tempo * 0.01;
+
     const factor =
       trackFeatures.energy *
       trackFeatures.danceability *
       (1 - trackFeatures.valence) *
-      0.1;
-
-    const dynamicDelta = delta * trackFeatures.tempo * factor;
+      dynamicDelta;
 
     const { uTime, uOpacity, uIterations, uFactor, uColour } =
       materialRef.current.uniforms;
@@ -75,15 +76,28 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
 
     const pitchTotal =
       segment?.pitches?.reduce((acc, curr) => {
-        acc += curr / 10;
+        acc += curr;
         return acc;
-      }, 1) || 1;
+      }, 0) || 15;
 
-    uFactor.value = MathUtils.lerp(uFactor.value, pitchTotal, dynamicDelta);
+    uFactor.value = MathUtils.lerp(
+      uFactor.value,
+      1 + pitchTotal / 10,
+      dynamicDelta
+    );
 
-    const numIteration = segment?.timbre?.length ? segment.timbre[0] : 1;
+    const numIteration = segment?.timbre?.length
+      ? Math.abs(segment.timbre[11])
+      : 1;
 
-    uIterations.value = Math.floor(Math.abs(numIteration / 10)) + 1;
+    uIterations.value =
+      Math.floor(
+        MathUtils.lerp(
+          uIterations.value,
+          numIteration / (numIteration > 100 ? 30 : 15),
+          dynamicDelta
+        )
+      ) + 1;
 
     if (spotifyAnalyser.beats.current.start === currentBeatStart.current) {
       return;
@@ -101,8 +115,8 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
   return (
     <group {...props}>
       <mesh scale={[vpWidth, vpHeight, 1]}>
-        <planeGeometry args={[1, 1, 1024, 1024]} />
-        <fractalMaterial ref={materialRef} transparent />
+        <planeGeometry />
+        <fractalMaterial depthWrite={false} ref={materialRef} transparent />
       </mesh>
     </group>
   );

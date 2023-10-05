@@ -114,7 +114,7 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
           />
         </boxGeometry>
         {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
-        <a.meshPhongMaterial opacity={opacity} transparent />
+        <a.meshPhongMaterial depthWrite={false} opacity={opacity} transparent />
       </instancedMesh>
     </group>
   );

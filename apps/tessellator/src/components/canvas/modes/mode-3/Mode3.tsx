@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Color, MathUtils } from "three";
 
@@ -7,7 +8,6 @@ import { usePlayer } from "../../../../utils/playerContext";
 import { WaveMaterial } from "../../shaders/wave/WaveMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
-import { useAspect } from "@react-three/drei";
 
 const Mode3 = ({ opacity, ...props }: ModeProps) => {
   const { getColour } = useGetColour({ minLightness: 125, minSaturation: 100 });
@@ -101,7 +101,7 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
     <group {...props}>
       <mesh scale={[vpWidth, vpHeight, 1]}>
         <planeGeometry />
-        <waveMaterial ref={materialRef} transparent />
+        <waveMaterial depthWrite={false} ref={materialRef} transparent />
       </mesh>
     </group>
   );

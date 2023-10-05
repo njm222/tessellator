@@ -42,7 +42,8 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
   useFrame((state, delta) => {
     if (!materialRef.current) return;
 
-    const dynamicDelta = delta * trackFeatures.tempo * 0.01;
+    const dynamicDelta =
+      delta * trackFeatures.tempo * trackFeatures.danceability * 0.02;
 
     const factor =
       trackFeatures.energy *
@@ -50,7 +51,7 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
       (1 - trackFeatures.valence) *
       dynamicDelta;
 
-    const { uTime, uOpacity, uIterations, uFactor, uColour } =
+    const { uTime, uOpacity, uIterations, uFactor, uColour, uHigh } =
       materialRef.current.uniforms;
 
     // Update the material opacity
@@ -58,6 +59,12 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
 
     // Update the material colour
     uColour.value.lerp(new Color(getColour()), dynamicDelta);
+
+    uHigh.value = MathUtils.lerp(
+      uHigh.value,
+      audioAnalyser.highSection.energy,
+      dynamicDelta
+    );
 
     const direction = realBeatCounter.current % 2 === 0 ? 1 : -1;
 

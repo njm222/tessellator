@@ -16,6 +16,7 @@ export const FractalMaterial = shaderMaterial(
     uEnergy: 1,
     uValence: 1,
     uFactor: 1,
+    uHigh: 1,
   },
   vertex,
   fragment

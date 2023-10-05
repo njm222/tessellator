@@ -60,7 +60,6 @@ export const VisualizerScene = () => {
       <OuterScene />
       <BakeShadows />
       <EffectComposer disableNormalPass multisampling={0}>
-        <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.1} />
         <Pixelation granularity={0} ref={pixelationRef} />
       </EffectComposer>
     </>

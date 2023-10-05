@@ -6,6 +6,7 @@ uniform float uIterations;
 uniform float uEnergy;
 uniform float uValence;
 uniform float uFactor;
+uniform float uHigh;
 
 vec3 palette( float t, vec3 baseColour ) {
     vec3 a = vec3(0.5, 0.5, 0.5);
@@ -30,7 +31,7 @@ void main()
 
     d = abs(sin(d*uValence + uTime)/uValence);
 
-    d = pow(0.0001 / d, 0.25 + uFactor);
+    d = pow(((1.5-(uValence*0.1))*(uHigh*0.0005)*(0.5+uEnergy)) / d, 0.25 + uFactor);
 
     finalColor += col * d;
   }

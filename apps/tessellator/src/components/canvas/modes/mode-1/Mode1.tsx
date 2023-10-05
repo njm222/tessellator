@@ -7,7 +7,6 @@ import {
   Float32BufferAttribute,
   MathUtils,
   Points,
-  ShaderMaterial,
   Vector3,
 } from "three";
 
@@ -241,9 +240,15 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
     uColour.value.lerp(new Color(getColour()), dynamicDelta);
     uRadius.value = radius.current;
 
+    const pitchTotal =
+      spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
+        acc += curr;
+        return acc;
+      }, 0) || 10;
+
     uSize.value = MathUtils.lerp(
       uSize.value,
-      Math.abs(timbre?.length ? timbre[11] : 1),
+      pitchTotal * Math.abs(timbre?.length ? timbre[11] : 10),
       dynamicDelta
     );
 

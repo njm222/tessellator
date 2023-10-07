@@ -161,17 +161,21 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
   const updateTorusProperties = (delta: number) => {
     radius.current = MathUtils.lerp(
       radius.current,
-      Math.abs(
-        audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
-      ) / 5,
+      1 +
+        Math.abs(
+          audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
+        ) /
+          5,
       delta
     );
 
     tube.current = MathUtils.lerp(
       tube.current,
-      Math.abs(
-        audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
-      ) / 2,
+      10 +
+        Math.abs(
+          audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
+        ) /
+          2,
       delta
     );
 
@@ -191,24 +195,18 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
       )
     );
 
-    if (trackFeatures.valence > 0.5) {
-      p.current =
-        getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1;
-      q.current =
-        getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1;
-      return;
-    }
+    const pitchTotal =
+      spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
+        acc += curr;
+        return acc;
+      }, 0) || 4;
 
-    p.current = MathUtils.lerp(
-      p.current,
-      getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
-      delta * 10
-    );
+    p.current = MathUtils.lerp(p.current, Math.floor(pitchTotal) + 2, delta);
 
     q.current = MathUtils.lerp(
       q.current,
-      getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
-      delta * 10
+      getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 3,
+      delta
     );
   };
 
@@ -217,12 +215,11 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
 
     const dynamicDelta =
       delta *
-      (trackFeatures.tempo / 10) *
+      (trackFeatures.tempo / 100) *
       trackFeatures.energy *
-      trackFeatures.danceability *
-      (1 - trackFeatures.valence);
+      trackFeatures.danceability;
 
-    updateTorusProperties(dynamicDelta);
+    updateTorusProperties(dynamicDelta / 10);
 
     const [indices, vertices, normals, uvs] = getTorusBufferAttributes(
       radius.current,
@@ -233,12 +230,11 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
       q.current
     );
 
-    const { uColour, uSize, uRadius, uOpacity } = materialRef.current.uniforms;
+    const { uColour, uSize, uOpacity, uNoise } = materialRef.current.uniforms;
 
     const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
 
-    uColour.value.lerp(new Color(getColour()), dynamicDelta);
-    uRadius.value = radius.current;
+    uColour.value.lerp(new Color(getColour()), delta);
 
     const pitchTotal =
       spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
@@ -248,9 +244,11 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
 
     uSize.value = MathUtils.lerp(
       uSize.value,
-      pitchTotal * Math.abs(timbre?.length ? timbre[11] : 10),
+      Math.max(10.0, pitchTotal * Math.abs(timbre?.length ? timbre[11] : 10)),
       dynamicDelta
     );
+
+    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal, dynamicDelta);
 
     // Update the material opacity
     uOpacity.value = opacity.get();
@@ -271,7 +269,7 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
   });
 
   return (
-    <group {...props}>
+    <group position={[0, 0, -10]} {...props}>
       <points ref={mesh}>
         <bufferGeometry attach="geometry" />
         <particleMaterial

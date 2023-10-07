@@ -101,7 +101,7 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
       Math.floor(
         MathUtils.lerp(
           uIterations.value,
-          numIteration / (numIteration > 100 ? 30 : 15),
+          numIteration / (numIteration > 100 ? 20 : 10),
           dynamicDelta
         )
       ) + 1;

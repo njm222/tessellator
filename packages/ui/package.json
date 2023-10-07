@@ -35,7 +35,7 @@
     "jest": "^29.0.5",
     "jest-environment-jsdom": "^29.5.0",
     "jest-presets": "*",
-    "postcss": "^8.4.21",
+    "postcss": "^8.4.31",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tsconfig": "*",

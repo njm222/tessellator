@@ -112,10 +112,10 @@ export const LandingScene = () => {
 
       <EffectComposer disableNormalPass multisampling={0}>
         <Bloom
-          width={256}
           height={256}
           luminanceSmoothing={0.1}
           luminanceThreshold={0.2}
+          width={256}
         />
         <Glitch
           active={isNavigating}

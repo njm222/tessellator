@@ -10,7 +10,6 @@ export async function updateToken(refreshToken: string) {
       refreshToken: data?.refresh_token,
     };
   } catch (err: unknown) {
-    console.log(err);
     throw Error(err as string);
   }
 }
@@ -20,7 +19,6 @@ export async function loginUser() {
     const { data } = await apiClient.get("/login");
     return data;
   } catch (err: unknown) {
-    console.log(err);
     throw Error(err as string);
   }
 }

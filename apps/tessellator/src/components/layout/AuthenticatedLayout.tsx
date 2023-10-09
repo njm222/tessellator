@@ -7,7 +7,6 @@ import { Loader } from "ui";
 import { AnalyserProviderProps } from "../../utils/analyserContext";
 import { PlayerProvider } from "../../utils/playerContext";
 import { ControlsProviderProps } from "../dom/controls/controlsContext";
-import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
 
 const AnalyserProvider = dynamic<AnalyserProviderProps>(
   () =>
@@ -27,9 +26,7 @@ export const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
   return (
     <PlayerProvider>
       <AnalyserProvider>
-        <ControlsProvider>
-          <MouseActivityProvider>{children}</MouseActivityProvider>
-        </ControlsProvider>
+          <ControlsProvider>{children}</ControlsProvider>
       </AnalyserProvider>
     </PlayerProvider>
   );

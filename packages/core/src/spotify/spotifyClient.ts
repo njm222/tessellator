@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import { environment } from "../environments/environment";
 
@@ -11,3 +11,5 @@ export function getDefaultOptions(accessToken: string) {
     headers: { Authorization: `Bearer ${accessToken}` },
   };
 }
+
+export type TError = AxiosError;

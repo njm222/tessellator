@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { captureException } from "@sentry/nextjs";
 import { StartPlaybackOptions } from "core";
 import SpotifyAnalyser from "spotify-analyser";
 import { useToast } from "ui";
@@ -118,105 +119,118 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
 
   const [spotifyAnalyser] = useState(new SpotifyAnalyser());
 
+  function playerSetup() {
+    const player = new window.Spotify.Player({
+      name: "Tessellator Player",
+      getOAuthToken: async (cb: (token: string) => any) => {
+        cb(accessToken);
+      },
+    });
+
+    player.addListener("initialization_error", (data: { message: string }) => {
+      toast.open(`Player initialization error (${data.message})`);
+      captureException(data.message);
+    });
+    player.addListener("authentication_error", (data: { message: string }) => {
+      if (!refreshToken) {
+        toast.open(`Player authentication error (${data.message})`);
+        captureException(data.message);
+      }
+      handleRefreshToken(refreshToken);
+    });
+    player.addListener("account_error", (data: { message: string }) => {
+      toast.open(`Player account error (${data.message})`);
+      captureException(data.message);
+    });
+    player.addListener("playback_error", (data: { message: string }) => {
+      toast.open(`playback_error - ${data.message}`);
+      captureException(data.message);
+    });
+    player.addListener("ready", (data: { device_id: string }) => {
+      if (!data.device_id) {
+        // toast message
+        const errorMessage = "Player failed to start";
+        toast.open(errorMessage);
+        captureException(errorMessage);
+        return;
+      }
+      mutateTransferMyPlayback(data.device_id);
+    });
+    player.addListener("player_state_changed", async (playerState: any) => {
+      // update track position
+      mutations.position = playerState?.position ?? 0;
+
+      const { id, type } = playerState?.track_window.current_track;
+
+      if (type !== "track") {
+        // handles case when podcast is played
+        mutatePlayTopTracks();
+        return;
+      }
+
+      if (id !== trackId) {
+        setTrackId(id);
+        setPlayer({ ...playerState, lastPlayed: id });
+        return;
+      }
+      // update playerState
+      setPlayer((prev) => ({ ...prev, ...playerState }));
+    });
+
+    player.connect();
+    setSpotifyPlayer(player);
+  }
+  function handlePlayerSetup() {
+    if (window.Spotify?.Player) {
+      playerSetup();
+      return;
+    }
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      playerSetup();
+    };
+  }
+
   useEffect(() => {
     if (!accessToken) {
       return;
     }
 
-    if (document.getElementById("spotify-sdk")) {
+    if (!spotifyPlayer?._options?.getOAuthToken) {
+      handlePlayerSetup();
       return;
     }
 
-    const sdk = document.createElement("script");
-    sdk.setAttribute("src", "https://sdk.scdn.co/spotify-player.js");
-    sdk.id = "spotify-sdk";
-    sdk.async = true;
-    document.head.appendChild(sdk);
-
-    window.onSpotifyWebPlaybackSDKReady = () => {
-      const player = new window.Spotify.Player({
-        name: "Tessellator Player",
-        getOAuthToken: async (cb: (token: string) => any) => {
-          cb(accessToken);
-        },
-      });
-
-      player.addListener(
-        "initialization_error",
-        (data: { message: string }) => {
-          toast.open(data.message);
-        }
-      );
-      player.addListener(
-        "authentication_error",
-        (data: { message: string }) => {
-          toast.open(data.message);
-          handleRefreshToken(refreshToken, true);
-        }
-      );
-      player.addListener("account_error", (data: { message: string }) => {
-        toast.open(data.message);
-      });
-      player.addListener("playback_error", (data: { message: string }) => {
-        toast.open(data.message);
-      });
-      player.addListener("ready", (data: { device_id: string }) => {
-        if (!data.device_id) {
-          // toast message
-          toast.open("Player failed to start");
-          return;
-        }
-        mutateTransferMyPlayback(data.device_id);
-      });
-      player.addListener("player_state_changed", async (playerState: any) => {
-        // update track position
-        mutations.position = playerState?.position ?? 0;
-
-        const { id, type } = playerState?.track_window.current_track;
-
-        if (type !== "track") {
-          // handles case when podcast is played
-          mutatePlayTopTracks();
-          return;
-        }
-
-        if (id !== trackId) {
-          setTrackId(id);
-          setPlayer({ ...playerState, lastPlayed: id });
-          return;
-        }
-        // update playerState
-        setPlayer((prev) => ({ ...prev, ...playerState }));
-      });
-
-      player.connect();
-      setSpotifyPlayer(player);
+    // refresh player access token
+    spotifyPlayer._options.getOAuthToken = async (
+      cb: (token: string) => any
+    ) => {
+      cb(accessToken);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken, spotifyPlayer?._options?.getOAuthToken]);
 
+  useEffect(() => {
+    if (!spotifyPlayer) return;
     return () => {
-      if (!spotifyPlayer) return;
-      spotifyPlayer.pause();
+      spotifyPlayer.removeListener("initialization_error");
+      spotifyPlayer.removeListener("authentication_error");
+      spotifyPlayer.removeListener("account_error");
+      spotifyPlayer.removeListener("ready");
+      spotifyPlayer.removeListener("player_state_changed");
       spotifyPlayer.disconnect();
+      setSpotifyPlayer(null);
     };
-  }, [
-    accessToken,
-    handleRefreshToken,
-    setTrackId,
-    trackId,
-    mutatePlay,
-    mutatePlayTopTracks,
-    mutateTransferMyPlayback,
-    toast,
-    refreshToken,
-    spotifyPlayer,
-  ]);
+  }, [spotifyPlayer]);
 
   const value = useMemo(
     () => ({
       player,
       setPlayer,
       trackFeatures: data.features,
-      play: (props?: StartPlaybackOptions) => mutatePlay(props),
+      play: (props?: StartPlaybackOptions) => {
+        spotifyPlayer.activateElement();
+        mutatePlay(props);
+      },
       pause: () => mutatePause(),
       next: () => mutateNext(),
       prev: () => mutatePrev(),
@@ -226,6 +240,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
       shuffle: (shuffle: boolean) => mutateShuffle(shuffle),
     }),
     [
+      spotifyPlayer,
       player,
       data.features,
       mutatePlay,

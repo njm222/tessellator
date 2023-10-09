@@ -1,3 +1,4 @@
+import { captureException, setTag } from "@sentry/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   checkSavedTracks,
@@ -16,19 +17,12 @@ import {
   StartPlaybackOptions,
   transferMyPlayback,
 } from "core";
+import { TError } from "core/src/spotify/spotifyClient";
 import { useRouter } from "next/navigation";
 import { useToast } from "ui";
 
 import { useAuth } from "./authContext";
 import { usePlayer } from "./playerContext";
-
-type TError = {
-  status?: number;
-  message: string;
-  response?: {
-    status: number;
-  };
-};
 
 async function handleError(
   error: TError,
@@ -39,12 +33,25 @@ async function handleError(
   ) => Promise<void>,
   refreshToken: string
 ) {
-  if (error.status === 401 || error.response?.status === 401) {
+  if (error.request?.status === 401) {
     // handle refresh
-    await handleRefreshToken(refreshToken);
-    return;
+    return await handleRefreshToken(refreshToken);
   }
+
   open(error.message);
+  captureException(error.message);
+}
+
+function handleRetry(failureCount: number, error: TError) {
+  if (error.request?.status === 401) {
+    return false;
+  }
+
+  if (failureCount < 5) {
+    return false;
+  }
+
+  return true;
 }
 
 export function useGetUserInformation() {
@@ -59,6 +66,7 @@ export function useGetUserInformation() {
       staleTime: Infinity,
       enabled: !!accessToken,
       onSuccess: ({ product }: { product: string; display_name: string }) => {
+        setTag("spotify_account_type", product);
         if (product === "premium") {
           return;
         }
@@ -68,6 +76,7 @@ export function useGetUserInformation() {
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);
       },
+      retry: handleRetry,
     }
   );
 }
@@ -111,6 +120,7 @@ export function useTrackAnalysisAndFeatures(trackId: string) {
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);
       },
+      retry: handleRetry,
     }
   );
 }
@@ -133,6 +143,7 @@ export function useRemoveSavedTrack() {
       onSuccess: () => {
         open("Track removed from Liked Songs", { variant: "" });
       },
+      retry: handleRetry,
     }
   );
 }
@@ -153,6 +164,7 @@ export function useSaveTrack() {
     onSuccess: () => {
       open("Track added to Liked Songs", { variant: "" });
     },
+    retry: handleRetry,
   });
 }
 
@@ -171,6 +183,7 @@ export function useCheckSavedTrack(trackId: string) {
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);
       },
+      retry: handleRetry,
     }
   );
 }
@@ -189,6 +202,7 @@ export function usePlayTopTracks() {
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);
       },
+      retry: handleRetry,
     }
   );
 }
@@ -203,6 +217,7 @@ export function useTransferMyPlayback() {
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);
       },
+      retry: handleRetry,
     }
   );
 }
@@ -220,6 +235,7 @@ export function usePausePlayer() {
     onError: (error: TError) => {
       handleError(error, open, handleRefreshToken, refreshToken);
     },
+    retry: handleRetry,
   });
 }
 
@@ -236,6 +252,7 @@ export function usePlayPlayer() {
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);
       },
+      retry: handleRetry,
     }
   );
 }
@@ -251,6 +268,7 @@ export function useNextTrack() {
     onError: (error: TError) => {
       handleError(error, open, handleRefreshToken, refreshToken);
     },
+    retry: handleRetry,
   });
 }
 
@@ -265,6 +283,7 @@ export function usePrevTrack() {
     onError: (error: TError) => {
       handleError(error, open, handleRefreshToken, refreshToken);
     },
+    retry: handleRetry,
   });
 }
 
@@ -281,6 +300,7 @@ export function useShufflePlayer() {
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);
       },
+      retry: handleRetry,
     }
   );
 }
@@ -294,6 +314,7 @@ export function useSeekToPosition() {
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);
       },
+      retry: handleRetry,
     }
   );
 }

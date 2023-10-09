@@ -1,4 +1,5 @@
 #pragma glslify: noise = require('glsl-noise/classic/3d')
+uniform float uOpacity;
 uniform float uTime;
 uniform float uStrengthFactor;
 uniform float uResolution;
@@ -14,7 +15,7 @@ void main() {
   strength += step(-0.2, strength) * 0.6;
   strength = clamp(strength, 0.0, 1.0);
   vec3 color = mix(uColorStart, uColorEnd, strength);
-  gl_FragColor = vec4(color, 1.0);
+  gl_FragColor = vec4(color, uOpacity);
   #include <tonemapping_fragment>
   #include <encodings_fragment>
 }

@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+
 export function convertURItoURL(stringToConvert: string) {
   const stringArr = stringToConvert.split(":");
   let ret = "https://open.spotify.com/";
@@ -6,4 +8,10 @@ export function convertURItoURL(stringToConvert: string) {
     ret += stringArr[2];
   }
   return ret;
+}
+
+export function handleError(err: unknown) {
+  if (err instanceof AxiosError) {
+    throw new AxiosError(err.message, err.code, err.config, err.request);
+  }
 }

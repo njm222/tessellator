@@ -12,7 +12,9 @@
     "SPOTIFY_CLIENT_SECRET",
     "SPOTIFY_ACCOUNT_URL",
     "NEXT_PUBLIC_SPOTIFY_API_URL",
-    "SPOTIFY_API_URL"
+    "SPOTIFY_API_URL",
+    "SENTRY_DSN_WEB",
+    "SENTRY_DSN_API"
   ],
   "pipeline": {
     "build": {

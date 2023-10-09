@@ -1,9 +1,19 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  createRef,
+  ReactNode,
+  RefObject,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { generateRandomInteger } from "core";
 
 import { LocalStorageKeys } from "../../../config/constants";
+import { toggleFullScreen } from "../../../helpers/global";
 import { getLocalStorageItem } from "../../../utils/store";
 
 import { useKeys } from "./useKeys";
@@ -13,6 +23,7 @@ export const modeMap = [
   { key: "1", value: 1 },
   { key: "2", value: 2 },
   { key: "3", value: 3 },
+  { key: "4", value: 4 },
 ];
 
 const colourMap = [
@@ -24,9 +35,13 @@ const colourMap = [
 
 export type ControlsProviderProps = {
   children: ReactNode;
-  modes?: number[];
+  enabledModes?: number[];
   modeKey?: number;
-  colourKey?: number;
+  colourKey?: RefObject<number>;
+  randomizeMode?: boolean;
+  randomizeColourMode?: boolean;
+  setRandomizeMode?: (value: boolean) => void;
+  setRandomizeColourMode?: (value: boolean) => void;
   addMode?: (mode: number) => void;
   removeMode?: (mode: number) => void;
   changeColourMode?: () => void;
@@ -34,9 +49,9 @@ export type ControlsProviderProps = {
 };
 
 const ControlsContext = createContext({
-  modes: [0],
+  enabledModes: [0],
   modeKey: 0,
-  colourKey: 0,
+  colourKey: createRef(),
   randomizeMode: true,
   randomizeColourMode: true,
   addMode: (value: number) => {
@@ -62,7 +77,7 @@ const ControlsContext = createContext({
 export const useControls = () => useContext(ControlsContext);
 
 export const ControlsProvider = ({ children }: ControlsProviderProps) => {
-  const [modes, setModes] = useState(
+  const [enabledModes, setEnabledModes] = useState(
     modeMap.reduce((acc, curr) => {
       acc.push(curr.value);
       return acc;
@@ -74,7 +89,7 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
     getLocalStorageItem(LocalStorageKeys.VISUALIZER_OPTIONS)?.randomizeMode ??
       true
   );
-  const [colourKey, setColourKey] = useState(0);
+  const colourKey = useRef(0);
   const [randomizeColourMode, setRandomizeColourMode] = useState(
     getLocalStorageItem(LocalStorageKeys.VISUALIZER_OPTIONS)
       ?.randomizeColourMode ?? true
@@ -87,26 +102,27 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
     })),
     ...colourMap.map(({ key, value }) => ({
       keys: [key],
-      fn: () => setColourKey(value),
+      fn: () => (colourKey.current = value),
     })),
+    { keys: ["f", "F"], fn: () => toggleFullScreen() },
   ]);
 
   const value = useMemo(
     () => ({
-      modes,
+      enabledModes,
       modeKey,
       colourKey,
       addMode: (mode: number) => {
-        if (modes.includes(mode)) {
+        if (enabledModes.includes(mode)) {
           return;
         }
-        setModes((prevState) => {
+        setEnabledModes((prevState) => {
           prevState.push(mode);
           return prevState;
         });
       },
       removeMode: (mode: number) => {
-        setModes((prevState) => {
+        setEnabledModes((prevState) => {
           const index = prevState.findIndex((val) => val === mode);
           if (index >= 0) {
             prevState.splice(index, 1);
@@ -115,19 +131,19 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
         });
       },
       changeMode: () => {
-        if (modes.length === 0) {
+        if (enabledModes.length === 0) {
           setModeKey(0);
           return;
         }
-        if (modes.length <= 1) {
-          setModeKey(modes[0]);
+        if (enabledModes.length <= 1) {
+          setModeKey(enabledModes[0]);
           return;
         }
-        const index = generateRandomInteger(0, modes.length - 1);
-        setModeKey(modes[index]);
+        const index = generateRandomInteger(0, enabledModes.length - 1);
+        setModeKey(enabledModes[index]);
       },
       changeColourMode: () => {
-        setColourKey(generateRandomInteger(0, colourMap.length - 1));
+        colourKey.current = generateRandomInteger(0, colourMap.length - 1);
       },
       randomizeMode,
       randomizeColourMode,
@@ -135,10 +151,10 @@ export const ControlsProvider = ({ children }: ControlsProviderProps) => {
       setRandomizeColourMode: (value: boolean) => setRandomizeColourMode(value),
     }),
     [
-      modes,
+      enabledModes,
       colourKey,
       modeKey,
-      setModes,
+      setEnabledModes,
       randomizeMode,
       setRandomizeMode,
       randomizeColourMode,

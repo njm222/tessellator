@@ -1,20 +1,23 @@
 import React from "react";
-import { GithubIcon, IconButton, InstagramIcon  } from "ui";
+import { GithubIcon, IconButton, InstagramIcon } from "ui";
+
+import { openNewTabLink } from "../../helpers/global";
+
+import { useMouseActivity } from "./controls/mouseActivityContext";
 
 export default function SocialLinks() {
+  const { mouseActive } = useMouseActivity();
   return (
-    <div className="socialLinks">
+    <div className={`socialLinks ${mouseActive ? "" : "hidden"}`}>
       <IconButton
         icon={<GithubIcon />}
-        onClick={() =>
-          window.open("https://github.com/njm222/tessellator", "_blank")
-        }
+        onClick={() => openNewTabLink("https://github.com/njm222/tessellator")}
         title="github"
       />
       <IconButton
         icon={<InstagramIcon />}
         onClick={() =>
-          window.open("https://www.instagram.com/tessellator_space", "_blank")
+          openNewTabLink("https://www.instagram.com/tessellator_space")
         }
         title="instagram"
       />

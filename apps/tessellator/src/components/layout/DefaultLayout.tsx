@@ -3,6 +3,8 @@ import { Globals } from "@react-spring/three";
 import dynamic from "next/dynamic";
 import { Loader } from "ui";
 
+import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
+
 /**
  * workaround from: https://github.com/pmndrs/react-spring/issues/1586
  */
@@ -12,7 +14,9 @@ Globals.assign({
 
 const Scene = dynamic(() => import("../canvas/Scene"), {
   ssr: false,
-  loading: () => <Loader message="Loading scene" />,
+  loading: () => (
+    <Loader dotVariant={2} hintVariant={1} message="Loading scene" />
+  ),
 });
 
 export type DefaultLayoutProps = {
@@ -24,15 +28,19 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
 
   return (
     <div className="domContainer" ref={ref}>
-      {children}
+      <MouseActivityProvider>{children}</MouseActivityProvider>
       <Scene
         eventPrefix="client"
         eventSource={ref}
         shadows="soft"
         style={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
-          background: "#000",
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          pointerEvents: "none",
+          zIndex: -1,
         }}
       />
     </div>

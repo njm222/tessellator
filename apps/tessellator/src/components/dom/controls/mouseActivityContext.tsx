@@ -29,13 +29,37 @@ export const MouseActivityProvider: FC<MouseActivityProviderProps> = ({
 
   const mouseTimeout: MutableRefObject<NodeJS.Timeout | null> = useRef(null);
 
-  const mouseMoveHandler = () => {
+  function handleCursorStyle(visible: boolean) {
+    const el = document.body;
+    if (!el) {
+      return;
+    }
+    if (
+      visible &&
+      (el.style.cursor === "pointer" || el.style.cursor === "auto")
+    ) {
+      return;
+    }
+    el.style.cursor = visible ? "auto" : "none";
+  }
+
+  function handleMouseActive() {
     setMouseActive(true);
+    handleCursorStyle(true);
+  }
+
+  function handleMouseInactive() {
+    setMouseActive(false);
+    handleCursorStyle(false);
+  }
+
+  const mouseMoveHandler = () => {
+    handleMouseActive();
 
     if (mouseTimeout.current) {
       clearTimeout(mouseTimeout.current);
     }
-    mouseTimeout.current = setTimeout(() => setMouseActive(false), 3500);
+    mouseTimeout.current = setTimeout(() => handleMouseInactive(), 3500);
   };
 
   useEffect(() => {
@@ -46,7 +70,7 @@ export const MouseActivityProvider: FC<MouseActivityProviderProps> = ({
       clearTimeout(mouseTimeout.current);
       document.removeEventListener("mousemove", mouseMoveHandler);
     };
-  }, []);
+  }, [mouseMoveHandler]);
 
   return (
     <MouseActivityContext.Provider value={{ mouseActive }}>

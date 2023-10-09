@@ -1,18 +1,29 @@
-import React, { Suspense, useEffect, useState, useTransition } from "react";
+import React, {
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useTransition,
+} from "react";
 import { SpringValue } from "@react-spring/three";
-import { Bounds } from "@react-three/drei";
+import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
+import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
+import { captureException } from "@sentry/nextjs";
 import { loginUser } from "core";
 import { useRouter } from "next/navigation";
-import { Vector2 } from "three";
+import { Color, Vector2 } from "three";
+import { useToast } from "ui";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
-import { Text } from "../Text";
+import { FlexLink } from "../text/FlexLink";
+import { Text } from "../text/Text";
 
 export const LandingScene = () => {
   const [isPending, startTransition] = useTransition();
+  const toast = useToast();
   const { refreshToken } = useAuth();
   const camera = useThree((state) => state.camera);
   const router = useRouter();
@@ -30,13 +41,11 @@ export const LandingScene = () => {
 
   useEffect(() => {
     camera.position.set(0, 0, 100);
-    return () => {
-      document.documentElement.style.cursor = "unset";
-    };
+    camera.lookAt(0, 0, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (isNavigating) {
       z.advance(delta * 1000);
       camera.position.setZ(z.animation.values[0].getValue());
@@ -44,44 +53,62 @@ export const LandingScene = () => {
     }
   });
 
-  const handleClick = async () => {
+  const handleSpotifyNavigation = async () => {
+    if (!refreshToken) {
+      // if no token present login normally
+      try {
+        const { uri } = await loginUser();
+        window.location.assign(decodeURI(uri));
+      } catch (e: unknown) {
+        const errorMessage = (e as { message: string }).message;
+        toast.open(errorMessage);
+        captureException(errorMessage);
+        return;
+      }
+    }
+    if (isPending) return;
     startTransition(() => {
       z.start({
         to: 20,
         from: camera.position.z,
         config: {
           tension: 20,
-          friction: 5,
+          friction: refreshToken ? 5 : 200,
           precision: 0.0001,
         },
       });
       setIsNavigating(true);
-    });
-    // check for refreshToken
-    if (refreshToken) {
+
       router.push("/visualizer");
-      return;
-    }
-    // if no token present login normally
-    const { uri } = await loginUser();
-    window.location.assign(decodeURI(uri));
+    });
+  };
+
+  const handleAboutNavigation = () => {
+    if (isPending) return;
+    startTransition(() => {
+      z.start({
+        to: 20,
+        from: camera.position.z,
+        config: {
+          tension: 20,
+          friction: refreshToken ? 5 : 200,
+          precision: 0.0001,
+        },
+      });
+      setIsNavigating(true);
+      router.push("/about");
+    });
   };
 
   return (
     <>
       <Suspense>
-        <Bounds fit={!isNavigating} margin={0.8} observe={!isNavigating}>
-          <Text
-            onPointerDown={() => {
-              if (isPending) return;
-              handleClick();
-            }}
-          >
-            t e s s e l l a t o r
-          </Text>
-        </Bounds>
+        <LandingContent
+          handleAboutNavigation={handleAboutNavigation}
+          handleSpotifyNavigation={handleSpotifyNavigation}
+        />
       </Suspense>
-      <Particles count={20000} isNavigating={isNavigating} />
+      <Particles count={10000} isNavigating={isNavigating} />
 
       <EffectComposer disableNormalPass multisampling={0}>
         <Bloom
@@ -99,3 +126,75 @@ export const LandingScene = () => {
     </>
   );
 };
+
+function LandingContent({
+  handleAboutNavigation,
+  handleSpotifyNavigation,
+}: {
+  handleAboutNavigation: () => void;
+  handleSpotifyNavigation: () => void;
+}) {
+  const { size, setSize } = useThree();
+  const [vpWidth, vpHeight] = useAspect(size.width, size.height);
+
+  const textColour = new Color("#B91D82");
+
+  // needed for flex to work
+  useLayoutEffect(() => {
+    setSize(size.width, size.height, size.updateStyle, size.top, size.left);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <Flex
+      align="center"
+      flexDirection="column"
+      justify="center"
+      position={[-vpWidth / 2, vpHeight / 2, 0]}
+      size={[vpWidth, vpHeight, 0]}
+    >
+      <Box alignItems="center" justifyContent="center">
+        <Text colour={textColour} scale={10}>
+          t e s s e l l a t o r
+        </Text>
+      </Box>
+      <Box
+        flexDirection="row"
+        justify="space-around"
+        marginTop={40}
+        width="100%"
+      >
+        <FlexLink
+          colour={new Color("#1DB954")}
+          marginRight={0}
+          marginTop={0}
+          onClick={() => handleSpotifyNavigation()}
+          overlayText="login"
+        >
+          Spotify
+        </FlexLink>
+        <FlexLink
+          colour={new Color("#5A5A5A")}
+          disabled
+          marginRight={0}
+          marginTop={0}
+          onClick={() => {}}
+          overlayText="upcoming"
+        >
+          Live audio
+        </FlexLink>
+      </Box>
+      <Box flexDirection="row" justify="center" marginTop={20} width="100%">
+        <FlexLink
+          colour={textColour}
+          marginRight={0}
+          marginTop={0}
+          onClick={() => handleAboutNavigation()}
+          overlayText="us"
+        >
+          About
+        </FlexLink>
+      </Box>
+    </Flex>
+  );
+}

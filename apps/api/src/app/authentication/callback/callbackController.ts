@@ -50,7 +50,9 @@ export function CallbackController({
 
           res.redirect(`${frontendUrl}/visualizer?${stringify(data)}`);
         })
-        .catch(console.log);
+        .catch((error) => {
+          throw new Error(error);
+        });
     }
   };
 }

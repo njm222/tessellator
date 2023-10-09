@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 
 import {
+  BackIcon,
   FilledHeartIcon,
   GithubIcon,
   HeartIcon,
@@ -68,6 +69,11 @@ describe("Icons", () => {
   });
   it("renders SettingsIcon without crashing", () => {
     const { getByRole } = render(<SettingsIcon />);
+
+    expect(getByRole("img")).toBeTruthy();
+  });
+  it("renders BackIcon without crashing", () => {
+    const { getByRole } = render(<BackIcon />);
 
     expect(getByRole("img")).toBeTruthy();
   });

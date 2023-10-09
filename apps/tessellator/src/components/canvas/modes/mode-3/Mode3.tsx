@@ -1,18 +1,22 @@
 import { useEffect, useRef, useState } from "react";
+import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import WaveMaterial from "../../shaders/wave/WaveMaterial";
+import { WaveMaterial } from "../../shaders/wave/WaveMaterial";
+import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
-const Mode3 = ({ visible }: { visible: boolean }) => {
+const Mode3 = ({ opacity, ...props }: ModeProps) => {
   const { getColour } = useGetColour({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
+  const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const materialRef = useRef(new WaveMaterial());
+  const colourRef = useRef(new Color());
   const realBarCounter = useRef(0);
   const currentBarStart = useRef(0);
   const [barThreshold, setBarThreshold] = useState(0.7);
@@ -35,8 +39,6 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
   }, [trackFeatures.danceability]);
 
   useFrame((state, delta) => {
-    if (!visible) return;
-
     if (!materialRef.current) return;
 
     const factor =
@@ -47,8 +49,11 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
 
     const dynamicDelta = delta * trackFeatures.tempo * factor;
 
-    const { uTime, uColorStart, uStrengthFactor } =
+    const { uTime, uColorStart, uStrengthFactor, uOpacity } =
       materialRef.current.uniforms;
+
+    // Update material opacity
+    uOpacity.value = opacity.get();
 
     const timbre = spotifyAnalyser.getCurrentSegment().timbre;
 
@@ -77,7 +82,8 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
       dynamicDelta
     );
 
-    uColorStart.value.lerp(new Color(getColour()), dynamicDelta);
+    // Update the material colour
+    uColorStart.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
 
     if (spotifyAnalyser.bars.current.start === currentBarStart.current) {
       return;
@@ -93,10 +99,10 @@ const Mode3 = ({ visible }: { visible: boolean }) => {
   });
 
   return (
-    <group visible={visible}>
-      <mesh scale={[width, height, 1]}>
+    <group {...props}>
+      <mesh scale={[vpWidth, vpHeight, 1]}>
         <planeGeometry />
-        <waveMaterial ref={materialRef} />
+        <waveMaterial depthWrite={false} ref={materialRef} transparent />
       </mesh>
     </group>
   );

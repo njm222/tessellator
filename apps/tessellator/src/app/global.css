@@ -24,29 +24,54 @@ img {
   visibility: hidden;
 }
 
+.errorContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background: #131313;
+}
+
+.errorContainer button {
+  color: #fff;
+  border: 1px solid #fff;
+  margin-top: 2rem;
+  padding: 1rem;
+  cursor: pointer;
+}
+
 .domContainer {
-  position: absolute;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  touch-action: auto;
+}
+
+.fullscreenView {
+  height: 100%;
+  width: 100%;
+  position: relative;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  z-index: 10;
 }
 
 .welcomeContainer {
-  position: relative;
-  padding: 2rem;
+  position: fixed;
+  top: 2rem;
+  left: 0;
+  right: 0;
   text-align: center;
   color: #fff;
-  z-index: inherit;
 }
 
 /* ---------- Settings ---------- */
 
 .settings {
-  position: absolute;
-  z-index: inherit;
+  position: fixed;
   top: 1rem;
   right: 1rem;
   color: hsla(0, 0%, 100%, 0.6);
@@ -57,7 +82,6 @@ img {
 .playerContainer {
   min-height: 91px;
   pointer-events: auto;
-  z-index: inherit;
   display: flex;
   justify-content: space-between;
   position: fixed;
@@ -115,9 +139,17 @@ img {
 /** Social links **/
 
 .socialLinks {
-  position: relative;
+  position: fixed;
   right: 1rem;
   top: 1rem;
   display: flex;
   justify-content: flex-end;
+}
+
+/** Back button **/
+
+.backNavigationButton {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
 }

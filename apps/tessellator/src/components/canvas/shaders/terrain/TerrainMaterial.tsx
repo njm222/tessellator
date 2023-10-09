@@ -1,3 +1,4 @@
+import { shaderMaterial } from "@react-three/drei";
 import { extend, ReactThreeFiber } from "@react-three/fiber";
 import { Color, ShaderMaterial } from "three";
 
@@ -6,21 +7,18 @@ import fragment from "./glsl/shader.frag";
 // @ts-ignore
 import vertex from "./glsl/shader.vert";
 
-export default class TerrainMaterial extends ShaderMaterial {
-  constructor() {
-    super({
-      uniforms: {
-        uColour: { value: new Color("#fff") },
-        uTime: { value: 0 },
-        uXScale: { value: 1 },
-        uYScale: { value: 1 },
-        uAmplitude: { value: 1 },
-      },
-      vertexShader: vertex,
-      fragmentShader: fragment,
-    });
-  }
-}
+export const TerrainMaterial = shaderMaterial(
+  {
+    uColour: new Color("#fff"),
+    uTime: 0,
+    uXScale: 1,
+    uYScale: 1,
+    uAmplitude: 1,
+    uOpacity: 1,
+  },
+  vertex,
+  fragment
+);
 
 extend({ TerrainMaterial });
 
@@ -30,7 +28,7 @@ declare global {
     // eslint-disable-next-line no-unused-vars
     interface IntrinsicElements {
       terrainMaterial: ReactThreeFiber.Object3DNode<
-        TerrainMaterial,
+        ShaderMaterial,
         typeof TerrainMaterial
       >;
     }

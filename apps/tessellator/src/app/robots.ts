@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: ["/", "/visualizer"],
+      allow: ["/", "/visualizer", "/about"],
     },
     sitemap: `${environment.frontendUrl}/sitemap.xml`,
     host: environment.frontendUrl,

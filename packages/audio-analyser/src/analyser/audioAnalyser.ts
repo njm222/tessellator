@@ -63,7 +63,6 @@ export default class AudioAnalyser {
     this.analyser.maxDecibels = props.maxDecibels;
 
     if (navigator.mediaDevices.getUserMedia) {
-      console.log("navigator.mediaDevices supported.");
       navigator.mediaDevices
         .enumerateDevices()
         .then((devices) => {
@@ -74,15 +73,21 @@ export default class AudioAnalyser {
             this.source = this.context.createMediaStreamSource(stream);
             // connect source to the analyser
             this.source.connect(this.analyser);
-            // update object limits
           });
         })
         .catch(function (err) {
-          console.log("The following error occured: " + err);
+          throw new Error(err);
         });
     } else {
-      console.log("getUserMedia not supported on your browser!");
+      throw new Error("getUserMedia not supported on your browser!");
     }
+  }
+
+  destroy() {
+    this.analyser?.disconnect();
+    this.source?.mediaStream.getTracks().forEach((track) => track.stop());
+    this.source?.disconnect();
+    this.context?.close();
   }
 
   updateAnalyserOptions(options: AudioAnalyserProps) {

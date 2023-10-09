@@ -1,24 +1,25 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { getIndexOfMax, getIndexOfMin } from "core";
+import { getIndexOfMax } from "core";
 import {
   AdditiveBlending,
   Color,
   Float32BufferAttribute,
   MathUtils,
   Points,
-  ShaderMaterial,
   Vector3,
 } from "three";
 
-import "../../shaders/ParticleMaterial";
-
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import { ParticleMaterial } from "../../shaders/particle/ParticleMaterial";
+import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
-const Mode1 = ({ visible }: { visible: boolean }) => {
+const Mode1 = ({ opacity, ...props }: ModeProps) => {
   const mesh = useRef<Points>(null);
+  const materialRef = useRef(new ParticleMaterial());
+  const colourRef = useRef(new Color());
   const { audioAnalyser } = useAnalyser();
   const { getColour } = useGetColour({ minSaturation: 75, minLightness: 150 });
   const { spotifyAnalyser, trackFeatures } = usePlayer();
@@ -161,17 +162,21 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
   const updateTorusProperties = (delta: number) => {
     radius.current = MathUtils.lerp(
       radius.current,
-      Math.abs(
-        audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
-      ) / 5,
+      1 +
+        Math.abs(
+          audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
+        ) /
+          5,
       delta
     );
 
     tube.current = MathUtils.lerp(
       tube.current,
-      Math.abs(
-        audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
-      ) / 2,
+      10 +
+        Math.abs(
+          audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
+        ) /
+          2,
       delta
     );
 
@@ -191,39 +196,31 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       )
     );
 
-    if (trackFeatures.valence > 0.5) {
-      p.current =
-        getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1;
-      q.current =
-        getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1;
-      return;
-    }
+    const pitchTotal =
+      spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
+        acc += curr;
+        return acc;
+      }, 0) || 4;
 
-    p.current = MathUtils.lerp(
-      p.current,
-      getIndexOfMin(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
-      delta * 10
-    );
+    p.current = MathUtils.lerp(p.current, Math.floor(pitchTotal) + 2, delta);
 
     q.current = MathUtils.lerp(
       q.current,
-      getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 1,
-      delta * 10
+      getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 3,
+      delta
     );
   };
 
   useFrame((state, delta) => {
-    if (!visible) return;
     if (!mesh.current) return;
 
     const dynamicDelta =
       delta *
-      (trackFeatures.tempo / 10) *
+      (trackFeatures.tempo / 100) *
       trackFeatures.energy *
-      trackFeatures.danceability *
-      (1 - trackFeatures.valence);
+      trackFeatures.danceability;
 
-    updateTorusProperties(dynamicDelta);
+    updateTorusProperties(dynamicDelta / 10);
 
     const [indices, vertices, normals, uvs] = getTorusBufferAttributes(
       radius.current,
@@ -234,20 +231,29 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
       q.current
     );
 
-    const { uColour, uSize, uRadius } = (
-      mesh.current.material as ShaderMaterial
-    ).uniforms;
+    const { uColour, uSize, uOpacity, uNoise } = materialRef.current.uniforms;
 
     const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
 
-    uColour.value.lerp(new Color(getColour()), dynamicDelta);
-    uRadius.value = radius.current;
+    // Update the material colour
+    uColour.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
+
+    const pitchTotal =
+      spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
+        acc += curr;
+        return acc;
+      }, 0) || 10;
 
     uSize.value = MathUtils.lerp(
       uSize.value,
-      Math.abs(timbre?.length ? timbre[11] : 1),
+      Math.max(10.0, pitchTotal * Math.abs(timbre?.length ? timbre[11] : 10)),
       dynamicDelta
     );
+
+    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal, dynamicDelta);
+
+    // Update the material opacity
+    uOpacity.value = opacity.get();
 
     mesh.current.geometry.setIndex(indices);
     mesh.current.geometry.setAttribute(
@@ -265,15 +271,18 @@ const Mode1 = ({ visible }: { visible: boolean }) => {
   });
 
   return (
-    <points ref={mesh} visible={visible}>
-      <bufferGeometry attach="geometry" />
-      <particleMaterial
-        attach="material"
-        blending={AdditiveBlending}
-        depthWrite={false}
-        transparent
-      />
-    </points>
+    <group position={[0, 0, -10]} {...props}>
+      <points ref={mesh}>
+        <bufferGeometry attach="geometry" />
+        <particleMaterial
+          attach="material"
+          blending={AdditiveBlending}
+          depthWrite={false}
+          ref={materialRef}
+          transparent
+        />
+      </points>
+    </group>
   );
 };
 

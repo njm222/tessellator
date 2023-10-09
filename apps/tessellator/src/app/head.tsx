@@ -8,7 +8,6 @@ const author = "njm222";
 export default function Head({ title = titleDefault }: { title: string }) {
   return (
     <>
-      ``
       {/* Recommended Meta Tags */}
       <meta charSet="utf-8" />
       <meta content="english" name="language" />
@@ -31,7 +30,7 @@ export default function Head({ title = titleDefault }: { title: string }) {
       <meta content={title} name="og:title" />
       <meta content="site" name="og:type" />
       <meta content={url} name="og:url" />
-      <meta content={"/icons/share.png"} name="og:image" />
+      <meta content="/icons/share.png" name="og:image" />
       <meta content={title} name="og:site_name" />
       <meta content={description} name="og:description" />
       <link href="/icons/apple-touch-icon.png" rel="apple-touch-icon" />

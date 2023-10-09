@@ -1,8 +1,13 @@
+const { withSentryConfig } = require("@sentry/nextjs");
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
-
-const withPWA = require('next-pwa')({
+/**
+ * A fork of 'next-pwa' that has app directory support
+ * @see https://github.com/shadowwalker/next-pwa/issues/424#issuecomment-1332258575
+ */
+ const withPWA = require('@ducanh2912/next-pwa').default({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
 })
@@ -58,11 +63,39 @@ const KEYS_TO_OMIT = ['webpackDevMiddleware', 'configOrigin', 'target', 'analyti
 module.exports = (_phase, { defaultConfig }) => {
   const plugins = [
     [withPWA], 
-    [withBundleAnalyzer, {
-      images: {
-        domains: ["i.scdn.co"],
+    [
+      withBundleAnalyzer, {
+        images: {
+          domains: ["i.scdn.co"],
+        }
       }
-    }]
+    ],
+    [
+      withSentryConfig,
+      module.exports,
+      {
+        // For all available options, see:
+        // https://github.com/getsentry/sentry-webpack-plugin#options
+        // Suppresses source map uploading logs during build
+        silent: true,
+        org: "tessellator-1b14aace8",
+        project: "javascript-nextjs",
+      },
+      {
+        // For all available options, see:
+        // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+        // Upload a larger set of source maps for prettier stack traces (increases build time)
+        widenClientFileUpload: true,
+        // Transpiles SDK to be compatible with IE11 (increases bundle size)
+        transpileClientSDK: true,
+        // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
+        tunnelRoute: "/monitoring",
+        // Hides source maps from generated client bundles
+        hideSourceMaps: true,
+        // Automatically tree-shake Sentry logger statements to reduce bundle size
+        disableLogger: true,
+      }
+    ]
   ]
 
   const wConfig = plugins.reduce((acc, [plugin, config]) => plugin({ ...acc, ...config }), {

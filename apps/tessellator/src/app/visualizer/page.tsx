@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Loader } from "ui";
 
 import { ViewProps } from "../../components/canvas/View";
+import BackNavigationButton from "../../components/dom/BackNavigationButton";
 import { Player } from "../../components/dom/player/Player";
 import { Settings } from "../../components/dom/settings/Settings";
 import { WelcomeUser } from "../../components/dom/WelcomeUser";
@@ -26,7 +27,9 @@ const View = dynamic<ViewProps>(
   () => import("../../components/canvas/View").then((mod) => mod.View),
   {
     ssr: false,
-    loading: () => <Loader message="Building scene" />,
+    loading: () => (
+      <Loader dotVariant={3} hintVariant={2} message="Building scene" />
+    ),
   }
 );
 
@@ -41,13 +44,14 @@ const DefaultLayout = dynamic<DefaultLayoutProps>(
 export default function Page() {
   return (
     <DefaultLayout>
-      <WelcomeUser />
-      <Player />
-      <Settings />
-      <View>
+      <View className="fullscreenView" orbit>
         <VisualizerScene />
         <Common />
       </View>
+      <WelcomeUser />
+      <Player />
+      <BackNavigationButton />
+      <Settings />
     </DefaultLayout>
   );
 }

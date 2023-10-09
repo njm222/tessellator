@@ -2,8 +2,8 @@ import React, { memo, ReactNode, useRef, useState } from "react";
 import { MeshPortalMaterial } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Camera } from "@react-three/fiber/dist/declarations/src/core/events";
-import { Mesh, Vector3 } from "three";
 import { easing } from "maath";
+import { Mesh, Vector3 } from "three";
 
 const [portalWidth, portalHeight] = [3, 7];
 
@@ -62,7 +62,7 @@ function Portal({ children }: { children: ReactNode }) {
   });
 
   return (
-    <group position={[0, 1, 0]}>
+    <group position={[0, 0, 0]}>
       <mesh position={[0, 0, -0.01]} receiveShadow ref={meshOutlineRef}>
         <roundedPlaneGeometry
           args={[portalWidth + 0.15, portalHeight + 0.15, 0.4]}
@@ -71,7 +71,10 @@ function Portal({ children }: { children: ReactNode }) {
       </mesh>
       <mesh receiveShadow ref={meshRef}>
         <roundedPlaneGeometry args={[portalWidth, portalHeight, 0.4]} />
-        <MeshPortalMaterial ref={portalRef}>{children}</MeshPortalMaterial>
+        <MeshPortalMaterial ref={portalRef}>
+          <color args={["#131313"]} attach="background" />
+          {children}
+        </MeshPortalMaterial>
       </mesh>
     </group>
   );

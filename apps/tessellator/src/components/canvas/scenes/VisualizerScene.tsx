@@ -1,19 +1,19 @@
 import { useEffect, useRef } from "react";
 import { BakeShadows, Stars } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { EffectComposer, Pixelation } from "@react-three/postprocessing";
+import { Bloom, EffectComposer, Pixelation } from "@react-three/postprocessing";
+import { PixelationEffect } from "postprocessing";
 
 import Bridge from "../../models/Bridge";
 import Portal from "../Portal";
 import Visualizer from "../Visualizer";
-import { PixelationEffect } from "postprocessing";
 
 const OuterScene = () => {
   return (
     <>
       <Stars count={5000} depth={50} factor={2} fade radius={10} />
       <Bridge
-        position={[0, -2.5, 5]}
+        position={[0, -3.5, 5]}
         rotation={[0, Math.PI / 2, 0]}
         scale={2}
       />
@@ -59,6 +59,7 @@ export const VisualizerScene = () => {
       <BakeShadows />
       {/** effects are not able to run in the portal */}
       <EffectComposer disableNormalPass multisampling={0}>
+        <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
         <Pixelation granularity={0} ref={pixelationRef} />
       </EffectComposer>
     </>

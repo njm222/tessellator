@@ -101,7 +101,11 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
 
   return (
     <group {...props}>
-      <mesh position={[0, 2, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
+      <mesh
+        position={[0, 0.75, 0]}
+        receiveShadow
+        rotation={[-Math.PI / 5, 0, 0]}
+      >
         <planeGeometry args={[vpWidth, vpHeight, 256, 256]} />
         <terrainMaterial
           depthWrite={false}

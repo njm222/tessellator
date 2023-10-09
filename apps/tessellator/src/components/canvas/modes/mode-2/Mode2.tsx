@@ -41,7 +41,7 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
 
   useFrame((state, delta) => {
     tempColor.lerp(
-      colourRef.current.set(getColour()),
+      colourRef.current.set("#FFF"),
       delta * 10 * (1 - trackFeatures.energy)
     );
     const zValue = 10 * trackFeatures.danceability;

@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import WaveMaterial from "../../shaders/wave/WaveMaterial";
+import { WaveMaterial } from "../../shaders/wave/WaveMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
@@ -13,7 +14,9 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
+  const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const materialRef = useRef(new WaveMaterial());
+  const colourRef = useRef(new Color());
   const realBarCounter = useRef(0);
   const currentBarStart = useRef(0);
   const [barThreshold, setBarThreshold] = useState(0.7);
@@ -49,6 +52,9 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
     const { uTime, uColorStart, uStrengthFactor, uOpacity } =
       materialRef.current.uniforms;
 
+    // Update material opacity
+    uOpacity.value = opacity.get();
+
     const timbre = spotifyAnalyser.getCurrentSegment().timbre;
 
     uStrengthFactor.value = MathUtils.lerp(
@@ -76,9 +82,8 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
       dynamicDelta
     );
 
-    uColorStart.value.lerp(new Color(getColour()), dynamicDelta);
-    // Update the material opacity
-    uOpacity.value = opacity.get();
+    // Update the material colour
+    uColorStart.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
 
     if (spotifyAnalyser.bars.current.start === currentBarStart.current) {
       return;
@@ -95,9 +100,9 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
 
   return (
     <group {...props}>
-      <mesh scale={[width, height, 1]}>
+      <mesh scale={[vpWidth, vpHeight, 1]}>
         <planeGeometry />
-        <waveMaterial ref={materialRef} transparent />
+        <waveMaterial depthWrite={false} ref={materialRef} transparent />
       </mesh>
     </group>
   );

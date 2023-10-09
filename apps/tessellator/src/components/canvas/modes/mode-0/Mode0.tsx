@@ -6,7 +6,7 @@ import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import TerrainMaterial from "../../shaders/terrain/TerrainMaterial";
+import { TerrainMaterial } from "../../shaders/terrain/TerrainMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColour } from "../useGetColour";
 
@@ -15,10 +15,11 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { getColour } = useGetColour();
 
+  const colourRef = useRef(new Color());
   // Get reference of the terrain
   const terrainMaterialRef = useRef(new TerrainMaterial());
-  const { viewport } = useThree();
-  const [vpWidth, vpHeight] = useAspect(viewport.width, viewport.height, 2);
+  const { width, height } = useThree((state) => state.viewport);
+  const [vpWidth, vpHeight] = useAspect(width, height, 2);
 
   useFrame((_, delta) => {
     // Wait for material to load
@@ -88,17 +89,25 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
     );
 
     // Update the material colour
-    uColour.value.lerp(new Color(getColour()), dynamicDelta);
+    uColour.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
 
     // Update the material opacity
     uOpacity.value = opacity.get();
+
+    // Update the material wireframe
+    terrainMaterialRef.current.wireframe =
+      spotifyAnalyser.beats.counter % 2 === 0;
   });
 
   return (
     <group {...props}>
       <mesh position={[0, 2, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
-        <planeGeometry args={[vpWidth, vpHeight, 512, 512]} />
-        <terrainMaterial ref={terrainMaterialRef} transparent wireframe />
+        <planeGeometry args={[vpWidth, vpHeight, 256, 256]} />
+        <terrainMaterial
+          depthWrite={false}
+          ref={terrainMaterialRef}
+          transparent
+        />
       </mesh>
     </group>
   );

@@ -240,6 +240,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
       shuffle: (shuffle: boolean) => mutateShuffle(shuffle),
     }),
     [
+      spotifyPlayer,
       player,
       data.features,
       mutatePlay,

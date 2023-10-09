@@ -6,7 +6,7 @@ uniform float uYScale;
 uniform float uAmplitude;
 
 void main() {
-  vUv = vec3(position.xy, noise(vec3(position.x / uXScale, position.y / uYScale, uTime))); 
+  vUv = vec3(position.xy, max(noise(vec3(position.x / uXScale, position.y / uYScale, uTime)), 0.0)); 
 
   vec4 modelViewPosition = modelViewMatrix * vec4(vUv, 1.0);
   gl_Position = projectionMatrix * modelViewPosition; 

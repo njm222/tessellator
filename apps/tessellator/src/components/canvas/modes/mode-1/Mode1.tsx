@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { getIndexOfMax, getIndexOfMin } from "core";
+import { getIndexOfMax } from "core";
 import {
   AdditiveBlending,
   Color,
@@ -19,6 +19,7 @@ import { useGetColour } from "../useGetColour";
 const Mode1 = ({ opacity, ...props }: ModeProps) => {
   const mesh = useRef<Points>(null);
   const materialRef = useRef(new ParticleMaterial());
+  const colourRef = useRef(new Color());
   const { audioAnalyser } = useAnalyser();
   const { getColour } = useGetColour({ minSaturation: 75, minLightness: 150 });
   const { spotifyAnalyser, trackFeatures } = usePlayer();
@@ -234,7 +235,8 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
 
     const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
 
-    uColour.value.lerp(new Color(getColour()), delta);
+    // Update the material colour
+    uColour.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
 
     const pitchTotal =
       spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {

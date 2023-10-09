@@ -70,7 +70,7 @@ export const MouseActivityProvider: FC<MouseActivityProviderProps> = ({
       clearTimeout(mouseTimeout.current);
       document.removeEventListener("mousemove", mouseMoveHandler);
     };
-  }, []);
+  }, [mouseMoveHandler]);
 
   return (
     <MouseActivityContext.Provider value={{ mouseActive }}>

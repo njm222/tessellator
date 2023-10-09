@@ -20,6 +20,7 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
   const mesh = useRef<InstancedMesh>(
     new InstancedMesh(undefined, undefined, count)
   );
+  const colourRef = useRef(new Color());
   const tempVector = new Vector3();
   const tempColor = new Color();
   const tempColor2 = new Color();
@@ -40,7 +41,7 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
 
   useFrame((state, delta) => {
     tempColor.lerp(
-      new Color(getColour()),
+      colourRef.current.set(getColour()),
       delta * 10 * (1 - trackFeatures.energy)
     );
     const zValue = 10 * trackFeatures.danceability;

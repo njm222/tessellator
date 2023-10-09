@@ -16,6 +16,7 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
   const { width, height } = useThree((state) => state.viewport);
   const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const materialRef = useRef(new FractalMaterial());
+  const colourRef = useRef(new Color());
   const realBeatCounter = useRef(0);
   const currentBeatStart = useRef(0);
   const [beatThreshold, setBeatThreshold] = useState(0.7);
@@ -58,7 +59,7 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
     uOpacity.value = opacity.get();
 
     // Update the material colour
-    uColour.value.lerp(new Color(getColour()), dynamicDelta);
+    uColour.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
 
     uHigh.value = MathUtils.lerp(
       uHigh.value,

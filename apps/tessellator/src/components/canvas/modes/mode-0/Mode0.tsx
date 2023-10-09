@@ -15,6 +15,7 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { getColour } = useGetColour();
 
+  const colourRef = useRef(new Color());
   // Get reference of the terrain
   const terrainMaterialRef = useRef(new TerrainMaterial());
   const { width, height } = useThree((state) => state.viewport);
@@ -88,7 +89,7 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
     );
 
     // Update the material colour
-    uColour.value.lerp(new Color(getColour()), dynamicDelta);
+    uColour.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
 
     // Update the material opacity
     uOpacity.value = opacity.get();

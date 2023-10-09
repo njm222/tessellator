@@ -16,6 +16,7 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
   const { width, height } = useThree((state) => state.viewport);
   const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const materialRef = useRef(new WaveMaterial());
+  const colourRef = useRef(new Color());
   const realBarCounter = useRef(0);
   const currentBarStart = useRef(0);
   const [barThreshold, setBarThreshold] = useState(0.7);
@@ -81,8 +82,8 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
       dynamicDelta
     );
 
-    // Update material colouor
-    uColorStart.value.lerp(new Color(getColour()), dynamicDelta);
+    // Update the material colour
+    uColorStart.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
 
     if (spotifyAnalyser.bars.current.start === currentBarStart.current) {
       return;

@@ -50,7 +50,6 @@ export const VisualizerScene = () => {
       </Portal>
       <OuterScene />
       <BakeShadows />
-      {/** effects are not able to run in the portal */}
       <EffectComposer disableNormalPass multisampling={0}>
         <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
         <Pixelation granularity={0} ref={pixelationRef} />

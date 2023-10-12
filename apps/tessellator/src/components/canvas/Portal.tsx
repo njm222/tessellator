@@ -1,5 +1,5 @@
 import React, { memo, ReactNode, useRef, useState } from "react";
-import { MeshPortalMaterial } from "@react-three/drei";
+import { MeshPortalMaterial, PortalMaterialType } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Camera } from "@react-three/fiber/dist/declarations/src/core/events";
 import { easing } from "maath";
@@ -11,7 +11,7 @@ function Portal({ children }: { children: ReactNode }) {
   const meshRef = useRef(new Mesh());
   const [inPortal, setInPortal] = useState(false);
   const meshOutlineRef = useRef(new Mesh());
-  const portalRef = useRef<any>(null);
+  const portalRef = useRef<PortalMaterialType>(null);
   const cameraVec = new Vector3(0, 0, 0);
 
   function handleOutsidePortal(camera: Camera, delta: number) {
@@ -48,6 +48,8 @@ function Portal({ children }: { children: ReactNode }) {
   }
 
   useFrame((state, delta) => {
+    if (!portalRef.current) return;
+
     easing.damp(portalRef.current, "blend", inPortal ? 1 : 0, 0.5, delta * 10);
 
     if (!inPortal && meshRef.current?.position) {

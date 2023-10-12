@@ -37,9 +37,6 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
-  useEffect(() => {
-    mesh.current.setColorAt(0, tempColor);
-  }, []);
   useFrame((state, delta) => {
     tempColor.lerp(
       colourRef.current.set(getColour()),

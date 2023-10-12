@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { a } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
 import {
@@ -37,6 +37,9 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
+  useEffect(() => {
+    mesh.current.setColorAt(0, tempColor);
+  }, []);
   useFrame((state, delta) => {
     tempColor.lerp(
       colourRef.current.set(getColour()),
@@ -60,22 +63,21 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
       for (let y = 0; y < 20; y++) {
         for (let z = 0; z < 20; z++) {
           const id = i++;
-          tempObject.position.set((10 - x) / 2, (10 - y) / 2, (10 - z) / 2);
-
+          tempObject.position.set(10 - x, 10 - y, 10 - z);
           tempObject.updateMatrix();
           tempObject.scale.setScalar(scale);
+
           mesh.current.setMatrixAt(id, tempObject.matrix);
           mesh.current.setColorAt(
             id,
             tempColor2
               .set(tempColor.getHex())
               .offsetHSL(
-                Math.abs(x - 10) * -0.01,
-                Math.abs(z - 10) * -0.01,
-                Math.abs(z - 10) * 0.01
+                Math.abs(x - 10) * 0.02,
+                Math.abs(y - 10) * -0.02,
+                Math.abs(z - 10) * -0.01
               )
           );
-          mesh.current.geometry.attributes.color.needsUpdate = true;
         }
       }
     }
@@ -119,7 +121,7 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
           />
         </boxGeometry>
         {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
-        <a.meshBasicMaterial depthWrite={false} opacity={opacity} transparent />
+        <a.meshBasicMaterial opacity={opacity} transparent />
       </instancedMesh>
     </group>
   );

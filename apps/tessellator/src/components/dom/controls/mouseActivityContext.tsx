@@ -70,7 +70,8 @@ export const MouseActivityProvider: FC<MouseActivityProviderProps> = ({
       clearTimeout(mouseTimeout.current);
       document.removeEventListener("mousemove", mouseMoveHandler);
     };
-  }, [mouseMoveHandler]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <MouseActivityContext.Provider value={{ mouseActive }}>

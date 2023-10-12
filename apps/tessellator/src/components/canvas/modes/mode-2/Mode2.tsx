@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { a } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
 import {
@@ -27,9 +27,7 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
   const colorArray = useMemo(
     () =>
       Float32Array.from(
-        new Array(count)
-          .fill("")
-          .flatMap((_, i) => tempColor.set("#FFF").toArray())
+        new Array(count).fill("").flatMap(() => tempColor.set("#FFF").toArray())
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -56,21 +54,26 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
       ),
       2
     );
+
     let i = 0;
     for (let x = 0; x < 20; x++) {
       for (let y = 0; y < 20; y++) {
         for (let z = 0; z < 20; z++) {
           const id = i++;
-          tempObject.position.set((10 - x) / 2, (10 - y) / 2, (10 - z) / 2);
-
+          tempObject.position.set(10 - x, 10 - y, 10 - z);
           tempObject.updateMatrix();
           tempObject.scale.setScalar(scale);
+
           mesh.current.setMatrixAt(id, tempObject.matrix);
           mesh.current.setColorAt(
             id,
             tempColor2
               .set(tempColor.getHex())
-              .offsetHSL(Math.abs(x - 10) * -0.01, 0, Math.abs(z - 10) * -0.05)
+              .offsetHSL(
+                Math.abs(x - 10) * 0.02,
+                Math.abs(y - 10) * -0.02,
+                Math.abs(z - 10) * -0.01
+              )
           );
         }
       }
@@ -99,8 +102,8 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
 
     (mesh.current.material as MeshPhongMaterial).wireframe =
       spotifyAnalyser.beats.counter % 2 === 0;
-    mesh.current.instanceMatrix.needsUpdate = true;
 
+    mesh.current.instanceMatrix.needsUpdate = true;
     if (!mesh.current.instanceColor) return;
     mesh.current.instanceColor.needsUpdate = true;
   });
@@ -115,7 +118,7 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
           />
         </boxGeometry>
         {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
-        <a.meshPhongMaterial depthWrite={false} opacity={opacity} transparent />
+        <a.meshBasicMaterial opacity={opacity} transparent />
       </instancedMesh>
     </group>
   );

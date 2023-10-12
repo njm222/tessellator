@@ -6,7 +6,6 @@ import { Loader } from "ui";
 
 import { AnalyserProviderProps } from "../../utils/analyserContext";
 import { PlayerProvider } from "../../utils/playerContext";
-import { PortalProvider } from "../../utils/portalContext";
 import { ControlsProviderProps } from "../dom/controls/controlsContext";
 
 const AnalyserProvider = dynamic<AnalyserProviderProps>(
@@ -27,9 +26,7 @@ export const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
   return (
     <PlayerProvider>
       <AnalyserProvider>
-        <PortalProvider>
           <ControlsProvider>{children}</ControlsProvider>
-        </PortalProvider>
       </AnalyserProvider>
     </PlayerProvider>
   );

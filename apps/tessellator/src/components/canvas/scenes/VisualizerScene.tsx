@@ -38,13 +38,6 @@ export const VisualizerScene = () => {
       return;
     }
 
-    // if (inPortal) {
-    //   pixelationRef.current.setGranularity(
-    //     camera.position.z > 4 ? camera.position.z * 2 : 0
-    //   );
-    //   return;
-    // }
-
     pixelationRef.current.setGranularity(
       camera.position.z > 5 ? 0 : (5 - camera.position.z) * 10
     );

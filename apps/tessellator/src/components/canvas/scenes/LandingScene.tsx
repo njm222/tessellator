@@ -44,7 +44,7 @@ export const LandingScene = () => {
 
   useFrame((_, delta) => {
     if (isNavigating) {
-      easing.damp3(camera.position, target.current, delta);
+      easing.damp3(camera.position, target.current, delta * 2);
       camera.quaternion.slerpQuaternions(q1.current, q2.current, delta);
     }
   });

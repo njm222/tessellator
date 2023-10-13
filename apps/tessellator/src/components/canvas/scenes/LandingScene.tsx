@@ -2,18 +2,19 @@ import React, {
   Suspense,
   useEffect,
   useLayoutEffect,
+  useRef,
   useState,
   useTransition,
 } from "react";
-import { SpringValue } from "@react-spring/three";
 import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { captureException } from "@sentry/nextjs";
 import { loginUser } from "core";
+import { easing } from "maath";
 import { useRouter } from "next/navigation";
-import { Color, Vector2 } from "three";
+import { Color, Object3D, Quaternion, Vector2, Vector3 } from "three";
 import { useToast } from "ui";
 
 import { useAuth } from "../../../utils/authContext";
@@ -29,15 +30,11 @@ export const LandingScene = () => {
   const router = useRouter();
 
   const [isNavigating, setIsNavigating] = useState(false);
-  const z = new SpringValue({
-    to: 20,
-    from: 70,
-    config: {
-      tension: 20,
-      friction: 5,
-      precision: 0.0001,
-    },
-  });
+
+  const target = useRef(new Vector3());
+  const q1 = useRef(new Quaternion());
+  const q2 = useRef(new Quaternion());
+  const obj = useRef(new Object3D());
 
   useEffect(() => {
     camera.position.set(0, 0, 100);
@@ -47,57 +44,51 @@ export const LandingScene = () => {
 
   useFrame((_, delta) => {
     if (isNavigating) {
-      z.advance(delta * 1000);
-      camera.position.setZ(z.animation.values[0].getValue());
-      return;
+      easing.damp3(camera.position, target.current, delta);
+      camera.quaternion.slerpQuaternions(q1.current, q2.current, delta);
     }
   });
 
-  const handleSpotifyNavigation = async () => {
+  async function handleSpotifyLogin() {
+    try {
+      const { uri } = await loginUser();
+      window.location.assign(decodeURI(uri));
+    } catch (e: unknown) {
+      const errorMessage = (e as { message: string }).message;
+      toast.open(errorMessage);
+      captureException(errorMessage);
+      return;
+    }
+  }
+
+  function setCameraTarget({ x, y, z }: Vector3) {
+    target.current.set(x, y, z);
+
+    obj.current.lookAt(target.current);
+    q2.current.copy(obj.current.quaternion);
+  }
+
+  const handleSpotifyNavigation = (target: Vector3) => {
     if (!refreshToken) {
-      // if no token present login normally
-      try {
-        const { uri } = await loginUser();
-        window.location.assign(decodeURI(uri));
-      } catch (e: unknown) {
-        const errorMessage = (e as { message: string }).message;
-        toast.open(errorMessage);
-        captureException(errorMessage);
-        return;
-      }
+      handleSpotifyLogin();
     }
     if (isPending) return;
     startTransition(() => {
-      z.start({
-        to: 20,
-        from: camera.position.z,
-        config: {
-          tension: 20,
-          friction: refreshToken ? 5 : 200,
-          precision: 0.0001,
-        },
-      });
-      setIsNavigating(true);
+      setCameraTarget(target);
 
-      router.push("/visualizer");
+      setIsNavigating(true);
     });
+    router.push("/visualizer");
   };
 
-  const handleAboutNavigation = () => {
+  const handleAboutNavigation = (target: Vector3) => {
     if (isPending) return;
     startTransition(() => {
-      z.start({
-        to: 20,
-        from: camera.position.z,
-        config: {
-          tension: 20,
-          friction: refreshToken ? 5 : 200,
-          precision: 0.0001,
-        },
-      });
+      setCameraTarget(target);
+
       setIsNavigating(true);
-      router.push("/about");
     });
+    router.push("/about");
   };
 
   return (
@@ -111,12 +102,7 @@ export const LandingScene = () => {
       <Particles count={10000} isNavigating={isNavigating} />
 
       <EffectComposer disableNormalPass multisampling={0}>
-        <Bloom
-          height={256}
-          luminanceSmoothing={0.1}
-          luminanceThreshold={0.2}
-          width={256}
-        />
+        <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
         <Glitch
           active={isNavigating}
           delay={new Vector2(0, 0)}
@@ -131,8 +117,8 @@ function LandingContent({
   handleAboutNavigation,
   handleSpotifyNavigation,
 }: {
-  handleAboutNavigation: () => void;
-  handleSpotifyNavigation: () => void;
+  handleAboutNavigation: (target: Vector3) => void;
+  handleSpotifyNavigation: (target: Vector3) => void;
 }) {
   const { size, setSize } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
@@ -168,7 +154,7 @@ function LandingContent({
           colour={new Color("#1DB954")}
           marginRight={0}
           marginTop={0}
-          onClick={() => handleSpotifyNavigation()}
+          onClick={(e) => handleSpotifyNavigation(e.point)}
           overlayText="login"
         >
           Spotify
@@ -189,7 +175,7 @@ function LandingContent({
           colour={textColour}
           marginRight={0}
           marginTop={0}
-          onClick={() => handleAboutNavigation()}
+          onClick={(e) => handleAboutNavigation(e.point)}
           overlayText="us"
         >
           About

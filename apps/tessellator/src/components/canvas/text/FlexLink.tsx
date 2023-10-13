@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { animated, config, useSpring } from "@react-spring/three";
 import { Instance, Instances, RoundedBox, useCursor } from "@react-three/drei";
-import { GroupProps, useFrame } from "@react-three/fiber";
+import { GroupProps, ThreeEvent, useFrame } from "@react-three/fiber";
 import { Box } from "@react-three/flex";
 import { Color, Group, Mesh } from "three";
 
@@ -11,7 +11,7 @@ import { FlexTextProps } from "./FlexText";
 import { Text, TextGeo } from "./Text";
 
 type FlexLinkProps = FlexTextProps & {
-  onClick: () => void;
+  onClick: (e: ThreeEvent<PointerEvent>) => void;
   disabled?: boolean;
   overlayText?: string;
 };
@@ -82,7 +82,7 @@ export function FlexLink({
       ) : null}
       <RoundedBox
         args={[10 + 3.5 * children.length, 10, 5]}
-        onPointerDown={() => (disabled ? null : onClick())}
+        onPointerDown={(e) => (disabled ? null : onClick(e))}
         onPointerOut={() => setHover(false)}
         onPointerOver={() => setHover(true)}
         radius={2}

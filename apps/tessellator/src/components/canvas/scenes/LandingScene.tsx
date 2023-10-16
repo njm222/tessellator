@@ -44,7 +44,11 @@ export const LandingScene = () => {
 
   useFrame((_, delta) => {
     if (isNavigating) {
-      easing.damp3(camera.position, target.current, delta * 2);
+      easing.damp3(
+        camera.position,
+        target.current,
+        delta * (refreshToken ? 1 : 5)
+      );
       camera.quaternion.slerpQuaternions(q1.current, q2.current, delta);
     }
   });
@@ -62,33 +66,33 @@ export const LandingScene = () => {
   }
 
   function setCameraTarget({ x, y, z }: Vector3) {
-    target.current.set(x, y, z);
+    target.current.set(x, y, z + 10);
 
     obj.current.lookAt(target.current);
     q2.current.copy(obj.current.quaternion);
   }
 
+  const handleNavigation = (
+    target: Vector3,
+    route: "/about" | "/visualizer"
+  ) => {
+    if (isPending) return;
+    startTransition(() => {
+      setCameraTarget(target);
+      setIsNavigating(true);
+    });
+    router.push(route);
+  };
+
   const handleSpotifyNavigation = (target: Vector3) => {
     if (!refreshToken) {
       handleSpotifyLogin();
     }
-    if (isPending) return;
-    startTransition(() => {
-      setCameraTarget(target);
-
-      setIsNavigating(true);
-    });
-    router.push("/visualizer");
+    handleNavigation(target, "/visualizer");
   };
 
   const handleAboutNavigation = (target: Vector3) => {
-    if (isPending) return;
-    startTransition(() => {
-      setCameraTarget(target);
-
-      setIsNavigating(true);
-    });
-    router.push("/about");
+    handleNavigation(target, "/about");
   };
 
   return (

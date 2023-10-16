@@ -9,7 +9,6 @@ import vertex from "./glsl/shader.vert";
 
 export const ParticleMaterial = shaderMaterial(
   {
-    uPixelRatio: Math.min(window.devicePixelRatio, 2),
     uSize: 4.0,
     uColour: new Color("#fff"),
     uOpacity: 1.0,

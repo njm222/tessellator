@@ -11,13 +11,6 @@ import { Settings } from "../../components/dom/settings/Settings";
 import { WelcomeUser } from "../../components/dom/WelcomeUser";
 import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
 
-const VisualizerScene = dynamic<{}>(
-  () =>
-    import("../../components/canvas/scenes/VisualizerScene").then(
-      (mod) => mod.VisualizerScene
-    ),
-  { ssr: false }
-);
 const Common = dynamic<{}>(
   () => import("../../components/canvas/View").then((mod) => mod.Common),
   { ssr: false }
@@ -38,7 +31,20 @@ const DefaultLayout = dynamic<DefaultLayoutProps>(
     import("../../components/layout/DefaultLayout").then(
       (mod) => mod.DefaultLayout
     ),
-  { ssr: false, loading: () => <Loader /> }
+  {
+    ssr: false,
+    loading: () => <Loader hintVariant={2} />,
+  }
+);
+
+const VisualizerScene = dynamic<{}>(
+  () =>
+    import("../../components/canvas/scenes/VisualizerScene").then(
+      (mod) => mod.VisualizerScene
+    ),
+  {
+    ssr: false,
+  }
 );
 
 export default function Page() {

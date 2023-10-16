@@ -19,7 +19,7 @@ const View = dynamic<ViewProps>(
   {
     ssr: false,
     loading: () => (
-      <Loader dotVariant={3} hintVariant={2} message="Building scene" />
+      <Loader dotVariant={3} hintVariant={1} message="Building scene" />
     ),
   }
 );
@@ -29,7 +29,10 @@ const DefaultLayout = dynamic<DefaultLayoutProps>(
     import("../../components/layout/DefaultLayout").then(
       (mod) => mod.DefaultLayout
     ),
-  { ssr: false, loading: () => <Loader /> }
+  {
+    ssr: false,
+    loading: () => <Loader hintVariant={1} />,
+  }
 );
 
 const AboutScene = dynamic<{}>(

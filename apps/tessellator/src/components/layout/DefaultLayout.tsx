@@ -14,9 +14,6 @@ Globals.assign({
 
 const Scene = dynamic(() => import("../canvas/Scene"), {
   ssr: false,
-  loading: () => (
-    <Loader dotVariant={2} hintVariant={1} message="Loading scene" />
-  ),
 });
 
 export type DefaultLayoutProps = {

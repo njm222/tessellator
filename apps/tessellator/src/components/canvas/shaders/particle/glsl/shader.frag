@@ -13,7 +13,7 @@ void main() {
   float distanceToCenterPoint = distance(gl_PointCoord, vec2(0.5));
   float strength = pow(1. - distanceToCenterPoint, 10.0);
   
-  vec3 color = palette(vDistance + uNoise, uColour);
+  vec3 color = palette(vDistance * (uNoise * 0.5), uColour);
   color = mix(vec3(0.0), color, strength);
   
   gl_FragColor = vec4(color, uOpacity);

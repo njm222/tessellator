@@ -3,7 +3,7 @@ import { MeshPortalMaterial, PortalMaterialType } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { Camera } from "@react-three/fiber/dist/declarations/src/core/events";
 import { easing } from "maath";
-import { Mesh, Vector3 } from "three";
+import { Color, DoubleSide, Mesh, Vector3 } from "three";
 
 const [portalWidth, portalHeight] = [3, 7];
 
@@ -11,6 +11,7 @@ function Portal({ children }: { children: ReactNode }) {
   const meshRef = useRef(new Mesh());
   const [inPortal, setInPortal] = useState(false);
   const meshOutlineRef = useRef(new Mesh());
+  const meshOutlineColor = new Color("#FF0000");
   const portalRef = useRef<PortalMaterialType>(null);
   const cameraVec = new Vector3(0, 0, 0);
 
@@ -64,21 +65,21 @@ function Portal({ children }: { children: ReactNode }) {
   });
 
   return (
-    <group position={[0, 0, 0]}>
+    <>
       <mesh position={[0, 0, -0.01]} receiveShadow ref={meshOutlineRef}>
         <roundedPlaneGeometry
           args={[portalWidth + 0.15, portalHeight + 0.15, 0.4]}
         />
-        <meshPhongMaterial color="#FF0000" />
+        <meshBasicMaterial color={meshOutlineColor} side={DoubleSide} />
       </mesh>
-      <mesh receiveShadow ref={meshRef}>
+      <mesh position={[0, 0, 0]} receiveShadow ref={meshRef}>
         <roundedPlaneGeometry args={[portalWidth, portalHeight, 0.4]} />
         <MeshPortalMaterial ref={portalRef}>
           <color args={["#131313"]} attach="background" />
           {children}
         </MeshPortalMaterial>
       </mesh>
-    </group>
+    </>
   );
 }
 

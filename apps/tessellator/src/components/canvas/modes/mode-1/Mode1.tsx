@@ -162,11 +162,12 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
   const updateTorusProperties = (delta: number) => {
     radius.current = MathUtils.lerp(
       radius.current,
-      1 +
+      Math.max(
         Math.abs(
           audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
-        ) /
-          5,
+        ) / 5,
+        0.1
+      ),
       delta
     );
 
@@ -201,6 +202,15 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
         acc += curr;
         return acc;
       }, 0) || 4;
+
+    if (trackFeatures.danceability > 0.9) {
+      p.current = Math.floor(pitchTotal) + 1;
+
+      q.current =
+        getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 2;
+
+      return;
+    }
 
     p.current = MathUtils.lerp(p.current, Math.floor(pitchTotal) + 2, delta);
 
@@ -239,18 +249,18 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
     uColour.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
 
     const pitchTotal =
-      spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
+      (spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
         acc += curr;
         return acc;
-      }, 0) || 10;
+      }, 0) || 12) / 12;
 
     uSize.value = MathUtils.lerp(
       uSize.value,
-      Math.max(10.0, pitchTotal * Math.abs(timbre?.length ? timbre[11] : 10)),
+      Math.max(10.0, pitchTotal * Math.abs(timbre?.length ? timbre[1] : 10)),
       dynamicDelta
     );
 
-    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal / 12, dynamicDelta);
+    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal, dynamicDelta);
 
     // Update the material opacity
     uOpacity.value = opacity.get();

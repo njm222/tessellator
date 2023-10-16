@@ -7,6 +7,6 @@ void main() {
   
   vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.5);
   gl_Position = projectionMatrix * modelViewPosition; 
-  float size = clamp(uSize, 15.0, 100.0);
+  float size = clamp(uSize, 10.0, 50.0);
   gl_PointSize = max(5.0, size * vDistance);
 }

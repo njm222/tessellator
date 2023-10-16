@@ -69,7 +69,7 @@ function Portal({ children }: { children: ReactNode }) {
         <roundedPlaneGeometry
           args={[portalWidth + 0.15, portalHeight + 0.15, 0.4]}
         />
-        <meshBasicMaterial color="red" />
+        <meshPhongMaterial color="#FF0000" />
       </mesh>
       <mesh receiveShadow ref={meshRef}>
         <roundedPlaneGeometry args={[portalWidth, portalHeight, 0.4]} />

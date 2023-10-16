@@ -25,8 +25,8 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
     if (!materialRef.current) return;
 
     materialRef.current.uniforms.uResolution.value =
-      (1 - trackFeatures.speechiness) * (height * trackFeatures.energy);
-  }, [trackFeatures.speechiness, trackFeatures.energy, height]);
+      (1 - trackFeatures.speechiness) * (width * trackFeatures.energy);
+  }, [trackFeatures.speechiness, trackFeatures.energy, width]);
 
   useEffect(() => {
     setBarThreshold(
@@ -47,9 +47,9 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
       (1 - trackFeatures.valence) *
       0.1;
 
-    const dynamicDelta = delta * trackFeatures.tempo * factor;
+    const dynamicDelta = delta * (trackFeatures.tempo / 2) * factor;
 
-    const { uTime, uColorStart, uStrengthFactor, uOpacity } =
+    const { uTime, uColorStart, uStrengthFactor, uOpacity, uNoise } =
       materialRef.current.uniforms;
 
     // Update material opacity
@@ -61,7 +61,7 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
       uStrengthFactor.value,
       (audioAnalyser.analyserData.rms +
         Math.abs(
-          audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
+          audioAnalyser.midSection.average - audioAnalyser.midSection.energy
         )) *
         Math.abs(timbre?.length ? timbre[0] : 1) *
         factor *
@@ -75,12 +75,20 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
       uTime.value,
       uTime.value +
         Math.abs(
-          audioAnalyser.bassSection.average - audioAnalyser.midSection.average
+          audioAnalyser.bassSection.average - audioAnalyser.snareSection.average
         ) *
           factor *
           direction,
       dynamicDelta
     );
+
+    const pitchTotal =
+      (spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
+        acc += curr;
+        return acc;
+      }, 0) || 12) / 12;
+
+    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal / 12, dynamicDelta);
 
     // Update the material colour
     uColorStart.value.lerp(colourRef.current.set(getColour()), dynamicDelta);

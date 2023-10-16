@@ -10,6 +10,7 @@ import vertex from "./glsl/shader.vert";
 export const WaveMaterial = shaderMaterial(
   {
     uTime: 0,
+    uNoise: 0.5,
     uResolution: 5.0,
     uStrengthFactor: 5.0,
     uColorStart: new Color("#fff"),

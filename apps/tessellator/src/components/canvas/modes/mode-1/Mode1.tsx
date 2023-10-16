@@ -260,7 +260,7 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
       dynamicDelta
     );
 
-    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal, dynamicDelta);
+    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal / 12, dynamicDelta);
 
     // Update the material opacity
     uOpacity.value = opacity.get();

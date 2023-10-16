@@ -256,7 +256,7 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
 
     uSize.value = MathUtils.lerp(
       uSize.value,
-      Math.max(10.0, pitchTotal * Math.abs(timbre?.length ? timbre[1] : 10)),
+      Math.max(10.0, pitchTotal * Math.abs(timbre?.length ? timbre[11] : 10)),
       dynamicDelta
     );
 

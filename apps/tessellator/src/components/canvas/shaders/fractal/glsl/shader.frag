@@ -1,5 +1,5 @@
 varying vec2 vUv;
-uniform vec3 uColour;
+uniform vec3 uColor;
 uniform float uOpacity;
 uniform float uTime;
 uniform float uIterations;
@@ -8,11 +8,11 @@ uniform float uValence;
 uniform float uFactor;
 uniform float uHigh;
 
-vec3 palette( float t, vec3 baseColour ) {
+vec3 palette( float t, vec3 baseColor ) {
     vec3 a = vec3(0.5, 0.5, 0.5);
     vec3 b = vec3(1.0, 1.0, 1.0);
 
-    return a*cos( 6.28318*(b*t+baseColour) );
+    return a*cos( 6.28318*(b*t+baseColor) );
 }
 
 void main()
@@ -27,7 +27,7 @@ void main()
 
     float d = (length(vUv1) * exp(-length(vUv0)));
 
-    vec3 col = palette(length(vUv0) + i * uEnergy + uTime * uEnergy, uColour);
+    vec3 col = palette(length(vUv0) + i * uEnergy + uTime * uEnergy, uColor);
 
     d = abs(sin(d*uValence + uTime)/uValence);
 

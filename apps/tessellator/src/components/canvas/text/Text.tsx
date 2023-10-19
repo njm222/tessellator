@@ -15,14 +15,14 @@ const fontUrl = "/fonts/tomorrow_extralight_regular.json";
 export function Text({
   children,
   hover,
-  colour,
+  color,
   scale = 6,
   bevelSize = 0.05,
   bevelEnabled = true,
   letterSpacing = 0.3,
 }: {
   children: string;
-  colour: ColorRepresentation;
+  color: ColorRepresentation;
   hover?: boolean;
   scale?: number;
   bevelSize?: number;
@@ -38,19 +38,19 @@ export function Text({
       scale={scale}
     >
       {children}
-      <meshPhongMaterial color={colour} wireframe={!hover} />
+      <meshPhongMaterial color={color} wireframe={!hover} />
     </Text3D>
   );
 }
 
 export function TextGeo({
   children,
-  colour,
+  color,
   size = 2,
   opacity,
 }: {
   children: string;
-  colour: ColorRepresentation;
+  color: ColorRepresentation;
   size?: number;
   opacity?: SpringValue<number>;
 }) {
@@ -61,7 +61,7 @@ export function TextGeo({
       <textGeometry args={[children, { font, size, height: 1 }]} />
       {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
       <animated.meshPhongMaterial
-        color={colour}
+        color={color}
         opacity={opacity}
         transparent={true}
         wireframe={true}

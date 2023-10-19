@@ -7,16 +7,16 @@ import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import { WaveMaterial } from "../../shaders/wave/WaveMaterial";
 import { ModeProps } from "../Modes";
-import { useGetColour } from "../useGetColour";
+import { useGetColor } from "../useGetColor";
 
 const Mode3 = ({ opacity, ...props }: ModeProps) => {
-  const { getColour } = useGetColour({ minLightness: 125, minSaturation: 100 });
+  const { getColor } = useGetColor({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
   const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const materialRef = useRef(new WaveMaterial());
-  const colourRef = useRef(new Color());
+  const colorRef = useRef(new Color());
   const realBarCounter = useRef(0);
   const currentBarStart = useRef(0);
   const [barThreshold, setBarThreshold] = useState(0.7);
@@ -90,8 +90,8 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
 
     uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal / 12, dynamicDelta);
 
-    // Update the material colour
-    uColorStart.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
+    // Update the material color
+    uColorStart.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
 
     if (spotifyAnalyser.bars.current.start === currentBarStart.current) {
       return;

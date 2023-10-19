@@ -10,7 +10,7 @@ import vertex from "./glsl/shader.vert";
 export const FractalMaterial = shaderMaterial(
   {
     uOpacity: 1,
-    uColour: new Color("#fff"),
+    uColor: new Color("#fff"),
     uTime: 0,
     uIterations: 1,
     uEnergy: 1,

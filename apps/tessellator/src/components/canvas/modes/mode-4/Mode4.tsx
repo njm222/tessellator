@@ -7,16 +7,16 @@ import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import { FractalMaterial } from "../../shaders/fractal/FractalMaterial";
 import { ModeProps } from "../Modes";
-import { useGetColour } from "../useGetColour";
+import { useGetColor } from "../useGetColor";
 
 const Mode4 = ({ opacity, ...props }: ModeProps) => {
-  const { getColour } = useGetColour({ minLightness: 125, minSaturation: 100 });
+  const { getColor } = useGetColor({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
   const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const materialRef = useRef(new FractalMaterial());
-  const colourRef = useRef(new Color());
+  const colorRef = useRef(new Color());
   const realBeatCounter = useRef(0);
   const currentBeatStart = useRef(0);
   const [beatThreshold, setBeatThreshold] = useState(0.7);
@@ -52,14 +52,14 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
       (1 - trackFeatures.valence) *
       dynamicDelta;
 
-    const { uTime, uOpacity, uIterations, uFactor, uColour, uHigh } =
+    const { uTime, uOpacity, uIterations, uFactor, uColor, uHigh } =
       materialRef.current.uniforms;
 
     // Update the material opacity
     uOpacity.value = opacity.get();
 
-    // Update the material colour
-    uColour.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
+    // Update the material color
+    uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
 
     uHigh.value = MathUtils.lerp(
       uHigh.value,

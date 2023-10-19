@@ -14,14 +14,14 @@ import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import { ParticleMaterial } from "../../shaders/particle/ParticleMaterial";
 import { ModeProps } from "../Modes";
-import { useGetColour } from "../useGetColour";
+import { useGetColor } from "../useGetColor";
 
 const Mode1 = ({ opacity, ...props }: ModeProps) => {
   const mesh = useRef<Points>(null);
   const materialRef = useRef(new ParticleMaterial());
-  const colourRef = useRef(new Color());
+  const colorRef = useRef(new Color());
   const { audioAnalyser } = useAnalyser();
-  const { getColour } = useGetColour({ minSaturation: 75, minLightness: 150 });
+  const { getColor } = useGetColor({ minSaturation: 75, minLightness: 150 });
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
   const radius = useRef(10);
@@ -241,12 +241,12 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
       q.current
     );
 
-    const { uColour, uSize, uOpacity, uNoise } = materialRef.current.uniforms;
+    const { uColor, uSize, uOpacity, uNoise } = materialRef.current.uniforms;
 
     const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
 
-    // Update the material colour
-    uColour.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
+    // Update the material color
+    uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
 
     const pitchTotal =
       (spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {

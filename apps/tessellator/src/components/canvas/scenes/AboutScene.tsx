@@ -81,7 +81,7 @@ function AboutContent() {
   const { size } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
 
-  const textColour = new Color();
+  const textColor = new Color();
 
   return (
     <>
@@ -91,14 +91,14 @@ function AboutContent() {
         position={[-vpWidth / 2, vpHeight / 2, 0]}
         size={[vpWidth, vpHeight, 0]}
       >
-        <Title colour={textColour} />
-        <Content colour={textColour} />
+        <Title color={textColor} />
+        <Content color={textColor} />
       </Flex>
     </>
   );
 }
 
-function Content({ colour }: { colour: Color }) {
+function Content({ color }: { color: Color }) {
   const preLinkContent =
     "The inspiration for Tessellator came after a live A/V";
   const linkContent = "Christian Löffler";
@@ -119,7 +119,7 @@ function Content({ colour }: { colour: Color }) {
       >
         {preLinkContent.split(" ").map((word, index) => (
           <FlexText
-            colour={colour}
+            color={color}
             key={`about-pre-link-content-flex-text-${word}-${index}`}
           >
             {word}
@@ -127,7 +127,7 @@ function Content({ colour }: { colour: Color }) {
         ))}
         {linkContent.split(" ").map((word, index) => (
           <FlexLink
-            colour={new Color("yellow")}
+            color={new Color("yellow")}
             key={`link-content-flex-link-${word}-${index}`}
             onClick={() =>
               openNewTabLink("https://www.christian-loeffler.net/")
@@ -138,7 +138,7 @@ function Content({ colour }: { colour: Color }) {
         ))}
         {postLinkContent.split(" ").map((word, index) => (
           <FlexText
-            colour={colour}
+            color={color}
             key={`about-post-link-content-flex-text-${word}-${index}`}
           >
             {word}
@@ -155,7 +155,7 @@ function Content({ colour }: { colour: Color }) {
       >
         {aboutContent.split(" ").map((word, index) => (
           <FlexText
-            colour={colour}
+            color={color}
             key={`about-content-flex-text-${word}-${index}`}
           >
             {word}
@@ -166,7 +166,7 @@ function Content({ colour }: { colour: Color }) {
   );
 }
 
-function Title({ colour }: { colour: Color }) {
+function Title({ color }: { color: Color }) {
   const titleScale = 10;
   return (
     <Box
@@ -176,33 +176,33 @@ function Title({ colour }: { colour: Color }) {
       marginTop={30}
     >
       <Box marginBottom={15}>
-        <Text colour={colour} scale={titleScale}>
+        <Text color={color} scale={titleScale}>
           A
         </Text>
       </Box>
       <Box marginBottom={5}>
-        <Text colour={colour} scale={titleScale}>
+        <Text color={color} scale={titleScale}>
           | free |
         </Text>
       </Box>
       <Box marginBottom={5}>
-        <Text colour={colour} scale={titleScale}>
+        <Text color={color} scale={titleScale}>
           | realtime |
         </Text>
       </Box>
       <Box>
-        <Text colour={colour} scale={titleScale}>
+        <Text color={color} scale={titleScale}>
           | 3-D |
         </Text>
       </Box>
       <Box flexDirection="row" justify="space-around" width="100%" wrap="wrap">
         <Box marginLeft={10} marginRight={10} marginTop={15}>
-          <Text colour={colour} scale={titleScale}>
+          <Text color={color} scale={titleScale}>
             music
           </Text>
         </Box>
         <Box marginLeft={10} marginRight={10} marginTop={15}>
-          <Text colour={colour} scale={titleScale}>
+          <Text color={color} scale={titleScale}>
             visualizer
           </Text>
         </Box>

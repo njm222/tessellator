@@ -127,7 +127,7 @@ function LandingContent({
   const { size, setSize } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
 
-  const textColour = new Color("#B91D82");
+  const textColor = new Color("#B91D82");
 
   // needed for flex to work
   useLayoutEffect(() => {
@@ -144,7 +144,7 @@ function LandingContent({
       size={[vpWidth, vpHeight, 0]}
     >
       <Box alignItems="center" justifyContent="center">
-        <Text colour={textColour} scale={10}>
+        <Text color={textColor} scale={10}>
           t e s s e l l a t o r
         </Text>
       </Box>
@@ -155,7 +155,7 @@ function LandingContent({
         width="100%"
       >
         <FlexLink
-          colour={new Color("#1DB954")}
+          color={new Color("#1DB954")}
           marginRight={0}
           marginTop={0}
           onClick={(e) => handleSpotifyNavigation(e.point)}
@@ -164,7 +164,7 @@ function LandingContent({
           Spotify
         </FlexLink>
         <FlexLink
-          colour={new Color("#5A5A5A")}
+          color={new Color("#5A5A5A")}
           disabled
           marginRight={0}
           marginTop={0}
@@ -176,7 +176,7 @@ function LandingContent({
       </Box>
       <Box flexDirection="row" justify="center" marginTop={20} width="100%">
         <FlexLink
-          colour={textColour}
+          color={textColor}
           marginRight={0}
           marginTop={0}
           onClick={(e) => handleAboutNavigation(e.point)}

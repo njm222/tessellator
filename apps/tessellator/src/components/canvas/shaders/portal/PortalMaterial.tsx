@@ -7,27 +7,25 @@ import fragment from "./glsl/shader.frag";
 // @ts-ignore
 import vertex from "./glsl/shader.vert";
 
-export const ParticleMaterial = shaderMaterial(
+export const PortalMaterial = shaderMaterial(
   {
-    uSize: 4.0,
-    uColor: new Color("#fff"),
-    uOpacity: 1.0,
-    uNoise: 1.0,
+    uColor: new Color("#1db954"),
+    uOpacity: 1,
   },
   vertex,
   fragment
 );
 
-extend({ ParticleMaterial });
+extend({ PortalMaterial });
 
 declare global {
   // eslint-disable-next-line no-unused-vars
   namespace JSX {
     // eslint-disable-next-line no-unused-vars
     interface IntrinsicElements {
-      particleMaterial: ReactThreeFiber.Object3DNode<
+      portalMaterial: ReactThreeFiber.Object3DNode<
         ShaderMaterial,
-        typeof ParticleMaterial
+        typeof PortalMaterial
       >;
     }
   }

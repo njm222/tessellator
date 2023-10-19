@@ -24,7 +24,7 @@ export function FlexLink({
   onClick,
   disabled = false,
   scale = 4,
-  colour = new Color(),
+  color = new Color(),
   marginRight = 5,
   marginTop = 5,
   overlayText,
@@ -63,14 +63,14 @@ export function FlexLink({
     <group {...props}>
       <Box marginRight={marginRight} marginTop={marginTop} ref={ref}>
         <Box onPointerOver={() => setHover(true)}>
-          <Text colour={colour} hover scale={scale}>
+          <Text color={color} hover scale={scale}>
             {children}
           </Text>
         </Box>
       </Box>
       {overlayText ? (
         <Instances limit={instanceLimit} range={instanceLimit} ref={overlayRef}>
-          <TextGeo colour={colour} opacity={opacity}>
+          <TextGeo color={color} opacity={opacity}>
             {overlayText}
           </TextGeo>
           {getFibonacciSpherePosition(instanceLimit, instanceRadius).map(
@@ -91,7 +91,7 @@ export function FlexLink({
       >
         {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
         <animated.meshPhongMaterial
-          color={colour}
+          color={color}
           opacity={opacity}
           transparent={true}
           wireframe={true}

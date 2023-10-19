@@ -7,9 +7,9 @@ import { useControls } from "../controls/controlsContext";
 export function VisualizerOptions() {
   const {
     randomizeMode,
-    randomizeColourMode,
+    randomizeColorMode,
     setRandomizeMode,
-    setRandomizeColourMode,
+    setRandomizeColorMode,
   } = useControls();
 
   const visualizerOptions = {
@@ -19,10 +19,10 @@ export function VisualizerOptions() {
         setRandomizeMode(value);
       },
     },
-    randomizeColourMode: {
-      value: randomizeColourMode,
+    randomizeColorMode: {
+      value: randomizeColorMode,
       onChange: (value: boolean) => {
-        setRandomizeColourMode(value);
+        setRandomizeColorMode(value);
       },
     },
   };
@@ -37,9 +37,9 @@ export function VisualizerOptions() {
   useEffect(() => {
     localStorage.setItem(
       LocalStorageKeys.VISUALIZER_OPTIONS,
-      JSON.stringify({ randomizeMode, randomizeColourMode })
+      JSON.stringify({ randomizeMode, randomizeColorMode })
     );
-  }, [randomizeColourMode, randomizeMode]);
+  }, [randomizeColorMode, randomizeMode]);
 
   return null;
 }

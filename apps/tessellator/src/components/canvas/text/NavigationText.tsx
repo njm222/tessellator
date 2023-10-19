@@ -14,7 +14,7 @@ export function NavigationText({
   onPointerDown: () => void;
 }) {
   const boxRef = useRef<Mesh>(new Mesh());
-  const colour = hslToHex(Math.random() * 360, 50, 100) as ColorRepresentation;
+  const color = hslToHex(Math.random() * 360, 50, 100) as ColorRepresentation;
 
   const [hover, setHover] = useState(false);
   useCursor(hover);
@@ -35,13 +35,13 @@ export function NavigationText({
       <RoundedBox args={[100, 15, 5]} radius={2} ref={boxRef} smoothness={5}>
         {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
         <animated.meshPhongMaterial
-          color={colour}
+          color={color}
           opacity={opacity}
           transparent={true}
           wireframe={true}
         />
       </RoundedBox>
-      <Text bevelEnabled colour={colour} hover>
+      <Text bevelEnabled color={color} hover>
         {children}
       </Text>
     </animated.group>

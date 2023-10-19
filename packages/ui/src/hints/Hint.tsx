@@ -1,6 +1,6 @@
 const hintOptions = [
   "Press [0, 1, 2, 3, 4] to change visualizer mode",
-  "Press [q, a, z, w] to change colour mode",
+  "Press [q, a, z, w] to change color mode",
   "Press [f] to toggle fullscreen",
 ];
 

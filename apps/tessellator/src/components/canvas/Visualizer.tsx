@@ -11,7 +11,7 @@ import { Modes } from "./modes/Modes";
 const Visualizer = () => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser } = usePlayer();
-  const { randomizeMode, randomizeColourMode, changeColourMode, changeMode } =
+  const { randomizeMode, randomizeColorMode, changeColorMode, changeMode } =
     useControls();
   const sectionChangeRef = useRef(spotifyAnalyser?.sections?.current?.start);
   const barChangeRef = useRef(spotifyAnalyser?.bars?.current?.start);
@@ -30,12 +30,12 @@ const Visualizer = () => {
         changeMode();
       }
     }
-    // change colour mode on bar change
+    // change color mode on bar change
     const barStart = spotifyAnalyser.bars?.current?.start;
     if (barChangeRef.current !== barStart) {
       barChangeRef.current = barStart;
-      if (randomizeColourMode) {
-        changeColourMode();
+      if (randomizeColorMode) {
+        changeColorMode();
       }
     }
   });

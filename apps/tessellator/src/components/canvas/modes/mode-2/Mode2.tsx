@@ -12,7 +12,7 @@ import {
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import { ModeProps } from "../Modes";
-import { useGetColour } from "../useGetColour";
+import { useGetColor } from "../useGetColor";
 
 const Mode2 = ({ opacity, ...props }: ModeProps) => {
   const count = 8000;
@@ -20,7 +20,7 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
   const mesh = useRef<InstancedMesh>(
     new InstancedMesh(undefined, undefined, count)
   );
-  const colourRef = useRef(new Color());
+  const colorRef = useRef(new Color());
   const tempVector = new Vector3();
   const tempColor = new Color();
   const tempColor2 = new Color();
@@ -33,13 +33,13 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
     []
   );
 
-  const { getColour } = useGetColour();
+  const { getColor } = useGetColor();
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
   useFrame((state, delta) => {
     tempColor.lerp(
-      colourRef.current.set(getColour()),
+      colorRef.current.set(getColor()),
       delta * 10 * (1 - trackFeatures.energy)
     );
     const zValue = 10 * trackFeatures.danceability;

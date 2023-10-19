@@ -1,9 +1,9 @@
 /**
- * Generates a hex colour given the hsl values
+ * Generates a hex color given the hsl values
  * @param  {number} h The hue
  * @param  {number} s The saturation
  * @param  {number} l The lightness
- * @return {string} The hex colour
+ * @return {string} The hex color
  */
 export function hslToHex(h: number, s: number, l: number): string {
   h = (h % 361) / 360;

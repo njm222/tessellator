@@ -8,14 +8,14 @@ import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import { TerrainMaterial } from "../../shaders/terrain/TerrainMaterial";
 import { ModeProps } from "../Modes";
-import { useGetColour } from "../useGetColour";
+import { useGetColor } from "../useGetColor";
 
 const Mode0 = ({ opacity, ...props }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
-  const { getColour } = useGetColour();
+  const { getColor } = useGetColor();
 
-  const colourRef = useRef(new Color());
+  const colorRef = useRef(new Color());
   // Get reference of the terrain
   const terrainMaterialRef = useRef(new TerrainMaterial());
   const { width, height } = useThree((state) => state.viewport);
@@ -36,7 +36,7 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
       audioAnalyser;
     const { energy, danceability, valence } = trackFeatures;
 
-    const { uTime, uXScale, uYScale, uAmplitude, uColour, uOpacity } =
+    const { uTime, uXScale, uYScale, uAmplitude, uColor, uOpacity } =
       terrainMaterialRef.current.uniforms;
 
     const dynamicDelta =
@@ -88,8 +88,8 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
       dynamicDelta * 10
     );
 
-    // Update the material colour
-    uColour.value.lerp(colourRef.current.set(getColour()), dynamicDelta);
+    // Update the material color
+    uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
 
     // Update the material opacity
     uOpacity.value = opacity.get();

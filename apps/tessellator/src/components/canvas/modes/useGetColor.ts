@@ -4,7 +4,7 @@ import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";
 import { useControls } from "../../dom/controls/controlsContext";
 
-export function useGetColour(
+export function useGetColor(
   {
     minLightness,
     minSaturation,
@@ -17,16 +17,16 @@ export function useGetColour(
   }
 ) {
   const { audioAnalyser } = useAnalyser();
-  const { colourKey } = useControls();
+  const { colorKey } = useControls();
   const { spotifyAnalyser } = usePlayer();
 
-  function getColour() {
+  function getColor() {
     const segment = spotifyAnalyser.getCurrentSegment();
     if (!audioAnalyser || !segment?.timbre?.length) {
       return "#123456";
     }
 
-    switch (colourKey?.current) {
+    switch (colorKey?.current) {
       case 0:
         return hslToHex(
           360 * ((getIndexOfMax(segment?.pitches) + 1) / 13),
@@ -53,5 +53,5 @@ export function useGetColour(
         );
     }
   }
-  return { getColour };
+  return { getColor };
 }

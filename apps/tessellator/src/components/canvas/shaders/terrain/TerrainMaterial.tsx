@@ -9,7 +9,7 @@ import vertex from "./glsl/shader.vert";
 
 export const TerrainMaterial = shaderMaterial(
   {
-    uColour: new Color("#fff"),
+    uColor: new Color("#fff"),
     uTime: 0,
     uXScale: 1,
     uYScale: 1,

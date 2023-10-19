@@ -26,5 +26,5 @@ void main() {
   color = mix(color, uColorEnd, strength);
   gl_FragColor = vec4(color, uOpacity);
   #include <tonemapping_fragment>
-  #include <encodings_fragment>
+  #include <colorspace_fragment>
 }

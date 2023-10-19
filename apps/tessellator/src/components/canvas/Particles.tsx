@@ -23,7 +23,7 @@ export default function Particles({
   const light = useRef(new PointLight());
   const { size } = useThree();
   const aspect = size.width / size.height;
-  const particleColour = new Color(getColour(0, 0));
+  const particleColor = new Color(getColor(0, 0));
 
   const dummy = useMemo(() => new Object3D(), []);
   // Generate some random positions, speed factors and timings
@@ -120,7 +120,7 @@ export default function Particles({
 
     // update color
     material.current.color.lerp(
-      particleColour.set(getColour(state.mouse.x, state.mouse.y)),
+      particleColor.set(getColor(state.mouse.x, state.mouse.y)),
       delta * 5
     );
   });
@@ -135,7 +135,7 @@ export default function Particles({
   );
 }
 
-function getColour(x: number, y: number) {
+function getColor(x: number, y: number) {
   return hslToHex(
     ((x + 1) / 2) * 360,
     ((y + 1) / 2) * 50,

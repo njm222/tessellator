@@ -256,11 +256,11 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
 
     uSize.value = MathUtils.lerp(
       uSize.value,
-      Math.max(10.0, pitchTotal * Math.abs(timbre?.length ? timbre[11] : 10)),
+      Math.abs(pitchTotal * (timbre?.length ? timbre[0] : 10)),
       dynamicDelta
     );
 
-    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal / 12, dynamicDelta);
+    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal, dynamicDelta);
 
     // Update the material opacity
     uOpacity.value = opacity.get();

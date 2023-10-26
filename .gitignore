@@ -86,3 +86,6 @@ dist/
 
 # Sentry Auth Token
 .sentryclirc
+
+# Turborepo
+.turbo

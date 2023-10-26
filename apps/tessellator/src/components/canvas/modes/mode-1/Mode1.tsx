@@ -166,7 +166,7 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
         Math.abs(
           audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
         ) / 5,
-        0.1
+        0.01
       ),
       delta
     );
@@ -226,7 +226,7 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
 
     const dynamicDelta =
       delta *
-      (trackFeatures.tempo / 100) *
+      (trackFeatures.tempo / 10) *
       trackFeatures.energy *
       trackFeatures.danceability;
 

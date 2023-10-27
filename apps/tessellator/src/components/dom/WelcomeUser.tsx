@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Typewriter from "typewriter-effect";
 
 import { usePlayer } from "../../utils/playerContext";
@@ -5,10 +6,10 @@ import { useGetUserInformation } from "../../utils/spotify";
 
 export function WelcomeUser() {
   const { player } = usePlayer();
-
   const { isLoading, data, isError } = useGetUserInformation();
+  const [rendered, setRendered] = useState(false);
 
-  if (isLoading || isError || !(player as any).context) return null;
+  if (rendered || isLoading || isError || !(player as any).context) return null;
 
   return (
     <div className="text welcomeContainer">
@@ -37,6 +38,7 @@ export function WelcomeUser() {
             .callFunction(({ elements: { container } }) => {
               typewriter.stop();
               container.innerHTML = "";
+              setRendered(true);
             });
         }}
         options={{ delay: 50, deleteSpeed: 1 }}

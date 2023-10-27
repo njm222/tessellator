@@ -84,9 +84,11 @@ export function Player() {
   }, [audioAnalyser.source, player, pause]);
 
   function handlePlay() {
-    if (audioAnalyser.source) {
+    if (!!audioAnalyser.source) {
+      play();
       return;
     }
+
     try {
       audioAnalyser.setup(analyserOptions);
     } catch (e: unknown) {
@@ -95,6 +97,7 @@ export function Player() {
       captureException(errorMessage);
       return;
     }
+
     play();
   }
 

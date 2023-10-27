@@ -45,7 +45,7 @@ const LandingScene = dynamic<{}>(
 export default function Page() {
   return (
     <DefaultLayout>
-      <View className="fullscreenView" orbit>
+      <View className="fullscreenView">
         <LandingScene />
         <Common />
       </View>

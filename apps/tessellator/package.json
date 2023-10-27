@@ -11,7 +11,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@ducanh2912/next-pwa": "^9.5.0",
+    "@ducanh2912/next-pwa": "^9.7.2",
     "@react-spring/three": "^9.7.3",
     "@react-three/drei": "^9.80.3",
     "@react-three/fiber": "^8.14.5",
@@ -28,7 +28,7 @@
     "leva": "^0.9.34",
     "logger": "*",
     "maath": "^0.7.0",
-    "next": "^13.4.19",
+    "next": "^14.0.0",
     "postprocessing": "^6.33.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -36,13 +36,13 @@
     "three": "^0.154.0",
     "three-stdlib": "^2.24.2",
     "tunnel-rat": "^0.1.2",
-    "typewriter-effect": "^2.20.1",
+    "typewriter-effect": "^2.21.0",
     "ui": "*"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^13.4.16",
+    "@next/bundle-analyzer": "^14.0.0",
     "@types/jest": "^26.0.22",
-    "@types/js-cookie": "^3.0.3",
+    "@types/js-cookie": "^3.0.4",
     "@types/node": "^20.5.0",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",

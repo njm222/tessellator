@@ -13,9 +13,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 const nextConfig = {
-  experimental: {
-    appDir: true
-  },
   images: {},
   transpilePackages: ['core', 'ui', '@react-three/postprocessing'],
   reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
@@ -66,7 +63,11 @@ module.exports = (_phase, { defaultConfig }) => {
     [
       withBundleAnalyzer, {
         images: {
-          domains: ["i.scdn.co"],
+          remotePatterns: [
+            {
+              hostname:"i.scdn.co**"
+            }
+          ],
         }
       }
     ],

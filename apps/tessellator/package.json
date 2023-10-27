@@ -13,12 +13,12 @@
   "dependencies": {
     "@ducanh2912/next-pwa": "^9.7.2",
     "@react-spring/three": "^9.7.3",
-    "@react-three/drei": "^9.80.3",
-    "@react-three/fiber": "^8.14.5",
+    "@react-three/drei": "^9.84.3",
+    "@react-three/fiber": "^8.14.2",
     "@react-three/flex": "^1.0.1",
-    "@react-three/postprocessing": "^2.11.4",
-    "@sentry/nextjs": "^7.73.0",
-    "@tanstack/react-query": "^4.32.6",
+    "@react-three/postprocessing": "2.15.8",
+    "@sentry/nextjs": "^7.70.0",
+    "@tanstack/react-query": "^4.35.3",
     "@use-gesture/react": "^10.2.27",
     "@vercel/analytics": "^1.1.1",
     "audio-analyser": "*",
@@ -34,7 +34,7 @@
     "react-dom": "^18.2.0",
     "spotify-analyser": "*",
     "three": "^0.154.0",
-    "three-stdlib": "^2.24.2",
+    "three-stdlib": "^2.26.6",
     "tunnel-rat": "^0.1.2",
     "typewriter-effect": "^2.21.0",
     "ui": "*"
@@ -46,7 +46,7 @@
     "@types/node": "^20.5.0",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
-    "@types/three": "^0.150.2",
+    "@types/three": "^0.156.0",
     "eslint-config-custom": "*",
     "file-loader": "^6.2.0",
     "glslify": "^7.1.1",
@@ -54,7 +54,7 @@
     "r3f-perf": "^7.1.2",
     "raw-loader": "^4.0.2",
     "tsconfig": "*",
-    "typescript": "^4.8.3",
+    "typescript": "5.1.6",
     "url-loader": "^4.1.1"
   }
 }

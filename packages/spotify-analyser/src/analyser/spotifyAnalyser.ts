@@ -41,12 +41,13 @@ export default class SpotifyAnalyser {
     if (!this.sections) return;
 
     this.position = options.position / 1000;
+    const delay = options.delay / 1000;
 
-    this.bars.updateAudioProperty(this.position);
-    this.beats.updateAudioProperty(this.position);
-    this.sections.updateAudioProperty(this.position);
-    this.segments.updateAudioProperty(this.position);
-    this.tatums.updateAudioProperty(this.position);
+    this.sections.updateAudioProperty(this.position, delay);
+    this.bars.updateAudioProperty(this.position, delay);
+    this.beats.updateAudioProperty(this.position, delay);
+    this.tatums.updateAudioProperty(this.position, delay);
+    this.segments.updateAudioProperty(this.position, delay);
   }
 
   getCurrentSection(): SpotifyAudioDataSection {

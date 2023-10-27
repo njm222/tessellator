@@ -6,6 +6,7 @@ import {
 
 export type SpotifyAnalyserUpdateProps = {
   position: number;
+  delay: number;
 };
 
 /**

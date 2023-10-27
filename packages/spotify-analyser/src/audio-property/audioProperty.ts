@@ -11,12 +11,15 @@ export default class AudioProperty {
     this.current = data[0];
   }
 
-  updateAudioProperty(position: number) {
+  updateAudioProperty(position: number, delay = 0) {
     if (!this.current) {
       return this;
     }
 
-    while (position >= this.getEnd() && this.counter < this.data.length - 1) {
+    while (
+      position + delay >= this.getEnd() &&
+      this.counter < this.data.length - 1
+    ) {
       this.current = this.data[++this.counter];
     }
 

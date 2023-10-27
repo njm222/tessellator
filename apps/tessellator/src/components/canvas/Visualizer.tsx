@@ -16,11 +16,14 @@ const Visualizer = () => {
   const sectionChangeRef = useRef(spotifyAnalyser?.sections?.current?.start);
   const barChangeRef = useRef(spotifyAnalyser?.bars?.current?.start);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!audioAnalyser.context || !spotifyAnalyser) return;
 
     audioAnalyser.updateData();
-    spotifyAnalyser.updateData({ position: mutations.position || 1000 });
+    spotifyAnalyser.updateData({
+      position: mutations.position || 1000,
+      delay: delta,
+    });
 
     // change mode on section change
     const sectionStart = spotifyAnalyser.sections?.current?.start;

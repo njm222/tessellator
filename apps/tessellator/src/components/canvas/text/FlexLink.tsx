@@ -1,17 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { animated, config, useSpring } from "@react-spring/three";
 import { Instance, Instances, RoundedBox, useCursor } from "@react-three/drei";
-import { GroupProps, ThreeEvent, useFrame } from "@react-three/fiber";
+import { GroupProps, useFrame } from "@react-three/fiber";
 import { Box } from "@react-three/flex";
-import { Color, Group, Mesh } from "three";
+import { Color, Group, Mesh, Vector3 } from "three";
 
 import { getFibonacciSpherePosition } from "../../../helpers/getFibonacciSpherePosition";
+import { getMeshCenter } from "../../../helpers/getMeshCenter";
 
 import { FlexTextProps } from "./FlexText";
 import { Text, TextGeo } from "./Text";
 
-type FlexLinkProps = FlexTextProps & {
-  onClick: (e: ThreeEvent<PointerEvent>) => void;
+type FlexLinkProps = Omit<FlexTextProps, "onClick"> & {
+  onClick: (target: Vector3) => void;
   disabled?: boolean;
   overlayText?: string;
 };
@@ -82,7 +83,12 @@ export function FlexLink({
       ) : null}
       <RoundedBox
         args={[10 + 3.5 * children.length, 10, 5]}
-        onPointerDown={(e) => (disabled ? null : onClick(e))}
+        onPointerDown={() => {
+          if (disabled) return;
+          const center = getMeshCenter(boxRef.current);
+          if (!center) return;
+          onClick(center);
+        }}
         onPointerOut={() => setHover(false)}
         onPointerOver={() => setHover(true)}
         radius={2}

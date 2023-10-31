@@ -158,7 +158,7 @@ function LandingContent({
           color={new Color("#1DB954")}
           marginRight={0}
           marginTop={0}
-          onClick={(e) => handleSpotifyNavigation(e.point)}
+          onClick={handleSpotifyNavigation}
           overlayText="login"
         >
           Spotify
@@ -179,7 +179,7 @@ function LandingContent({
           color={textColor}
           marginRight={0}
           marginTop={0}
-          onClick={(e) => handleAboutNavigation(e.point)}
+          onClick={handleAboutNavigation}
           overlayText="us"
         >
           About

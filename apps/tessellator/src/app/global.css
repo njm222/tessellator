@@ -10,14 +10,8 @@ body,
   overflow: hidden;
 }
 
-html,
 #__next {
   background: #131313;
-}
-
-button {
-  background: unset;
-  border: unset;
 }
 
 img {

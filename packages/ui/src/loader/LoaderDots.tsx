@@ -1,11 +1,11 @@
-export const LoaderDots = ({ dotVariant = 1 }: { dotVariant?: number }) => {
-  if (dotVariant > 10 || dotVariant < 1 || !Number.isInteger(dotVariant)) {
+export const LoaderDots = ({ variant = 1 }: { variant?: number }) => {
+  if (variant > 10 || variant < 1 || !Number.isInteger(variant)) {
     throw Error("UI: dot variant out of bounds");
   }
 
   return (
     <div className="dots">
-      <div className={`dots-${dotVariant}`} />
+      <div className={`dots-${variant}`} />
     </div>
   );
 };

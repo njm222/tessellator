@@ -1,0 +1,23 @@
+import { Meta, Title, IconGallery, IconItem } from "@storybook/blocks";
+import * as Icons from "./index";
+
+<Meta title="System/Icons" />
+
+<IconGallery>
+  {Object.entries(Icons).map(([name, Icon]) => (
+    <IconItem name={name}>
+      <div
+        style={{
+          background: "#131313",
+          width: "inherit",
+          height: "inherit",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Icon />
+      </div>
+    </IconItem>
+  ))}
+</IconGallery>

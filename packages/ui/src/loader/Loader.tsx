@@ -1,4 +1,4 @@
-import { Hints } from "../hints/Hints";
+import { Hints } from "./hints/Hints";
 
 import { LoaderDots } from "./LoaderDots";
 
@@ -14,8 +14,8 @@ export const Loader = ({
   return (
     <div className="loader">
       <h1 className="loaderText">{message ? message : "Loading"}</h1>
-      <LoaderDots dotVariant={dotVariant} />
-      <Hints hintVariant={hintVariant} />
+      <LoaderDots variant={dotVariant} />
+      <Hints variant={hintVariant} />
     </div>
   );
 };

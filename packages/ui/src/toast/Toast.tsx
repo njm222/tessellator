@@ -41,9 +41,9 @@ export const Toast = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="toast__text">{children}</div>
+      <div className="toast-text">{children}</div>
       <div>
-        <button className="toast__close-btn" onClick={close}>
+        <button className="toast-close-btn" onClick={close}>
           x
         </button>
       </div>

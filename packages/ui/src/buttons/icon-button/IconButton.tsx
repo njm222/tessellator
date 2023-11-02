@@ -1,4 +1,4 @@
-import { MouseEventHandler, ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 
 export const IconButton = ({
   title,
@@ -7,7 +7,7 @@ export const IconButton = ({
 }: {
   title: string;
   icon: ReactNode;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick: () => void;
 }) => {
   const [hover, setHover] = useState(false);
 

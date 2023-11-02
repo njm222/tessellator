@@ -135,7 +135,7 @@ export function Player() {
         ) : (
           <div className="playerLoader">
             <p className="loading text">loading player</p>
-            <LoaderDots dotVariant={6} />
+            <LoaderDots variant={6} />
           </div>
         )}
         <ProgressBar onSeek={handleSeek} ref={progressBarRef} />

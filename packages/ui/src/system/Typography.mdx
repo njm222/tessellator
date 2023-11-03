@@ -1,0 +1,53 @@
+import { Meta, Typeset } from "@storybook/blocks";
+
+<Meta title="System/Typography" />
+
+export const typography = {
+  type: {
+    primary: '"Tomorrow ExtraLight", sans-serif',
+  },
+  weight: {
+    light: "200",
+    regular: "400",
+    bold: "700",
+    extrabold: "800",
+    black: "900",
+  },
+  size: {
+    xs: 9,
+    sm: 12,
+    p: 16,
+    md: 21,
+    lg: 28,
+    xl: 38,
+    xxl: 50,
+    xxxl: 67,
+  },
+};
+
+export const SampleText =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+
+# Typography
+
+**Font:** Tomorrow
+
+**Weights:** 200(light), 400(regular), 700(bold), 800(extrabold), 900(black)
+
+<div id="anchor--foundation-color--color">
+  <Typeset
+    fontSizes={[
+      Number(typography.size.xs),
+      Number(typography.size.sm),
+      Number(typography.size.p),
+      Number(typography.size.md),
+      Number(typography.size.lg),
+      Number(typography.size.xl),
+      Number(typography.size.xxl),
+      Number(typography.size.xxxl),
+    ]}
+    fontWeight={typography.weight.light}
+    sampleText={SampleText}
+    fontFamily={typography.type.primary}
+  />
+</div>

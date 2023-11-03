@@ -1,0 +1,28 @@
+/* Storybook docs override */
+
+.docblock-typeset,
+.docblock-typeset div,
+.docs-story,
+.docblock-argstable-body td,
+.docblock-argstable-head th {
+  background: #131313 !important ;
+  color: #fff !important;
+}
+
+.sbdocs-preview,
+.sbdocs-preview div,
+.sbdocs-wrapper,
+.docblock-icongallery div {
+  background: #000 !important ;
+  color: #fff !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  color: #fff !important;
+}

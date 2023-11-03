@@ -16,7 +16,7 @@
     "@react-three/drei": "^9.88.7",
     "@react-three/fiber": "^8.15.8",
     "@react-three/flex": "^1.0.1",
-    "@react-three/postprocessing": "^2.11.4",
+    "@react-three/postprocessing": "2.11.4",
     "@sentry/nextjs": "^7.75.1",
     "@tanstack/react-query": "^4.32.6",
     "@use-gesture/react": "^10.2.27",
@@ -54,7 +54,7 @@
     "r3f-perf": "^7.1.2",
     "raw-loader": "^4.0.2",
     "tsconfig": "*",
-    "typescript": "^4.9.5",
+    "typescript": "5.1.6",
     "url-loader": "^4.1.1"
   }
 }

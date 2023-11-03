@@ -1,17 +1,12 @@
-import * as React from "react";
+import { AnchorHTMLAttributes } from "react";
 
 export const NewTabLink = ({
   children,
   href,
-  ...other
-}: {
-  children: React.ReactNode;
-  href: string;
-  className?: string;
-  title?: string;
-}) => {
+  ...props
+}: AnchorHTMLAttributes<HTMLAnchorElement>) => {
   return (
-    <a href={href} rel="noreferrer" target="_blank" {...other}>
+    <a href={href} rel="noreferrer" target="_blank" {...props}>
       {children}
     </a>
   );

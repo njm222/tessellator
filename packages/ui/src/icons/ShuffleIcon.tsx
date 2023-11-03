@@ -5,7 +5,7 @@ export const ShuffleIcon = ({
 }: {
   height?: string;
   width?: string;
-  active: boolean;
+  active?: boolean;
 }) => {
   return (
     <svg height={height} role="img" viewBox="0 0 24 24" width={width}>

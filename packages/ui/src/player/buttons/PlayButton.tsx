@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { IconButton } from "../../icon-button/IconButton";
+import { IconButton } from "../../buttons/icon-button/IconButton";
 import { PlayIcon } from "../../icons/PlayIcon";
 
 export const PlayButton = ({

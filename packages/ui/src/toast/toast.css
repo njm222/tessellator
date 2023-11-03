@@ -33,11 +33,11 @@
   background-color: #ff3333;
 }
 
-.toast__text {
+.toast-text {
   padding: 1rem 1.5rem;
 }
 
-.toast__close-btn {
+.toast-close-btn {
   border: none;
   background-color: transparent;
   font-size: inherit;

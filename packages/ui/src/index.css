@@ -1,10 +1,17 @@
 @import "./toast/toast.css";
 @import "./player/player.css";
 @import "./loader/loader.css";
-@import "./icon-button/iconButton.css";
+@import "./buttons/icon-button/iconButton.css";
+
+button {
+  background: unset;
+  border: unset;
+}
 
 html {
   font-size: 100%;
+  background: #131313;
+  color: #fff;
 } /*16px*/
 
 h1,

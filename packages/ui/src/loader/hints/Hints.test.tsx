@@ -13,7 +13,7 @@ describe("Hints", () => {
     ).toBeTruthy();
   });
   it("renders correct hint", () => {
-    const { getByText } = render(<Hints hintVariant={2} />);
+    const { getByText } = render(<Hints variant={2} />);
 
     expect(getByText("Press [f] to toggle fullscreen")).toBeTruthy();
   });

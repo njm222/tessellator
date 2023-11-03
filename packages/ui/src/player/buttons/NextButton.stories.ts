@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import { NextButton } from "./NextButton";
+
 import "../player.css";
 
 const meta = {

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import { ShuffleButton } from "./ShuffleButton";
+
 import "../player.css";
 
 const meta = {

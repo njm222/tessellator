@@ -1,5 +1,4 @@
 import { Hints } from "./hints/Hints";
-
 import { LoaderDots } from "./LoaderDots";
 
 export const Loader = ({

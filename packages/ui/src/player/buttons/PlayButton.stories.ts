@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import { PlayButton } from "./PlayButton";
+
 import "../player.css";
 
 const meta = {

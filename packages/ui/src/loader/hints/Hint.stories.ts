@@ -1,14 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Hint, hintOptions } from "./Hint";
-
-export const storybookHintOptions = hintOptions.reduce(
-  (acc: any, curr, index) => {
-    acc[curr] = index;
-    return acc;
-  },
-  {}
-);
+import { Hint } from "./Hint";
+import { storybookHintOptions } from "./storybookHintOptions";
 
 const meta = {
   title: "Loader/Hint",

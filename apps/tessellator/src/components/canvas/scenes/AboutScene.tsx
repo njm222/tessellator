@@ -6,8 +6,10 @@ import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { useGesture } from "@use-gesture/react";
 import { Color, Group, Vector2, Vector3 } from "three";
+import { useToast } from "ui";
 
-import { openNewTabLink } from "../../../helpers/global";
+import { copyToClipBoard,openNewTabLink } from "../../../helpers/global";
+import Blackhole from "../../models/Blackhole";
 import Particles from "../Particles";
 import { FlexLink } from "../text/FlexLink";
 import { FlexText } from "../text/FlexText";
@@ -48,10 +50,10 @@ export const AboutScene = () => {
     {
       eventOptions: { passive: false },
       wheel: {
-        bounds: { top: 0, bottom: vpHeight, left: 0, right: 0 },
+        bounds: { top: 0, bottom: vpHeight * 2, left: 0, right: 0 },
       },
       scroll: {
-        bounds: { top: 0, bottom: vpHeight, left: 0, right: 0 },
+        bounds: { top: 0, bottom: vpHeight * 2, left: 0, right: 0 },
       },
     }
   );
@@ -85,15 +87,91 @@ function AboutContent() {
 
   return (
     <>
-      <Plane args={[vpWidth, vpHeight * 4]} visible={false} />
+      <Plane args={[vpWidth, vpHeight * 6]} visible={false} />
       <Flex
         flexDirection="column"
         position={[-vpWidth / 2, vpHeight / 2, 0]}
-        size={[vpWidth, vpHeight, 0]}
+        size={[vpWidth, vpHeight * 2, 0]}
       >
         <Title color={textColor} />
         <Content color={textColor} />
+        <Box
+          alignItems="center"
+          centerAnchor
+          flexGrow={1}
+          height="auto"
+          justifyContent="center"
+          marginTop={50}
+          width={vpWidth}
+        >
+          <Blackhole scale={0.3} />
+        </Box>
+        <Feedback color={textColor} />
       </Flex>
+    </>
+  );
+}
+
+function Feedback({ color }: { color: Color }) {
+  const toast = useToast();
+  const preLinkContent =
+    "I’m always looking to improve and push the boundaries of Tessellator. Got a feature idea or found a bug? Drop me an";
+  const emailLink = "email";
+  const postLinkContent = "or open an";
+  const repoLink = "issue.";
+
+  return (
+    <>
+      <Box
+        flexDirection="row"
+        justifyContent="center"
+        marginLeft={20}
+        marginRight={20}
+        marginTop={50}
+        wrap="wrap"
+      >
+        {preLinkContent.split(" ").map((word, index) => (
+          <FlexText
+            color={color}
+            key={`feedback-pre-link-content-flex-text-${word}-${index}`}
+          >
+            {word}
+          </FlexText>
+        ))}
+        {emailLink.split(" ").map((word, index) => (
+          <FlexLink
+            color={new Color("yellow")}
+            key={`feedback-link-content-flex-link-${word}-${index}`}
+            onClick={() => {
+              copyToClipBoard(word);
+              toast.open("Email has been copied to your clipboard", {
+                variant: "",
+              });
+            }}
+          >
+            {word}
+          </FlexLink>
+        ))}
+        {postLinkContent.split(" ").map((word, index) => (
+          <FlexText
+            color={color}
+            key={`feedback-post-link-content-flex-text-${word}-${index}`}
+          >
+            {word}
+          </FlexText>
+        ))}
+        {repoLink.split(" ").map((word, index) => (
+          <FlexLink
+            color={new Color("yellow")}
+            key={`feedback-content-flex-text-${word}-${index}`}
+            onClick={() =>
+              openNewTabLink("https://github.com/njm222/tessellator/issues")
+            }
+          >
+            {word}
+          </FlexLink>
+        ))}
+      </Box>
     </>
   );
 }
@@ -128,7 +206,7 @@ function Content({ color }: { color: Color }) {
         {linkContent.split(" ").map((word, index) => (
           <FlexLink
             color={new Color("yellow")}
-            key={`link-content-flex-link-${word}-${index}`}
+            key={`about-link-content-flex-link-${word}-${index}`}
             onClick={() =>
               openNewTabLink("https://www.christian-loeffler.net/")
             }

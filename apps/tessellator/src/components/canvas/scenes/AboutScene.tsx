@@ -6,14 +6,14 @@ import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
 import { useGesture } from "@use-gesture/react";
 import { Color, Group, Vector2, Vector3 } from "three";
-
 import { useToast } from "ui";
-import { openNewTabLink, copyToClipBoard } from "../../../helpers/global";
+
+import { copyToClipBoard,openNewTabLink } from "../../../helpers/global";
+import Blackhole from "../../models/Blackhole";
 import Particles from "../Particles";
 import { FlexLink } from "../text/FlexLink";
 import { FlexText } from "../text/FlexText";
 import { Text } from "../text/Text";
-import Blackhole from "../../models/Blackhole";
 
 export const AboutScene = () => {
   const { camera, size, setSize } = useThree();
@@ -96,13 +96,13 @@ function AboutContent() {
         <Title color={textColor} />
         <Content color={textColor} />
         <Box
-          marginTop={50}
-          height="auto"
-          flexGrow={1}
-          centerAnchor
-          width={vpWidth}
-          justifyContent="center"
           alignItems="center"
+          centerAnchor
+          flexGrow={1}
+          height="auto"
+          justifyContent="center"
+          marginTop={50}
+          width={vpWidth}
         >
           <Blackhole scale={0.3} />
         </Box>

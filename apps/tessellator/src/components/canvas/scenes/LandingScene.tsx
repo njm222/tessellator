@@ -66,7 +66,7 @@ export const LandingScene = () => {
   }
 
   function setCameraTarget({ x, y, z }: Vector3) {
-    target.current.set(x, y, z + 10);
+    target.current.set(x, y, z + 20);
 
     obj.current.lookAt(target.current);
     q2.current.copy(obj.current.quaternion);

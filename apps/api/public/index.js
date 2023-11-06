@@ -152,7 +152,7 @@ function LoginController({
   return async function loginController2(req, res) {
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
-    const scope = "user-read-private user-read-email user-top-read user-read-recently-played user-modify-playback-state user-read-playback-state user-read-currently-playing app-remote-control streaming user-library-modify user-library-read";
+    const scope = "user-read-playback-state user-modify-playback-state user-read-private user-read-email user-top-read user-library-modify user-library-read streaming";
     const uri = `${spotifyAccountUrl}/authorize?${(0, import_querystring2.stringify)({
       response_type: "code",
       client_id: clientId,

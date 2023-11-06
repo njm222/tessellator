@@ -19,7 +19,7 @@ export function LoginController({
     res.cookie(stateKey, state);
 
     const scope =
-      "user-read-private user-read-email user-top-read user-read-recently-played user-modify-playback-state user-read-playback-state user-read-currently-playing app-remote-control streaming user-library-modify user-library-read";
+      "user-read-playback-state user-modify-playback-state user-read-private user-read-email user-top-read user-library-modify user-library-read streaming";
     const uri = `${spotifyAccountUrl}/authorize?${stringify({
       response_type: "code",
       client_id: clientId,

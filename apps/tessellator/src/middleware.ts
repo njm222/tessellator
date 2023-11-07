@@ -31,7 +31,6 @@ export async function middleware(request: NextRequest) {
   }
 
   const { uri } = await loginUser();
-  console.log(decodeURI(uri));
   return NextResponse.redirect(decodeURI(uri));
 }
 

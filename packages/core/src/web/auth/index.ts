@@ -23,7 +23,6 @@ export async function loginUser() {
     );
     return response.json();
   } catch (err: unknown) {
-    console.log(err);
     throw Error(err as string);
   }
 }

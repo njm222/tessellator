@@ -10,3 +10,12 @@ export const apiClient = axios.create({
     "Access-Control-Allow-Origin": environment.frontendUrl,
   },
 });
+
+const headers = new Headers();
+headers.append("Access-Control-Allow-Credentials", "true");
+headers.append("Access-Control-Allow-Origin", environment.frontendUrl || "");
+
+export const defaultFetchOptions: RequestInit = {
+  headers,
+  credentials: "include",
+};

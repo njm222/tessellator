@@ -1,4 +1,5 @@
-import { apiClient } from "../apiClient";
+import { environment } from "../../environments/environment";
+import { apiClient, defaultFetchOptions } from "../apiClient";
 
 export async function updateToken(refreshToken: string) {
   try {
@@ -16,9 +17,13 @@ export async function updateToken(refreshToken: string) {
 
 export async function loginUser() {
   try {
-    const { data } = await apiClient.get("/login");
-    return data;
+    const response = await fetch(
+      environment.backendUrl + "/login",
+      defaultFetchOptions
+    );
+    return response.json();
   } catch (err: unknown) {
+    console.log(err);
     throw Error(err as string);
   }
 }

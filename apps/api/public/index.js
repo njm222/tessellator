@@ -111,9 +111,6 @@ function generateRandomString(length) {
   return text;
 }
 
-// ../../packages/core/src/web/apiClient.ts
-var import_axios2 = __toESM(require("axios"));
-
 // ../../packages/core/src/environments/environment.ts
 var environment2 = {
   production: process.env.NODE_ENV === "production",
@@ -123,6 +120,7 @@ var environment2 = {
 };
 
 // ../../packages/core/src/web/apiClient.ts
+var import_axios2 = __toESM(require("axios"));
 var apiClient = import_axios2.default.create({
   baseURL: environment2.backendUrl,
   withCredentials: true,
@@ -131,6 +129,9 @@ var apiClient = import_axios2.default.create({
     "Access-Control-Allow-Origin": environment2.frontendUrl
   }
 });
+var headers = new Headers();
+headers.append("Access-Control-Allow-Credentials", "true");
+headers.append("Access-Control-Allow-Origin", environment2.frontendUrl || "");
 
 // ../../packages/core/src/spotify/spotifyClient.ts
 var import_axios3 = __toESM(require("axios"));

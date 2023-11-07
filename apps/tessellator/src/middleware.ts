@@ -1,7 +1,8 @@
+import { loginUser } from "core";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   if (request.cookies.get("refreshToken")) {
     return NextResponse.next();
   }
@@ -28,6 +29,10 @@ export function middleware(request: NextRequest) {
 
     return response;
   }
+
+  const { uri } = await loginUser();
+  console.log(decodeURI(uri));
+  return NextResponse.redirect(decodeURI(uri));
 }
 
 export const config = {

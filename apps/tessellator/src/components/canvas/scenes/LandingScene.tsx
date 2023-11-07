@@ -10,12 +10,9 @@ import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
-import { captureException } from "@sentry/nextjs";
-import { loginUser } from "core";
 import { easing } from "maath";
 import { useRouter } from "next/navigation";
 import { Color, Object3D, Quaternion, Vector2, Vector3 } from "three";
-import { useToast } from "ui";
 
 import { useAuth } from "../../../utils/authContext";
 import Particles from "../Particles";
@@ -24,7 +21,6 @@ import { Text } from "../text/Text";
 
 export const LandingScene = () => {
   const [isPending, startTransition] = useTransition();
-  const toast = useToast();
   const { refreshToken } = useAuth();
   const camera = useThree((state) => state.camera);
   const router = useRouter();
@@ -53,18 +49,6 @@ export const LandingScene = () => {
     }
   });
 
-  async function handleSpotifyLogin() {
-    try {
-      const { uri } = await loginUser();
-      window.location.assign(decodeURI(uri));
-    } catch (e: unknown) {
-      const errorMessage = (e as { message: string }).message;
-      toast.open(errorMessage);
-      captureException(errorMessage);
-      return;
-    }
-  }
-
   function setCameraTarget({ x, y, z }: Vector3) {
     target.current.set(x, y, z + 20);
 
@@ -84,24 +68,10 @@ export const LandingScene = () => {
     router.push(route);
   };
 
-  const handleSpotifyNavigation = (target: Vector3) => {
-    if (!refreshToken) {
-      handleSpotifyLogin();
-    }
-    handleNavigation(target, "/visualizer");
-  };
-
-  const handleAboutNavigation = (target: Vector3) => {
-    handleNavigation(target, "/about");
-  };
-
   return (
     <>
       <Suspense>
-        <LandingContent
-          handleAboutNavigation={handleAboutNavigation}
-          handleSpotifyNavigation={handleSpotifyNavigation}
-        />
+        <LandingContent handleNavigation={handleNavigation} />
       </Suspense>
       <Particles count={10000} isNavigating={isNavigating} />
 
@@ -118,11 +88,9 @@ export const LandingScene = () => {
 };
 
 function LandingContent({
-  handleAboutNavigation,
-  handleSpotifyNavigation,
+  handleNavigation,
 }: {
-  handleAboutNavigation: (target: Vector3) => void;
-  handleSpotifyNavigation: (target: Vector3) => void;
+  handleNavigation: (target: Vector3, route: "/about" | "/visualizer") => void;
 }) {
   const { size, setSize } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
@@ -158,7 +126,7 @@ function LandingContent({
           color={new Color("#1DB954")}
           marginRight={0}
           marginTop={0}
-          onClick={handleSpotifyNavigation}
+          onClick={(target) => handleNavigation(target, "/visualizer")}
           overlayText="login"
         >
           Spotify
@@ -179,7 +147,7 @@ function LandingContent({
           color={textColor}
           marginRight={0}
           marginTop={0}
-          onClick={handleAboutNavigation}
+          onClick={(target) => handleNavigation(target, "/about")}
           overlayText="us"
         >
           About

@@ -25,7 +25,7 @@
     "eslint-config-custom": "*",
     "jest": "^29.0.5",
     "jest-presets": "*",
-    "tsconfig": "*",
+    "@tessellator/tsconfig": "*",
     "tsup": "^6.2.3",
     "typescript": "5.1.6"
   }

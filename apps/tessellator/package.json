@@ -53,7 +53,7 @@
     "glslify-loader": "^2.0.0",
     "r3f-perf": "^7.1.2",
     "raw-loader": "^4.0.2",
-    "tsconfig": "*",
+    "@tessellator/tsconfig": "*",
     "typescript": "5.1.6",
     "url-loader": "^4.1.1"
   }

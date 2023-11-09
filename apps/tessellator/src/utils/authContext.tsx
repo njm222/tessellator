@@ -7,10 +7,10 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { loginUser, updateToken } from "@tessellator/core";
+import { useToast } from "@tessellator/ui";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
-import { loginUser, updateToken } from "core";
 import { useRouter } from "next/navigation";
-import { useToast } from "ui";
 
 type AuthProviderProps = {
   isLoading?: boolean;

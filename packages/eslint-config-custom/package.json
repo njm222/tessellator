@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-custom",
+  "name": "@tessellator/eslint-config-custom",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -8,7 +8,7 @@
     "access": "public"
   },
   "dependencies": {
-    "eslint-config-base": "*",
+    "@tessellator/eslint-config-base": "*",
     "eslint-config-next": "latest",
     "eslint-plugin-react": "latest"
   }

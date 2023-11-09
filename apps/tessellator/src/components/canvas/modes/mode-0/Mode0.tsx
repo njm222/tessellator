@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { getIndexOfMax, getIndexOfMin } from "core";
+import { getIndexOfMax, getIndexOfMin } from "@tessellator/core";
 import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";

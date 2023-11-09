@@ -3,13 +3,15 @@
   "projects": {
     "api": "apps/api",
     "tessellator": "apps/tessellator",
-    "core": "packages/core",
-    "eslint-config-base": "packages/eslint-config-base",
-    "eslint-config-custom": "packages/eslint-config-custom",
-    "eslint-config-custom-server": "packages/eslint-config-custom-server",
-    "jest-presets": "packages/jest-presets",
-    "logger": "packages/logger",
-    "tsconfig": "packages/tsconfig",
-    "ui": "packages/ui"
+    "@tessellator/core": "packages/core",
+    "@tessellator/eslint-config-base": "packages/eslint-config-base",
+    "@tessellator/eslint-config-custom": "packages/eslint-config-custom",
+    "@tessellator/eslint-config-custom-server": "packages/eslint-config-custom-server",
+    "@tessellator/jest-presets": "packages/jest-presets",
+    "@tessellator/logger": "packages/logger",
+    "@tessellator/tsconfig": "packages/tsconfig",
+    "@tessellator/ui": "packages/ui",
+    "@tessellator/audio-analyser": "packages/audio-analyser",
+    "@tessellator/spotify-analyser": "packages/spotify-analyser"
   }
 }

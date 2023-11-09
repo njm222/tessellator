@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["dom", "ES2015"]
   },
-  "extends": "tsconfig/react-library.json",
+  "extends": "@tessellator/tsconfig/react-library.json",
   "include": ["src", "__tests__"],
   "exclude": ["dist", "build", "node_modules"]
 }

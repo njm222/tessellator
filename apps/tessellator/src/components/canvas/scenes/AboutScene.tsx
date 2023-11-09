@@ -4,11 +4,11 @@ import { Plane, useAspect } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
+import { useToast } from "@tessellator/ui";
 import { useGesture } from "@use-gesture/react";
 import { Color, Group, Vector2, Vector3 } from "three";
-import { useToast } from "ui";
 
-import { copyToClipBoard,openNewTabLink } from "../../../helpers/global";
+import { copyToClipBoard, openNewTabLink } from "../../../helpers/global";
 import Blackhole from "../../models/Blackhole";
 import Particles from "../Particles";
 import { FlexLink } from "../text/FlexLink";

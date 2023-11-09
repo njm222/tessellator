@@ -1,5 +1,5 @@
 {
-  "name": "audio-analyser",
+  "name": "@tessellator/audio-analyser",
   "version": "0.0.0",
   "private": true,
   "main": "./dist/index.js",
@@ -21,10 +21,10 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
-    "eslint-config-custom": "*",
+    "@tessellator/eslint-config-custom": "*",
     "jest": "^29.0.5",
-    "jest-presets": "*",
-    "tsconfig": "*",
+    "@tessellator/jest-presets": "*",
+    "@tessellator/tsconfig": "*",
     "tsup": "^6.2.3",
     "typescript": "5.1.6"
   }

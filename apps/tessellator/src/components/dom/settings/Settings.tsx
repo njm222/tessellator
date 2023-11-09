@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { IconButton, SettingsIcon } from "@tessellator/ui";
 import { button, Leva, useControls } from "leva";
-import { IconButton, SettingsIcon } from "ui";
 
 import { useMouseActivity } from "../controls/mouseActivityContext";
 

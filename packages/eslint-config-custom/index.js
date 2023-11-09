@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["base", "next", "turbo", "prettier"],
+  extends: ["@tessellator/eslint-config-base", "next", "turbo", "prettier"],
   settings: {
     react: {
       version: "detect",

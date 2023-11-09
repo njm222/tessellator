@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { getIndexOfMax } from "core";
+import { getIndexOfMax } from "@tessellator/core";
 import {
   AdditiveBlending,
   Color,

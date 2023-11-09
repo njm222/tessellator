@@ -1,6 +1,6 @@
 import React from "react";
+import { BackIcon, IconButton } from "@tessellator/ui";
 import { useRouter } from "next/navigation";
-import { BackIcon, IconButton } from "ui";
 
 import { useMouseActivity } from "./controls/mouseActivityContext";
 

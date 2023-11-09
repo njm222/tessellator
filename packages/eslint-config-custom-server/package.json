@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-custom-server",
+  "name": "@tessellator/eslint-config-custom-server",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -10,6 +10,6 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
-    "eslint-config-base": "*"
+    "@tessellator/eslint-config-base": "*"
   }
 }

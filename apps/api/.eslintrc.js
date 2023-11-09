@@ -1,4 +1,4 @@
 module.exports = {
   root: true,
-  extends: ["custom-server"]
+  extends: ["@tessellator/eslint-config-custom-server"]
 };

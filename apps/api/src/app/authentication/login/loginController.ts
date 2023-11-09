@@ -1,4 +1,4 @@
-import { generateRandomString } from "core";
+import { generateRandomString } from "@tessellator/core";
 import { Request, Response } from "express";
 import { stringify } from "querystring";
 

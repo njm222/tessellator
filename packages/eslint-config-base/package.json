@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-base",
+  "name": "@tessellator/eslint-config-base",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",

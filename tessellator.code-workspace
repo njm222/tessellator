@@ -18,7 +18,10 @@
     { "name": "core", "path": "./packages/core" },
     { "name": "ui", "path": "./packages/ui" },
     { "name": "audio-analyser", "path": "./packages/audio-analyser" },
-    { "name": "spotify-analyser", "path": "./packages/spotify-analyser" },
+    {
+      "name": "spotify-analyser",
+      "path": "./packages/spotify-analyser"
+    },
     { "name": "api", "path": "./apps/api" },
     { "name": "tessellator", "path": "./apps/tessellator" },
     { "name": "root", "path": "./" }

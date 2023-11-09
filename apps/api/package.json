@@ -22,7 +22,6 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "logger": "*",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
@@ -34,14 +33,14 @@
     "@types/morgan": "^1.9.2",
     "@types/node": "^15.12.2",
     "@types/supertest": "^2.0.12",
-    "core": "*",
-    "eslint-config-custom-server": "*",
+    "@tessellator/core": "*",
+    "@tessellator/eslint-config-custom-server": "*",
     "jest": "^29.0.5",
-    "jest-presets": "*",
+    "@tessellator/jest-presets": "*",
     "nodemon": "^2.0.21",
     "supertest": "^6.2.4",
     "ts-node": "^10.9.1",
-    "tsconfig": "*",
+    "@tessellator/tsconfig": "*",
     "tsup": "^6.2.3",
     "typescript": "5.1.6"
   }

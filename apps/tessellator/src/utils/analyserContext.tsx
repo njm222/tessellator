@@ -11,7 +11,7 @@ import {
 import AudioAnalyser, {
   AudioAnalyserProps,
   defaultAnalyserOptions,
-} from "audio-analyser";
+} from "@tessellator/audio-analyser";
 
 import { LocalStorageKeys } from "../config/constants";
 

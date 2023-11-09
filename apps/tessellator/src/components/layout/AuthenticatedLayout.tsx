@@ -1,8 +1,8 @@
 "use client";
 
 import React, { ReactNode } from "react";
+import { Loader } from "@tessellator/ui";
 import dynamic from "next/dynamic";
-import { Loader } from "ui";
 
 import { AnalyserProviderProps } from "../../utils/analyserContext";
 import { PlayerProvider } from "../../utils/playerContext";
@@ -26,7 +26,7 @@ export const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
   return (
     <PlayerProvider>
       <AnalyserProvider>
-          <ControlsProvider>{children}</ControlsProvider>
+        <ControlsProvider>{children}</ControlsProvider>
       </AnalyserProvider>
     </PlayerProvider>
   );

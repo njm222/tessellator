@@ -16,10 +16,10 @@ import {
   startPlayback,
   StartPlaybackOptions,
   transferMyPlayback,
-} from "core";
-import { TError } from "core/src/spotify/spotifyClient";
+} from "@tessellator/core";
+import { TError } from "@tessellator/core/src/spotify/spotifyClient";
+import { useToast } from "@tessellator/ui";
 import { useRouter } from "next/navigation";
-import { useToast } from "ui";
 
 import { useAuth } from "./authContext";
 import { usePlayer } from "./playerContext";

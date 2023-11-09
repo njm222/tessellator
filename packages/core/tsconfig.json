@@ -9,7 +9,7 @@
     "noEmit": true,
     "strict": true
   },
-  "extends": "tsconfig/base.json",
+  "extends": "@tessellator/tsconfig/base.json",
   "exclude": ["node_modules"],
   "includes": ["src"]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "@tessellator/core",
   "version": "0.0.0",
   "private": true,
   "main": "src/index.ts",
@@ -17,10 +17,10 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
-    "eslint-config-custom": "*",
+    "@tessellator/eslint-config-custom": "*",
     "jest": "^29.0.5",
-    "jest-presets": "*",
-    "tsconfig": "*",
+    "@tessellator/jest-presets": "*",
+    "@tessellator/tsconfig": "*",
     "tsup": "^6.2.3",
     "typescript": "5.1.6"
   }

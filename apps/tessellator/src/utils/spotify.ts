@@ -17,8 +17,8 @@ import {
   StartPlaybackOptions,
   transferMyPlayback,
 } from "@tessellator/core";
+import { TError } from "@tessellator/core/src/spotify/spotifyClient";
 import { useToast } from "@tessellator/ui";
-import { TError } from "@tessellator/core"/src/spotify/spotifyClient";
 import { useRouter } from "next/navigation";
 
 import { useAuth } from "./authContext";

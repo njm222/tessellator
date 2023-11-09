@@ -7,9 +7,9 @@ import {
   useState,
 } from "react";
 import { captureException } from "@sentry/nextjs";
+import SpotifyAnalyser from "@tessellator/spotify-analyser";
 import { useToast } from "@tessellator/ui";
 import { StartPlaybackOptions } from "core";
-import SpotifyAnalyser from "spotify-analyser";
 
 import { useAuth } from "./authContext";
 import {

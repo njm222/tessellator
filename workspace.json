@@ -10,6 +10,7 @@
     "jest-presets": "packages/jest-presets",
     "logger": "packages/logger",
     "tsconfig": "packages/tsconfig",
-    "@tessellator/ui": "packages/ui"
+    "@tessellator/ui": "packages/ui",
+    "@tessellator/spotify-analyser": "packages/spotify-analyser"
   }
 }

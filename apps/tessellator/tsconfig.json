@@ -1,8 +1,6 @@
 {
-  "exclude": [
-    "node_modules"
-  ],
-  "extends": "tsconfig/nextjs.json",
+  "exclude": ["node_modules"],
+  "extends": "@tessellator/tsconfig/nextjs.json",
   "compilerOptions": {
     "outDir": "dist",
     "strictNullChecks": true,
@@ -12,9 +10,5 @@
       }
     ]
   },
-  "include": [
-    "src",
-    "next-env.d.ts",
-    ".next/types/**/*.ts"
-  ]
+  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts"]
 }

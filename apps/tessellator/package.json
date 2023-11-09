@@ -26,7 +26,7 @@
     "@tessellator/core": "*",
     "glsl-noise": "^0.0.0",
     "leva": "0.9.34",
-    "logger": "*",
+    "@tessellator/logger": "*",
     "maath": "^0.7.0",
     "next": "^14.0.0",
     "postprocessing": "^6.33.0",

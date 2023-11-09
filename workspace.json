@@ -8,7 +8,7 @@
     "eslint-config-custom": "packages/eslint-config-custom",
     "eslint-config-custom-server": "packages/eslint-config-custom-server",
     "jest-presets": "packages/jest-presets",
-    "logger": "packages/logger",
+    "@tessellator/logger": "packages/logger",
     "tsconfig": "packages/tsconfig",
     "@tessellator/ui": "packages/ui",
     "@tessellator/audio-analyser": "packages/audio-analyser",

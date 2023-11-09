@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["base", "plugin:@typescript-eslint/recommended", "turbo"],
+  extends: ["@tessellator/eslint-config", "plugin:@typescript-eslint/recommended", "turbo"],
   env: {
     node: true,
     es6: true,

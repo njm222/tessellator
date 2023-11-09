@@ -1,5 +1,5 @@
 import React from "react";
-import { GithubIcon, IconButton, InstagramIcon } from "ui";
+import { GithubIcon, IconButton, InstagramIcon } from "@tessellator/ui";
 
 import { openNewTabLink } from "../../helpers/global";
 

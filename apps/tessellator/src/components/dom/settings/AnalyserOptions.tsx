@@ -1,7 +1,7 @@
 import { useEffect } from "react";
+import { useToast } from "@tessellator/ui";
 import { defaultAnalyserOptions } from "audio-analyser";
 import { button, folder, LevaInputs, useControls } from "leva";
-import { useToast } from "ui";
 
 import { LocalStorageKeys } from "../../../config/constants";
 import { useAnalyser } from "../../../utils/analyserContext";

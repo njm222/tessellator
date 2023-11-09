@@ -2,7 +2,7 @@
 
 import React, { ReactNode, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ToastProvider } from "ui";
+import { ToastProvider } from "@tessellator/ui";
 
 import { AuthProvider } from "../../utils/authContext";
 

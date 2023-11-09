@@ -37,7 +37,7 @@
     "three-stdlib": "^2.24.2",
     "tunnel-rat": "^0.1.2",
     "typewriter-effect": "^2.20.1",
-    "ui": "*"
+    "@tessellator/ui": "*"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.0",

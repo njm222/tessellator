@@ -1,13 +1,13 @@
 import React, { MouseEvent, useEffect, useRef } from "react";
 import { captureException } from "@sentry/nextjs";
-import { convertURItoURL } from "core";
 import {
   LoaderDots,
   PlayerControls,
   ProgressBar,
   TrackDetails,
   useToast,
-} from "ui";
+} from "@tessellator/ui";
+import { convertURItoURL } from "core";
 
 import { ImageWrapper } from "../../../helpers/ImageWrapper";
 import { useAnalyser } from "../../../utils/analyserContext";

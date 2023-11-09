@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
+import { Loader } from "@tessellator/ui";
 import dynamic from "next/dynamic";
-import { Loader } from "ui";
 
 import { CommonProps, ViewProps } from "../components/canvas/View";
 import SocialLinks from "../components/dom/SocialLinks";

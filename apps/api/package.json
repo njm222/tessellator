@@ -36,7 +36,7 @@
     "@tessellator/core": "*",
     "eslint-config-custom-server": "*",
     "jest": "^29.0.5",
-    "jest-presets": "*",
+    "@tessellator/jest-presets": "*",
     "nodemon": "^2.0.21",
     "supertest": "^6.2.4",
     "ts-node": "^10.9.1",

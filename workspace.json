@@ -7,7 +7,7 @@
     "eslint-config-base": "packages/eslint-config-base",
     "eslint-config-custom": "packages/eslint-config-custom",
     "eslint-config-custom-server": "packages/eslint-config-custom-server",
-    "jest-presets": "packages/jest-presets",
+    "@tessellator/jest-presets": "packages/jest-presets",
     "@tessellator/logger": "packages/logger",
     "@tessellator/tsconfig": "packages/tsconfig",
     "@tessellator/ui": "packages/ui",

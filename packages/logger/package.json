@@ -22,7 +22,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.22",
     "@types/node": "^18.11.9",
-    "eslint-config-custom": "*",
+    "@tessellator/eslint-config-custom": "*",
     "jest": "^29.0.5",
     "@tessellator/jest-presets": "*",
     "@tessellator/tsconfig": "*",

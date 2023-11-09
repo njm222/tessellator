@@ -34,7 +34,7 @@
     "@types/node": "^15.12.2",
     "@types/supertest": "^2.0.12",
     "@tessellator/core": "*",
-    "eslint-config-custom-server": "*",
+    "@tessellator/eslint-config-custom-server": "*",
     "jest": "^29.0.5",
     "@tessellator/jest-presets": "*",
     "nodemon": "^2.0.21",

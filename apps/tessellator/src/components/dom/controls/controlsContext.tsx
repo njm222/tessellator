@@ -10,7 +10,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { generateRandomInteger } from "core";
+import { generateRandomInteger } from "@tessellator/core";
 
 import { LocalStorageKeys } from "../../../config/constants";
 import { toggleFullScreen } from "../../../helpers/global";

@@ -1,4 +1,4 @@
-import { getIndexOfMax, getIndexOfMin, hslToHex } from "core";
+import { getIndexOfMax, getIndexOfMin, hslToHex } from "@tessellator/core";
 
 import { useAnalyser } from "../../../utils/analyserContext";
 import { usePlayer } from "../../../utils/playerContext";

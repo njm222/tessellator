@@ -3,7 +3,7 @@
   "projects": {
     "api": "apps/api",
     "tessellator": "apps/tessellator",
-    "core": "packages/core",
+    "@tessellator/core": "packages/core",
     "eslint-config-base": "packages/eslint-config-base",
     "eslint-config-custom": "packages/eslint-config-custom",
     "eslint-config-custom-server": "packages/eslint-config-custom-server",
@@ -11,6 +11,7 @@
     "logger": "packages/logger",
     "tsconfig": "packages/tsconfig",
     "@tessellator/ui": "packages/ui",
+    "@tessellator/audio-analyser": "packages/audio-analyser",
     "@tessellator/spotify-analyser": "packages/spotify-analyser"
   }
 }

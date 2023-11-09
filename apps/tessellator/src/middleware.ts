@@ -1,4 +1,4 @@
-import { loginUser } from "core";
+import { loginUser } from "@tessellator/core";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 

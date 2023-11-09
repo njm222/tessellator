@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { animated, useSpring } from "@react-spring/three";
 import { meshBounds, RoundedBox, useCursor } from "@react-three/drei";
-import { hslToHex } from "core";
+import { hslToHex } from "@tessellator/core";
 import { ColorRepresentation, Mesh } from "three";
 
 import { Text } from "./Text";

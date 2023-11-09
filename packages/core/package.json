@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "@tessellator/core",
   "version": "0.0.0",
   "private": true,
   "main": "src/index.ts",

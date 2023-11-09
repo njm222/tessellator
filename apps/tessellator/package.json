@@ -23,7 +23,7 @@
     "@vercel/analytics": "^1.1.1",
     "@tessellator/audio-analyser": "*",
     "cookies-next": "^3.0.0",
-    "core": "*",
+    "@tessellator/core": "*",
     "glsl-noise": "^0.0.0",
     "leva": "0.9.34",
     "logger": "*",

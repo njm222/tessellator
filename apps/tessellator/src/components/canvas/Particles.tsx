@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { generateRandomNumber, hslToHex } from "core";
+import { generateRandomNumber, hslToHex } from "@tessellator/core";
 import {
   Color,
   ColorRepresentation,

@@ -34,7 +34,7 @@
     "@types/morgan": "^1.9.2",
     "@types/node": "^15.12.2",
     "@types/supertest": "^2.0.12",
-    "core": "*",
+    "@tessellator/core": "*",
     "eslint-config-custom-server": "*",
     "jest": "^29.0.5",
     "jest-presets": "*",

@@ -1,6 +1,5 @@
 import { captureException, setTag } from "@sentry/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "@tessellator/ui";
 import {
   checkSavedTracks,
   getCurrentUserProfile,
@@ -17,7 +16,8 @@ import {
   startPlayback,
   StartPlaybackOptions,
   transferMyPlayback,
-} from "core";
+} from "@tessellator/core";
+import { useToast } from "@tessellator/ui";
 import { TError } from "core/src/spotify/spotifyClient";
 import { useRouter } from "next/navigation";
 

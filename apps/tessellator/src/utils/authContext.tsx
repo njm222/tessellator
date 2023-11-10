@@ -10,7 +10,7 @@ import React, {
 import { loginUser, updateToken } from "@tessellator/core";
 import { useToast } from "@tessellator/ui";
 import { deleteCookie, getCookie, setCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { usePathname,useRouter } from "next/navigation";
 
 type AuthProviderProps = {
   isLoading?: boolean;
@@ -35,6 +35,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
+  const pathname = usePathname();
   const toast = useToast();
   const [tokens, setTokens] = useState({ accessToken: "", refreshToken: "" });
 
@@ -78,6 +79,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       handleRefreshToken(refreshToken);
       return;
     }
+
+    if (pathname === "/") return;
 
     router.push("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps

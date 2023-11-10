@@ -2,6 +2,7 @@
   "name": "tessellator",
   "version": "0.0.0",
   "private": true,
+  "browserslist": "> 1%, not dead, not ie 11, not op_mini all",
   "scripts": {
     "build": "next build",
     "clean": "rm -rf .next",

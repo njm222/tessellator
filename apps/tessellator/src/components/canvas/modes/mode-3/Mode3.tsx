@@ -46,7 +46,6 @@ const Mode3 = ({ opacity }: ModeProps) => {
 
     // Update the material opacity
     uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
-
     if (uOpacity.value <= 0.01) {
       materialRef.current.visible = false;
       return;
@@ -70,8 +69,7 @@ const Mode3 = ({ opacity }: ModeProps) => {
           audioAnalyser.midSection.average - audioAnalyser.midSection.energy
         )) *
         Math.abs(timbre?.length ? timbre[0] : 1) *
-        factor *
-        trackFeatures.speechiness,
+        factor,
       dynamicDelta
     );
 

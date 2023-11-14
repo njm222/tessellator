@@ -48,7 +48,6 @@ const Mode4 = ({ opacity }: ModeProps) => {
 
     // Update the material opacity
     uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
-
     if (uOpacity.value <= 0.01) {
       materialRef.current.visible = false;
       return;

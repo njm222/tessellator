@@ -110,7 +110,6 @@ const Mode2 = ({ opacity }: ModeProps) => {
       <boxGeometry args={[0.1, 0.1, 0.1]} />
       <basicInstanceMaterial
         blending={NoBlending}
-        depthWrite={false}
         ref={materialRef}
         transparent
       />

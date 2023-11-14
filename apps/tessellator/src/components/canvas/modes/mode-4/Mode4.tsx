@@ -9,7 +9,7 @@ import { FractalMaterial } from "../../shaders/fractal/FractalMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColor } from "../useGetColor";
 
-const Mode4 = ({ opacity, ...props }: ModeProps) => {
+const Mode4 = ({ opacity }: ModeProps) => {
   const { getColor } = useGetColor({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
@@ -43,20 +43,24 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
   useFrame((state, delta) => {
     if (!materialRef.current) return;
 
-    const dynamicDelta =
-      delta * trackFeatures.tempo * trackFeatures.danceability * 0.02;
+    const { uTime, uOpacity, uIterations, uFactor, uColor, uHigh } =
+      materialRef.current.uniforms;
+
+    // Update the material opacity
+    uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
+    if (uOpacity.value <= 0.01) {
+      materialRef.current.visible = false;
+      return;
+    }
+    materialRef.current.visible = true;
+
+    const dynamicDelta = delta * trackFeatures.danceability * 0.02;
 
     const factor =
       trackFeatures.energy *
       trackFeatures.danceability *
       (1 - trackFeatures.valence) *
       dynamicDelta;
-
-    const { uTime, uOpacity, uIterations, uFactor, uColor, uHigh } =
-      materialRef.current.uniforms;
-
-    // Update the material opacity
-    uOpacity.value = opacity.get();
 
     // Update the material color
     uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
@@ -121,12 +125,10 @@ const Mode4 = ({ opacity, ...props }: ModeProps) => {
   });
 
   return (
-    <group {...props}>
-      <mesh scale={[vpWidth, vpHeight, 1]}>
-        <planeGeometry />
-        <fractalMaterial depthWrite={false} ref={materialRef} transparent />
-      </mesh>
-    </group>
+    <mesh scale={[vpWidth, vpHeight, 1]}>
+      <planeGeometry />
+      <fractalMaterial depthWrite={false} ref={materialRef} transparent />
+    </mesh>
   );
 };
 

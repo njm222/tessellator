@@ -10,20 +10,20 @@ import { TerrainMaterial } from "../../shaders/terrain/TerrainMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColor } from "../useGetColor";
 
-const Mode0 = ({ opacity, ...props }: ModeProps) => {
+const Mode0 = ({ opacity }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { getColor } = useGetColor();
 
   const colorRef = useRef(new Color());
   // Get reference of the terrain
-  const terrainMaterialRef = useRef(new TerrainMaterial());
+  const materialRef = useRef(new TerrainMaterial());
   const { width, height } = useThree((state) => state.viewport);
   const [vpWidth, vpHeight] = useAspect(width, height, 2);
 
   useFrame((_, delta) => {
     // Wait for material to load
-    if (!terrainMaterialRef.current) {
+    if (!materialRef.current) {
       return;
     }
 
@@ -37,7 +37,15 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
     const { energy, danceability, valence } = trackFeatures;
 
     const { uTime, uXScale, uYScale, uAmplitude, uColor, uOpacity } =
-      terrainMaterialRef.current.uniforms;
+      materialRef.current.uniforms;
+
+    // Update the material opacity
+    uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
+    if (uOpacity.value <= 0.01) {
+      materialRef.current.visible = false;
+      return;
+    }
+    materialRef.current.visible = true;
 
     const dynamicDelta =
       delta *
@@ -91,29 +99,15 @@ const Mode0 = ({ opacity, ...props }: ModeProps) => {
     // Update the material color
     uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
 
-    // Update the material opacity
-    uOpacity.value = opacity.get();
-
     // Update the material wireframe
-    terrainMaterialRef.current.wireframe =
-      spotifyAnalyser.beats.counter % 2 === 0;
+    materialRef.current.wireframe = spotifyAnalyser.beats.counter % 2 === 0;
   });
 
   return (
-    <group {...props}>
-      <mesh
-        position={[0, 0.75, 0]}
-        receiveShadow
-        rotation={[-Math.PI / 5, 0, 0]}
-      >
-        <planeGeometry args={[vpWidth, vpHeight, 256, 256]} />
-        <terrainMaterial
-          depthWrite={false}
-          ref={terrainMaterialRef}
-          transparent
-        />
-      </mesh>
-    </group>
+    <mesh position={[0, 0.75, 0]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
+      <planeGeometry args={[vpWidth, vpHeight, 256, 256]} />
+      <terrainMaterial depthWrite={false} ref={materialRef} transparent />
+    </mesh>
   );
 };
 

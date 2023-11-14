@@ -1,47 +1,54 @@
-import { useEffect, useMemo, useRef } from "react";
-import { a } from "@react-spring/three";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
   Color,
   InstancedMesh,
-  MeshPhongMaterial,
+  MathUtils,
+  NoBlending,
   Object3D,
   Vector3,
 } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import { BasicInstanceMaterial } from "../../shaders/basic-instance/BasicInstanceMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColor } from "../useGetColor";
 
-const Mode2 = ({ opacity, ...props }: ModeProps) => {
+const Mode2 = ({ opacity }: ModeProps) => {
   const count = 8000;
   const tempObject = new Object3D();
   const mesh = useRef<InstancedMesh>(
     new InstancedMesh(undefined, undefined, count)
   );
+  const materialRef = useRef(new BasicInstanceMaterial());
   const colorRef = useRef(new Color());
   const tempVector = new Vector3();
   const tempColor = new Color();
-  const tempColor2 = new Color();
-  const colorArray = useMemo(
-    () =>
-      Float32Array.from(
-        new Array(count).fill("").flatMap(() => tempColor.set("#FFF").toArray())
-      ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
 
   const { getColor } = useGetColor();
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
 
   useFrame((state, delta) => {
+    if (!mesh.current) return;
+
+    const { uOpacity, uColor } = materialRef.current.uniforms;
+
+    uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
+    if (uOpacity.value <= 0.01) {
+      materialRef.current.visible = false;
+      return;
+    }
+    materialRef.current.visible = true;
+
     tempColor.lerp(
       colorRef.current.set(getColor()),
       delta * 10 * (1 - trackFeatures.energy)
     );
+
+    uColor.value = tempColor;
+
     const zValue = 10 * trackFeatures.danceability;
     const scale = Math.min(
       Math.max(
@@ -65,16 +72,6 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
           tempObject.scale.setScalar(scale);
 
           mesh.current.setMatrixAt(id, tempObject.matrix);
-          mesh.current.setColorAt(
-            id,
-            tempColor2
-              .set(tempColor.getHex())
-              .offsetHSL(
-                Math.abs(x - 10) * 0.02,
-                Math.abs(y - 10) * -0.02,
-                Math.abs(z - 10) * -0.01
-              )
-          );
         }
       }
     }
@@ -100,7 +97,7 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
       ? 1
       : -1;
 
-    (mesh.current.material as MeshPhongMaterial).wireframe =
+    (mesh.current.material as any).wireframe =
       spotifyAnalyser.beats.counter % 2 === 0;
 
     mesh.current.instanceMatrix.needsUpdate = true;
@@ -109,18 +106,14 @@ const Mode2 = ({ opacity, ...props }: ModeProps) => {
   });
 
   return (
-    <group {...props}>
-      <instancedMesh args={[undefined, undefined, count]} ref={mesh}>
-        <boxGeometry args={[0.1, 0.1, 0.1]}>
-          <instancedBufferAttribute
-            args={[colorArray, 3]}
-            attach="attributes-color"
-          />
-        </boxGeometry>
-        {/* @ts-ignore: Type instantiation is excessively deep and possibly infinite. */}
-        <a.meshBasicMaterial opacity={opacity} transparent />
-      </instancedMesh>
-    </group>
+    <instancedMesh args={[undefined, undefined, count]} ref={mesh}>
+      <boxGeometry args={[0.1, 0.1, 0.1]} />
+      <basicInstanceMaterial
+        blending={NoBlending}
+        ref={materialRef}
+        transparent
+      />
+    </instancedMesh>
   );
 };
 

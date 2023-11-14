@@ -9,7 +9,7 @@ import { WaveMaterial } from "../../shaders/wave/WaveMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColor } from "../useGetColor";
 
-const Mode3 = ({ opacity, ...props }: ModeProps) => {
+const Mode3 = ({ opacity }: ModeProps) => {
   const { getColor } = useGetColor({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
@@ -41,6 +41,18 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
   useFrame((state, delta) => {
     if (!materialRef.current) return;
 
+    const { uTime, uColorStart, uStrengthFactor, uOpacity, uNoise } =
+      materialRef.current.uniforms;
+
+    // Update the material opacity
+    uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
+
+    if (uOpacity.value <= 0.01) {
+      materialRef.current.visible = false;
+      return;
+    }
+    materialRef.current.visible = true;
+
     const factor =
       trackFeatures.energy *
       trackFeatures.danceability *
@@ -48,12 +60,6 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
       0.1;
 
     const dynamicDelta = delta * (trackFeatures.tempo / 2) * factor;
-
-    const { uTime, uColorStart, uStrengthFactor, uOpacity, uNoise } =
-      materialRef.current.uniforms;
-
-    // Update material opacity
-    uOpacity.value = opacity.get();
 
     const timbre = spotifyAnalyser.getCurrentSegment().timbre;
 
@@ -107,12 +113,10 @@ const Mode3 = ({ opacity, ...props }: ModeProps) => {
   });
 
   return (
-    <group {...props}>
-      <mesh scale={[vpWidth, vpHeight, 1]}>
-        <planeGeometry />
-        <waveMaterial depthWrite={false} ref={materialRef} transparent />
-      </mesh>
-    </group>
+    <mesh scale={[vpWidth, vpHeight, 1]}>
+      <planeGeometry />
+      <waveMaterial depthWrite={false} ref={materialRef} transparent />
+    </mesh>
   );
 };
 

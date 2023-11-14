@@ -16,7 +16,7 @@ import { ParticleMaterial } from "../../shaders/particle/ParticleMaterial";
 import { ModeProps } from "../Modes";
 import { useGetColor } from "../useGetColor";
 
-const Mode1 = ({ opacity, ...props }: ModeProps) => {
+const Mode1 = ({ opacity }: ModeProps) => {
   const mesh = useRef<Points>(null);
   const materialRef = useRef(new ParticleMaterial());
   const colorRef = useRef(new Color());
@@ -224,13 +224,24 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
   useFrame((state, delta) => {
     if (!mesh.current) return;
 
+    const { uColor, uSize, uOpacity, uNoise } = materialRef.current.uniforms;
+
+    // Update the material opacity
+    uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
+
+    if (uOpacity.value <= 0.01) {
+      materialRef.current.visible = false;
+      return;
+    }
+    materialRef.current.visible = true;
+
     const dynamicDelta =
       delta *
       (trackFeatures.tempo / 10) *
       trackFeatures.energy *
       trackFeatures.danceability;
 
-    updateTorusProperties(dynamicDelta / 10);
+    updateTorusProperties(dynamicDelta / 1);
 
     const [indices, vertices, normals, uvs] = getTorusBufferAttributes(
       radius.current,
@@ -240,8 +251,6 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
       p.current,
       q.current
     );
-
-    const { uColor, uSize, uOpacity, uNoise } = materialRef.current.uniforms;
 
     const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
 
@@ -262,9 +271,6 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
 
     uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal, dynamicDelta);
 
-    // Update the material opacity
-    uOpacity.value = opacity.get();
-
     mesh.current.geometry.setIndex(indices);
     mesh.current.geometry.setAttribute(
       "position",
@@ -281,11 +287,10 @@ const Mode1 = ({ opacity, ...props }: ModeProps) => {
   });
 
   return (
-    <group position={[0, 0, -10]} {...props}>
+    <group position={[0, 0, -10]}>
       <points ref={mesh}>
         <bufferGeometry attach="geometry" />
         <particleMaterial
-          attach="material"
           blending={AdditiveBlending}
           depthWrite={false}
           ref={materialRef}

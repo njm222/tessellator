@@ -1,6 +1,13 @@
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Color, InstancedMesh, MathUtils, Object3D, Vector3 } from "three";
+import {
+  Color,
+  InstancedMesh,
+  MathUtils,
+  NoBlending,
+  Object3D,
+  Vector3,
+} from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
@@ -27,6 +34,7 @@ const Mode2 = ({ opacity }: ModeProps) => {
     if (!mesh.current) return;
 
     const { uOpacity, uColor } = materialRef.current.uniforms;
+
     uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
 
     if (uOpacity.value <= 0.01) {
@@ -62,7 +70,7 @@ const Mode2 = ({ opacity }: ModeProps) => {
           const id = i++;
           tempObject.position.set(10 - x, 10 - y, 10 - z);
           tempObject.updateMatrix();
-          tempObject.scale.setScalar(scale); // TODO: dynamic scale
+          tempObject.scale.setScalar(scale);
 
           mesh.current.setMatrixAt(id, tempObject.matrix);
         }
@@ -102,7 +110,8 @@ const Mode2 = ({ opacity }: ModeProps) => {
     <instancedMesh args={[undefined, undefined, count]} ref={mesh}>
       <boxGeometry args={[0.1, 0.1, 0.1]} />
       <basicInstanceMaterial
-        //depthWrite={false}
+        blending={NoBlending}
+        depthWrite={false}
         ref={materialRef}
         transparent
       />

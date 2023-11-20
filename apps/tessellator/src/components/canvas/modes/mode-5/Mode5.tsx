@@ -5,23 +5,24 @@ import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import { FractalMaterial } from "../../shaders/fractal/FractalMaterial";
+import { FractalMaterial2 } from "../../shaders/fractal2/FractalMaterial2";
 import { ModeProps } from "../Modes";
 import { useGetColor } from "../useGetColor";
 
-const Mode4 = ({ opacity }: ModeProps) => {
+const Mode5 = ({ opacity }: ModeProps) => {
   const { getColor } = useGetColor({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
   const { width, height } = useThree((state) => state.viewport);
   const [vpWidth, vpHeight] = useAspect(width, height, 2);
-  const materialRef = useRef(new FractalMaterial());
+  const materialRef = useRef(new FractalMaterial2());
   const colorRef = useRef(new Color());
   const realBeatCounter = useRef(0);
   const currentBeatStart = useRef(0);
   const [beatThreshold, setBeatThreshold] = useState(0.7);
 
   useEffect(() => {
+    realBeatCounter.current = 0;
     setBeatThreshold(
       trackFeatures.danceability > 0.5
         ? trackFeatures.danceability > 0.75
@@ -37,13 +38,13 @@ const Mode4 = ({ opacity }: ModeProps) => {
 
   useEffect(() => {
     materialRef.current.uniforms.uValence.value =
-      (1.5 - trackFeatures.valence) * 10;
+      (2.0 - trackFeatures.valence) * 10;
   }, [trackFeatures.valence]);
 
   useFrame((state, delta) => {
     if (!materialRef.current) return;
 
-    const { uTime, uOpacity, uIterations, uFactor, uColor, uHigh } =
+    const { uTime, uOpacity, uIterations, uFactor, uColor, uHigh, uBeatCount } =
       materialRef.current.uniforms;
 
     // Update the material opacity
@@ -54,13 +55,10 @@ const Mode4 = ({ opacity }: ModeProps) => {
     }
     materialRef.current.visible = true;
 
-    const dynamicDelta = delta * trackFeatures.danceability * 0.02;
+    const dynamicDelta = delta; // * trackFeatures.danceability * 0.1;
 
     const factor =
-      trackFeatures.energy *
-      trackFeatures.danceability *
-      (1 - trackFeatures.valence) *
-      dynamicDelta;
+      trackFeatures.energy * trackFeatures.danceability * dynamicDelta;
 
     // Update the material color
     uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
@@ -68,6 +66,13 @@ const Mode4 = ({ opacity }: ModeProps) => {
     uHigh.value = MathUtils.lerp(
       uHigh.value,
       audioAnalyser.highSection.energy,
+      dynamicDelta
+    );
+
+    // uBeatCount.value = realBeatCounter.current + 1;
+    uBeatCount.value = MathUtils.lerp(
+      uBeatCount.value,
+      realBeatCounter.current,
       dynamicDelta
     );
 
@@ -79,7 +84,6 @@ const Mode4 = ({ opacity }: ModeProps) => {
         (trackFeatures.danceability > 0.5
           ? audioAnalyser.snareSection.average
           : audioAnalyser.midSection.average) *
-          factor *
           direction,
       dynamicDelta
     );
@@ -92,11 +96,7 @@ const Mode4 = ({ opacity }: ModeProps) => {
         return acc;
       }, 0) || 15;
 
-    uFactor.value = MathUtils.lerp(
-      uFactor.value,
-      1 + pitchTotal / 10,
-      dynamicDelta
-    );
+    uFactor.value = MathUtils.lerp(uFactor.value, 1 + pitchTotal, dynamicDelta);
 
     const numIteration = segment?.timbre?.length
       ? Math.abs(segment.timbre[11])
@@ -127,9 +127,9 @@ const Mode4 = ({ opacity }: ModeProps) => {
   return (
     <mesh position={[0, 0, -5]} scale={[vpWidth, vpHeight, 1]}>
       <planeGeometry />
-      <fractalMaterial depthWrite={false} ref={materialRef} transparent />
+      <fractalMaterial2 depthWrite={false} ref={materialRef} transparent />
     </mesh>
   );
 };
 
-export default Mode4;
+export default Mode5;

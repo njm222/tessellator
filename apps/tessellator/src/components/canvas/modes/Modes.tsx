@@ -19,7 +19,7 @@ export function Modes() {
       <Mode2 opacity={2 === modeKey ? 1 : 0} />
       <Mode3 opacity={3 === modeKey ? 1 : 0} />
       <Mode4 opacity={4 === modeKey ? 1 : 0} />
-      {modeKey === 5 ? <Mode5 opacity={5 === modeKey ? 1 : 0} /> : null}
+      <Mode5 opacity={5 === modeKey ? 1 : 0} />
     </Suspense>
   );
 }

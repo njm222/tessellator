@@ -54,7 +54,7 @@ const Mode4 = ({ opacity }: ModeProps) => {
     }
     materialRef.current.visible = true;
 
-    const dynamicDelta = delta * trackFeatures.danceability * 0.02;
+    const dynamicDelta = delta * 2 * trackFeatures.danceability;
 
     const factor =
       trackFeatures.energy *

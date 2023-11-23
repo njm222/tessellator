@@ -1,6 +1,6 @@
 import { shaderMaterial } from "@react-three/drei";
 import { extend, ReactThreeFiber } from "@react-three/fiber";
-import { Color, ShaderMaterial, Vector2 } from "three";
+import { Color, ShaderMaterial } from "three";
 
 // @ts-ignore
 import fragment from "./glsl/shader.frag";
@@ -15,8 +15,7 @@ export const FractalMaterial2 = shaderMaterial(
     uIterations: 1,
     uEnergy: 1,
     uValence: 1,
-    uFactor: 1,
-    uHigh: 1,
+    uNoise: 1,
     uBeatCount: 1,
   },
   vertex,

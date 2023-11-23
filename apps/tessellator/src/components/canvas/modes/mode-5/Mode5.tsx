@@ -37,15 +37,21 @@ const Mode5 = ({ opacity }: ModeProps) => {
   }, [trackFeatures.energy]);
 
   useEffect(() => {
-    materialRef.current.uniforms.uValence.value =
-      (2.0 - trackFeatures.valence) * 10;
+    materialRef.current.uniforms.uValence.value = 2.0 - trackFeatures.valence;
   }, [trackFeatures.valence]);
 
   useFrame((state, delta) => {
     if (!materialRef.current) return;
 
-    const { uTime, uOpacity, uIterations, uFactor, uColor, uHigh, uBeatCount } =
-      materialRef.current.uniforms;
+    const {
+      uTime,
+      uOpacity,
+      uIterations,
+      uNoise,
+      uColor,
+      uValence,
+      uBeatCount,
+    } = materialRef.current.uniforms;
 
     // Update the material opacity
     uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
@@ -55,21 +61,11 @@ const Mode5 = ({ opacity }: ModeProps) => {
     }
     materialRef.current.visible = true;
 
-    const dynamicDelta = delta; // * trackFeatures.danceability * 0.1;
-
-    const factor =
-      trackFeatures.energy * trackFeatures.danceability * dynamicDelta;
+    const dynamicDelta = delta * trackFeatures.danceability * uValence.value;
 
     // Update the material color
     uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
 
-    uHigh.value = MathUtils.lerp(
-      uHigh.value,
-      audioAnalyser.highSection.energy,
-      dynamicDelta
-    );
-
-    // uBeatCount.value = realBeatCounter.current + 1;
     uBeatCount.value = MathUtils.lerp(
       uBeatCount.value,
       realBeatCounter.current,
@@ -94,9 +90,9 @@ const Mode5 = ({ opacity }: ModeProps) => {
       segment?.pitches?.reduce((acc, curr) => {
         acc += curr;
         return acc;
-      }, 0) || 15;
+      }, 0) || 12;
 
-    uFactor.value = MathUtils.lerp(uFactor.value, 1 + pitchTotal, dynamicDelta);
+    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal / 12, dynamicDelta);
 
     const numIteration = segment?.timbre?.length
       ? Math.abs(segment.timbre[11])

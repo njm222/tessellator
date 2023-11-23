@@ -111,7 +111,7 @@ const Mode3 = ({ opacity }: ModeProps) => {
   });
 
   return (
-    <mesh position={[0, 0, -5]} scale={[vpWidth, vpHeight, 1]}>
+    <mesh position={[0, 0, -3]} scale={[vpWidth, vpHeight, 1]}>
       <planeGeometry />
       <waveMaterial depthWrite={false} ref={materialRef} transparent />
     </mesh>

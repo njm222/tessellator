@@ -5,7 +5,6 @@ import { Loader } from "@tessellator/ui";
 import dynamic from "next/dynamic";
 
 import { AnalyserProviderProps } from "../../utils/analyserContext";
-import { PlayerProvider } from "../../utils/playerContext";
 import { ControlsProviderProps } from "../dom/controls/controlsContext";
 
 const AnalyserProvider = dynamic<AnalyserProviderProps>(
@@ -22,12 +21,10 @@ const ControlsProvider = dynamic<ControlsProviderProps>(
   { ssr: false, loading: () => <Loader /> }
 );
 
-export const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
+export const AnalyserLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <PlayerProvider>
-      <AnalyserProvider>
-        <ControlsProvider>{children}</ControlsProvider>
-      </AnalyserProvider>
-    </PlayerProvider>
+    <AnalyserProvider>
+      <ControlsProvider>{children}</ControlsProvider>
+    </AnalyserProvider>
   );
 };

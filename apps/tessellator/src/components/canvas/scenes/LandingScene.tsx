@@ -90,7 +90,10 @@ export const LandingScene = () => {
 function LandingContent({
   handleNavigation,
 }: {
-  handleNavigation: (target: Vector3, route: "/about" | "/visualizer") => void;
+  handleNavigation: (
+    target: Vector3,
+    route: "/about" | "/visualizer" | "/live"
+  ) => void;
 }) {
   const { size, setSize } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
@@ -133,11 +136,10 @@ function LandingContent({
         </FlexLink>
         <FlexLink
           color={new Color("#5A5A5A")}
-          disabled
           marginRight={0}
           marginTop={0}
-          onClick={() => {}}
-          overlayText="upcoming"
+          onClick={(target) => handleNavigation(target, "/live")}
+          overlayText="building"
         >
           Live audio
         </FlexLink>

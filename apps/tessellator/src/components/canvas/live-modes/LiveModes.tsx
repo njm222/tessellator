@@ -12,9 +12,10 @@ import Mode0 from "./mode-0/Mode0";
 export function LiveModes() {
   const { modeKey } = useControls();
 
+  console.log(modeKey);
   return (
     <Suspense>
-      <Mode0 opacity={0 === modeKey ? 1 : 0} />
+      {modeKey === 0 ? <Mode0 opacity={0 === modeKey ? 1 : 0} /> : null}
     </Suspense>
   );
 }

@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import { ViewProps } from "../../components/canvas/View";
 import BackNavigationButton from "../../components/dom/BackNavigationButton";
 import ClickToStart from "../../components/dom/ClickToStart";
+import { Settings } from "../../components/dom/settings/Settings";
 import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
 
 const Common = dynamic<{}>(
@@ -46,11 +47,12 @@ const LiveScene = dynamic<{}>(
 export default function Page() {
   return (
     <DefaultLayout>
-      <View className="fullscreenView">
+      <View className="fullscreenView" orbit>
         <LiveScene />
         <Common />
       </View>
       <BackNavigationButton />
+      <Settings />
       <ClickToStart />
     </DefaultLayout>
   );

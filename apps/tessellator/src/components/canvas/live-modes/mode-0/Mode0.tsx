@@ -48,27 +48,31 @@ const Mode0 = ({ opacity }: ModeProps) => {
 
     const limit = 0.5;
     const midDifference = Math.abs(midSection?.average - midSection?.energy);
+    const snareDifference = Math.abs(
+      snareSection?.average - snareSection?.energy
+    );
+    const bassDifference = Math.abs(bassSection?.average - bassSection?.energy);
 
     // Set the variables for simplex
     uTime.value = MathUtils.lerp(
       uTime.value,
-      uTime.value + midDifference,
+      uTime.value + midDifference / 10,
       dynamicDelta
     );
     uXScale.value = MathUtils.lerp(
       uXScale.value,
-      uXScale.value + midDifference,
+      snareDifference / 10,
       dynamicDelta
     );
     uYScale.value = MathUtils.lerp(
       uYScale.value,
-      uYScale.value + midDifference,
+      bassDifference / 10,
       dynamicDelta
     );
     uAmplitude.value = MathUtils.lerp(
       uAmplitude.value,
-      snareSection.average,
-      dynamicDelta * 10
+      snareDifference * 5,
+      dynamicDelta
     );
 
     // Update the material color

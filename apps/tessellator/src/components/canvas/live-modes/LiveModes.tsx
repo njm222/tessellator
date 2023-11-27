@@ -2,8 +2,8 @@ import React, { Suspense } from "react";
 
 import { useControls } from "../../dom/controls/controlsContext";
 
-import Mode0 from "./mode-0/Mode0";
-// import Mode1 from "./mode-1/Mode1";
+import LiveMode0 from "./mode-0/Mode0";
+import LiveMode1 from "./mode-1/Mode1";
 // import Mode2 from "./mode-2/Mode2";
 // import Mode3 from "./mode-3/Mode3";
 // import Mode4 from "./mode-4/Mode4";
@@ -15,7 +15,8 @@ export function LiveModes() {
   console.log(modeKey);
   return (
     <Suspense>
-      {modeKey === 0 ? <Mode0 opacity={0 === modeKey ? 1 : 0} /> : null}
+      {modeKey === 0 ? <LiveMode0 opacity={0 === modeKey ? 1 : 0} /> : null}
+      {modeKey === 1 ? <LiveMode1 opacity={1 === modeKey ? 1 : 0} /> : null}
     </Suspense>
   );
 }

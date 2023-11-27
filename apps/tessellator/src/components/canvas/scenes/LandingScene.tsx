@@ -58,7 +58,7 @@ export const LandingScene = () => {
 
   const handleNavigation = (
     target: Vector3,
-    route: "/about" | "/visualizer"
+    route: "/about" | "/visualizer" | "/live"
   ) => {
     if (isPending) return;
     startTransition(() => {

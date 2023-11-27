@@ -69,6 +69,6 @@ a {
 
 a:hover,
 a:focus {
-  font-weight: bold;
   color: #fff;
+  cursor: pointer;
 }

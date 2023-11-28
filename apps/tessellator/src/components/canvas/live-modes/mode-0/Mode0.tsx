@@ -1,9 +1,9 @@
 import React from "react";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
+import Mode0 from "../../modes/mode-0/Mode0";
 import { ModeProps } from "../LiveModes";
 import { useGetColor } from "../useGetColor";
-import Mode0 from "../../modes/mode-0/Mode0";
 
 const LiveMode0 = ({ opacity }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
@@ -53,14 +53,14 @@ const LiveMode0 = ({ opacity }: ModeProps) => {
 
   return (
     <Mode0
-      getOpacity={() => opacity}
+      getAmplitude={getAmplitude}
       getColor={getColor}
+      getDeltaFactor={getDeltaFactor}
+      getOpacity={() => opacity}
       getTime={getTime}
+      getWireframe={getWireframe}
       getXScale={getXScale}
       getYScale={getYScale}
-      getAmplitude={getAmplitude}
-      getDeltaFactor={getDeltaFactor}
-      getWireframe={getWireframe}
     />
   );
 };

@@ -2,9 +2,9 @@ import { getIndexOfMax } from "@tessellator/core";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
+import Mode1 from "../../modes/mode-1/Mode1";
 import { ModeProps } from "../SpotifyModes";
 import { useGetColor } from "../useGetColor";
-import Mode1 from "../../modes/mode-1/Mode1";
 
 const SpotifyMode1 = ({ opacity }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
@@ -91,17 +91,17 @@ const SpotifyMode1 = ({ opacity }: ModeProps) => {
 
   return (
     <Mode1
-      getOpacity={() => opacity}
       getColor={getColor}
-      getSize={getSize}
-      getNoise={getNoise}
-      getRadius={getRadius}
-      getTube={getTube}
       getDeltaFactor={getDeltaFactor}
-      getTubularSegments={getTubularSegments}
-      getRadialSegments={getRadialSegments}
+      getNoise={getNoise}
+      getOpacity={() => opacity}
       getP={getP}
       getQ={getQ}
+      getRadialSegments={getRadialSegments}
+      getRadius={getRadius}
+      getSize={getSize}
+      getTube={getTube}
+      getTubularSegments={getTubularSegments}
     />
   );
 };

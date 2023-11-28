@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
   Color,
+  ColorRepresentation,
   InstancedMesh,
   MathUtils,
   NoBlending,
@@ -9,13 +10,28 @@ import {
   Vector3,
 } from "three";
 
-import { useAnalyser } from "../../../../utils/analyserContext";
-import { usePlayer } from "../../../../utils/playerContext";
 import { BasicInstanceMaterial } from "../../shaders/basic-instance/BasicInstanceMaterial";
-import { ModeProps } from "../SpotifyModes";
-import { useGetColor } from "../useGetColor";
 
-const Mode2 = ({ opacity }: ModeProps) => {
+export type Mode2Props = { getOpacity: () => number } & {
+  getColor: () => ColorRepresentation;
+  getWireframe: () => boolean;
+  getZValue: () => number;
+  getDeltaFactor: () => number;
+  getXRotation: () => number;
+  getYRotation: () => number;
+  getScale: () => number;
+};
+
+const Mode2 = ({
+  getZValue,
+  getColor,
+  getDeltaFactor,
+  getOpacity,
+  getWireframe,
+  getXRotation,
+  getYRotation,
+  getScale,
+}: Mode2Props) => {
   const count = 8000;
   const tempObject = new Object3D();
   const mesh = useRef<InstancedMesh>(
@@ -26,41 +42,28 @@ const Mode2 = ({ opacity }: ModeProps) => {
   const tempVector = new Vector3();
   const tempColor = new Color();
 
-  const { getColor } = useGetColor();
-  const { audioAnalyser } = useAnalyser();
-  const { spotifyAnalyser, trackFeatures } = usePlayer();
-
   useFrame((state, delta) => {
     if (!mesh.current) return;
 
     const { uOpacity, uColor } = materialRef.current.uniforms;
 
-    uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
+    uOpacity.value = MathUtils.lerp(uOpacity.value, getOpacity(), delta);
     if (uOpacity.value <= 0.01) {
       materialRef.current.visible = false;
       return;
     }
     materialRef.current.visible = true;
 
+    const dynamicDelta = delta * getDeltaFactor();
     tempColor.lerp(
       colorRef.current.set(getColor()),
-      delta * 10 * (1 - trackFeatures.energy)
+      dynamicDelta // delta * 10 * (1 - trackFeatures.energy)
     );
 
     uColor.value = tempColor;
 
-    const zValue = 10 * trackFeatures.danceability;
-    const scale = Math.min(
-      Math.max(
-        Math.abs(
-          (audioAnalyser.bassSection.average -
-            audioAnalyser.snareSection.average) /
-            5
-        ),
-        0.01
-      ),
-      2
-    );
+    const zValue = getZValue();
+    const scale = Math.min(Math.max(getScale(), 0.01), 2);
 
     let i = 0;
     for (let x = 0; x < 20; x++) {
@@ -76,29 +79,11 @@ const Mode2 = ({ opacity }: ModeProps) => {
       }
     }
 
-    mesh.current.position.lerp(
-      tempVector.set(
-        0,
-        0,
-        zValue * (spotifyAnalyser.beats.counter % 2 === 0 ? 1 : -1)
-      ),
-      delta * (1 - trackFeatures.energy)
-    );
+    mesh.current.position.lerp(tempVector.set(0, 0, zValue), dynamicDelta);
 
-    spotifyAnalyser.bars.counter % 2 === 0
-      ? (mesh.current.rotation.y += audioAnalyser.midSection.average / 10000) *
-          spotifyAnalyser.bars.current.confidence >
-        0.5
-        ? 1
-        : -1
-      : (mesh.current.rotation.x += audioAnalyser.midSection.average / 10000) *
-          spotifyAnalyser.bars.current.confidence >
-        0.5
-      ? 1
-      : -1;
-
-    (mesh.current.material as any).wireframe =
-      spotifyAnalyser.beats.counter % 2 === 0;
+    mesh.current.rotation.x += getXRotation();
+    mesh.current.rotation.y += getYRotation();
+    (mesh.current.material as any).wireframe = getWireframe();
 
     mesh.current.instanceMatrix.needsUpdate = true;
     if (!mesh.current.instanceColor) return;

@@ -1,13 +1,12 @@
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
 import Mode2 from "../../modes/mode-2/Mode2";
-import { ModeProps } from "../SpotifyModes";
+import { ModeProps } from "../LiveModes";
 import { useGetColor } from "../useGetColor";
 
-const SpotifyMode2 = ({ opacity }: ModeProps) => {
+const LiveMode2 = ({ opacity }: ModeProps) => {
   const { getColor } = useGetColor();
   const { audioAnalyser } = useAnalyser();
-  const { spotifyAnalyser, trackFeatures } = usePlayer();
 
   function getScale() {
     return Math.abs(
@@ -17,45 +16,38 @@ const SpotifyMode2 = ({ opacity }: ModeProps) => {
   }
 
   function getZValue() {
-    return (
-      10 *
-      trackFeatures.danceability *
-      (spotifyAnalyser.beats.counter % 2 === 0 ? 1 : -1)
-    );
+    return audioAnalyser.snareSection.energy >
+      audioAnalyser.snareSection.average
+      ? 1
+      : -1;
   }
 
   function getXRotation() {
-    if (spotifyAnalyser.bars.counter % 2 === 0) {
-      return 0;
-    }
-
     return (
       (audioAnalyser.midSection.average / 10000) *
-      (spotifyAnalyser.bars.current.confidence > 0.5 ? 1 : -1)
+      (audioAnalyser.snareSection.energy > audioAnalyser.snareSection.average
+        ? 1
+        : -1)
     );
   }
 
   function getYRotation() {
-    if (spotifyAnalyser.bars.counter % 2 !== 0) {
-      return 0;
-    }
-
     return (
       (audioAnalyser.midSection.average / 10000) *
-      (spotifyAnalyser.bars.current.confidence > 0.5 ? 1 : -1)
+      (audioAnalyser.snareSection.energy > audioAnalyser.snareSection.average
+        ? 1
+        : -1)
     );
   }
 
   function getDeltaFactor() {
-    return (
-      (trackFeatures.tempo / 100) *
-      trackFeatures.energy *
-      trackFeatures.danceability
-    );
+    return 1;
   }
 
   function getWireframe() {
-    return spotifyAnalyser.beats.counter % 2 === 0;
+    return (
+      audioAnalyser.snareSection.energy > audioAnalyser.snareSection.average
+    );
   }
 
   return (
@@ -72,4 +64,4 @@ const SpotifyMode2 = ({ opacity }: ModeProps) => {
   );
 };
 
-export default SpotifyMode2;
+export default LiveMode2;

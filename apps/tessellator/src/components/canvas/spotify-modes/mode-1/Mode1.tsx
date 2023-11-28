@@ -20,12 +20,14 @@ const SpotifyMode1 = ({ opacity }: ModeProps) => {
   }
 
   function getSize() {
-    return (
+    const pitchNormalized =
       (spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
         acc += curr;
         return acc;
-      }, 0) || 12) / 12
-    );
+      }, 0) || 12) / 12;
+    const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
+
+    return Math.abs(pitchNormalized * (timbre?.length ? timbre[0] : 10));
   }
 
   function getNoise() {
@@ -70,7 +72,7 @@ const SpotifyMode1 = ({ opacity }: ModeProps) => {
       spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
         acc += curr;
         return acc;
-      }, 0) || 12;
+      }, 0) || 3;
 
     return Math.floor(pitchTotal) + 1;
 

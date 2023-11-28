@@ -71,7 +71,7 @@ const Mode0 = ({
     );
 
     // Update the material color
-    uColor.value.lerp(colorRef.current.set(getColor), dynamicDelta);
+    uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
 
     // Update the material wireframe
     materialRef.current.wireframe = getWireframe();

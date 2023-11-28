@@ -1,7 +1,6 @@
-import { getIndexOfMax, getIndexOfMin, hslToHex } from "@tessellator/core";
+import { hslToHex } from "@tessellator/core";
 
 import { useAnalyser } from "../../../utils/analyserContext";
-import { usePlayer } from "../../../utils/playerContext";
 import { useControls } from "../../dom/controls/controlsContext";
 
 export function useGetColor(
@@ -27,15 +26,27 @@ export function useGetColor(
     switch (colorKey?.current) {
       case 0:
         return hslToHex(
+          3 * audioAnalyser.midSection.average,
+          audioAnalyser.kickSection.average,
+          audioAnalyser.snareSection.average
+        );
+      case 1:
+        return hslToHex(
           2 * audioAnalyser.midSection.average,
+          audioAnalyser.kickSection.average,
+          audioAnalyser.snareSection.average
+        );
+      case 2:
+        return hslToHex(
           audioAnalyser.midSection.average,
-          audioAnalyser.midSection.average
+          audioAnalyser.kickSection.average,
+          audioAnalyser.snareSection.average
         );
       default:
         return hslToHex(
           2 * audioAnalyser.midSection.average,
-          audioAnalyser.midSection.average,
-          audioAnalyser.midSection.average
+          audioAnalyser.kickSection.average,
+          audioAnalyser.snareSection.average
         );
     }
   }

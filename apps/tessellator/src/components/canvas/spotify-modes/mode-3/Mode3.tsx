@@ -1,32 +1,20 @@
 import { useEffect, useRef, useState } from "react";
-import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Color, MathUtils } from "three";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import { WaveMaterial } from "../../shaders/wave/WaveMaterial";
+import Mode3 from "../../modes/mode-3/Mode3";
 import { ModeProps } from "../SpotifyModes";
 import { useGetColor } from "../useGetColor";
 
-const Mode3 = ({ opacity }: ModeProps) => {
+const SpotifyMode3 = ({ opacity }: ModeProps) => {
   const { getColor } = useGetColor({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
-  const { width, height } = useThree((state) => state.viewport);
-  const [vpWidth, vpHeight] = useAspect(width, height, 2);
-  const materialRef = useRef(new WaveMaterial());
-  const colorRef = useRef(new Color());
+  const { width } = useThree((state) => state.viewport);
   const realBarCounter = useRef(0);
   const currentBarStart = useRef(0);
   const [barThreshold, setBarThreshold] = useState(0.7);
-
-  useEffect(() => {
-    if (!materialRef.current) return;
-
-    materialRef.current.uniforms.uResolution.value =
-      (1 - trackFeatures.speechiness) * (width * trackFeatures.energy);
-  }, [trackFeatures.speechiness, trackFeatures.energy, width]);
 
   useEffect(() => {
     setBarThreshold(
@@ -39,64 +27,6 @@ const Mode3 = ({ opacity }: ModeProps) => {
   }, [trackFeatures.danceability]);
 
   useFrame((state, delta) => {
-    if (!materialRef.current) return;
-
-    const { uTime, uColorStart, uStrengthFactor, uOpacity, uNoise } =
-      materialRef.current.uniforms;
-
-    // Update the material opacity
-    uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
-    if (uOpacity.value <= 0.01) {
-      materialRef.current.visible = false;
-      return;
-    }
-    materialRef.current.visible = true;
-
-    const factor =
-      trackFeatures.energy *
-      trackFeatures.danceability *
-      (1 - trackFeatures.valence) *
-      0.1;
-
-    const dynamicDelta = delta * (trackFeatures.tempo / 2) * factor;
-
-    const timbre = spotifyAnalyser.getCurrentSegment().timbre;
-
-    uStrengthFactor.value = MathUtils.lerp(
-      uStrengthFactor.value,
-      (audioAnalyser.analyserData.rms +
-        Math.abs(
-          audioAnalyser.midSection.average - audioAnalyser.midSection.energy
-        )) *
-        Math.abs(timbre?.length ? timbre[0] : 1) *
-        factor,
-      dynamicDelta
-    );
-
-    const direction = realBarCounter.current % 2 === 0 ? 1 : -1;
-
-    uTime.value = MathUtils.lerp(
-      uTime.value,
-      uTime.value +
-        Math.abs(
-          audioAnalyser.bassSection.average - audioAnalyser.snareSection.average
-        ) *
-          factor *
-          direction,
-      dynamicDelta
-    );
-
-    const pitchTotal =
-      (spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
-        acc += curr;
-        return acc;
-      }, 0) || 12) / 12;
-
-    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal / 12, dynamicDelta);
-
-    // Update the material color
-    uColorStart.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
-
     if (spotifyAnalyser.bars.current.start === currentBarStart.current) {
       return;
     }
@@ -110,12 +40,70 @@ const Mode3 = ({ opacity }: ModeProps) => {
     }
   });
 
+  function getFactor() {
+    return (
+      trackFeatures.energy *
+      trackFeatures.danceability *
+      (1 - trackFeatures.valence) *
+      0.1
+    );
+  }
+
+  function getDirection() {
+    return realBarCounter.current % 2 === 0 ? 1 : -1;
+  }
+
+  function getTime() {
+    return (
+      Math.abs(
+        audioAnalyser.bassSection.average - audioAnalyser.snareSection.average
+      ) *
+      getFactor() *
+      getDirection()
+    );
+  }
+
+  function getNoise() {
+    return (
+      (spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
+        acc += curr;
+        return acc;
+      }, 0) || 12) / 12
+    );
+  }
+
+  function getStrengthFactor() {
+    const timbre = spotifyAnalyser.getCurrentSegment().timbre;
+
+    return (
+      (audioAnalyser.analyserData.rms +
+        Math.abs(
+          audioAnalyser.midSection.average - audioAnalyser.midSection.energy
+        )) *
+      Math.abs(timbre?.length ? timbre[0] : 1) *
+      getFactor()
+    );
+  }
+
+  function getResolution() {
+    return (1 - trackFeatures.speechiness) * (width * trackFeatures.energy);
+  }
+
+  function getDeltaFactor() {
+    return (trackFeatures.tempo / 2) * getFactor();
+  }
+
   return (
-    <mesh position={[0, 0, -3]} scale={[vpWidth, vpHeight, 1]}>
-      <planeGeometry />
-      <waveMaterial depthWrite={false} ref={materialRef} transparent />
-    </mesh>
+    <Mode3
+      getColor={getColor}
+      getDeltaFactor={getDeltaFactor}
+      getNoise={getNoise}
+      getOpacity={() => opacity}
+      getResolution={getResolution}
+      getStrengthFactor={getStrengthFactor}
+      getTime={getTime}
+    />
   );
 };
 
-export default Mode3;
+export default SpotifyMode3;

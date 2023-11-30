@@ -1,5 +1,4 @@
 import { useAnalyser } from "../../../../utils/analyserContext";
-import { usePlayer } from "../../../../utils/playerContext";
 import Mode2 from "../../modes/mode-2/Mode2";
 import { ModeProps } from "../LiveModes";
 import { useGetColor } from "../useGetColor";

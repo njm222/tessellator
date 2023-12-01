@@ -1,22 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { useAspect } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
-import { Color, MathUtils } from "three";
+import { useFrame } from "@react-three/fiber";
 
 import { useAnalyser } from "../../../../utils/analyserContext";
 import { usePlayer } from "../../../../utils/playerContext";
-import { FractalMaterial } from "../../shaders/fractal/FractalMaterial";
+import Mode4 from "../../modes/mode-4/Mode4";
 import { ModeProps } from "../SpotifyModes";
 import { useGetColor } from "../useGetColor";
 
-const Mode4 = ({ opacity }: ModeProps) => {
+const SpotifyMode4 = ({ opacity }: ModeProps) => {
   const { getColor } = useGetColor({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser, trackFeatures } = usePlayer();
-  const { width, height } = useThree((state) => state.viewport);
-  const [vpWidth, vpHeight] = useAspect(width, height, 2);
-  const materialRef = useRef(new FractalMaterial());
-  const colorRef = useRef(new Color());
   const realBeatCounter = useRef(0);
   const currentBeatStart = useRef(0);
   const [beatThreshold, setBeatThreshold] = useState(0.7);
@@ -31,86 +25,7 @@ const Mode4 = ({ opacity }: ModeProps) => {
     );
   }, [trackFeatures.danceability]);
 
-  useEffect(() => {
-    materialRef.current.uniforms.uEnergy.value = trackFeatures.energy;
-  }, [trackFeatures.energy]);
-
-  useEffect(() => {
-    materialRef.current.uniforms.uValence.value =
-      (1.5 - trackFeatures.valence) * 10;
-  }, [trackFeatures.valence]);
-
   useFrame((state, delta) => {
-    if (!materialRef.current) return;
-
-    const { uTime, uOpacity, uIterations, uFactor, uColor, uHigh } =
-      materialRef.current.uniforms;
-
-    // Update the material opacity
-    uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
-    if (uOpacity.value <= 0.01) {
-      materialRef.current.visible = false;
-      return;
-    }
-    materialRef.current.visible = true;
-
-    const dynamicDelta = delta * 2 * trackFeatures.danceability;
-
-    const factor =
-      trackFeatures.energy *
-      trackFeatures.danceability *
-      (1 - trackFeatures.valence) *
-      dynamicDelta;
-
-    // Update the material color
-    uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
-
-    uHigh.value = MathUtils.lerp(
-      uHigh.value,
-      audioAnalyser.highSection.energy,
-      dynamicDelta
-    );
-
-    const direction = realBeatCounter.current % 2 === 0 ? 1 : -1;
-
-    uTime.value = MathUtils.lerp(
-      uTime.value,
-      uTime.value +
-        (trackFeatures.danceability > 0.5
-          ? audioAnalyser.snareSection.average
-          : audioAnalyser.midSection.average) *
-          factor *
-          direction,
-      dynamicDelta
-    );
-
-    const segment = spotifyAnalyser.getCurrentSegment();
-
-    const pitchTotal =
-      segment?.pitches?.reduce((acc, curr) => {
-        acc += curr;
-        return acc;
-      }, 0) || 15;
-
-    uFactor.value = MathUtils.lerp(
-      uFactor.value,
-      1 + pitchTotal / 10,
-      dynamicDelta
-    );
-
-    const numIteration = segment?.timbre?.length
-      ? Math.abs(segment.timbre[11])
-      : 1;
-
-    uIterations.value =
-      Math.floor(
-        MathUtils.lerp(
-          uIterations.value,
-          numIteration / (numIteration > 100 ? 20 : 10),
-          dynamicDelta
-        )
-      ) + 1;
-
     if (spotifyAnalyser.beats.current.start === currentBeatStart.current) {
       return;
     }
@@ -124,12 +39,72 @@ const Mode4 = ({ opacity }: ModeProps) => {
     }
   });
 
+  function getDirection() {
+    return realBeatCounter.current % 2 === 0 ? 1 : -1;
+  }
+
+  function getTime() {
+    return (
+      (trackFeatures.danceability > 0.5
+        ? audioAnalyser.snareSection.average
+        : audioAnalyser.midSection.average) *
+      trackFeatures.energy *
+      trackFeatures.danceability *
+      (1 - trackFeatures.valence) *
+      0.02 *
+      getDirection()
+    );
+  }
+
+  function getFactor() {
+    const segment = spotifyAnalyser.getCurrentSegment();
+    const pitchTotal =
+      segment?.pitches?.reduce((acc, curr) => {
+        acc += curr;
+        return acc;
+      }, 0) || 15;
+    return 1 + pitchTotal / 10;
+  }
+
+  function getIterations() {
+    const segment = spotifyAnalyser.getCurrentSegment();
+
+    const numIteration = segment?.timbre?.length
+      ? Math.abs(segment.timbre[11])
+      : 1;
+
+    return numIteration / (numIteration > 100 ? 20 : 10);
+  }
+
+  function getHigh() {
+    return audioAnalyser.highSection.energy;
+  }
+
+  function getEnergy() {
+    return trackFeatures.energy;
+  }
+
+  function getGlow() {
+    return 1.5 - trackFeatures.valence;
+  }
+
+  function getDeltaFactor() {
+    return 2 * trackFeatures.danceability;
+  }
+
   return (
-    <mesh position={[0, 0, -3]} scale={[vpWidth, vpHeight, 1]}>
-      <planeGeometry />
-      <fractalMaterial depthWrite={false} ref={materialRef} transparent />
-    </mesh>
+    <Mode4
+      getColor={getColor}
+      getDeltaFactor={getDeltaFactor}
+      getEnergy={getEnergy}
+      getFactor={getFactor}
+      getGlow={getGlow}
+      getHigh={getHigh}
+      getIterations={getIterations}
+      getOpacity={() => opacity}
+      getTime={getTime}
+    />
   );
 };
 
-export default Mode4;
+export default SpotifyMode4;

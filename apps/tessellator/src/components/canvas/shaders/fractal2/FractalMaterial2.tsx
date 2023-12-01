@@ -14,7 +14,7 @@ export const FractalMaterial2 = shaderMaterial(
     uTime: 0,
     uIterations: 1,
     uEnergy: 1,
-    uValence: 1,
+    uGlow: 1,
     uNoise: 1,
     uBeatCount: 1,
   },

@@ -4,7 +4,7 @@ uniform float uOpacity;
 uniform float uTime;
 uniform float uIterations;
 uniform float uEnergy;
-uniform float uValence;
+uniform float uGlow;
 uniform float uNoise;
 uniform float uBeatCount;
 
@@ -18,7 +18,7 @@ void main() {
   vec2 vUv1 = vUv0;
   vec3 finalColor = vec3(0.0);
 
-  float beatCount = mod(uBeatCount, uValence*4.);
+  float beatCount = mod(uBeatCount, uGlow*4.);
 
   for (float i = 0.0; i < uIterations + (beatCount*uEnergy); i++) {
     vUv1 = fract((vUv0) * (uIterations-i) * (sin(uTime*.01)+beatCount) + sin(uBeatCount)) - 0.5;

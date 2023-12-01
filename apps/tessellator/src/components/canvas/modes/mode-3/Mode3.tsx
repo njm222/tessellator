@@ -5,7 +5,7 @@ import { Color, ColorRepresentation, MathUtils } from "three";
 
 import { WaveMaterial } from "../../shaders/wave/WaveMaterial";
 
-export type Mode2Props = { getOpacity: () => number } & {
+export type Mode3Props = { getOpacity: () => number } & {
   getColor: () => ColorRepresentation;
   getDeltaFactor: () => number;
   getResolution: () => number;
@@ -22,21 +22,11 @@ const Mode3 = ({
   getResolution,
   getTime,
   getStrengthFactor,
-}: Mode2Props) => {
+}: Mode3Props) => {
   const { width, height } = useThree((state) => state.viewport);
   const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const materialRef = useRef(new WaveMaterial());
   const colorRef = useRef(new Color());
-
-  // useEffect(() => {
-  //   setBarThreshold(
-  //     trackFeatures.danceability > 0.5
-  //       ? trackFeatures.danceability > 0.75
-  //         ? 0.95
-  //         : 0.8
-  //       : 0.65
-  //   );
-  // }, [trackFeatures.danceability]);
 
   useFrame((state, delta) => {
     if (!materialRef.current) return;

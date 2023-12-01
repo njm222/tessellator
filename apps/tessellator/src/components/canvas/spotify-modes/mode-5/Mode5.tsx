@@ -37,21 +37,14 @@ const Mode5 = ({ opacity }: ModeProps) => {
   }, [trackFeatures.energy]);
 
   useEffect(() => {
-    materialRef.current.uniforms.uValence.value = 2.0 - trackFeatures.valence;
+    materialRef.current.uniforms.uGlow.value = 2.0 - trackFeatures.valence;
   }, [trackFeatures.valence]);
 
   useFrame((state, delta) => {
     if (!materialRef.current) return;
 
-    const {
-      uTime,
-      uOpacity,
-      uIterations,
-      uNoise,
-      uColor,
-      uValence,
-      uBeatCount,
-    } = materialRef.current.uniforms;
+    const { uTime, uOpacity, uIterations, uNoise, uColor, uGlow, uBeatCount } =
+      materialRef.current.uniforms;
 
     // Update the material opacity
     uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
@@ -61,7 +54,7 @@ const Mode5 = ({ opacity }: ModeProps) => {
     }
     materialRef.current.visible = true;
 
-    const dynamicDelta = delta * trackFeatures.danceability * uValence.value;
+    const dynamicDelta = delta * trackFeatures.danceability * uGlow.value;
 
     // Update the material color
     uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);

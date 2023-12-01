@@ -7,6 +7,7 @@ import LiveMode1 from "./mode-1/Mode1";
 import LiveMode2 from "./mode-2/Mode2";
 import LiveMode3 from "./mode-3/Mode3";
 import LiveMode4 from "./mode-4/Mode4";
+import LiveMode5 from "./mode-5/Mode5";
 
 export function LiveModes() {
   const { modeKey } = useControls();
@@ -19,7 +20,7 @@ export function LiveModes() {
       {modeKey === 2 ? <LiveMode2 opacity={2 === modeKey ? 1 : 0} /> : null}
       {modeKey === 3 ? <LiveMode3 opacity={3 === modeKey ? 1 : 0} /> : null}
       {modeKey === 4 ? <LiveMode4 opacity={4 === modeKey ? 1 : 0} /> : null}
-      {/* {modeKey === 5 ? <LiveMode5 opacity={5 === modeKey ? 1 : 0} /> : null} */}
+      {modeKey === 5 ? <LiveMode5 opacity={5 === modeKey ? 1 : 0} /> : null}
     </Suspense>
   );
 }

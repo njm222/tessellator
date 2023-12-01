@@ -42,6 +42,12 @@ export function useGetColor(
           audioAnalyser.kickSection.average,
           audioAnalyser.snareSection.average
         );
+      case 3:
+        return hslToHex(
+          2 * audioAnalyser.analyserData.averageFrequency,
+          audioAnalyser.kickSection.average,
+          audioAnalyser.snareSection.average
+        );
       default:
         return hslToHex(
           2 * audioAnalyser.midSection.average,

@@ -14,8 +14,6 @@ const LiveVisualizer = () => {
     audioAnalyser.updateData();
   });
 
-  if (!audioAnalyser.context) return null;
-
   return <LiveModes />;
 };
 

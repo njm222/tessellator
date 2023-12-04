@@ -10,7 +10,8 @@ const LiveMode5 = ({ opacity }: ModeProps) => {
   function getBeatCount() {
     return (
       Math.sin(
-        audioAnalyser.highSection.average - audioAnalyser.highSection.energy
+        (audioAnalyser.highSection.average - audioAnalyser.highSection.energy) /
+          audioAnalyser.analyserData.averageFrequency
       ) * 4
     );
   }
@@ -19,16 +20,19 @@ const LiveMode5 = ({ opacity }: ModeProps) => {
     return (
       Math.sin(
         audioAnalyser.midSection.average - audioAnalyser.midSection.energy
-      ) / 10
+      ) * 5
     );
   }
 
   function getNoise() {
-    return audioAnalyser.midSection.average / 255;
+    return (
+      (audioAnalyser.analyserData.averageFrequency / 255) *
+      audioAnalyser.highSection.average
+    );
   }
 
   function getIterations() {
-    return Math.floor(
+    return Math.ceil(
       Math.abs(
         audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
       ) / 5
@@ -36,11 +40,11 @@ const LiveMode5 = ({ opacity }: ModeProps) => {
   }
 
   function getEnergy() {
-    return audioAnalyser.analyserData.averageFrequency / 255;
+    return audioAnalyser.midSection.average / 255;
   }
 
   function getGlow() {
-    return (audioAnalyser.kickSection.average / 255) * 2;
+    return audioAnalyser.kickSection.average / 255;
   }
 
   function getDeltaFactor() {

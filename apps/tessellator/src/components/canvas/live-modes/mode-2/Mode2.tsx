@@ -17,14 +17,14 @@ const LiveMode2 = ({ opacity }: ModeProps) => {
   function getZValue() {
     return audioAnalyser.snareSection.energy >
       audioAnalyser.snareSection.average
-      ? 1
-      : -1;
+      ? -2
+      : 2;
   }
 
   function getXRotation() {
     return (
       (audioAnalyser.midSection.average / 10000) *
-      (audioAnalyser.snareSection.energy > audioAnalyser.snareSection.average
+      (audioAnalyser.kickSection.energy > audioAnalyser.kickSection.average
         ? 1
         : -1)
     );
@@ -40,7 +40,7 @@ const LiveMode2 = ({ opacity }: ModeProps) => {
   }
 
   function getDeltaFactor() {
-    return 1;
+    return 2;
   }
 
   function getWireframe() {

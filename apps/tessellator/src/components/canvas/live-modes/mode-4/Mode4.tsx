@@ -11,15 +11,14 @@ const LiveMode4 = ({ opacity }: ModeProps) => {
     return (
       Math.sin(
         audioAnalyser.midSection.average - audioAnalyser.midSection.energy
-      ) * 5
+      ) / 10
     );
   }
 
   function getFactor() {
     return (
-      Math.abs(
-        audioAnalyser.highSection.average - audioAnalyser.highSection.energy
-      ) / 10
+      (audioAnalyser.analyserData.averageFrequency / 255) *
+      audioAnalyser.highSection.average
     );
   }
 
@@ -36,7 +35,7 @@ const LiveMode4 = ({ opacity }: ModeProps) => {
   }
 
   function getEnergy() {
-    return audioAnalyser.analyserData.averageFrequency / 255;
+    return audioAnalyser.midSection.energy / 255;
   }
 
   function getGlow() {

@@ -3,7 +3,6 @@ varying vec3 vUv;
 uniform float uTime;
 uniform float uXScale;
 uniform float uYScale;
-uniform float uAmplitude;
 
 void main() {
   vUv = vec3(position.xy, max(noise(vec3(position.x / uXScale, position.y / uYScale, uTime)), 0.0)); 

@@ -75,14 +75,6 @@ const SpotifyMode1 = ({ opacity }: ModeProps) => {
       }, 0) || 3;
 
     return Math.floor(pitchTotal) + 1;
-
-    // p.current = MathUtils.lerp(p.current, Math.floor(pitchTotal) + 2, delta);
-
-    // q.current = MathUtils.lerp(
-    //   q.current,
-    //   getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 3,
-    //   delta
-    // );
   }
 
   function getQ() {

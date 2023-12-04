@@ -11,25 +11,23 @@ const LiveMode0 = ({ opacity }: ModeProps) => {
 
   function getTime() {
     return (
-      Math.abs(
-        audioAnalyser.midSection?.average - audioAnalyser.midSection?.energy
-      ) / 10
+      (audioAnalyser.midSection?.average - audioAnalyser.midSection?.energy) /
+      10
     );
   }
 
   function getXScale() {
-    return (
-      Math.abs(
-        audioAnalyser.snareSection?.average - audioAnalyser.snareSection?.energy
-      ) / 10
+    return Math.abs(
+      (audioAnalyser.snareSection?.average -
+        audioAnalyser.snareSection?.energy) /
+        (audioAnalyser.bassSection?.average - audioAnalyser.bassSection?.energy)
     );
   }
 
   function getYScale() {
-    return (
-      Math.abs(
-        audioAnalyser.bassSection?.average - audioAnalyser.bassSection?.energy
-      ) / 10
+    return Math.abs(
+      (audioAnalyser.kickSection?.average - audioAnalyser.kickSection?.energy) /
+        (audioAnalyser.bassSection?.average - audioAnalyser.bassSection?.energy)
     );
   }
 

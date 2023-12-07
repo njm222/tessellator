@@ -45,7 +45,7 @@ const LiveMode0 = ({ opacity }: ModeProps) => {
 
   function getWireframe() {
     return (
-      audioAnalyser.snareSection.energy > audioAnalyser.snareSection.average
+      audioAnalyser.snareSection.energy <= audioAnalyser.snareSection.average
     );
   }
 

@@ -20,10 +20,7 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
   }
 
   function getNoise() {
-    return (
-      (audioAnalyser.analyserData.averageFrequency / 255) *
-      audioAnalyser.highSection.average
-    );
+    return (audioAnalyser.analyserData.averageFrequency / 255) * 2;
   }
 
   function getRadius() {

@@ -7,23 +7,30 @@ const LiveMode4 = ({ opacity }: ModeProps) => {
   const { getColor } = useGetColor({ minLightness: 125, minSaturation: 100 });
   const { audioAnalyser } = useAnalyser();
 
+  function getDirection() {
+    return audioAnalyser.snareSection.energy >=
+      audioAnalyser.snareSection.average
+      ? -1
+      : 1;
+  }
+
   function getTime() {
     return (
-      Math.sin(
-        audioAnalyser.midSection.average - audioAnalyser.midSection.energy
-      ) / 10
+      (audioAnalyser.midSection.average / audioAnalyser.midSection.energy) *
+      getDirection()
     );
   }
 
   function getFactor() {
-    return (
+    return Math.max(
       (audioAnalyser.analyserData.averageFrequency / 255) *
-      audioAnalyser.highSection.average
+        (audioAnalyser.highSection.energy / 2),
+      1
     );
   }
 
   function getIterations() {
-    return Math.floor(
+    return Math.ceil(
       Math.abs(
         audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
       ) / 10
@@ -35,11 +42,11 @@ const LiveMode4 = ({ opacity }: ModeProps) => {
   }
 
   function getEnergy() {
-    return audioAnalyser.midSection.energy / 255;
+    return Math.min((audioAnalyser.analyserData.averageFrequency / 255) * 2, 1);
   }
 
   function getGlow() {
-    return (audioAnalyser.kickSection.average / 255) * 2;
+    return (audioAnalyser.bassSection.average / 255) * 5;
   }
 
   function getDeltaFactor() {

@@ -16,15 +16,23 @@ const LiveMode4 = ({ opacity }: ModeProps) => {
 
   function getTime() {
     return (
-      (audioAnalyser.midSection.average / audioAnalyser.midSection.energy) *
-      getDirection()
+      Math.max(
+        (audioAnalyser.midSection.average / audioAnalyser.midSection.energy +
+          audioAnalyser.snareSection.average /
+            audioAnalyser.snareSection.energy +
+          audioAnalyser.kickSection.average / audioAnalyser.kickSection.energy +
+          audioAnalyser.bassSection.average /
+            audioAnalyser.bassSection.energy) /
+          4,
+        0.5
+      ) * getDirection()
     );
   }
 
   function getFactor() {
     return Math.max(
       (audioAnalyser.analyserData.averageFrequency / 255) *
-        (audioAnalyser.highSection.energy / 2),
+        (audioAnalyser.highSection.average / 4),
       1
     );
   }
@@ -42,11 +50,11 @@ const LiveMode4 = ({ opacity }: ModeProps) => {
   }
 
   function getEnergy() {
-    return Math.min((audioAnalyser.analyserData.averageFrequency / 255) * 2, 1);
+    return (audioAnalyser.analyserData.averageFrequency / 255) * 2;
   }
 
   function getGlow() {
-    return (audioAnalyser.bassSection.average / 255) * 5;
+    return (audioAnalyser.bassSection.average / 255) * 10;
   }
 
   function getDeltaFactor() {

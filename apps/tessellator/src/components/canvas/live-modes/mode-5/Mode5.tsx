@@ -16,11 +16,17 @@ const LiveMode5 = ({ opacity }: ModeProps) => {
     );
   }
 
+  function getDirection() {
+    return audioAnalyser.snareSection.energy >=
+      audioAnalyser.snareSection.average
+      ? -1
+      : 1;
+  }
+
   function getTime() {
     return (
-      Math.sin(
-        audioAnalyser.midSection.average - audioAnalyser.midSection.energy
-      ) * 5
+      (audioAnalyser.kickSection.average / audioAnalyser.kickSection.energy) *
+      getDirection()
     );
   }
 

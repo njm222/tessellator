@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Tomorrow } from "next/font/google";
 
 import { Layout } from "../components/layout/Layout";
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={tomorrow.className}>
         <Layout>{children}</Layout>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

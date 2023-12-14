@@ -135,11 +135,11 @@ function LandingContent({
           Spotify
         </FlexLink>
         <FlexLink
-          color={new Color("#5A5A5A")}
+          color={new Color("#1DB954")}
           marginRight={0}
           marginTop={0}
           onClick={(target) => handleNavigation(target, "/live")}
-          overlayText="building"
+          overlayText="alpha"
         >
           Live audio
         </FlexLink>

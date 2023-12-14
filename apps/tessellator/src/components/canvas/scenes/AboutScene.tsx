@@ -10,7 +10,6 @@ import { Color, Group, Vector2, Vector3 } from "three";
 
 import { copyToClipBoard, openNewTabLink } from "../../../helpers/global";
 import Blackhole from "../../models/Blackhole";
-import Particles from "../Particles";
 import { FlexLink } from "../text/FlexLink";
 import { FlexText } from "../text/FlexText";
 import { Text } from "../text/Text";
@@ -23,7 +22,7 @@ export const AboutScene = () => {
   const [isScrolling, setIsScrolling] = useState(0);
 
   useEffect(() => {
-    camera.position.set(100, 0, 0);
+    camera.position.set(0, 0, 100);
     camera.lookAt(0, 0, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -61,10 +60,9 @@ export const AboutScene = () => {
   return (
     <>
       {/** @ts-ignore incompatible types */}
-      <a.group ref={ref} rotation={[0, Math.PI / 2, 0]} {...bind()}>
+      <a.group ref={ref} {...bind()}>
         <AboutContent />
       </a.group>
-      <Particles count={10000} isNavigating={false} />
 
       <EffectComposer disableNormalPass multisampling={0}>
         <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />

@@ -57,7 +57,7 @@ export default function Page() {
       <WelcomeUser />
       <Player />
       <BackNavigationButton />
-      <Settings />
+      <Settings spotify />
     </DefaultLayout>
   );
 }

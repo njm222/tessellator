@@ -141,7 +141,7 @@ function LandingContent({
           onClick={(target) => handleNavigation(target, "/live")}
           overlayText="alpha"
         >
-          Live audio
+          Live
         </FlexLink>
       </Box>
       <Box flexDirection="row" justify="center" marginTop={20} width="100%">

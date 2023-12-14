@@ -1,15 +1,10 @@
 import { useState } from "react";
 import Typewriter from "typewriter-effect";
 
-import { usePlayer } from "../../utils/playerContext";
-import { useGetUserInformation } from "../../utils/spotify";
-
 export function WelcomeUser() {
-  const { player } = usePlayer();
-  const { isLoading, data, isError } = useGetUserInformation();
   const [rendered, setRendered] = useState(false);
 
-  if (rendered || isLoading || isError || !(player as any).context) return null;
+  if (rendered) return null;
 
   return (
     <div className="text welcomeContainer">
@@ -17,22 +12,30 @@ export function WelcomeUser() {
         onInit={(typewriter) => {
           typewriter
             .start()
-            .typeString(`hello <strong>${data?.display_name}</strong>, `)
+            .typeString(`hello, `)
+            .pauseFor(150)
+            .typeString("welcome to tessellator.")
+            .pauseFor(250)
+            .deleteAll()
+            .pauseFor(250)
+            .typeString(
+              "The visualizer will pick up audio from your microphone."
+            )
             .pauseFor(500)
-            .typeString("welcome to tessellator...")
+            .deleteAll()
+            .pauseFor(250)
+            .typeString(
+              "You can press [0, 1, 2, 3, 4, 5] to change the visualizer mode,"
+            )
+            .pauseFor(750)
+            .deleteAll()
+            .pauseFor(150)
+            .typeString("and [q, a, z, w] to change the color mode")
+            .pauseFor(750)
+            .deleteAll()
+            .pauseFor(250)
+            .typeString("Jump <strong>[scroll]</strong> into the portal below.")
             .pauseFor(1000)
-            .deleteAll()
-            .pauseFor(250)
-            .typeString(
-              "click <strong>play</strong> on the player below to begin"
-            )
-            .pauseFor(2500)
-            .deleteAll()
-            .pauseFor(250)
-            .typeString(
-              "then jump <strong>[scroll]</strong> into the portal below"
-            )
-            .pauseFor(3500)
             .deleteAll()
             .pauseFor(250)
             .callFunction(({ elements: { container } }) => {
@@ -41,7 +44,7 @@ export function WelcomeUser() {
               setRendered(true);
             });
         }}
-        options={{ delay: 50, deleteSpeed: 1 }}
+        options={{ delay: 50 }}
       />
     </div>
   );

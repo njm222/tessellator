@@ -64,7 +64,7 @@ export function FlexLink({
     <group {...props}>
       <Box marginRight={marginRight} marginTop={marginTop} ref={ref}>
         <Box onPointerOver={() => setHover(true)}>
-          <Text color={color} hover scale={scale}>
+          <Text wireframe={true} color={color} hover scale={scale}>
             {children}
           </Text>
         </Box>

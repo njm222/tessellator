@@ -49,7 +49,7 @@ const View = forwardRef<HTMLDivElement, ViewProps>(
         <Three>
           <ViewImpl track={localRef as MutableRefObject<HTMLDivElement>}>
             {children}
-            {orbit && <OrbitControls />}
+            {orbit && <OrbitControls enablePan={false} />}
           </ViewImpl>
         </Three>
       </>

@@ -8,8 +8,8 @@ import { ViewProps } from "../../components/canvas/View";
 import BackNavigationButton from "../../components/dom/BackNavigationButton";
 import { Player } from "../../components/dom/player/Player";
 import { Settings } from "../../components/dom/settings/Settings";
-import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
 import { WelcomeSpotifyUser } from "../../components/dom/WelcomeSpotifyUser";
+import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
 
 const Common = dynamic<{}>(
   () => import("../../components/canvas/View").then((mod) => mod.Common),

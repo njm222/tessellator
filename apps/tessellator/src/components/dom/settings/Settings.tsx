@@ -22,7 +22,7 @@ export function Settings({ spotify = false }: { spotify?: boolean }) {
         />
       </div>
       <div className={`${!open ? "hidden" : ""}`}>
-        <SettingsOptions spotify={spotify} handleClose={() => setOpen(false)} />
+        <SettingsOptions handleClose={() => setOpen(false)} spotify={spotify} />
       </div>
     </>
   );

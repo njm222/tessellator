@@ -25,13 +25,12 @@ export function AnalyserOptions() {
       "Analyzer Options": folder(
         {
           source: {
-            value: "Change Source",
             options: sources.reduce((acc, curr) => {
               acc[curr.label] = curr;
               return acc;
             }, {} as { [key: string]: MediaDeviceInfo }),
             onChange: (source) => {
-              if (!source || source === "Change Source") return;
+              if (!source) return;
               audioAnalyser.updateSource(source.kind, source.deviceId);
             },
             render: () => {
@@ -39,8 +38,9 @@ export function AnalyserOptions() {
                 if (!audioAnalyser.source) return;
                 setSources(await audioAnalyser.getSources());
               })();
-              return true;
+              return !!sources.length;
             },
+            hint: "Change the audio source of the analyzer",
           },
           fftSize: {
             value: fftSize,

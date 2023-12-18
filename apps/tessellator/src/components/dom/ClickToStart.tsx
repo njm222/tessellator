@@ -9,7 +9,7 @@ export default function ClickToStart() {
   const [start, setStart] = useState(false);
 
   function handleClick() {
-    audioAnalyser.setup(analyserOptions);
+    audioAnalyser.setup(analyserOptions, "input");
     setStart(true);
   }
 

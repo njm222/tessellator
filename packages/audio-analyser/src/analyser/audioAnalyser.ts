@@ -53,7 +53,7 @@ export default class AudioAnalyser {
     });
   }
 
-  setup(props: AudioAnalyserProps) {
+  setup(props: AudioAnalyserProps, source: "input" | "output") {
     this.context = new AudioContext();
 
     this.analyser = this.context.createAnalyser();
@@ -66,13 +66,21 @@ export default class AudioAnalyser {
       navigator.mediaDevices
         .enumerateDevices()
         .then((devices) => {
-          devices = devices.filter((d) => d.kind === "audiooutput");
-          const constraints = { audio: { deviceId: "default" } };
-          navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-            this.source = this.context.createMediaStreamSource(stream);
-            // connect source to the analyser
-            this.source.connect(this.analyser);
-          });
+          const device = devices.find(
+            (d) =>
+              d.kind === (source === "input" ? "audioinput" : "audiooutput") &&
+              d.deviceId === "default"
+          );
+          if (!device) {
+            throw new Error("No device found");
+          }
+          navigator.mediaDevices
+            .getUserMedia({ audio: { deviceId: device.deviceId } })
+            .then((stream) => {
+              this.source = this.context.createMediaStreamSource(stream);
+              // connect source to the analyser
+              this.source.connect(this.analyser);
+            });
         })
         .catch(function (err) {
           throw new Error(err);
@@ -86,9 +94,14 @@ export default class AudioAnalyser {
     navigator.mediaDevices
       .enumerateDevices()
       .then((devices) => {
-        devices = devices.filter((d) => d.kind === kind);
+        const device = devices.find(
+          (d) => d.kind === kind && d.deviceId === deviceId
+        );
+        if (!device) {
+          throw new Error("No device found");
+        }
         navigator.mediaDevices
-          .getUserMedia({ audio: { deviceId } })
+          .getUserMedia({ audio: { deviceId: device.deviceId } })
           .then((stream) => {
             this.source = this.context.createMediaStreamSource(stream);
             this.source.connect(this.analyser);
@@ -104,9 +117,17 @@ export default class AudioAnalyser {
     await navigator.mediaDevices
       .enumerateDevices()
       .then((devices) => {
-        sources = devices.filter(
-          ({ kind }) => kind === "audiooutput" || kind === "audioinput"
-        );
+        sources = devices.reduce((acc, curr) => {
+          if (acc.find(({ deviceId }) => deviceId === curr.deviceId)) {
+            return acc;
+          }
+
+          if (curr.kind === "audiooutput" || curr.kind === "audioinput") {
+            acc.push(curr);
+          }
+          return acc;
+        }, [] as MediaDeviceInfo[]);
+        [];
       })
       .catch(function (err) {
         throw new Error(err);

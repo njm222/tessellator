@@ -1,6 +1,7 @@
 import { FrequencySection } from "../frequency-section/frequencySectionTypes";
 
 export interface AudioAnalyserInterface {
+  allowSourceChange: boolean;
   analyserData: AudioAnalyserData;
   context: AudioContext;
   analyser: AnalyserNode;

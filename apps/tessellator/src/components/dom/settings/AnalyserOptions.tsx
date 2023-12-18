@@ -34,6 +34,7 @@ export function AnalyserOptions() {
               audioAnalyser.updateSource(source.kind, source.deviceId);
             },
             render: () => {
+              if (!audioAnalyser.allowSourceChange) return false;
               (async () => {
                 if (!audioAnalyser.source) return;
                 setSources(await audioAnalyser.getSources());

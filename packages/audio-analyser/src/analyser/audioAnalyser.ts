@@ -4,6 +4,7 @@ import { defaultAnalyserOptions } from "..";
 import { AudioAnalyserData, AudioAnalyserProps } from "./audioAnalyserTypes";
 
 export default class AudioAnalyser {
+  allowSourceChange!: boolean;
   context!: AudioContext;
   analyser!: AnalyserNode;
   source!: MediaStreamAudioSourceNode;
@@ -54,6 +55,7 @@ export default class AudioAnalyser {
   }
 
   setup(props: AudioAnalyserProps, source: "input" | "output") {
+    this.allowSourceChange = source === "input";
     this.context = new AudioContext();
 
     this.analyser = this.context.createAnalyser();

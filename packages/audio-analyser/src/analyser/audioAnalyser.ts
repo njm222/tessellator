@@ -69,7 +69,6 @@ export default class AudioAnalyser {
           devices = devices.filter((d) => d.kind === "audiooutput");
           const constraints = { audio: { deviceId: "default" } };
           navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-            // attach source to the mic
             this.source = this.context.createMediaStreamSource(stream);
             // connect source to the analyser
             this.source.connect(this.analyser);
@@ -81,6 +80,39 @@ export default class AudioAnalyser {
     } else {
       throw new Error("getUserMedia not supported on your browser!");
     }
+  }
+
+  updateSource(kind: MediaDeviceKind, deviceId: string) {
+    navigator.mediaDevices
+      .enumerateDevices()
+      .then((devices) => {
+        devices = devices.filter((d) => d.kind === kind);
+        navigator.mediaDevices
+          .getUserMedia({ audio: { deviceId } })
+          .then((stream) => {
+            this.source = this.context.createMediaStreamSource(stream);
+            this.source.connect(this.analyser);
+          });
+      })
+      .catch(function (err) {
+        throw new Error(err);
+      });
+  }
+
+  async getSources() {
+    let sources: MediaDeviceInfo[] = [];
+    await navigator.mediaDevices
+      .enumerateDevices()
+      .then((devices) => {
+        sources = devices.filter(
+          ({ kind }) => kind === "audiooutput" || kind === "audioinput"
+        );
+      })
+      .catch(function (err) {
+        throw new Error(err);
+      });
+
+    return sources;
   }
 
   destroy() {

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { defaultAnalyserOptions } from "@tessellator/audio-analyser";
 import { useToast } from "@tessellator/ui";
 import { button, folder, LevaInputs, useControls } from "leva";
@@ -15,13 +15,33 @@ export function AnalyserOptions() {
       minDecibels,
       maxDecibels,
     },
+    audioAnalyser,
     setAnalyserOptions,
   } = useAnalyser();
+  const [sources, setSources] = useState<MediaDeviceInfo[]>([]);
 
   const [analyzerValues, setAnalyzerValues] = useControls(
     () => ({
       "Analyzer Options": folder(
         {
+          source: {
+            value: "Change Source",
+            options: sources.reduce((acc, curr) => {
+              acc[curr.label] = curr;
+              return acc;
+            }, {} as { [key: string]: MediaDeviceInfo }),
+            onChange: (source) => {
+              if (!source || source === "Change Source") return;
+              audioAnalyser.updateSource(source.kind, source.deviceId);
+            },
+            render: () => {
+              (async () => {
+                if (!audioAnalyser.source) return;
+                setSources(await audioAnalyser.getSources());
+              })();
+              return true;
+            },
+          },
           fftSize: {
             value: fftSize,
             options: [512, 1024, 2048],
@@ -62,10 +82,12 @@ export function AnalyserOptions() {
             toast.open("Reset analyser options to default", { variant: "" });
           }),
         },
-        { collapsed: true }
+        {
+          collapsed: true,
+        }
       ),
     }),
-    [minDecibels, maxDecibels]
+    [minDecibels, maxDecibels, sources]
   );
 
   useEffect(() => {

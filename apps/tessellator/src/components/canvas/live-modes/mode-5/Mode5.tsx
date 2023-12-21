@@ -8,16 +8,7 @@ const LiveMode5 = ({ opacity }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
 
   function getBeatCount() {
-    return Math.abs(
-      audioAnalyser.snareSection.energy - audioAnalyser.snareSection.average
-    ) > audioAnalyser.highSection.average
-      ? Math.sin(
-          Math.abs(
-            audioAnalyser.snareSection.average -
-              audioAnalyser.snareSection.energy
-          ) / audioAnalyser.analyserData.averageFrequency
-        ) * 2
-      : 0;
+    return 0;
   }
 
   function getDirection() {

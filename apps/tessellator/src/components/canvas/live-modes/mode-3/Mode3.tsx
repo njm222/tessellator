@@ -10,11 +10,11 @@ const LiveMode3 = ({ opacity }: ModeProps) => {
   const { audioAnalyser } = useAnalyser();
   const { width } = useThree((state) => state.viewport);
 
-  function getTime() {
+  function getStrengthFactor() {
     return (
       Math.abs(
         audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
-      ) / 10
+      ) / audioAnalyser.highSection.average
     );
   }
 
@@ -22,11 +22,14 @@ const LiveMode3 = ({ opacity }: ModeProps) => {
     return (audioAnalyser.analyserData.averageFrequency / 255) * 2;
   }
 
-  function getStrengthFactor() {
-    return (
-      Math.abs(
-        audioAnalyser.midSection.average - audioAnalyser.midSection.energy
-      ) / 5
+  function getTime() {
+    return Math.max(
+      (audioAnalyser.midSection.average / audioAnalyser.midSection.energy +
+        audioAnalyser.snareSection.average / audioAnalyser.snareSection.energy +
+        audioAnalyser.kickSection.average / audioAnalyser.kickSection.energy +
+        audioAnalyser.bassSection.average / audioAnalyser.bassSection.energy) /
+        4,
+      0.5
     );
   }
 

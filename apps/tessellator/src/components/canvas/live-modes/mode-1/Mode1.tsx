@@ -15,7 +15,7 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
     return (
       Math.abs(
         audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
-      ) * 10
+      ) * audioAnalyser.highSection.energy
     );
   }
 
@@ -50,17 +50,18 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
   }
 
   function getP() {
-    return Math.abs(
-      (audioAnalyser.kickSection?.average - audioAnalyser.kickSection?.energy) /
-        (audioAnalyser.bassSection?.average - audioAnalyser.bassSection?.energy)
+    return (
+      Math.abs(
+        audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
+      ) / audioAnalyser.highSection.average
     );
   }
 
   function getQ() {
-    return Math.abs(
-      (audioAnalyser.snareSection?.average -
-        audioAnalyser.snareSection?.energy) /
-        (audioAnalyser.bassSection?.average - audioAnalyser.bassSection?.energy)
+    return (
+      Math.abs(
+        audioAnalyser.kickSection.average - audioAnalyser.kickSection.energy
+      ) / audioAnalyser.highSection.average
     );
   }
 

@@ -4,7 +4,6 @@ import { defaultAnalyserOptions } from "..";
 import { AudioAnalyserData, AudioAnalyserProps } from "./audioAnalyserTypes";
 
 export default class AudioAnalyser {
-  allowSourceChange!: boolean;
   context!: AudioContext;
   analyser!: AnalyserNode;
   source!: MediaStreamAudioSourceNode;
@@ -55,7 +54,6 @@ export default class AudioAnalyser {
   }
 
   setup(props: AudioAnalyserProps, source: "input" | "output") {
-    this.allowSourceChange = source === "input";
     this.context = new AudioContext();
 
     this.analyser = this.context.createAnalyser();
@@ -114,7 +112,7 @@ export default class AudioAnalyser {
       });
   }
 
-  async getSources() {
+  async getSources(kind: "all" | "output" | "input") {
     let sources: MediaDeviceInfo[] = [];
     await navigator.mediaDevices
       .enumerateDevices()
@@ -124,9 +122,18 @@ export default class AudioAnalyser {
             return acc;
           }
 
-          if (curr.kind === "audiooutput" || curr.kind === "audioinput") {
+          if (curr.kind === "videoinput") {
+            return acc;
+          }
+
+          if (
+            (kind === "output" && curr.kind === "audiooutput") ||
+            (kind === "input" && curr.kind === "audioinput") ||
+            kind === "all"
+          ) {
             acc.push(curr);
           }
+
           return acc;
         }, [] as MediaDeviceInfo[]);
         [];

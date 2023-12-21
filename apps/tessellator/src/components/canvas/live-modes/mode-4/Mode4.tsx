@@ -30,10 +30,11 @@ const LiveMode4 = ({ opacity }: ModeProps) => {
   }
 
   function getFactor() {
-    return Math.max(
+    return (
       (audioAnalyser.analyserData.averageFrequency / 255) *
-        (audioAnalyser.highSection.average / 4),
-      1
+      Math.abs(
+        audioAnalyser.midSection.average - audioAnalyser.midSection.energy
+      )
     );
   }
 
@@ -41,7 +42,7 @@ const LiveMode4 = ({ opacity }: ModeProps) => {
     return Math.ceil(
       Math.abs(
         audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
-      ) / 10
+      ) / audioAnalyser.highSection.average
     );
   }
 

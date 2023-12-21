@@ -50,8 +50,7 @@ const SpotifyMode4 = ({ opacity }: ModeProps) => {
         : audioAnalyser.midSection.average) *
       trackFeatures.energy *
       trackFeatures.danceability *
-      (1 - trackFeatures.valence) *
-      0.02 *
+      0.01 *
       getDirection()
     );
   }
@@ -62,8 +61,8 @@ const SpotifyMode4 = ({ opacity }: ModeProps) => {
       segment?.pitches?.reduce((acc, curr) => {
         acc += curr;
         return acc;
-      }, 0) || 15;
-    return 1 + pitchTotal / 10;
+      }, 0) || 12;
+    return 1 + pitchTotal / 13;
   }
 
   function getIterations() {

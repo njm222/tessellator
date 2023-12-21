@@ -9,7 +9,7 @@ const LiveMode5 = ({ opacity }: ModeProps) => {
 
   function getBeatCount() {
     return Math.abs(
-      audioAnalyser.midSection.energy - audioAnalyser.midSection.average
+      audioAnalyser.snareSection.energy - audioAnalyser.snareSection.average
     ) > audioAnalyser.highSection.average
       ? Math.sin(
           Math.abs(
@@ -34,7 +34,8 @@ const LiveMode5 = ({ opacity }: ModeProps) => {
   function getNoise() {
     return (
       (audioAnalyser.bassSection.average / 255) *
-      (audioAnalyser.highSection.average / audioAnalyser.highSection.energy)
+      (audioAnalyser.highSection.average / audioAnalyser.highSection.energy) *
+      2
     );
   }
 

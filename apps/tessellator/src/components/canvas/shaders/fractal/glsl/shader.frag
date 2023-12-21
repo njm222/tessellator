@@ -28,9 +28,9 @@ void main()
 
     float d = (length(vUv1) * exp(-length(vUv0)));
 
-    d = abs(sin(d*uGlow + uTime)/uGlow);
+    d = abs(sin(d*(uGlow + uTime))/uGlow);
 
-    d = pow(((1.5-(uGlow*0.1))*(uHigh*0.0005)*(0.5+uEnergy)) / d, 0.25 + uFactor);
+    d = pow(((1.5-(uGlow*0.1))*(uHigh*0.01)*(0.5+uEnergy)) / d, 0.25 + uFactor);
 
     finalColor += col * d;
   }

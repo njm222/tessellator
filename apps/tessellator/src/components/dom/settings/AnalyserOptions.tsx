@@ -6,7 +6,7 @@ import { button, folder, LevaInputs, useControls } from "leva";
 import { LocalStorageKeys } from "../../../config/constants";
 import { useAnalyser } from "../../../utils/analyserContext";
 
-export function AnalyserOptions() {
+export function AnalyserOptions({ spotify }: { spotify: boolean }) {
   const toast = useToast();
   const {
     analyserOptions: {
@@ -34,10 +34,11 @@ export function AnalyserOptions() {
               audioAnalyser.updateSource(source.kind, source.deviceId);
             },
             render: () => {
-              if (!audioAnalyser.allowSourceChange) return false;
               (async () => {
                 if (!audioAnalyser.source) return;
-                setSources(await audioAnalyser.getSources());
+                setSources(
+                  await audioAnalyser.getSources(spotify ? "output" : "all")
+                );
               })();
               return !!sources.length;
             },

@@ -44,7 +44,7 @@ function SettingsOptions({
         oneLineLabels
         titleBar={{ title: "Settings", drag: false, filter: false }}
       />
-      <AnalyserOptions />
+      <AnalyserOptions spotify={spotify} />
       {spotify ? (
         <>
           <VisualizerOptions />

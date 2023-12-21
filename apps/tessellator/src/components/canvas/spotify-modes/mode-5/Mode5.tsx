@@ -73,7 +73,7 @@ const SpotifyMode5 = ({ opacity }: ModeProps) => {
       ? Math.abs(segment.timbre[11])
       : 1;
 
-    return numIteration / (numIteration > 100 ? 20 : 10);
+    return numIteration / (numIteration > 100 ? 25 : 15);
   }
 
   function getEnergy() {

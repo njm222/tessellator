@@ -17,6 +17,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${environment.frontendUrl}/live`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${environment.frontendUrl}/about`,
       lastModified: new Date(),
       changeFrequency: "monthly",

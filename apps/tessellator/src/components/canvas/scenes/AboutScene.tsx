@@ -181,7 +181,7 @@ function Content({ color }: { color: Color }) {
   const postLinkContent =
     "set in San Francisco, where I was blown away and knew I had to bring something like it to everyone.";
   const aboutContent =
-    "Tessellator is an interactive 3D music visualizer that has been developed to enhance your experience while listening to your favourite tracks. Tessellator uses the live audio from your microphone to draw the visualizations in realtime.";
+    "Tessellator is an open source interactive 3D music visualizer that has been developed to enhance your experience while listening to your favorite tracks. Tessellator uses the live audio from your device or the microphone to draw the visualizations in realtime.";
 
   return (
     <>

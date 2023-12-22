@@ -45,7 +45,7 @@ export default class FrequencySection implements IFrequencySection {
   updateFrequencySection(frequencyData: Uint8Array) {
     let totalEnergy = 0;
     let totalLevel = 0;
-    let totalDeviation = 0;
+    let variance = 0;
 
     let sectionLength = 0;
     // calc sectionLength & totalEnergy
@@ -60,17 +60,23 @@ export default class FrequencySection implements IFrequencySection {
     this.energy = totalEnergy / Math.max(sectionLength, 1);
     this.data[this.counter++] = this.energy;
 
-    // calc averages
+    // calc average
     for (let i = 0; i < this.data.length; i++) {
       totalLevel += this.data[i];
-      totalDeviation += Math.pow(this.data[i], 2);
     }
-    // set averages
-    const n = Math.max(this.data.length - 1, 1);
+    // set average
+    const n = Math.max(this.data.length, 1);
     this.average = totalLevel / n;
-    this.deviation = Math.sqrt(
-      Math.abs(Math.abs(totalDeviation / n) - Math.pow(this.average, 2))
-    );
+
+    // calc deviation
+    for (let i = 0; i < this.data.length; i++) {
+      variance += Math.pow(this.data[i] - this.average, 2);
+    }
+
+    this.deviation = Math.sqrt(variance / n);
+    // this.deviation = Math.sqrt(
+    //   Math.abs(Math.abs(totalDeviation / n) - Math.pow(this.average, 2))
+    // );
 
     // reset counter
     if (this.counter >= this.counterLimit) {

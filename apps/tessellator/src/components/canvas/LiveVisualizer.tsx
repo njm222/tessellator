@@ -22,7 +22,7 @@ const LiveVisualizer = () => {
     // change mode on deviation
     if (
       audioAnalyser.bassSection.energy - audioAnalyser.bassSection.average >
-      audioAnalyser.bassSection.deviation * 3
+      audioAnalyser.bassSection.deviation * 3.5
     ) {
       if (randomizeMode) {
         if (modeChangeRef.current) {

@@ -13,7 +13,7 @@ describe("FrequencySection", () => {
     expect(section.counter).toBe(0);
     expect(section.counterLimit).toBe(32);
     expect(section.average).toBe(0);
-    expect(section.data).toEqual(new Array(32).fill(0));
+    expect(section.data).toEqual(new Array(32).fill(1));
     expect(section.deviation).toBe(0);
     expect(section.energy).toBe(0);
     expect(section.lowerRange).toBe(0);
@@ -36,9 +36,9 @@ describe("FrequencySection", () => {
 
     section.updateFrequencySection(mockFrequencyData);
 
-    expect(section.average).toBeCloseTo(0.032);
+    expect(section.average).toBe(1);
     expect(section.energy).toBe(1);
-    expect(section.deviation).toBeCloseTo(0.82);
+    expect(section.deviation).toBe(0);
     expect(section.data[0]).toBe(1);
     expect(section.counter).toBe(1);
   });

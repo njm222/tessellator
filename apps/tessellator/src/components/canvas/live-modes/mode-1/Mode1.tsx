@@ -15,12 +15,15 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
     return (
       Math.abs(
         audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
-      ) * audioAnalyser.highSection.energy
+      ) * 5
     );
   }
 
   function getNoise() {
-    return (audioAnalyser.analyserData.averageFrequency / 255) * 2;
+    return (
+      (audioAnalyser.analyserData.averageFrequency / 255) *
+      (audioAnalyser.analyserData.peak / 50)
+    );
   }
 
   function getRadius() {
@@ -61,7 +64,7 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
     return (
       Math.abs(
         audioAnalyser.kickSection.average - audioAnalyser.kickSection.energy
-      ) / audioAnalyser.highSection.average
+      ) / audioAnalyser.highSection.energy
     );
   }
 

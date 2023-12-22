@@ -215,7 +215,7 @@ const Mode1 = ({
 
     const dynamicDelta = delta * getDeltaFactor();
 
-    updateTorusProperties(dynamicDelta / 1);
+    updateTorusProperties(dynamicDelta);
 
     const [indices, vertices, normals, uvs] = getTorusBufferAttributes(
       radius.current,

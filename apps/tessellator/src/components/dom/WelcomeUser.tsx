@@ -19,7 +19,7 @@ export function WelcomeUser() {
             .deleteAll()
             .pauseFor(250)
             .typeString(
-              "The visualizer will pick up audio from your microphone."
+              "The visualizer will pick up audio from your selected source."
             )
             .pauseFor(500)
             .deleteAll()

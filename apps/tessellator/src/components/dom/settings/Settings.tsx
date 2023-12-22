@@ -45,12 +45,8 @@ function SettingsOptions({
         titleBar={{ title: "Settings", drag: false, filter: false }}
       />
       <AnalyserOptions spotify={spotify} />
-      {spotify ? (
-        <>
-          <VisualizerOptions />
-          <ModeOptions />
-        </>
-      ) : null}
+      <VisualizerOptions />
+      <ModeOptions />
     </>
   );
 }

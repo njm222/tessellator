@@ -12,7 +12,6 @@ import LiveMode5 from "./mode-5/Mode5";
 export function LiveModes() {
   const { modeKey } = useControls();
 
-  console.log(modeKey);
   return (
     <Suspense>
       {modeKey === 0 ? <LiveMode0 opacity={0 === modeKey ? 1 : 0} /> : null}

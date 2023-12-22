@@ -24,7 +24,7 @@ export default class FrequencySection implements IFrequencySection {
     this.energy = 0;
     this.counter = 0;
     this.counterLimit = counterLimit;
-    this.data = new Array(counterLimit).fill(0);
+    this.data = new Array(counterLimit).fill(1);
     this.lowerIndex = 0;
     this.upperIndex = 0;
     this.lowerRange = props.lowerRange;
@@ -66,10 +66,10 @@ export default class FrequencySection implements IFrequencySection {
       totalDeviation += Math.pow(this.data[i], 2);
     }
     // set averages
-    this.average = totalLevel / Math.max(this.data.length - 1, 1);
-    this.deviation = Math.abs(
-      Math.sqrt(Math.max(totalDeviation / (this.data.length - 1), 0)) -
-        totalLevel * totalLevel
+    const n = Math.max(this.data.length - 1, 1);
+    this.average = totalLevel / n;
+    this.deviation = Math.sqrt(
+      Math.abs(Math.abs(totalDeviation / n) - Math.pow(this.average, 2))
     );
 
     // reset counter

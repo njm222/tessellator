@@ -65,17 +65,23 @@ const Mode4 = ({
 
     uHigh.value = MathUtils.lerp(uHigh.value, getHigh(), dynamicDelta);
 
+    const time = getTime();
     uTime.value = MathUtils.lerp(
       uTime.value,
-      uTime.value + getTime(),
+      uTime.value + (isNaN(time) || !isFinite(time) ? 0 : time),
       dynamicDelta
     );
 
     uFactor.value = MathUtils.lerp(uFactor.value, getFactor(), dynamicDelta);
 
+    const iterations = getIterations();
     uIterations.value =
       Math.floor(
-        MathUtils.lerp(uIterations.value, getIterations(), dynamicDelta)
+        MathUtils.lerp(
+          uIterations.value,
+          isNaN(iterations) ? 1 : iterations,
+          dynamicDelta
+        )
       ) + 1;
   });
 

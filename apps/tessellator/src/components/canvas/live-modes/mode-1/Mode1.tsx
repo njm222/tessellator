@@ -56,7 +56,7 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
     return (
       Math.abs(
         audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
-      ) / audioAnalyser.highSection.average
+      ) / Math.max(audioAnalyser.highSection.average, 1)
     );
   }
 
@@ -64,7 +64,7 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
     return (
       Math.abs(
         audioAnalyser.kickSection.average - audioAnalyser.kickSection.energy
-      ) / audioAnalyser.highSection.energy
+      ) / Math.max(audioAnalyser.highSection.energy, 1)
     );
   }
 

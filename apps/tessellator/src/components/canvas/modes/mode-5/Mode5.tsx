@@ -69,17 +69,23 @@ const Mode5 = ({
       dynamicDelta
     );
 
+    const time = getTime();
     uTime.value = MathUtils.lerp(
       uTime.value,
-      uTime.value + getTime(),
+      uTime.value + (isNaN(time) || !isFinite(time) ? 0 : time),
       dynamicDelta
     );
 
-    uNoise.value = MathUtils.lerp(uNoise.value, getNoise(), dynamicDelta);
+    // uNoise.value = MathUtils.lerp(uNoise.value, getNoise(), dynamicDelta);
 
+    const iterations = getIterations();
     uIterations.value =
       Math.floor(
-        MathUtils.lerp(uIterations.value, getIterations(), dynamicDelta)
+        MathUtils.lerp(
+          uIterations.value,
+          isNaN(iterations) ? 1 : iterations,
+          dynamicDelta
+        )
       ) + 1;
   });
 

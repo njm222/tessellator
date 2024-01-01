@@ -51,9 +51,9 @@ export default function Page() {
         <LiveScene />
         <Common />
       </View>
+      <ClickToStart />
       <BackNavigationButton />
       <Settings />
-      <ClickToStart />
     </DefaultLayout>
   );
 }

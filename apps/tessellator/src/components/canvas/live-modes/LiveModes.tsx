@@ -14,12 +14,12 @@ export function LiveModes() {
 
   return (
     <Suspense>
-      {modeKey === 0 ? <LiveMode0 opacity={0 === modeKey ? 1 : 0} /> : null}
-      {modeKey === 1 ? <LiveMode1 opacity={1 === modeKey ? 1 : 0} /> : null}
-      {modeKey === 2 ? <LiveMode2 opacity={2 === modeKey ? 1 : 0} /> : null}
-      {modeKey === 3 ? <LiveMode3 opacity={3 === modeKey ? 1 : 0} /> : null}
-      {modeKey === 4 ? <LiveMode4 opacity={4 === modeKey ? 1 : 0} /> : null}
-      {modeKey === 5 ? <LiveMode5 opacity={5 === modeKey ? 1 : 0} /> : null}
+      <LiveMode0 opacity={0 === modeKey ? 1 : 0} />
+      <LiveMode1 opacity={1 === modeKey ? 1 : 0} />
+      <LiveMode2 opacity={2 === modeKey ? 1 : 0} />
+      <LiveMode3 opacity={3 === modeKey ? 1 : 0} />
+      <LiveMode4 opacity={4 === modeKey ? 1 : 0} />
+      <LiveMode5 opacity={5 === modeKey ? 1 : 0} />
     </Suspense>
   );
 }

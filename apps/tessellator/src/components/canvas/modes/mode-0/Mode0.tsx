@@ -5,7 +5,6 @@ import { Color, ColorRepresentation, MathUtils } from "three";
 
 import { TerrainMaterial } from "../../shaders/terrain/TerrainMaterial";
 
-// TODO: mode props
 export type Mode0Props = { getOpacity: () => number } & {
   getColor: () => ColorRepresentation;
   getTime: () => number;
@@ -78,7 +77,7 @@ const Mode0 = ({
   });
 
   return (
-    <mesh position={[0, 0.75, 0]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
+    <mesh position={[0, 1, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
       <planeGeometry args={[vpWidth, vpHeight, 256, 256]} />
       <terrainMaterial depthWrite={false} ref={materialRef} transparent />
     </mesh>

@@ -12,7 +12,6 @@ import {
 
 import { ParticleMaterial } from "../../shaders/particle/ParticleMaterial";
 
-// TODO: mode props
 export type Mode1Props = { getOpacity: () => number } & {
   getColor: () => ColorRepresentation;
   getNoise: () => number;

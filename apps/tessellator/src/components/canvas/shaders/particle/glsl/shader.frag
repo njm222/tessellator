@@ -12,7 +12,7 @@ vec3 palette( float t, vec3 baseColor ) {
 
 void main() {
   float distanceToCenterPoint = distance(gl_PointCoord, vec2(0.5));
-  float strength = pow(1. - distanceToCenterPoint, 10.0);
+  float strength = pow(1. - distanceToCenterPoint, 10.);
   
   vec3 color = palette(vCenterDistance * uNoise, uColor);
   color = mix(vec3(0.0), color, strength * uNoise * 1.618);

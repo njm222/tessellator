@@ -10,7 +10,7 @@ import vertex from "./glsl/shader.vert";
 export const BasicInstanceMaterial = shaderMaterial(
   {
     uColor: new Color("#1db954"),
-    uOpacity: 1,
+    uOpacity: 0,
   },
   vertex,
   fragment

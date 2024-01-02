@@ -9,7 +9,7 @@ import vertex from "./glsl/shader.vert";
 
 export const FractalMaterial2 = shaderMaterial(
   {
-    uOpacity: 1,
+    uOpacity: 0,
     uColor: new Color("#fff"),
     uTime: 0,
     uIterations: 1,
@@ -17,6 +17,7 @@ export const FractalMaterial2 = shaderMaterial(
     uGlow: 1,
     uNoise: 1,
     uBeatCount: 0,
+    // uOffset: 22 / 7,
   },
   vertex,
   fragment

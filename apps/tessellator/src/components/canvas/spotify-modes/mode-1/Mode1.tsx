@@ -13,7 +13,7 @@ const SpotifyMode1 = ({ opacity }: ModeProps) => {
 
   function getDeltaFactor() {
     return (
-      (trackFeatures.tempo / 10) *
+      (trackFeatures.tempo / 100) *
       trackFeatures.energy *
       trackFeatures.danceability
     );
@@ -51,7 +51,7 @@ const SpotifyMode1 = ({ opacity }: ModeProps) => {
 
   function getTube() {
     return (
-      10 +
+      5 +
       Math.abs(
         audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
       ) /
@@ -60,11 +60,11 @@ const SpotifyMode1 = ({ opacity }: ModeProps) => {
   }
 
   function getTubularSegments() {
-    return audioAnalyser.midSection.average;
+    return audioAnalyser.midSection.average / 4;
   }
 
   function getRadialSegments() {
-    return audioAnalyser.analyserData.averageFrequency;
+    return audioAnalyser.analyserData.averageFrequency / 3;
   }
 
   function getP() {

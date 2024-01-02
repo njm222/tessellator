@@ -15,7 +15,7 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
     return (
       Math.abs(
         audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
-      ) * 5
+      ) * 10
     );
   }
 
@@ -36,7 +36,7 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
 
   function getTube() {
     return (
-      10 +
+      5 +
       Math.abs(
         audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
       ) /
@@ -45,11 +45,11 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
   }
 
   function getTubularSegments() {
-    return audioAnalyser.midSection.average;
+    return audioAnalyser.midSection.average / 4;
   }
 
   function getRadialSegments() {
-    return audioAnalyser.analyserData.averageFrequency;
+    return audioAnalyser.analyserData.averageFrequency / 3;
   }
 
   function getP() {

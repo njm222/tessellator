@@ -14,7 +14,7 @@ export const TerrainMaterial = shaderMaterial(
     uXScale: 1,
     uYScale: 1,
     uAmplitude: 1,
-    uOpacity: 1,
+    uOpacity: 0,
   },
   vertex,
   fragment

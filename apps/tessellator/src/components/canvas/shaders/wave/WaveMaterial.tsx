@@ -15,7 +15,7 @@ export const WaveMaterial = shaderMaterial(
     uStrengthFactor: 5.0,
     uColorStart: new Color("#fff"),
     uColorEnd: new Color("#000"),
-    uOpacity: 1,
+    uOpacity: 0,
   },
   vertex,
   fragment

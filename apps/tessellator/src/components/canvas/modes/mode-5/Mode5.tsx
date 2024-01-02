@@ -76,7 +76,12 @@ const Mode5 = ({
       dynamicDelta
     );
 
-    // uNoise.value = MathUtils.lerp(uNoise.value, getNoise(), dynamicDelta);
+    const noise = getNoise();
+    uNoise.value = MathUtils.lerp(
+      uNoise.value,
+      isNaN(noise) ? 0 : noise,
+      dynamicDelta
+    );
 
     const iterations = getIterations();
     uIterations.value =

@@ -34,8 +34,8 @@ const LiveMode0 = ({ opacity }: ModeProps) => {
   function getAmplitude() {
     return (
       Math.abs(
-        audioAnalyser.snareSection?.average - audioAnalyser.snareSection?.energy
-      ) * 5
+        audioAnalyser.midSection?.average - audioAnalyser.midSection?.energy
+      ) / Math.max(audioAnalyser.highSection?.average, 15)
     );
   }
 

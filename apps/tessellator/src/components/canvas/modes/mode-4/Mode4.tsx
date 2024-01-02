@@ -79,7 +79,7 @@ const Mode4 = ({
       Math.floor(
         MathUtils.lerp(
           uIterations.value,
-          isNaN(iterations) ? 1 : iterations,
+          isNaN(iterations) ? 0 : iterations,
           dynamicDelta
         )
       ) + 1;

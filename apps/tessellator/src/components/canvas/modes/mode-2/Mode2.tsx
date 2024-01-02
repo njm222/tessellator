@@ -55,10 +55,7 @@ const Mode2 = ({
     materialRef.current.visible = true;
 
     const dynamicDelta = delta * getDeltaFactor();
-    tempColor.lerp(
-      colorRef.current.set(getColor()),
-      dynamicDelta // delta * 10 * (1 - trackFeatures.energy)
-    );
+    tempColor.lerp(colorRef.current.set(getColor()), dynamicDelta);
 
     uColor.value = tempColor;
 

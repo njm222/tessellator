@@ -13,8 +13,8 @@ const LiveMode5 = ({ opacity }: ModeProps) => {
 
   function getBeatCount() {
     if (
-      audioAnalyser.kickSection.energy - audioAnalyser.kickSection.average >
-      audioAnalyser.kickSection.deviation * 3.5
+      audioAnalyser.snareSection.energy - audioAnalyser.snareSection.average >
+      audioAnalyser.snareSection.deviation * 3.5
     ) {
       if (beatCountChangeTimeout.current) {
         clearTimeout(beatCountChangeTimeout.current);

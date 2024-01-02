@@ -39,10 +39,13 @@ const LiveMode4 = ({ opacity }: ModeProps) => {
   }
 
   function getIterations() {
-    return Math.ceil(
-      Math.abs(
-        audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
-      ) / audioAnalyser.highSection.average
+    return Math.min(
+      Math.ceil(
+        Math.abs(
+          audioAnalyser.snareSection.average - audioAnalyser.snareSection.energy
+        ) / audioAnalyser.highSection.average
+      ),
+      5
     );
   }
 

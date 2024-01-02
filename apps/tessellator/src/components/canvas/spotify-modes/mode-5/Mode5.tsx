@@ -49,7 +49,7 @@ const SpotifyMode5 = ({ opacity }: ModeProps) => {
   }
 
   function getTime() {
-    return audioAnalyser.midSection.average * getDirection() * 0.01;
+    return audioAnalyser.midSection.average * getDirection() * 0.001;
   }
 
   function getNoise() {

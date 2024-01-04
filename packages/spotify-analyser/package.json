@@ -17,7 +17,7 @@
     "test": "jest"
   },
   "jest": {
-    "preset": "jest-presets/jest/node"
+    "preset": "@tessellator/jest-presets/jest/node"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",

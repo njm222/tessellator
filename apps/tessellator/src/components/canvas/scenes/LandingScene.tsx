@@ -58,7 +58,7 @@ export const LandingScene = () => {
 
   const handleNavigation = (
     target: Vector3,
-    route: "/about" | "/visualizer"
+    route: "/about" | "/visualizer" | "/live"
   ) => {
     if (isPending) return;
     startTransition(() => {
@@ -90,7 +90,10 @@ export const LandingScene = () => {
 function LandingContent({
   handleNavigation,
 }: {
-  handleNavigation: (target: Vector3, route: "/about" | "/visualizer") => void;
+  handleNavigation: (
+    target: Vector3,
+    route: "/about" | "/visualizer" | "/live"
+  ) => void;
 }) {
   const { size, setSize } = useThree();
   const [vpWidth, vpHeight] = useAspect(size.width, size.height);
@@ -132,14 +135,13 @@ function LandingContent({
           Spotify
         </FlexLink>
         <FlexLink
-          color={new Color("#5A5A5A")}
-          disabled
+          color={new Color("#1DB954")}
           marginRight={0}
           marginTop={0}
-          onClick={() => {}}
-          overlayText="upcoming"
+          onClick={(target) => handleNavigation(target, "/live")}
+          overlayText="alpha"
         >
-          Live audio
+          Live
         </FlexLink>
       </Box>
       <Box flexDirection="row" justify="center" marginTop={20} width="100%">

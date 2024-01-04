@@ -6,9 +6,9 @@ import { usePlayer } from "../../utils/playerContext";
 import { mutations } from "../../utils/store";
 import { useControls } from "../dom/controls/controlsContext";
 
-import { Modes } from "./modes/Modes";
+import { SpotifyModes } from "./spotify-modes/SpotifyModes";
 
-const Visualizer = () => {
+const SpotifyVisualizer = () => {
   const { audioAnalyser } = useAnalyser();
   const { spotifyAnalyser } = usePlayer();
   const { randomizeMode, randomizeColorMode, changeColorMode, changeMode } =
@@ -45,7 +45,7 @@ const Visualizer = () => {
 
   if (!audioAnalyser.context || !spotifyAnalyser) return null;
 
-  return <Modes />;
+  return <SpotifyModes />;
 };
 
-export default Visualizer;
+export default SpotifyVisualizer;

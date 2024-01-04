@@ -8,7 +8,7 @@ import { ViewProps } from "../../components/canvas/View";
 import BackNavigationButton from "../../components/dom/BackNavigationButton";
 import { Player } from "../../components/dom/player/Player";
 import { Settings } from "../../components/dom/settings/Settings";
-import { WelcomeUser } from "../../components/dom/WelcomeUser";
+import { WelcomeSpotifyUser } from "../../components/dom/WelcomeSpotifyUser";
 import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
 
 const Common = dynamic<{}>(
@@ -54,10 +54,10 @@ export default function Page() {
         <VisualizerScene />
         <Common />
       </View>
-      <WelcomeUser />
+      <WelcomeSpotifyUser />
       <Player />
       <BackNavigationButton />
-      <Settings />
+      <Settings spotify />
     </DefaultLayout>
   );
 }

@@ -12,7 +12,7 @@
     "test": "jest --detectOpenHandles"
   },
   "jest": {
-    "preset": "jest-presets/jest/node"
+    "preset": "@tessellator/jest-presets/jest/node"
   },
   "dependencies": {
     "@sentry/node": "^7.67.0",

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { defaultAnalyserOptions } from "@tessellator/audio-analyser";
 import { useToast } from "@tessellator/ui";
 import { button, folder, LevaInputs, useControls } from "leva";
@@ -6,7 +6,7 @@ import { button, folder, LevaInputs, useControls } from "leva";
 import { LocalStorageKeys } from "../../../config/constants";
 import { useAnalyser } from "../../../utils/analyserContext";
 
-export function AnalyserOptions() {
+export function AnalyserOptions({ spotify }: { spotify: boolean }) {
   const toast = useToast();
   const {
     analyserOptions: {
@@ -15,13 +15,35 @@ export function AnalyserOptions() {
       minDecibels,
       maxDecibels,
     },
+    audioAnalyser,
     setAnalyserOptions,
   } = useAnalyser();
+  const [sources, setSources] = useState<MediaDeviceInfo[]>([]);
 
   const [analyzerValues, setAnalyzerValues] = useControls(
     () => ({
       "Analyzer Options": folder(
         {
+          source: {
+            options: sources.reduce((acc, curr) => {
+              acc[curr.label] = curr;
+              return acc;
+            }, {} as { [key: string]: MediaDeviceInfo }),
+            onChange: (source) => {
+              if (!source) return;
+              audioAnalyser.updateSource(source.kind, source.deviceId);
+            },
+            render: () => {
+              (async () => {
+                if (!audioAnalyser.source) return;
+                setSources(
+                  await audioAnalyser.getSources(spotify ? "output" : "all")
+                );
+              })();
+              return !!sources.length;
+            },
+            hint: "Change the audio source of the analyzer",
+          },
           fftSize: {
             value: fftSize,
             options: [512, 1024, 2048],
@@ -62,10 +84,12 @@ export function AnalyserOptions() {
             toast.open("Reset analyser options to default", { variant: "" });
           }),
         },
-        { collapsed: true }
+        {
+          collapsed: true,
+        }
       ),
     }),
-    [minDecibels, maxDecibels]
+    [minDecibels, maxDecibels, sources]
   );
 
   useEffect(() => {

@@ -1,28 +1,46 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { getIndexOfMax } from "@tessellator/core";
 import {
   AdditiveBlending,
   Color,
+  ColorRepresentation,
   Float32BufferAttribute,
   MathUtils,
   Points,
   Vector3,
 } from "three";
 
-import { useAnalyser } from "../../../../utils/analyserContext";
-import { usePlayer } from "../../../../utils/playerContext";
 import { ParticleMaterial } from "../../shaders/particle/ParticleMaterial";
-import { ModeProps } from "../Modes";
-import { useGetColor } from "../useGetColor";
 
-const Mode1 = ({ opacity }: ModeProps) => {
+export type Mode1Props = { getOpacity: () => number } & {
+  getColor: () => ColorRepresentation;
+  getNoise: () => number;
+  getSize: () => number;
+  getDeltaFactor: () => number;
+  getRadius: () => number;
+  getTube: () => number;
+  getTubularSegments: () => number;
+  getRadialSegments: () => number;
+  getP: () => number;
+  getQ: () => number;
+};
+
+const Mode1 = ({
+  getSize,
+  getColor,
+  getDeltaFactor,
+  getOpacity,
+  getNoise,
+  getRadius,
+  getTube,
+  getTubularSegments,
+  getRadialSegments,
+  getP,
+  getQ,
+}: Mode1Props) => {
   const mesh = useRef<Points>(null);
   const materialRef = useRef(new ParticleMaterial());
   const colorRef = useRef(new Color());
-  const { audioAnalyser } = useAnalyser();
-  const { getColor } = useGetColor({ minSaturation: 75, minLightness: 150 });
-  const { spotifyAnalyser, trackFeatures } = usePlayer();
 
   const radius = useRef(10);
   const tube = useRef(5);
@@ -162,63 +180,23 @@ const Mode1 = ({ opacity }: ModeProps) => {
   const updateTorusProperties = (delta: number) => {
     radius.current = MathUtils.lerp(
       radius.current,
-      Math.max(
-        Math.abs(
-          audioAnalyser.bassSection.average - audioAnalyser.snareSection.energy
-        ) / 5,
-        0.01
-      ),
+      Math.max(getRadius(), 0.01),
       delta
     );
 
-    tube.current = MathUtils.lerp(
-      tube.current,
-      10 +
-        Math.abs(
-          audioAnalyser.bassSection.average - audioAnalyser.kickSection.energy
-        ) /
-          2,
-      delta
-    );
+    tube.current = MathUtils.lerp(tube.current, getTube(), delta);
 
     tubularSegments.current = Math.ceil(
-      MathUtils.lerp(
-        tubularSegments.current,
-        audioAnalyser.midSection.average,
-        delta
-      )
+      MathUtils.lerp(tubularSegments.current, getTubularSegments(), delta)
     );
 
     radialSegments.current = Math.ceil(
-      MathUtils.lerp(
-        radialSegments.current,
-        audioAnalyser.analyserData.averageFrequency,
-        delta
-      )
+      MathUtils.lerp(radialSegments.current, getRadialSegments(), delta)
     );
 
-    const pitchTotal =
-      spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
-        acc += curr;
-        return acc;
-      }, 0) || 4;
+    p.current = MathUtils.lerp(p.current, getP() + 2, delta);
 
-    if (trackFeatures.danceability > 0.9) {
-      p.current = Math.floor(pitchTotal) + 1;
-
-      q.current =
-        getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 2;
-
-      return;
-    }
-
-    p.current = MathUtils.lerp(p.current, Math.floor(pitchTotal) + 2, delta);
-
-    q.current = MathUtils.lerp(
-      q.current,
-      getIndexOfMax(spotifyAnalyser.getCurrentSegment()?.pitches) + 3,
-      delta
-    );
+    q.current = MathUtils.lerp(q.current, getQ() + 3, delta);
   };
 
   useFrame((state, delta) => {
@@ -227,20 +205,16 @@ const Mode1 = ({ opacity }: ModeProps) => {
     const { uColor, uSize, uOpacity, uNoise } = materialRef.current.uniforms;
 
     // Update the material opacity
-    uOpacity.value = MathUtils.lerp(uOpacity.value, opacity, delta);
+    uOpacity.value = MathUtils.lerp(uOpacity.value, getOpacity(), delta);
     if (uOpacity.value <= 0.01) {
       materialRef.current.visible = false;
       return;
     }
     materialRef.current.visible = true;
 
-    const dynamicDelta =
-      delta *
-      (trackFeatures.tempo / 10) *
-      trackFeatures.energy *
-      trackFeatures.danceability;
+    const dynamicDelta = delta * getDeltaFactor();
 
-    updateTorusProperties(dynamicDelta / 1);
+    updateTorusProperties(dynamicDelta);
 
     const [indices, vertices, normals, uvs] = getTorusBufferAttributes(
       radius.current,
@@ -251,24 +225,12 @@ const Mode1 = ({ opacity }: ModeProps) => {
       q.current
     );
 
-    const timbre = spotifyAnalyser.getCurrentSegment()?.timbre;
-
     // Update the material color
     uColor.value.lerp(colorRef.current.set(getColor()), dynamicDelta);
 
-    const pitchTotal =
-      (spotifyAnalyser.getCurrentSegment()?.pitches?.reduce((acc, curr) => {
-        acc += curr;
-        return acc;
-      }, 0) || 12) / 12;
+    uSize.value = MathUtils.lerp(uSize.value, getSize(), dynamicDelta);
 
-    uSize.value = MathUtils.lerp(
-      uSize.value,
-      Math.abs(pitchTotal * (timbre?.length ? timbre[0] : 10)),
-      dynamicDelta
-    );
-
-    uNoise.value = MathUtils.lerp(uNoise.value, pitchTotal, dynamicDelta);
+    uNoise.value = MathUtils.lerp(uNoise.value, getNoise(), dynamicDelta);
 
     mesh.current.geometry.setIndex(indices);
     mesh.current.geometry.setAttribute(

@@ -70,8 +70,8 @@ export function useGetUserInformation() {
         if (product === "premium") {
           return;
         }
-        router.push("/"); // TODO: redirect to "live" visualizer
-        open("Visualizer requires a valid Spotify Premium subscription");
+        router.push("/live");
+        open("Spotify version requires a valid Spotify Premium subscription");
       },
       onError: (error: TError) => {
         handleError(error, open, handleRefreshToken, refreshToken);

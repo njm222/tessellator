@@ -23,7 +23,7 @@
     "build-storybook": "storybook build"
   },
   "jest": {
-    "preset": "jest-presets/jest/node",
+    "preset": "@tessellator/jest-presets/jest/node",
     "testEnvironment": "jsdom"
   },
   "devDependencies": {

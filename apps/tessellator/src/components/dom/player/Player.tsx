@@ -90,7 +90,7 @@ export function Player() {
     }
 
     try {
-      audioAnalyser.setup(analyserOptions);
+      audioAnalyser.setup(analyserOptions, "output");
     } catch (e: unknown) {
       const errorMessage = (e as { message: string }).message;
       toast.open(errorMessage);

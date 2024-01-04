@@ -8,7 +8,7 @@ import { AnalyserOptions } from "./AnalyserOptions";
 import { ModeOptions } from "./ModeOptions";
 import { VisualizerOptions } from "./VisualizerOptions";
 
-export function Settings() {
+export function Settings({ spotify = false }: { spotify?: boolean }) {
   const { mouseActive } = useMouseActivity();
 
   const [open, setOpen] = useState(false);
@@ -22,13 +22,19 @@ export function Settings() {
         />
       </div>
       <div className={`${!open ? "hidden" : ""}`}>
-        <SettingsOptions handleClose={() => setOpen(false)} />
+        <SettingsOptions handleClose={() => setOpen(false)} spotify={spotify} />
       </div>
     </>
   );
 }
 
-function SettingsOptions({ handleClose }: { handleClose: () => void }) {
+function SettingsOptions({
+  handleClose,
+  spotify,
+}: {
+  handleClose: () => void;
+  spotify: boolean;
+}) {
   useControls({ close: button(handleClose) }, []);
 
   return (
@@ -38,7 +44,7 @@ function SettingsOptions({ handleClose }: { handleClose: () => void }) {
         oneLineLabels
         titleBar={{ title: "Settings", drag: false, filter: false }}
       />
-      <AnalyserOptions />
+      <AnalyserOptions spotify={spotify} />
       <VisualizerOptions />
       <ModeOptions />
     </>

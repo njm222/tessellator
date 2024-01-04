@@ -6,7 +6,7 @@ import { PixelationEffect } from "postprocessing";
 
 import Bridge from "../../models/Bridge";
 import Portal from "../Portal";
-import Visualizer from "../Visualizer";
+import SpotifyVisualizer from "../SpotifyVisualizer";
 
 const OuterScene = () => {
   return (
@@ -46,7 +46,7 @@ export const VisualizerScene = () => {
   return (
     <>
       <Portal>
-        <Visualizer />
+        <SpotifyVisualizer />
       </Portal>
       <OuterScene />
       <BakeShadows />

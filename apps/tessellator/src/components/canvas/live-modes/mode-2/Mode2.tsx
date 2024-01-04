@@ -24,7 +24,8 @@ const LiveMode2 = ({ opacity }: ModeProps) => {
   function getXRotation() {
     return (
       (audioAnalyser.midSection.average / 10000) *
-      (audioAnalyser.kickSection.energy > audioAnalyser.kickSection.average
+      (audioAnalyser.kickSection.energy - audioAnalyser.kickSection.average >
+      audioAnalyser.kickSection.deviation * 2
         ? 1
         : -1)
     );
@@ -33,14 +34,15 @@ const LiveMode2 = ({ opacity }: ModeProps) => {
   function getYRotation() {
     return (
       (audioAnalyser.midSection.average / 10000) *
-      (audioAnalyser.snareSection.energy > audioAnalyser.snareSection.average
+      (audioAnalyser.snareSection.energy - audioAnalyser.snareSection.average >
+      audioAnalyser.snareSection.deviation * 2
         ? 1
         : -1)
     );
   }
 
   function getDeltaFactor() {
-    return 2;
+    return (audioAnalyser.analyserData.averageFrequency / 255) * 3;
   }
 
   function getWireframe() {

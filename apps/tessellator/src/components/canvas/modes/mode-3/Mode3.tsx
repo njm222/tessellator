@@ -52,7 +52,7 @@ const Mode3 = ({
 
     uStrengthFactor.value = MathUtils.lerp(
       uStrengthFactor.value,
-      getStrengthFactor(),
+      Math.max(getStrengthFactor(), 0.1),
       dynamicDelta
     );
 

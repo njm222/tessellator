@@ -8,7 +8,7 @@ const LiveMode1 = ({ opacity }: ModeProps) => {
   const { getColor } = useGetColor({ minSaturation: 75, minLightness: 150 });
 
   function getDeltaFactor() {
-    return 1;
+    return (audioAnalyser.analyserData.averageFrequency / 255) * 3;
   }
 
   function getSize() {

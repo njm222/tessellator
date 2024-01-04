@@ -40,12 +40,13 @@ const LiveMode0 = ({ opacity }: ModeProps) => {
   }
 
   function getDeltaFactor() {
-    return 1;
+    return (audioAnalyser.analyserData.averageFrequency / 255) * 3;
   }
 
   function getWireframe() {
     return (
-      audioAnalyser.snareSection.energy <= audioAnalyser.snareSection.average
+      audioAnalyser.snareSection.energy - audioAnalyser.snareSection.average <=
+      audioAnalyser.snareSection.deviation * 3
     );
   }
 

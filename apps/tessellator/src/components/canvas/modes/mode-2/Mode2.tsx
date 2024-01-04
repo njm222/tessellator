@@ -80,7 +80,10 @@ const Mode2 = ({
 
     mesh.current.rotation.x += getXRotation();
     mesh.current.rotation.y += getYRotation();
-    (mesh.current.material as any).wireframe = getWireframe();
+    const wireframe = getWireframe();
+    (mesh.current.material as any).wireframe =
+      uOpacity.value < 0.25 ? true : wireframe;
+    (mesh.current.material as any).depthWrite = !wireframe;
 
     mesh.current.instanceMatrix.needsUpdate = true;
     if (!mesh.current.instanceColor) return;
@@ -92,6 +95,7 @@ const Mode2 = ({
       <boxGeometry args={[0.1, 0.1, 0.1]} />
       <basicInstanceMaterial
         blending={NoBlending}
+        depthWrite={false}
         ref={materialRef}
         transparent
       />

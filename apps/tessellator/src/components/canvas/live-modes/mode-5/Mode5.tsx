@@ -66,7 +66,7 @@ const LiveMode5 = ({ opacity }: ModeProps) => {
   }
 
   function getDeltaFactor() {
-    return Math.max(getEnergy(), getGlow());
+    return (audioAnalyser.analyserData.averageFrequency / 255) * 3;
   }
 
   return (

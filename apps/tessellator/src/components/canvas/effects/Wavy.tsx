@@ -10,7 +10,8 @@ let _uDistortion: number, _uDistortion2: number, _uSpeed: number;
 export class WavyEffect extends Effect {
   constructor({ distortion = 3.0, distortion2 = 6.0, speed = 0.5 }) {
     super("WavyEffect", fragment, {
-      uniforms: new Map<string, Uniform<number>>([
+      uniforms: new Map<string, Uniform>([
+        ["texture", new Uniform(null)],
         ["distortion", new Uniform(distortion)],
         ["distortion2", new Uniform(distortion2)],
         ["speed", new Uniform(speed)],

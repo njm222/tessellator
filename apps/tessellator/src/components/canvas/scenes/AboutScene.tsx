@@ -1,15 +1,23 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { a } from "@react-spring/three";
 import { Plane, useAspect } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
-import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useToast } from "@tessellator/ui";
 import { useGesture } from "@use-gesture/react";
 import { Color, Group, Vector2, Vector3 } from "three";
 
 import { copyToClipBoard, openNewTabLink } from "../../../helpers/global";
 import Blackhole from "../../models/Blackhole";
+import { Wavy, WavyEffect } from "../effects/Wavy";
 import { FlexLink } from "../text/FlexLink";
 import { FlexText } from "../text/FlexText";
 import { Text } from "../text/Text";
@@ -18,8 +26,8 @@ export const AboutScene = () => {
   const { camera, size, setSize } = useThree();
   const [, vpHeight] = useAspect(size.width, size.height);
   const ref = useRef<Group>(null);
+  const wavyRef = useRef<WavyEffect>(null);
   const vec = new Vector3();
-  const [isScrolling, setIsScrolling] = useState(0);
 
   useEffect(() => {
     camera.position.set(0, 0, 100);
@@ -36,15 +44,23 @@ export const AboutScene = () => {
   const bind = useGesture(
     {
       onScroll: (state) => {
-        setIsScrolling(state.velocity[1]);
+        if (!wavyRef.current) return;
+        wavyRef.current.setSpeed(state.velocity[1]);
         ref.current?.position.lerp(vec.set(0, state.offset[1], 0), 0.05);
       },
-      onScrollEnd: () => setTimeout(() => setIsScrolling(0), 250),
+      onScrollEnd: () => {
+        if (!wavyRef.current) return;
+        wavyRef.current.setSpeed(0);
+      },
       onWheel: (state) => {
-        setIsScrolling(state.velocity[1]);
+        if (!wavyRef.current) return;
+        wavyRef.current?.setSpeed(state.velocity[1]);
         ref.current?.position.lerp(vec.set(0, state.offset[1], 0), 0.05);
       },
-      onWheelEnd: () => setTimeout(() => setIsScrolling(0), 250),
+      onWheelEnd: () => {
+        if (!wavyRef.current) return;
+        wavyRef.current.setSpeed(0);
+      },
     },
     {
       eventOptions: { passive: false },
@@ -57,6 +73,11 @@ export const AboutScene = () => {
     }
   );
 
+  useFrame((_, delta) => {
+    if (!wavyRef.current) return;
+    wavyRef.current.update(null, null, delta);
+  });
+
   return (
     <>
       {/** @ts-ignore incompatible types */}
@@ -66,12 +87,7 @@ export const AboutScene = () => {
 
       <EffectComposer disableNormalPass multisampling={0}>
         <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
-        <Glitch
-          active={isScrolling > 0}
-          delay={new Vector2(0, 0)}
-          duration={new Vector2(200, 200)}
-          strength={new Vector2(isScrolling, isScrolling)}
-        />
+        <Wavy distortion={0} distortion2={0} ref={wavyRef} speed={0} />
       </EffectComposer>
     </>
   );

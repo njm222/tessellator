@@ -1,17 +1,17 @@
-import { MathUtils, Uniform } from "three";
+import { forwardRef, useMemo } from "react";
 import { Effect } from "postprocessing";
+import { MathUtils, Uniform, WebGLRenderer,WebGLRenderTarget } from "three";
 
 // @ts-ignore
 import fragment from "./glsl/shader.frag";
-import { forwardRef, useMemo } from "react";
 
-let _uDistortion: any, _uDistortion2: any, _uSpeed: any, _uRollSpeed: any;
+let _uDistortion: number, _uDistortion2: number, _uSpeed: number;
 
 // Effect implementation
 export class WavyEffect extends Effect {
   constructor({ distortion = 3.0, distortion2 = 6.0, speed = 0.5 }) {
     super("WavyEffect", fragment, {
-      uniforms: new Map([
+      uniforms: new Map<string, Uniform>([
         ["texture", new Uniform(null)],
         ["distortion", new Uniform(distortion)],
         ["distortion2", new Uniform(distortion2)],
@@ -32,19 +32,31 @@ export class WavyEffect extends Effect {
    * @param {Number} [deltaTime] - The time between the last frame and the current one in seconds.
    */
 
-  update(renderer, inputBuffer, deltaTime) {
+  // getUniform(u: string) {
+  //   const uniform = this.uniforms.get(u);
+
+  //   if (!uniform) return;
+
+  //   return uniform.value;
+  // }
+
+  update(
+    renderer: WebGLRenderer | null,
+    inputBuffer: WebGLRenderTarget | null,
+    deltaTime: number
+  ) {
     this.uniforms.get("distortion").value = MathUtils.lerp(
-      this.uniforms.get("distortion").value || 0,
+      this.uniforms.get("distortion")?.value || 0,
       _uDistortion,
       deltaTime
     );
     this.uniforms.get("distortion2").value = MathUtils.lerp(
-      this.uniforms.get("distortion2").value || 0,
+      this.uniforms.get("distortion2")?.value || 0,
       _uDistortion2,
       deltaTime
     );
     this.uniforms.get("speed").value = MathUtils.lerp(
-      this.uniforms.get("speed").value || 0,
+      this.uniforms.get("speed")?.value || 0,
       _uSpeed,
       deltaTime
     );
@@ -68,6 +80,6 @@ export const Wavy = forwardRef(
         }),
       [distortion, distortion2, speed]
     );
-    return <primitive ref={ref} object={effect} dispose={null} />;
+    return <primitive dispose={null} object={effect} ref={ref} />;
   }
 );

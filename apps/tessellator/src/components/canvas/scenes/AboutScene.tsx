@@ -17,10 +17,10 @@ import { Color, Group, Vector2, Vector3 } from "three";
 
 import { copyToClipBoard, openNewTabLink } from "../../../helpers/global";
 import Blackhole from "../../models/Blackhole";
+import { Wavy, WavyEffect } from "../effects/Wavy";
 import { FlexLink } from "../text/FlexLink";
 import { FlexText } from "../text/FlexText";
 import { Text } from "../text/Text";
-import { Wavy, WavyEffect } from "../effects/Wavy";
 
 export const AboutScene = () => {
   const { camera, size, setSize } = useThree();
@@ -87,13 +87,7 @@ export const AboutScene = () => {
 
       <EffectComposer disableNormalPass multisampling={0}>
         <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
-        <Wavy
-          ref={wavyRef}
-          speed={0}
-          distortion={0}
-          // distortion2={0}
-          rollSpeed={0}
-        />
+        <Wavy distortion={0} distortion2={0} ref={wavyRef} speed={0} />
       </EffectComposer>
     </>
   );

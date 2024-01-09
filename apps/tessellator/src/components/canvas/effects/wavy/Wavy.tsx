@@ -31,8 +31,8 @@ export class WavyEffect extends Effect {
    * @param {Number} [deltaTime] - The time between the last frame and the current one in seconds.
    */
   update(
-    renderer: WebGLRenderer | null,
-    inputBuffer: WebGLRenderTarget | null,
+    renderer: WebGLRenderer,
+    inputBuffer: WebGLRenderTarget,
     deltaTime: number
   ) {
     this.uniforms.get("distortion")!.value = MathUtils.lerp(

@@ -1,11 +1,4 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { a } from "@react-spring/three";
 import { Plane, useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -17,7 +10,7 @@ import { Color, Group, Vector2, Vector3 } from "three";
 
 import { copyToClipBoard, openNewTabLink } from "../../../helpers/global";
 import Blackhole from "../../models/Blackhole";
-import { Wavy, WavyEffect } from "../effects/Wavy";
+import { Wavy, WavyEffect } from "../effects/wavy/Wavy";
 import { FlexLink } from "../text/FlexLink";
 import { FlexText } from "../text/FlexText";
 import { Text } from "../text/Text";
@@ -72,11 +65,6 @@ export const AboutScene = () => {
       },
     }
   );
-
-  useFrame((_, delta) => {
-    if (!wavyRef.current) return;
-    wavyRef.current.update(null, null, delta);
-  });
 
   return (
     <>

@@ -1,7 +1,13 @@
 import { forwardRef, useMemo } from "react";
 import { Camera, useThree } from "@react-three/fiber";
 import { Effect } from "postprocessing";
-import { Uniform, Vector2, Vector3 } from "three";
+import {
+  Uniform,
+  Vector2,
+  Vector3,
+  WebGLRenderer,
+  WebGLRenderTarget,
+} from "three";
 
 // @ts-ignore
 import fragment from "./glsl/shader.frag";
@@ -90,7 +96,7 @@ export class ShockWaveEffect extends Effect {
      * @private
      */
 
-    _uScreenPosition = this.uniforms.get("center").value;
+    _uScreenPosition = this.uniforms.get("center")?.value;
 
     /**
      * A time accumulator.
@@ -126,11 +132,11 @@ export class ShockWaveEffect extends Effect {
    */
 
   get amplitude() {
-    return this.uniforms.get("amplitude").value;
+    return this.uniforms.get("amplitude")?.value;
   }
 
   set amplitude(value) {
-    this.uniforms.get("amplitude").value = value;
+    this.uniforms.get("amplitude")!.value = value;
   }
 
   /**
@@ -140,11 +146,11 @@ export class ShockWaveEffect extends Effect {
    */
 
   get waveSize() {
-    return this.uniforms.get("waveSize").value;
+    return this.uniforms.get("waveSize")?.value;
   }
 
   set waveSize(value) {
-    this.uniforms.get("waveSize").value = value;
+    this.uniforms.get("waveSize")!.value = value;
   }
 
   /**
@@ -154,11 +160,11 @@ export class ShockWaveEffect extends Effect {
    */
 
   get maxRadius() {
-    return this.uniforms.get("maxRadius").value;
+    return this.uniforms.get("maxRadius")?.value;
   }
 
   set maxRadius(value) {
-    this.uniforms.get("maxRadius").value = value;
+    this.uniforms.get("maxRadius")!.value = value;
   }
 
   /**
@@ -168,7 +174,7 @@ export class ShockWaveEffect extends Effect {
   explode() {
     _uTime = 0.0;
     _uActive = true;
-    this.uniforms.get("active").value = true;
+    this.uniforms.get("active")!.value = true;
   }
 
   /**
@@ -176,43 +182,46 @@ export class ShockWaveEffect extends Effect {
    *
    * @param {WebGLRenderer} renderer - The renderer.
    * @param {WebGLRenderTarget} inputBuffer - A frame buffer that contains the result of the previous pass.
-   * @param {Number} [delta] - The time between the last frame and the current one in seconds.
+   * @param {Number} [deltaTime] - The time between the last frame and the current one in seconds.
    */
-
-  update(renderer, inputBuffer, delta) {
+  update(
+    renderer: WebGLRenderer,
+    inputBuffer: WebGLRenderTarget,
+    deltaTime: number
+  ) {
     const position = _uPosition;
     const camera = _uCamera;
     const uniforms = this.uniforms;
     const uActive = uniforms.get("active");
 
     if (_uActive) {
-      const waveSize = uniforms.get("waveSize").value;
+      const waveSize = uniforms.get("waveSize")?.value;
 
       // Calculate direction vectors.
       camera.getWorldDirection(v);
       ab.copy(camera.position).sub(position);
 
       // Don't render the effect if the object is behind the camera.
-      uActive.value = v.angleTo(ab) > HALF_PI;
+      uActive!.value = v.angleTo(ab) > HALF_PI;
 
-      if (uActive.value) {
+      if (uActive?.value) {
         // Scale the effect based on distance to the object.
-        uniforms.get("cameraDistance").value =
+        uniforms.get("cameraDistance")!.value =
           camera.position.distanceTo(position);
 
         // Calculate the screen position of the shock wave.
         v.copy(position).project(camera);
-        _uScreenPosition.set((v.x + 1.0) * 0.5, (v.y + 1.0) * 0.5);
+        _uScreenPosition.set((v.x + 1.0) * 0.5, (v.y + 1.0) * 0.5, 0);
       }
 
       // Update the shock wave radius based on time.
-      _uTime += delta * _uSpeed;
+      _uTime += deltaTime * _uSpeed;
       const radius = _uTime - waveSize;
-      uniforms.get("radius").value = radius;
+      uniforms.get("radius")!.value = radius;
 
-      if (radius >= (uniforms.get("maxRadius").value + waveSize) * 2.0) {
+      if (radius >= (uniforms.get("maxRadius")?.value + waveSize) * 2.0) {
         _uActive = false;
-        uActive.value = false;
+        uActive!.value = false;
       }
     }
   }

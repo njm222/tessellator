@@ -46,7 +46,7 @@ export class ShockWaveEffect extends Effect {
    */
 
   constructor(
-    camera,
+    camera: Camera,
     position = new Vector3(),
     { speed = 2.0, maxRadius = 1.0, waveSize = 0.2, amplitude = 0.05 } = {}
   ) {

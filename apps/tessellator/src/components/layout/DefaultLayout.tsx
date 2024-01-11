@@ -15,7 +15,7 @@ const Scene = dynamic(() => import("../canvas/Scene"), {
   ssr: false,
 });
 
-export type DefaultLayoutProps = {
+type DefaultLayoutProps = {
   children: ReactNode;
 };
 

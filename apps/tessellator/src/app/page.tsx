@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 
 import { CommonProps, ViewProps } from "../components/canvas/View";
 import SocialLinks from "../components/dom/SocialLinks";
-import { DefaultLayoutProps } from "../components/layout/DefaultLayout";
 
 const Common = dynamic<CommonProps>(
   () => import("../components/canvas/View").then((mod) => mod.Common),
@@ -18,17 +17,6 @@ const View = dynamic<ViewProps>(
   {
     ssr: false,
     loading: () => <Loader dotVariant={3} message="Building scene" />,
-  }
-);
-
-const DefaultLayout = dynamic<DefaultLayoutProps>(
-  () =>
-    import("../components/layout/DefaultLayout").then(
-      (mod) => mod.DefaultLayout
-    ),
-  {
-    ssr: false,
-    loading: () => <Loader dotVariant={3} />,
   }
 );
 
@@ -44,12 +32,12 @@ const LandingScene = dynamic<{}>(
 
 export default function Page() {
   return (
-    <DefaultLayout>
+    <>
       <View className="fullscreenView" orbit>
         <LandingScene />
         <Common />
       </View>
       <SocialLinks />
-    </DefaultLayout>
+    </>
   );
 }

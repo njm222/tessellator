@@ -9,7 +9,6 @@ import BackNavigationButton from "../../components/dom/BackNavigationButton";
 import { Player } from "../../components/dom/player/Player";
 import { Settings } from "../../components/dom/settings/Settings";
 import { WelcomeSpotifyUser } from "../../components/dom/WelcomeSpotifyUser";
-import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
 
 const Common = dynamic<{}>(
   () => import("../../components/canvas/View").then((mod) => mod.Common),
@@ -26,17 +25,6 @@ const View = dynamic<ViewProps>(
   }
 );
 
-const DefaultLayout = dynamic<DefaultLayoutProps>(
-  () =>
-    import("../../components/layout/DefaultLayout").then(
-      (mod) => mod.DefaultLayout
-    ),
-  {
-    ssr: false,
-    loading: () => <Loader hintVariant={2} />,
-  }
-);
-
 const VisualizerScene = dynamic<{}>(
   () =>
     import("../../components/canvas/scenes/VisualizerScene").then(
@@ -49,7 +37,7 @@ const VisualizerScene = dynamic<{}>(
 
 export default function Page() {
   return (
-    <DefaultLayout>
+    <>
       <View className="fullscreenView" orbit>
         <VisualizerScene />
         <Common />
@@ -58,6 +46,6 @@ export default function Page() {
       <Player />
       <BackNavigationButton />
       <Settings spotify />
-    </DefaultLayout>
+    </>
   );
 }

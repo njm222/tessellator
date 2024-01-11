@@ -106,7 +106,7 @@ function AboutContent() {
           marginTop={50}
           width={vpWidth}
         >
-          <Blackhole scale={0.3} />
+          {/* <Blackhole scale={0.3} /> */}
         </Box>
         <Feedback color={textColor} />
       </Flex>

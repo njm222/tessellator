@@ -8,7 +8,6 @@ import { ViewProps } from "../../components/canvas/View";
 import BackNavigationButton from "../../components/dom/BackNavigationButton";
 import ClickToStart from "../../components/dom/ClickToStart";
 import { Settings } from "../../components/dom/settings/Settings";
-import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
 
 const Common = dynamic<{}>(
   () => import("../../components/canvas/View").then((mod) => mod.Common),
@@ -25,17 +24,6 @@ const View = dynamic<ViewProps>(
   }
 );
 
-const DefaultLayout = dynamic<DefaultLayoutProps>(
-  () =>
-    import("../../components/layout/DefaultLayout").then(
-      (mod) => mod.DefaultLayout
-    ),
-  {
-    ssr: false,
-    loading: () => <Loader hintVariant={1} />,
-  }
-);
-
 const LiveScene = dynamic<{}>(
   () =>
     import("../../components/canvas/scenes/LiveScene").then(
@@ -46,7 +34,7 @@ const LiveScene = dynamic<{}>(
 
 export default function Page() {
   return (
-    <DefaultLayout>
+    <>
       <View className="fullscreenView" orbit>
         <LiveScene />
         <Common />
@@ -54,6 +42,6 @@ export default function Page() {
       <ClickToStart />
       <BackNavigationButton />
       <Settings />
-    </DefaultLayout>
+    </>
   );
 }

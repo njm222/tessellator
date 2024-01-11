@@ -7,7 +7,6 @@ import dynamic from "next/dynamic";
 import { ViewProps } from "../../components/canvas/View";
 import BackNavigationButton from "../../components/dom/BackNavigationButton";
 import SocialLinks from "../../components/dom/SocialLinks";
-import { DefaultLayoutProps } from "../../components/layout/DefaultLayout";
 
 const Common = dynamic<{}>(
   () => import("../../components/canvas/View").then((mod) => mod.Common),
@@ -24,17 +23,6 @@ const View = dynamic<ViewProps>(
   }
 );
 
-const DefaultLayout = dynamic<DefaultLayoutProps>(
-  () =>
-    import("../../components/layout/DefaultLayout").then(
-      (mod) => mod.DefaultLayout
-    ),
-  {
-    ssr: false,
-    loading: () => <Loader hintVariant={1} />,
-  }
-);
-
 const AboutScene = dynamic<{}>(
   () =>
     import("../../components/canvas/scenes/AboutScene").then(
@@ -45,13 +33,13 @@ const AboutScene = dynamic<{}>(
 
 export default function Page() {
   return (
-    <DefaultLayout>
+    <>
       <View className="fullscreenView">
         <AboutScene />
         <Common />
       </View>
       <BackNavigationButton />
       <SocialLinks />
-    </DefaultLayout>
+    </>
   );
 }

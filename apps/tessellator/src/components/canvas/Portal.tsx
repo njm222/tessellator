@@ -46,7 +46,7 @@ function Portal({ children }: { children: ReactNode }) {
     camera.position.lerp(cameraVec.set(0, 0, 3), delta * 2);
 
     // if cam is far lerp further
-    if (camera.position.z > 5) {
+    if (camera.position.z > 3) {
       // position camera center
       camera.position.lerp(cameraVec.set(0, 0, 10), delta);
       if (isPending) return;
@@ -93,7 +93,7 @@ function Portal({ children }: { children: ReactNode }) {
           {children}
         </MeshPortalMaterial>
       </mesh>
-      <EffectComposer renderPriority={2}>
+      <EffectComposer disableNormalPass multisampling={0} renderPriority={2}>
         <ShockWave ref={shockWaveRef} />
       </EffectComposer>
     </>

@@ -1,7 +1,6 @@
 "use client";
 import React, { ReactNode, useRef } from "react";
 import { Globals } from "@react-spring/three";
-import { meshBounds } from "@react-three/drei";
 import dynamic from "next/dynamic";
 
 import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
@@ -30,7 +29,6 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
       <Scene
         eventPrefix="client"
         eventSource={ref}
-        raycast={meshBounds}
         shadows="soft"
         style={{
           position: "fixed",

@@ -1,5 +1,5 @@
 import React, { Suspense, useRef } from "react";
-import { useGLTF } from "@react-three/drei";
+import { meshBounds, useGLTF } from "@react-three/drei";
 import { GroupProps } from "@react-three/fiber";
 import { Group } from "three";
 
@@ -13,7 +13,7 @@ export default function Model(props: GroupProps) {
 
   return (
     <Suspense fallback={null}>
-      <group ref={group} {...props} dispose={null}>
+      <group raycast={meshBounds} ref={group} {...props} dispose={null}>
         <mesh
           castShadow
           geometry={nodes.Bridge01.geometry}

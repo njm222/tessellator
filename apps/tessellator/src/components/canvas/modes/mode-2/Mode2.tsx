@@ -91,7 +91,11 @@ const Mode2 = ({
   });
 
   return (
-    <instancedMesh args={[undefined, undefined, count]} ref={mesh}>
+    <instancedMesh
+      args={[undefined, undefined, count]}
+      raycast={() => {}}
+      ref={mesh}
+    >
       <boxGeometry args={[0.1, 0.1, 0.1]} />
       <basicInstanceMaterial
         blending={NoBlending}

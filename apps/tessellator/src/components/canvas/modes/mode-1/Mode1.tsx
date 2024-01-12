@@ -249,7 +249,7 @@ const Mode1 = ({
 
   return (
     <group position={[0, 0, -10]}>
-      <points ref={mesh}>
+      <points raycast={() => {}} ref={mesh}>
         <bufferGeometry attach="geometry" />
         <particleMaterial
           blending={AdditiveBlending}

@@ -77,7 +77,12 @@ const Mode0 = ({
   });
 
   return (
-    <mesh position={[0, 1, -1]} receiveShadow rotation={[-Math.PI / 5, 0, 0]}>
+    <mesh
+      position={[0, 1, -1]}
+      raycast={() => {}}
+      receiveShadow
+      rotation={[-Math.PI / 5, 0, 0]}
+    >
       <planeGeometry args={[vpWidth, vpHeight, 256, 256]} />
       <terrainMaterial depthWrite={false} ref={materialRef} transparent />
     </mesh>

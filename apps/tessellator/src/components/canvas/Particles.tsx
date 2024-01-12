@@ -129,6 +129,7 @@ export default function Particles({
       <pointLight color="darkblue" distance={100} intensity={10} ref={light} />
       <instancedMesh
         args={[undefined, undefined, count]}
+        raycast={() => {}}
         ref={mesh}
       >
         <dodecahedronGeometry args={[0.1, 0]} />

@@ -1,6 +1,6 @@
 import React from "react";
 import { animated, SpringValue } from "@react-spring/three";
-import { Text3D } from "@react-three/drei";
+import { meshBounds, Text3D } from "@react-three/drei";
 import { extend, Object3DNode } from "@react-three/fiber";
 import { ColorRepresentation } from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
@@ -35,6 +35,7 @@ export function Text({
       bevelSize={bevelSize}
       font={fontUrl}
       letterSpacing={letterSpacing}
+      raycast={meshBounds}
       scale={scale}
     >
       {children}

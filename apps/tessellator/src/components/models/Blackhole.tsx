@@ -7,7 +7,7 @@ Title: Blackhole
 */
 
 import React, { Suspense, useEffect, useRef } from "react";
-import { useAnimations, useGLTF } from "@react-three/drei";
+import { meshBounds, useAnimations, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 
@@ -59,7 +59,7 @@ export default function Model(props: JSX.IntrinsicElements["group"]) {
 
   return (
     <Suspense fallback={null}>
-      <group ref={group} {...props} dispose={null}>
+      <group raycast={meshBounds} ref={group} {...props} dispose={null}>
         <group name="415c209837844e7b91255101a7c3eb67fbx">
           <group name="Object_2">
             <group name="RootNode">

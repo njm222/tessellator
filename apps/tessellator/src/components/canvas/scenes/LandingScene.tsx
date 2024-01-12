@@ -82,7 +82,7 @@ export const LandingScene = () => {
       <Particles count={10000} isNavigating={isNavigating} />
 
       <EffectComposer disableNormalPass multisampling={0}>
-        <Autofocus mouse bokehScale={5} width={100} height={100} />
+        <Autofocus bokehScale={5} height={100} mouse width={100} />
         <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
         <ShockWave
           amplitude={0.4}

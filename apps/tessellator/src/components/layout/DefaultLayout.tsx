@@ -1,10 +1,10 @@
 "use client";
 import React, { ReactNode, useRef } from "react";
 import { Globals } from "@react-spring/three";
+import { meshBounds } from "@react-three/drei";
 import dynamic from "next/dynamic";
 
 import { MouseActivityProvider } from "../dom/controls/mouseActivityContext";
-import { meshBounds } from "@react-three/drei";
 
 /**
  * workaround from: https://github.com/pmndrs/react-spring/issues/1586
@@ -28,9 +28,9 @@ export const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     <div className="domContainer" ref={ref}>
       <MouseActivityProvider>{children}</MouseActivityProvider>
       <Scene
-        raycast={meshBounds}
         eventPrefix="client"
         eventSource={ref}
+        raycast={meshBounds}
         shadows="soft"
         style={{
           position: "fixed",

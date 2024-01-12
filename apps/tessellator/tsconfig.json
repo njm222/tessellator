@@ -8,6 +8,11 @@
       {
         "name": "next"
       }
+    ],
+    "types": [
+      // Other types...
+      // This allows Serwist to type `window.serwist`.
+      "@serwist/next/typings"
     ]
   },
   "include": ["src", "next-env.d.ts", ".next/types/**/*.ts"]

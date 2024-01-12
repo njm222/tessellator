@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { animated, useSpring } from "@react-spring/three";
-import { meshBounds, RoundedBox, useCursor } from "@react-three/drei";
+import { RoundedBox, useCursor } from "@react-three/drei";
 import { hslToHex } from "@tessellator/core";
 import { ColorRepresentation, Mesh } from "three";
 
@@ -28,7 +28,6 @@ export function NavigationText({
     <animated.group
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
-      raycast={meshBounds}
       scale={scale}
       {...props}
     >

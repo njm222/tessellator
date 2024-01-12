@@ -9,10 +9,10 @@ import React, {
 import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
-import { Bloom, EffectComposer, Glitch } from "@react-three/postprocessing";
+import { Autofocus, Bloom, EffectComposer } from "@react-three/postprocessing";
 import { easing } from "maath";
 import { useRouter } from "next/navigation";
-import { Color, Object3D, Quaternion, Vector2, Vector3 } from "three";
+import { Color, Object3D, Quaternion, Vector3 } from "three";
 
 import { useAuth } from "../../../utils/authContext";
 import { ShockWave, ShockWaveEffect } from "../effects/shockwave/Shockwave";
@@ -82,6 +82,7 @@ export const LandingScene = () => {
       <Particles count={10000} isNavigating={isNavigating} />
 
       <EffectComposer disableNormalPass multisampling={0}>
+        <Autofocus mouse bokehScale={5} width={100} height={100} />
         <Bloom luminanceSmoothing={0.1} luminanceThreshold={0.2} />
         <ShockWave
           amplitude={0.4}

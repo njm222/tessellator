@@ -1,5 +1,6 @@
-import React, { ReactNode } from "react";
+"use client";
 
+import React, { ReactNode } from "react";
 import { AnalyserProvider } from "../../utils/analyserContext";
 import { ControlsProvider } from "../dom/controls/controlsContext";
 

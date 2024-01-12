@@ -6,17 +6,13 @@ import { ToastProvider } from "@tessellator/ui";
 
 import { AuthProvider } from "../../utils/authContext";
 
-import { DefaultLayout } from "./DefaultLayout";
-
 export const Layout = ({ children }: { children: ReactNode }) => {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
-        <AuthProvider>
-          <DefaultLayout>{children}</DefaultLayout>
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </ToastProvider>
     </QueryClientProvider>
   );

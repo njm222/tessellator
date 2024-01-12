@@ -12,6 +12,10 @@ export interface AudioAnalyserInterface {
   highSection: FrequencySection;
   updateAnalyserOptions: (options: AudioAnalyserProps) => void;
   updateData: () => void;
+  setup: (props: AudioAnalyserProps, source: "input" | "output") => void;
+  destroy: () => void;
+  updateSource: (kind: MediaDeviceKind, deviceId: string) => void;
+  getSources: (kind: "all" | "output" | "input") => MediaDeviceInfo[];
 }
 
 export type AudioAnalyserProps = {

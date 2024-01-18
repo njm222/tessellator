@@ -3,6 +3,7 @@ import React, {
   forwardRef,
   HTMLAttributes,
   MutableRefObject,
+  Suspense,
   useImperativeHandle,
   useRef,
 } from "react";
@@ -21,7 +22,7 @@ import { Three } from "../../helpers/Three";
 export type CommonProps = { color?: ColorRepresentation };
 
 export const Common = ({ color = "#000" }: CommonProps) => (
-  <>
+  <Suspense>
     {color && <color args={[color]} attach="background" />}
     <ambientLight intensity={3} />
     <directionalLight intensity={5} position={[2.5, 2, 12]} />
@@ -31,7 +32,7 @@ export const Common = ({ color = "#000" }: CommonProps) => (
     )}
     <AdaptiveDpr pixelated />
     <AdaptiveEvents />
-  </>
+  </Suspense>
 );
 
 export type ViewProps = HTMLAttributes<HTMLDivElement> & {

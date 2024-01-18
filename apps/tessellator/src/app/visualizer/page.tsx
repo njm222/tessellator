@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { Loader } from "@tessellator/ui";
 import dynamic from "next/dynamic";
 
@@ -51,8 +51,10 @@ export default function Page() {
   return (
     <DefaultLayout>
       <View className="fullscreenView" orbit>
-        <VisualizerScene />
-        <Common />
+        <Suspense>
+          <VisualizerScene />
+          <Common />
+        </Suspense>
       </View>
       <WelcomeSpotifyUser />
       <Player />

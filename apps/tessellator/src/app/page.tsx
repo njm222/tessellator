@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { Loader } from "@tessellator/ui";
 import dynamic from "next/dynamic";
 
@@ -46,8 +46,10 @@ export default function Page() {
   return (
     <DefaultLayout>
       <View className="fullscreenView" orbit>
-        <LandingScene />
-        <Common />
+        <Suspense>
+          <LandingScene />
+          <Common />
+        </Suspense>
       </View>
       <SocialLinks />
     </DefaultLayout>

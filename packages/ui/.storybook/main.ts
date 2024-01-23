@@ -14,7 +14,6 @@ const config: StorybookConfig = {
   addons: [
     getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@storybook/addon-essentials"),
-    getAbsolutePath("@storybook/addon-onboarding"),
     getAbsolutePath("@storybook/addon-interactions"),
   ],
   framework: {
@@ -24,6 +23,23 @@ const config: StorybookConfig = {
   staticDirs: ["../public"],
   docs: {
     autodocs: "tag",
+  },
+  // shader support
+  webpackFinal: async (config) => {
+    return {
+      ...config,
+      module: {
+        ...config.module,
+        rules: [
+          ...config.module.rules,
+          {
+            test: /\.(glsl|vs|fs|vert|frag)$/,
+            exclude: /node_modules/,
+            use: ["raw-loader", "glslify-loader"],
+          },
+        ],
+      },
+    };
   },
 };
 export default config;

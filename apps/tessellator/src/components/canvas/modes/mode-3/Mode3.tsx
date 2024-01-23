@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useAspect } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Color, ColorRepresentation, MathUtils } from "three";

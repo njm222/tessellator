@@ -1,11 +1,21 @@
 import { shaderMaterial } from "@react-three/drei";
 import { extend, ReactThreeFiber } from "@react-three/fiber";
-import { Color, ShaderMaterial } from "three";
+import { Color, ShaderMaterial, ColorRepresentation } from "three";
 
 // @ts-ignore
 import fragment from "./glsl/shader.frag";
 // @ts-ignore
 import vertex from "./glsl/shader.vert";
+
+export type WaveMaterialUniforms = {
+  uTime: number;
+  uNoise: number;
+  uResolution: number;
+  uStrengthFactor: number;
+  uColorStart: ColorRepresentation;
+  uColorEnd: ColorRepresentation;
+  uOpacity: number;
+};
 
 export const WaveMaterial = shaderMaterial(
   {

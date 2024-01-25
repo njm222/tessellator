@@ -1,14 +1,14 @@
-import type { Meta, StoryFn, StoryObj } from "@storybook/react";
+import type { Meta, StoryFn } from "@storybook/react";
 import { StoryStage } from "../../../../.storybook/StoryStage";
-import { WaveMaterial } from "./WaveMaterial";
+import { WaveMaterial, WaveMaterialUniforms } from "./WaveMaterial";
 import { Vector3, MathUtils, Color } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
-import { useArgs } from "@storybook/preview-api";
 import { useAspect } from "@react-three/drei";
 
 const meta = {
   title: "Shaders/WaveMaterial",
+  // @ts-expect-error args != uniforms
   component: WaveMaterial,
   argTypes: {
     uTime: { control: { type: "number", step: 0.01 } },
@@ -19,20 +19,17 @@ const meta = {
   },
   tags: ["autodocs"],
   decorators: [
-    (StoryFn: StoryFn) => (
+    (StoryFn: StoryFn, context) => (
       <StoryStage cameraPosition={new Vector3(0, 0, 30)}>
-        {StoryFn()}
+        {StoryFn({}, context)}
       </StoryStage>
     ),
   ],
-};
-// } satisfies Meta<typeof WaveMaterial>;
+} satisfies Meta;
 
 export default meta;
 
-type Story = StoryObj<typeof WaveMaterial>;
-
-export const Example: Story = {
+export const Example = {
   args: {
     uTime: 0.2,
     uStrengthFactor: 1,
@@ -40,12 +37,12 @@ export const Example: Story = {
     uResolution: 1,
     uColorStart: "#FFFFFF",
   },
-  render: function Render(args) {
+  render: function Render(args: WaveMaterialUniforms) {
     return <WaveMaterialRefScene {...args} />;
   },
 };
 
-function WaveMaterialRefScene(args) {
+function WaveMaterialRefScene(args: WaveMaterialUniforms) {
   const { width, height } = useThree((state) => state.viewport);
   const [vpWidth, vpHeight] = useAspect(width, height, 2);
   const colorRef = useRef(new Color());
@@ -105,6 +102,3 @@ function WaveMaterialRefScene(args) {
     </mesh>
   );
 }
-
-// export const WaveMaterialRefSt = () => <WaveMaterialRefScene />;
-// WaveMaterialRefSt.storyName = "Ref";
